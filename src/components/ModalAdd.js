@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:5010/audit/api/",
@@ -40,7 +39,7 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalAdd(props) {
   const classes = useStyle();
-  const MySwal = withReactContent(Swal);
+  
 
   const [inputModal, setInputModal] = useState({
     username: "",
@@ -52,6 +51,8 @@ export default function ModalAdd(props) {
     email: "",
     tel: "",
     permission_id: "",
+    roadLine:'',
+    station:''
   });
 
   const [status, setStatus] = useState({
@@ -72,6 +73,8 @@ export default function ModalAdd(props) {
     email,
     tel,
     permission_id,
+    roadLine,
+    station,
   } = inputModal;
 
   const [switch1, setSwitch] = useState({
@@ -145,6 +148,7 @@ export default function ModalAdd(props) {
             label="username"
             name="username"
             onChange={handleChange}
+            value={username}
           />
           <TextField
             className={classes.modalTextField}
@@ -153,6 +157,7 @@ export default function ModalAdd(props) {
             label="password"
             name="password"
             onChange={handleChange}
+            value={password}
           />
           <TextField
             className={classes.modalTextField}
@@ -161,6 +166,7 @@ export default function ModalAdd(props) {
             label="ชื่อ"
             name="fname"
             onChange={handleChange}
+            value={fname}
           />
           <TextField
             className={classes.modalTextField}
@@ -169,6 +175,7 @@ export default function ModalAdd(props) {
             label="นามสกุล"
             name="lname"
             onChange={handleChange}
+            value={lname}
           />
           <TextField
             className={classes.modalTextField}
@@ -178,6 +185,7 @@ export default function ModalAdd(props) {
             select
             onChange={handleChange}
             name="position_id"
+            value={position_id}
           >
             <option value="1">หัวหน้างาน</option>
             <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
@@ -190,6 +198,7 @@ export default function ModalAdd(props) {
             select
             onChange={handleChange}
             name="department_id"
+            value={department_id}
           >
             <option value="1">เจ้าหน้าที่ตรวจสอบรายได้</option>
             <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
@@ -201,6 +210,7 @@ export default function ModalAdd(props) {
             label="อีเมล"
             name="email"
             onChange={handleChange}
+            value={email}
           />
           <TextField
             className={classes.modalTextField}
@@ -209,6 +219,7 @@ export default function ModalAdd(props) {
             label="เบอร์โทรศัพท์"
             name="tel"
             onChange={handleChange}
+            value={tel}
           />
         </Grid>
 
@@ -222,6 +233,7 @@ export default function ModalAdd(props) {
             label="สายทาง"
             onChange={handleChange}
             name="roadLine"
+            value={roadLine}
           >
             <option value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
@@ -244,6 +256,7 @@ export default function ModalAdd(props) {
               size="small"
               label="ด่าน"
               name="station"
+              value={station}
             >
               <option value="1">ทับช้าง1</option>
               <option value="2">ทับช้าง2</option>

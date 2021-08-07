@@ -8,9 +8,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:5010/audit/api/",
@@ -40,10 +39,9 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalAdd(props) {
   const classes = useStyle();
-  const MySwal = withReactContent(Swal);
 
   const [inputModal, setInputModal] = useState({
-    username: "",
+    username: "1123",
     password: "",
     fname: "",
     lname: "",
@@ -52,6 +50,8 @@ export default function ModalAdd(props) {
     email: "",
     tel: "",
     permission_id: "",
+    station: "",
+    roadLine: "",
   });
 
   const [status, setStatus] = useState({
@@ -72,6 +72,8 @@ export default function ModalAdd(props) {
     email,
     tel,
     permission_id,
+    station,
+    roadLine,
   } = inputModal;
 
   const [switch1, setSwitch] = useState({
@@ -131,9 +133,14 @@ export default function ModalAdd(props) {
     setSwitch({ tc1: false, tc2: false, ty1: false, ty2: false });
   };
 
+  useEffect(() => {
+    if (props.dataForEdit) setInputModal(props.dataForEdit);
+    console.log("datamodal", props.dataForEdit);
+  }, [props.dataForEdit]);
+
   const body = (
     <div className={classes.modal}>
-      <Typography variant="h6">เพิ่มผู้ใช้งาน</Typography>
+      <Typography variant="h6">แก้ไขข้อมูล</Typography>
       <Divider />
       <Grid Container style={{ marginTop: 20, display: "flex" }}>
         <Grid item md={6} style={{ textAlign: "center" }}>
@@ -145,6 +152,7 @@ export default function ModalAdd(props) {
             label="username"
             name="username"
             onChange={handleChange}
+            value={username}
           />
           <TextField
             className={classes.modalTextField}
@@ -153,6 +161,7 @@ export default function ModalAdd(props) {
             label="password"
             name="password"
             onChange={handleChange}
+            value={password}
           />
           <TextField
             className={classes.modalTextField}
@@ -161,6 +170,7 @@ export default function ModalAdd(props) {
             label="ชื่อ"
             name="fname"
             onChange={handleChange}
+            value={fname}
           />
           <TextField
             className={classes.modalTextField}
@@ -169,6 +179,7 @@ export default function ModalAdd(props) {
             label="นามสกุล"
             name="lname"
             onChange={handleChange}
+            value={lname}
           />
           <TextField
             className={classes.modalTextField}
@@ -178,6 +189,7 @@ export default function ModalAdd(props) {
             select
             onChange={handleChange}
             name="position_id"
+            value={position_id}
           >
             <option value="1">หัวหน้างาน</option>
             <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
@@ -190,6 +202,7 @@ export default function ModalAdd(props) {
             select
             onChange={handleChange}
             name="department_id"
+            value={department_id}
           >
             <option value="1">เจ้าหน้าที่ตรวจสอบรายได้</option>
             <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
@@ -201,6 +214,7 @@ export default function ModalAdd(props) {
             label="อีเมล"
             name="email"
             onChange={handleChange}
+            value={email}
           />
           <TextField
             className={classes.modalTextField}
@@ -209,11 +223,12 @@ export default function ModalAdd(props) {
             label="เบอร์โทรศัพท์"
             name="tel"
             onChange={handleChange}
+            value={tel}
           />
         </Grid>
 
         {/* permission data */}
-        {/* <Grid item md={6} style={{ textAlign: "center" }}>
+        <Grid item md={6} style={{ textAlign: "center" }}>
           <TextField
             className={classes.modalTextField}
             variant="outlined"
@@ -222,6 +237,7 @@ export default function ModalAdd(props) {
             label="สายทาง"
             onChange={handleChange}
             name="roadLine"
+            value={roadLine}
           >
             <option value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
@@ -244,6 +260,7 @@ export default function ModalAdd(props) {
               size="small"
               label="ด่าน"
               name="station"
+              value={station}
             >
               <option value="1">ทับช้าง1</option>
               <option value="2">ทับช้าง2</option>
@@ -252,7 +269,7 @@ export default function ModalAdd(props) {
               <option value="5">ทุกด่าน</option>
             </TextField>
           ) : null}
-        </Grid> */}
+        </Grid>
       </Grid>
       <Divider style={{ marginTop: 25 }} />
       <div style={{ textAlign: "right" }}>

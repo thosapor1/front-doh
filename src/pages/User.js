@@ -97,6 +97,8 @@ export default function User() {
   const [open, setOpen] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
+  const [dataForEdit, setDataForEdit] = useState(null);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -105,6 +107,14 @@ export default function User() {
     setOpen(false);
   };
 
+  const handleOpenModalEdit = () => {
+    setOpenModalEdit(true);
+    console.log("hello");
+  };
+
+  const handleCloseModalEdit = () => {
+    setOpenModalEdit(false);
+  };
   const handleChangeSwitch = (event) => {
     setSwitch({ ...switch1, [event.target.name]: event.target.checked });
   };
@@ -118,12 +128,16 @@ export default function User() {
     }
   };
 
-  const handleEdit = async (item) => {
+  const handlegetDataForEdit = async (item) => {
+    setDataForEdit(item);
     console.log(item);
   };
 
   const fetchData = async () => {
-    await apiURL.get("/user-list").then((res) => setState(res.data));
+    await apiURL.get("/user-list").then((res) => {
+      setState(res.data);
+      console.log(res.data);
+    });
   };
 
   useEffect(() => {
@@ -169,7 +183,12 @@ export default function User() {
                   <TableCell align="center">{item.department} </TableCell>
                   <TableCell align="center">
                     <IconButton>
-                      <EditTwoToneIcon onClick={() => handleEdit(item)} />
+                      <EditTwoToneIcon
+                        onClick={() => {
+                          handleOpenModalEdit();
+                          handlegetDataForEdit(item);
+                        }}
+                      />
                     </IconButton>
                     <IconButton onClick={() => handleDelete(item)}>
                       <DeleteForeverTwoToneIcon />
@@ -192,9 +211,10 @@ export default function User() {
       />
 
       <ModalEdit
+        dataForEdit={dataForEdit}
         open={openModalEdit}
-        onClose={() => handleClose()}
-        onClick={() => handleClose()}
+        onClose={() => handleCloseModalEdit()}
+        onClick={() => handleCloseModalEdit()}
       />
     </Container>
   );
