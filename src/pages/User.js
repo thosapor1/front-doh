@@ -112,7 +112,6 @@ export default function User() {
   const handleDelete = (item) => {
     console.log(item.user_id);
     try {
-      
       apiURL.delete("/delete-user", { user_id: item.user_id });
     } catch (error) {
       alert(error);
@@ -192,7 +191,11 @@ export default function User() {
         onClick={() => handleClose()}
       />
 
-      {/* <ModalEdit open={openEditModal} /> */}
+      <ModalEdit
+        open={openModalEdit}
+        onClose={() => handleClose()}
+        onClick={() => handleClose()}
+      />
     </Container>
   );
 }
