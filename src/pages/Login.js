@@ -116,8 +116,9 @@ export default function Login() {
               component="image"
               image={logo_doh}
               style={{
-                height: "23%",
-                width: "27%",
+                maxWidth:190,
+                height: "auto%",
+                width: "100%",
                 marginTop: "2rem",
                 marginBottom: "2rem",
                 marginLeft: "auto",
