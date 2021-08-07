@@ -74,7 +74,6 @@ export default function Login() {
   };
 
   const handleSubmit = (e) => {
-    
     try {
       apiURL
         .post("/auth", {
@@ -116,8 +115,8 @@ export default function Login() {
               component="image"
               image={logo_doh}
               style={{
-                maxWidth:190,
-                height: "auto%",
+                maxWidth: 150,
+                height: 150,
                 width: "100%",
                 marginTop: "2rem",
                 marginBottom: "2rem",
