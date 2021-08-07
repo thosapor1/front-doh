@@ -37,7 +37,7 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-export default function ModalAdd(props) {
+export default function ModalEdit(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
