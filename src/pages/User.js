@@ -81,17 +81,17 @@ export default function User() {
         username: "",
         fname: "",
         lname: "",
-        position: "",
-        department: "",
+        position_id: "",
+        department_id: "",
+        highway_id: "",
+        checkpoint_id: "",
       },
     ],
   });
 
   const [switch1, setSwitch] = useState({
-    tc1: false,
-    tc2: false,
-    ty1: false,
-    ty2: false,
+    activeChecked: true,
+    inActiveChecked: false,
   });
 
   const [open, setOpen] = useState(false);
@@ -115,14 +115,36 @@ export default function User() {
   const handleCloseModalEdit = () => {
     setOpenModalEdit(false);
   };
-  const handleChangeSwitch = (event) => {
+
+  const handleChangeSwitch = (event, index) => {
     setSwitch({ ...switch1, [event.target.name]: event.target.checked });
   };
 
   const handleDelete = (item) => {
-    console.log(item.user_id);
+    const userId = item.user_id.toString();
+
+    Swal.fire({
+      title: "ต้องการลบข้อมูลนี้?",
+      text: "ไม่สามารถย้อนกลับได้หากยืนยันแล้ว",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
+          () => {
+            apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
+          }
+        );
+      } else {
+        console.log();
+      }
+    });
+
     try {
-      apiURL.delete("/delete-user", { user_id: item.user_id });
+      apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
     } catch (error) {
       alert(error);
     }
@@ -184,13 +206,17 @@ export default function User() {
                   <TableCell align="center">
                     <IconButton>
                       <EditTwoToneIcon
+                        color="primary"
                         onClick={() => {
                           handleOpenModalEdit();
                           handlegetDataForEdit(item);
                         }}
                       />
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(item)}>
+                    <IconButton
+                      onClick={() => handleDelete(item)}
+                      color="secondary"
+                    >
                       <DeleteForeverTwoToneIcon />
                     </IconButton>
                   </TableCell>

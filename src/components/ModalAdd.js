@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api/",
+  baseURL: "http://202.183.167.92:5010/audit/api",
 });
 
 const useStyle = makeStyles((theme) => {
@@ -39,20 +39,19 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalAdd(props) {
   const classes = useStyle();
-  
 
   const [inputModal, setInputModal] = useState({
     username: "",
     password: "",
     fname: "",
     lname: "",
-    position_id: "",
-    department_id: "",
+    position_id: null,
+    department_id: null,
     email: "",
     tel: "",
-    permission_id: "",
-    roadLine:'',
-    station:''
+    permission_id: "1",
+    highway_id: null,
+    checkpoint_id: "0",
   });
 
   const [status, setStatus] = useState({
@@ -73,8 +72,8 @@ export default function ModalAdd(props) {
     email,
     tel,
     permission_id,
-    roadLine,
-    station,
+    highway_id,
+    checkpoint_id,
   } = inputModal;
 
   const [switch1, setSwitch] = useState({
@@ -87,10 +86,17 @@ export default function ModalAdd(props) {
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
+
     console.log(inputModal);
   };
 
   const handleSubmit = () => {
+    if (position_id == 1) {
+      setInputModal({ ...inputModal, permission_id: "1" });
+    }
+    if (position_id == 2) {
+      setInputModal({ ...inputModal, permission_id: "2" });
+    }
     apiURL
       .post("/add-user", {
         username: username,
@@ -101,9 +107,14 @@ export default function ModalAdd(props) {
         department_id: department_id,
         email: email,
         tel: tel,
-        permission_id: "1",
+        permission_id: permission_id,
+        highway_id: highway_id,
+        checkpoint_id: checkpoint_id,
       })
-      .then((res) => setStatus({ success: res.data.status }));
+      .then((res) => {
+        setStatus({ success: res.data.status });
+        console.log(res.data);
+      });
 
     if (success === true) {
       // console.log("yes");
@@ -116,7 +127,8 @@ export default function ModalAdd(props) {
       }).then(() => {
         window.location.reload();
       });
-    } else {
+    }
+    if (success === false) {
       props.onClose();
       Swal.fire({
         icon: "error",
@@ -142,7 +154,6 @@ export default function ModalAdd(props) {
         <Grid item md={6} style={{ textAlign: "center" }}>
           <TextField
             className={classes.modalTextField}
-            fullWidth
             size="small"
             variant="outlined"
             label="username"
@@ -187,8 +198,12 @@ export default function ModalAdd(props) {
             name="position_id"
             value={position_id}
           >
-            <option value="1">หัวหน้างาน</option>
-            <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
+            <option key="1" value="1">
+              หัวหน้างาน
+            </option>
+            <option key="2" value="2">
+              เจ้าหน้าที่ตรวจสอบระบบ
+            </option>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -200,8 +215,12 @@ export default function ModalAdd(props) {
             name="department_id"
             value={department_id}
           >
-            <option value="1">เจ้าหน้าที่ตรวจสอบรายได้</option>
-            <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
+            <option key="1" value="1">
+              เจ้าหน้าที่ตรวจสอบรายได้
+            </option>
+            <option key="2" value="2">
+              เจ้าหน้าที่ตรวจสอบระบบ
+            </option>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -232,37 +251,48 @@ export default function ModalAdd(props) {
             size="small"
             label="สายทาง"
             onChange={handleChange}
-            name="roadLine"
-            value={roadLine}
+            name="highway_id"
+            value={highway_id}
           >
-            <option value="1" onClick={() => setshowResult(true)}>
+            <option key="1" value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
             </option>
             <option
+              key="2"
               value="2"
               onClick={() => {
                 setshowResult(false);
-                setSwitchFalse();
               }}
             >
               SDFS
             </option>
           </TextField>
-          {showResult ? (
+          {showResult==1 ? (
             <TextField
               select
               variant="outlined"
               className={classes.modalTextField}
               size="small"
               label="ด่าน"
-              name="station"
-              value={station}
+              name="checkpoint_id"
+              value={checkpoint_id}
+              onChange={handleChange}
             >
-              <option value="1">ทับช้าง1</option>
-              <option value="2">ทับช้าง2</option>
-              <option value="3">ธัญบุรี1</option>
-              <option value="4">ธัญบุรี2</option>
-              <option value="5">ทุกด่าน</option>
+              <option key="1" value="1">
+                ทับช้าง1
+              </option>
+              <option key="2" value="2">
+                ทับช้าง2
+              </option>
+              <option key="3" value="3">
+                ธัญบุรี1
+              </option>
+              <option key="4" value="4">
+                ธัญบุรี2
+              </option>
+              <option key="5" value="5">
+                ทุกด่าน
+              </option>
             </TextField>
           ) : null}
         </Grid>

@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api/",
+  baseURL: "http://202.183.167.92:5010/audit/api",
 });
 
 const useStyle = makeStyles((theme) => {
@@ -41,7 +41,8 @@ export default function ModalEdit(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    username: "1123",
+    user_id: "",
+    username: "",
     password: "",
     fname: "",
     lname: "",
@@ -49,9 +50,9 @@ export default function ModalEdit(props) {
     department_id: "",
     email: "",
     tel: "",
-    permission_id: "",
-    station: "",
-    roadLine: "",
+    // permission_id: "",
+    highway_id: "",
+    checkpoint_id: "",
   });
 
   const [status, setStatus] = useState({
@@ -63,6 +64,7 @@ export default function ModalEdit(props) {
   const { success, fail, warning } = status;
 
   const {
+    user_id,
     username,
     password,
     fname,
@@ -71,9 +73,9 @@ export default function ModalEdit(props) {
     department_id,
     email,
     tel,
-    permission_id,
-    station,
-    roadLine,
+    // permission_id,
+    highway_id,
+    checkpoint_id,
   } = inputModal;
 
   const [switch1, setSwitch] = useState({
@@ -86,22 +88,31 @@ export default function ModalEdit(props) {
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
-    console.log(inputModal);
+    console.log(
+      inputModal.position_id,
+      inputModal.department_id,
+      inputModal.station,
+      inputModal.roadLine
+    );
   };
 
-  const handleSubmit = () => {
+  const handleUpdate = () => {
+    const sendData = {
+      "user_id": user_id,
+      "username": username,
+      // password: password,
+      "first_name": fname,
+      "last_name": lname,
+      "position_id": position_id,
+      "department_id": department_id,
+      "email": email,
+      "tel": tel,
+      "highway_id": highway_id,
+      "checkpoint_id": checkpoint_id,
+    };
+    console.log(sendData)
     apiURL
-      .post("/add-user", {
-        username: username,
-        password: password,
-        first_name: fname,
-        last_name: lname,
-        position_id: position_id,
-        department_id: department_id,
-        email: email,
-        tel: tel,
-        permission_id: "1",
-      })
+      .put("/update-user", sendData)
       .then((res) => setStatus({ success: res.data.status }));
 
     if (success === true) {
@@ -109,13 +120,14 @@ export default function ModalEdit(props) {
       props.onClose();
       Swal.fire({
         title: "Success!",
-        text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+        text: "ข้อมูลของท่านถูกแก้ไขแล้ว",
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
         window.location.reload();
       });
-    } else {
+    }
+    if (success === false) {
       props.onClose();
       Swal.fire({
         icon: "error",
@@ -135,7 +147,7 @@ export default function ModalEdit(props) {
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
-    console.log("datamodal", props.dataForEdit);
+    console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (
@@ -236,37 +248,48 @@ export default function ModalEdit(props) {
             size="small"
             label="สายทาง"
             onChange={handleChange}
-            name="roadLine"
-            value={roadLine}
+            name="highway_id"
+            value={highway_id}
           >
-            <option value="1" onClick={() => setshowResult(true)}>
+            <option key="1" value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
             </option>
             <option
+              key="2"
               value="2"
               onClick={() => {
                 setshowResult(false);
-                setSwitchFalse();
               }}
             >
               SDFS
             </option>
           </TextField>
-          {showResult ? (
+          {showResult==1 ? (
             <TextField
               select
               variant="outlined"
               className={classes.modalTextField}
               size="small"
               label="ด่าน"
-              name="station"
-              value={station}
+              name="checkpoint_id"
+              value={checkpoint_id}
+              onChange={handleChange}
             >
-              <option value="1">ทับช้าง1</option>
-              <option value="2">ทับช้าง2</option>
-              <option value="3">ธัญบุรี1</option>
-              <option value="4">ธัญบุรี2</option>
-              <option value="5">ทุกด่าน</option>
+              <option key="1" value="1">
+                ทับช้าง1
+              </option>
+              <option key="2" value="2">
+                ทับช้าง2
+              </option>
+              <option key="3" value="3">
+                ธัญบุรี1
+              </option>
+              <option key="4" value="4">
+                ธัญบุรี2
+              </option>
+              <option key="5" value="5">
+                ทุกด่าน
+              </option>
             </TextField>
           ) : null}
         </Grid>
@@ -277,7 +300,7 @@ export default function ModalEdit(props) {
           variant="contained"
           color="primary"
           className={classes.btn2}
-          onClick={handleSubmit}
+          onClick={handleUpdate}
         >
           บันทึก
         </Button>
