@@ -1,12 +1,7 @@
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import {
-  Container,
-  Grid,
-  makeStyles,
-  TextField,
-} from "@material-ui/core";
+import { Container, Grid, makeStyles, TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -50,7 +45,7 @@ const useStyle = makeStyles((theme) => {
     btn: {
       width: 150,
       height: 40,
-      backgroundColor:'#46005E'
+      backgroundColor: "#46005E",
     },
     textField: {
       width: 150,
@@ -123,12 +118,12 @@ export default function RawTransaction(props) {
   async function fetchData() {
     axios.get(url).then((res) => {
       setState(res.data);
+      console.log(res.data);
     });
   }
 
   useEffect(() => {
     fetchData();
-    
   }, []);
 
   return (

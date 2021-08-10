@@ -94,6 +94,8 @@ export default function User() {
     inActiveChecked: false,
   });
 
+  const [progressStatus, setProgressStatus] = useState({});
+
   const [open, setOpen] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
@@ -120,10 +122,10 @@ export default function User() {
     setSwitch({ ...switch1, [event.target.name]: event.target.checked });
   };
 
-  const handleDelete = (item) => {
+  const handleDelete = async (item) => {
     const userId = item.user_id.toString();
 
-    Swal.fire({
+    await Swal.fire({
       title: "ต้องการลบข้อมูลนี้?",
       text: "ไม่สามารถย้อนกลับได้หากยืนยันแล้ว",
       icon: "warning",
@@ -135,7 +137,27 @@ export default function User() {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
           () => {
-            apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
+            apiURL
+              .post("/delete-user", { user_id: userId })
+              .then((res) =>
+                setProgressStatus({ progressStatus: res.data.status })
+              );
+            if (progressStatus == true) {
+              Swal.fire({
+                title: "Success!",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            }
+            window.location.reload();
+            if (progressStatus === false) {
+              Swal.fire({
+                icon: "error",
+                text: "ตรวจสอบข้อมูลของท่าน",
+              });
+              console.log("no");
+            }
           }
         );
       } else {
@@ -143,11 +165,11 @@ export default function User() {
       }
     });
 
-    try {
-      apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
-    } catch (error) {
-      alert(error);
-    }
+    // try {
+    //   apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
+    // } catch (error) {
+    //   alert(error);
+    // }
   };
 
   const handlegetDataForEdit = async (item) => {

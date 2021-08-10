@@ -90,52 +90,71 @@ export default function ModalAdd(props) {
     console.log(inputModal);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (position_id == 1) {
       setInputModal({ ...inputModal, permission_id: "1" });
     }
     if (position_id == 2) {
       setInputModal({ ...inputModal, permission_id: "2" });
     }
-    apiURL
-      .post("/add-user", {
-        username: username,
-        password: password,
-        first_name: fname,
-        last_name: lname,
-        position_id: position_id,
-        department_id: department_id,
-        email: email,
-        tel: tel,
-        permission_id: permission_id,
-        highway_id: highway_id,
-        checkpoint_id: checkpoint_id,
-      })
-      .then((res) => {
-        setStatus({ success: res.data.status });
-        console.log(res.data);
-      });
 
-    if (success === true) {
-      // console.log("yes");
-      props.onClose();
-      Swal.fire({
-        title: "Success!",
-        text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        window.location.reload();
-      });
-    }
-    if (success === false) {
-      props.onClose();
-      Swal.fire({
-        icon: "error",
-        text: "ตรวจสอบข้อมูลของท่าน",
-      });
-      console.log("no");
-    }
+    //onload
+    props.onClose();
+    await Swal.fire({
+      title: "Auto close alert!",
+      html: "I will close in <b></b> milliseconds.",
+      timer: 2000,
+      timerProgressBar: true,
+    }).then(
+      await apiURL
+        .post("/add-user", {
+          username: username,
+          password: password,
+          first_name: fname,
+          last_name: lname,
+          position_id: position_id,
+          department_id: department_id,
+          email: email,
+          tel: tel,
+          permission_id: permission_id,
+          highway_id: highway_id,
+          checkpoint_id: checkpoint_id,
+        })
+        .then((res) => {
+          setStatus({ success: res.data.status });
+          console.log(res);
+
+          if (success === true) {
+            console.log("yes");
+            props.onClose();
+            Swal.fire({
+              title: "Success!",
+              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+            window.location.reload();
+          }
+
+          if (success === false) {
+            props.onClose();
+            Swal.fire({
+              icon: "error",
+              text: "ตรวจสอบข้อมูลของท่าน",
+            });
+            console.log("no");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          props.onClose();
+          Swal.fire({
+            icon: "error",
+            text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+          });
+        })
+    );
+
     // console.log("fromSubmit:", inputModal);
     // console.log(position_id);
   };
@@ -267,7 +286,7 @@ export default function ModalAdd(props) {
               SDFS
             </option>
           </TextField>
-          {showResult==1 ? (
+          {showResult == 1 ? (
             <TextField
               select
               variant="outlined"

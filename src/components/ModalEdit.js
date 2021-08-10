@@ -88,30 +88,24 @@ export default function ModalEdit(props) {
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
-    console.log(
-      inputModal.position_id,
-      inputModal.department_id,
-      inputModal.station,
-      inputModal.roadLine
-    );
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const sendData = {
-      "user_id": user_id,
-      "username": username,
+      user_id: user_id,
+      username: username,
       // password: password,
-      "first_name": fname,
-      "last_name": lname,
-      "position_id": position_id,
-      "department_id": department_id,
-      "email": email,
-      "tel": tel,
-      "highway_id": highway_id,
-      "checkpoint_id": checkpoint_id,
+      first_name: fname,
+      last_name: lname,
+      position_id: position_id,
+      department_id: department_id,
+      email: email,
+      tel: tel,
+      highway_id: highway_id,
+      checkpoint_id: checkpoint_id,
     };
-    console.log(sendData)
-    apiURL
+    console.log(sendData);
+    await apiURL
       .put("/update-user", sendData)
       .then((res) => setStatus({ success: res.data.status }));
 
@@ -264,7 +258,7 @@ export default function ModalEdit(props) {
               SDFS
             </option>
           </TextField>
-          {showResult==1 ? (
+          {showResult == 1 ? (
             <TextField
               select
               variant="outlined"

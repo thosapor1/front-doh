@@ -21,8 +21,6 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: "#46005E",
       border: "1px solid white",
       color: "white",
-      position: "sticky",
-      top: 0,
     },
     headerPK: {
       backgroundColor: "#ef6c00",
@@ -43,6 +41,10 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AuditTable(props) {
+
+  const statusBullet = (prpps) =>{
+    const {className,size,color, ...rest} =prpps
+  }
   const classes = useStyle();
   return (
     <div>
@@ -51,7 +53,7 @@ export default function AuditTable(props) {
           <Table stickyHeader>
             <TableHead>
               <TableRow style={{ position: "sticky", top: 0 }}>
-                <TableCell colSpan={12} className={classes.headerAudit}>
+                <TableCell colSpan={13} className={classes.headerAudit}>
                   ระบบตรวจสอบรายได้ (Audit)
                 </TableCell>
                 <TableCell colSpan={10} className={classes.headerPK}>
@@ -59,6 +61,13 @@ export default function AuditTable(props) {
                 </TableCell>
               </TableRow>
               <TableRow>
+                <TableCell
+                  align="center"
+                  rowSpan={2}
+                  className={classes.headerAudit}
+                >
+                  สถานะ
+                </TableCell>
                 <TableCell
                   align="center"
                   rowSpan={2}
@@ -175,6 +184,7 @@ export default function AuditTable(props) {
             <TableBody>
               {props.datalist.map((row) => (
                 <StyledTableRow key={row.transactionId}>
+                  <TableCell align="center">{row.state ==1 && row.sub_state ==1 ? "gray":"red"}</TableCell>
                   <TableCell align="center">{row.transactionId}</TableCell>
                   <TableCell align="center">{row.lane_id}</TableCell>
                   <TableCell align="center">{row.timestamp}</TableCell>

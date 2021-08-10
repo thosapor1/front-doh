@@ -44,7 +44,7 @@ const menuItems = [
   {
     text: "รายได้รายวัน",
     icon: <MonetizationOnRoundedIcon />,
-    path: "/1",
+    path: "/auditDisplay",
   },
   {
     text: "รายได้คงค้าง",
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#88489e",
     },
     active: {
-      background: "#6b337e",
+      background: "#61438Fff",
       color: "white",
     },
     appBar: {
