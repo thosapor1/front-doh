@@ -93,6 +93,8 @@ const valueOption = [
   },
 ];
 
+const valueStatus = [{}];
+
 const dataTest = [
   {
     id: 1,
@@ -131,16 +133,40 @@ const dataTest = [
   },
 ];
 
+const dataCard = [
+  {
+    value: 20,
+    status: "all",
+    label: "จำนวนรายการทั้งหมดของวัน",
+  },
+  {
+    value: 10,
+    status: "normal",
+    label: "จำนวนรายการปกติ",
+  },
+  {
+    value: 30,
+    status: "waitToCheck",
+    label: "จำนวนรายการตรวจสอบ",
+  },
+  {
+    value: 500,
+    status: "summary",
+    label: "รายได้พึงได้รายวัน",
+  },
+];
+
 export default function AuditDisplay() {
   const [state, setState] = useState({
     gate_select: null,
+    status_select: null,
   });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  const { gate_select } = state;
+  const { gate_select, status_select } = state;
 
   const handleChange = (event) => {
     setState({ [event.target.name]: event.target.value });
@@ -151,6 +177,7 @@ export default function AuditDisplay() {
     <Container className={classes.root}>
       <Typography variant="h6">ตรวจสอบ (DOH):รายได้พึงได้รายวัน</Typography>
 
+      {/* Filter Section */}
       <Paper className={classes.filterSection}>
         <TextField
           select
@@ -158,6 +185,21 @@ export default function AuditDisplay() {
           value={gate_select}
           onChange={handleChange}
           style={{ width: 120, marginTop: 16 }}
+          name="gate_select"
+        >
+          {valueOption.map((item) => (
+            <option key={item.id} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </TextField>
+
+        <TextField
+          select
+          label="สถานะ"
+          value={status_select}
+          onChange={handleChange}
+          style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="gate_select"
         >
           {valueOption.map((item) => (
@@ -189,28 +231,56 @@ export default function AuditDisplay() {
         </Button>
       </Paper>
 
+      {/* Card Section */}
       <div className={classes.cardSection}>
-        <Paper
-          className={classes.card}
-          style={{ borderLeft: "solid darkgray" }}
-        >
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item>
-              <Typography>รายการทั้งหมด</Typography>
-              <Typography> data รายการ</Typography>
+        {dataCard.map((card) => (
+          <Paper
+            className={classes.card}
+            style={{
+              borderLeft:
+                card.status === "all"
+                  ? "3px solid gray"
+                  : card.status === "normal"
+                  ? "3px solid gray"
+                  : card.status === "waitToCheck"
+                  ? "3px solid red"
+                  : "3px solid green",
+            }}
+          >
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item>
+                <Typography
+                  style={{
+                    color:
+                      card.status === "all"
+                        ? "gray"
+                        : card.status === "normal"
+                        ? "gray"
+                        : card.status === "waitToCheck"
+                        ? "red"
+                        : "green",
+                  }}
+                >
+                  {card.label}
+                </Typography>
+                <Typography>
+                  {card.value} {card.status === "summary" ? "บาท" : "รายการ"}
+                </Typography>
+              </Grid>
+              <Grid>
+                <DescriptionTwoToneIcon />
+              </Grid>
             </Grid>
-            <Grid>
-              <DescriptionTwoToneIcon />
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        ))}
       </div>
 
+      {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>
-        <Grid component={Paper} item md={5} >
+        <Grid component={Paper} item md={5}>
           <GateTable dataList={dataTest} />
         </Grid>
-        <Grid item md={7} style={{paddingLeft:20}}>
+        <Grid item md={7} style={{ paddingLeft: 20 }}>
           <ClassTable dataList={dataTest} />
         </Grid>
       </Grid>

@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -50,6 +51,8 @@ const headCells = [
     label: "ปริมาณรถ",
   },
 ];
+
+
 
 const StyledTableRow = withStyles((theme) => ({
   root: {

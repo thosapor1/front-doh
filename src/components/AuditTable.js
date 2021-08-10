@@ -13,6 +13,7 @@ import {
 import ImageIcon from "@material-ui/icons/Image";
 import React from "react";
 import { withStyles } from "@material-ui/styles";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -21,6 +22,8 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: "#46005E",
       border: "1px solid white",
       color: "white",
+      position: "sticky",
+      top: 0,
     },
     headerPK: {
       backgroundColor: "#ef6c00",
@@ -41,18 +44,17 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AuditTable(props) {
-
-  const statusBullet = (prpps) =>{
-    const {className,size,color, ...rest} =prpps
-  }
+  const statusBullet = (prpps) => {
+    const { className, size, color, ...rest } = prpps;
+  };
   const classes = useStyle();
   return (
     <div>
       <Paper style={{ marginTop: 20 }}>
-        <TableContainer>
-          <Table stickyHeader>
+        <TableContainer style={{ width: "auto" }}>
+          <Table>
             <TableHead>
-              <TableRow style={{ position: "sticky", top: 0 }}>
+              <TableRow>
                 <TableCell colSpan={13} className={classes.headerAudit}>
                   ระบบตรวจสอบรายได้ (Audit)
                 </TableCell>
@@ -184,7 +186,19 @@ export default function AuditTable(props) {
             <TableBody>
               {props.datalist.map((row) => (
                 <StyledTableRow key={row.transactionId}>
-                  <TableCell align="center">{row.state ==1 && row.sub_state ==1 ? "gray":"red"}</TableCell>
+                  <TableCell align="center">
+                    <FiberManualRecordIcon
+                      fontSize="small"
+                      style={{
+                        color:
+                          row.state === 2 && row.sub_state === 1
+                            ? "orange"
+                            : row.state === 2 && row.sub_state === 2
+                            ? "red"
+                            : "green",
+                      }}
+                    />
+                  </TableCell>
                   <TableCell align="center">{row.transactionId}</TableCell>
                   <TableCell align="center">{row.lane_id}</TableCell>
                   <TableCell align="center">{row.timestamp}</TableCell>

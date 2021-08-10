@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -37,8 +38,8 @@ const headerCells = [
     label: "รถยกเว้น(คัน)",
   },
   {
-    id: "except",
-    label: "รถยกเว้น(คัน)",
+    id: "takeMoney",
+    label: "รถรับเงิน(คัน)",
   },
   {
     id: "summary",
@@ -75,14 +76,33 @@ export default function ClassTable(props) {
           <TableBody>
             {dataList.map((data) => (
               <StyledTableRow key={data.id}>
-                <TableCell align='center'>{data.id} </TableCell>
-                <TableCell align='center'>{data.name} </TableCell>
-                <TableCell align='center'>{data.value} </TableCell>
-                <TableCell align='center'>{data.id} </TableCell>
-                <TableCell align='center'>{data.value} </TableCell>
+                <TableCell align="center">{data.id} </TableCell>
+                <TableCell align="center">{data.name} </TableCell>
+                <TableCell align="center">{data.value} </TableCell>
+                <TableCell align="center">{data.id} </TableCell>
+                <TableCell align="center">{data.value} </TableCell>
               </StyledTableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow style={{ left: 0, bottom: 0, position: "sticky" }}>
+              <TableCell align="center" className={classes.header}>
+                รวม
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                100
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                0
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                100
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                1,120
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </div>
