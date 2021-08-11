@@ -11,15 +11,20 @@ import {
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
+  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { TimePicker } from "@material-ui/pickers";
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GateTable from "../components/GateTable";
 import ClassTable from "../components/ClassTable";
 import AllTsTable from "../components/AllTsTable";
+import axios from "axios";
+
+const apiURL = axios.create({
+  baseURL: "http://202.183.167.119:3010/audit/api",
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -93,7 +98,23 @@ const valueOption = [
   },
 ];
 
-const valueStatus = [{}];
+const valueStatus = [
+  {
+    id: "1",
+    value: "1",
+    label: "ปกติ",
+  },
+  {
+    id: "2",
+    value: "2",
+    label: "ข้อมูลไม่ตรงกัน",
+  },
+  {
+    id: "3",
+    value: "3",
+    label: "ข้อมูลสูญหาย",
+  },
+];
 
 const dataTest = [
   {
@@ -157,20 +178,46 @@ const dataCard = [
 ];
 
 export default function AuditDisplay() {
-  const [state, setState] = useState({
-    gate_select: null,
-    status_select: null,
-  });
 
+  const [state, setState] = useState({});
+  const [gate_select, setGate_select] = useState(null)
+  const [status_select, setStatus_select] = useState(null)
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-  const { gate_select, status_select } = state;
+  const [selectedTimeStart, setSelectedTimeStart] = useState(new Date());
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
 
   const handleChange = (event) => {
-    setState({ [event.target.name]: event.target.value });
+    setState({ ...state, [event.target.name]: event.target.value });
   };
+
+  const handleFilter = () => {
+    console.log(
+      "gate_select: ",
+      gate_select,
+      "status_select: ",
+      status_select,
+      "selectedDate: ",
+      selectedDate,
+      "selectedTimeStart: ",
+      selectedTimeStart,
+      "selectedTimeEnd: ",
+      selectedTimeEnd
+    );
+  };
+
+  useEffect(() => {
+    const sendData = {
+      checkpoint_id: "1",
+      datetime: "0",
+      startTime: "0",
+      endTime: "0",
+      transactionStatus: "0",
+    };
+    console.log(sendData);
+    apiURL.get("/display", sendData).then((res) => {
+      console.log(res.data);
+    });
+  }, []);
 
   const classes = useStyles();
   return (
@@ -200,10 +247,10 @@ export default function AuditDisplay() {
           value={status_select}
           onChange={handleChange}
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
-          name="gate_select"
+          name="status_select"
         >
-          {valueOption.map((item) => (
-            <option key={item.id} value={item.value}>
+          {valueStatus.map((item) => (
+            <option key={item.value} value={item.value}>
               {item.label}
             </option>
           ))}
@@ -214,19 +261,51 @@ export default function AuditDisplay() {
             style={{ width: 170, marginLeft: 30 }}
             disableToolbar
             variant="inlined"
-            format="MM/dd/yyyy"
+            format="dd/MM/yyyy"
             margin="normal"
             id="date-picker-inline"
             label="วันที่เข้าด่าน"
             value={selectedDate}
-            onChange={handleDateChange}
+            onChange={(date) => setSelectedDate(date)}
             KeyboardButtonProps={{
               "aria-label": "change date",
             }}
           />
         </MuiPickersUtilsProvider>
 
-        <Button variant="contained" className={classes.btn}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardTimePicker
+            ampm={false}
+            variant="inline"
+            label="เวลาเริ่มต้น"
+            openTo="hours"
+            views={["hours", "minutes", "seconds"]}
+            format="HH:mm:ss"
+            value={selectedTimeStart}
+            onChange={setSelectedTimeStart}
+            style={{ width: 170, marginLeft: 30, marginTop: 16 }}
+          />
+        </MuiPickersUtilsProvider>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardTimePicker
+            ampm={false}
+            variant="inline"
+            label="เวลาสิ้นสุด"
+            openTo="hours"
+            views={["hours", "minutes", "seconds"]}
+            format="HH:mm:ss"
+            value={selectedTimeEnd}
+            onChange={setSelectedTimeEnd}
+            style={{ width: 170, marginLeft: 30, marginTop: 16 }}
+          />
+        </MuiPickersUtilsProvider>
+
+        <Button
+          variant="contained"
+          className={classes.btn}
+          onClick={handleFilter}
+        >
           ดูข้อมูล
         </Button>
       </Paper>

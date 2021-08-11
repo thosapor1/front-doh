@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api",
+  baseURL: "http://202.183.167.119:3011/audit/api",
 });
 
 const useStyle = makeStyles((theme) => {
@@ -55,13 +55,7 @@ export default function ModalEdit(props) {
     checkpoint_id: "",
   });
 
-  const [status, setStatus] = useState({
-    success: "",
-    fail: "",
-    warning: "",
-  });
-
-  const { success, fail, warning } = status;
+  const [status, setStatus] = useState();
 
   const {
     user_id,
@@ -105,23 +99,24 @@ export default function ModalEdit(props) {
       checkpoint_id: checkpoint_id,
     };
     console.log(sendData);
-    await apiURL
-      .put("/update-user", sendData)
-      .then((res) => setStatus({ success: res.data.status }));
-
-    if (success === true) {
-      // console.log("yes");
+    apiURL.put("/update-user", sendData).then((res) => {
+      setStatus({ status: res.data.status });
+      console.log(res.data);
       props.onClose();
       Swal.fire({
         title: "Success!",
         text: "ข้อมูลของท่านถูกแก้ไขแล้ว",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "ตกลง",
       }).then(() => {
         window.location.reload();
       });
+      console.log("yes");
+    });
+
+    if (status === true) {
     }
-    if (success === false) {
+    if (status === false) {
       props.onClose();
       Swal.fire({
         icon: "error",

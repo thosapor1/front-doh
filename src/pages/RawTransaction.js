@@ -56,20 +56,20 @@ const useStyle = makeStyles((theme) => {
 });
 
 const stations = [
-  { value: "all", label: "ทุกด่าน" },
-  { value: "tc1", label: "ทับช้าง1" },
-  { value: "tc2", label: "ทับช้าง2" },
-  { value: "ty1", label: "ธัญบุรี1" },
-  { value: "ty2", label: "ธัญบุรี2" },
+  { value: "1", label: "ทับช้าง1" },
+  { value: "2", label: "ทับช้าง2" },
+  { value: "3", label: "ธัญบุรี1" },
+  { value: "4", label: "ธัญบุรี2" },
+  { value: "5", label: "ทุกด่าน" },
 ];
-const status = [
-  { value: "all", label: "ทุกสถานะ" },
-  { value: "normal", label: "รายการปกติ" },
-  { value: "unMatch", label: "รายการข้อมูลไม่ตรงกัน" },
-  { value: "miss", label: "รายการสูญหาย" },
+const statusValue = [
+  { value: "1", label: "ทุกสถานะ" },
+  { value: "2", label: "รายการปกติ" },
+  { value: "3", label: "รายการข้อมูลไม่ตรงกัน" },
+  { value: "4", label: "รายการสูญหาย" },
 ];
 
-const url = "http://202.183.167.92:5010/audit/api/rawdata";
+const url = "http://202.183.167.119:3011/audit/api/rawdata";
 
 export default function RawTransaction(props) {
   const [state, setState] = useState({
@@ -101,6 +101,10 @@ export default function RawTransaction(props) {
     ],
   });
 
+  const [select, setSelect] = useState({
+    station:null,
+    status:null,
+  })
   const [textField, setTextField] = useState("all");
 
   const classes = useStyle();
@@ -111,8 +115,8 @@ export default function RawTransaction(props) {
     setSelectedDate(date);
   };
 
-  const handleChange = (event) => {
-    setTextField(event.target.value);
+  const handleSelectChange = (event) => {
+    setSelect({...select, [event.target.name]:event.target.value});
   };
 
   async function fetchData() {
@@ -138,7 +142,7 @@ export default function RawTransaction(props) {
               style={{ width: 170 }}
               disableToolbar
               variant="inline"
-              format="MM/dd/yyyy"
+              format="dd/MM/yyyy"
               margin="normal"
               id="date-picker-inline"
               label="วันที่เข้าด่าน"
@@ -150,27 +154,30 @@ export default function RawTransaction(props) {
             />
           </MuiPickersUtilsProvider>
           <TextField
-            id="station"
             select
             label="ด่าน"
             className={classes.textField}
-            onChange={handleChange}
+            onChange={handleSelectChange}
+            name='station'
+            value={select.station}
           >
             {stations.map((station) => (
               <option key={station.value} value={station.value}>
-                {station.name}
+                {station.label}
               </option>
             ))}
           </TextField>
           <TextField
-            id="status"
+            name="status"
             select
             label="สถานะ"
             className={classes.textField}
+            value={select.status}
+            onChange={handleSelectChange}
           >
-            {status.map((item) => (
+            {statusValue.map((item) => (
               <option key={item.value} value={item.value}>
-                {item.name}
+                {item.label}
               </option>
             ))}
           </TextField>

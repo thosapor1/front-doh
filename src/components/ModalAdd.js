@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api",
+  baseURL: "http://202.183.167.119:3011/audit/api",
 });
 
 const useStyle = makeStyles((theme) => {
@@ -90,7 +90,7 @@ export default function ModalAdd(props) {
     console.log(inputModal);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (position_id == 1) {
       setInputModal({ ...inputModal, permission_id: "1" });
     }
@@ -100,60 +100,60 @@ export default function ModalAdd(props) {
 
     //onload
     props.onClose();
-    await Swal.fire({
-      title: "Auto close alert!",
-      html: "I will close in <b></b> milliseconds.",
-      timer: 2000,
-      timerProgressBar: true,
-    }).then(
-      await apiURL
-        .post("/add-user", {
-          username: username,
-          password: password,
-          first_name: fname,
-          last_name: lname,
-          position_id: position_id,
-          department_id: department_id,
-          email: email,
-          tel: tel,
-          permission_id: permission_id,
-          highway_id: highway_id,
-          checkpoint_id: checkpoint_id,
-        })
-        .then((res) => {
-          setStatus({ success: res.data.status });
-          console.log(res);
+    // Swal.fire({
+    //   title: "Auto close alert!",
+    //   html: "I will close in <b></b> milliseconds.",
+    // });
+    apiURL
+      .post("/add-user", {
+        username: username,
+        password: password,
+        first_name: fname,
+        last_name: lname,
+        position_id: position_id,
+        department_id: department_id,
+        email: email,
+        tel: tel,
+        permission_id: permission_id,
+        highway_id: highway_id,
+        checkpoint_id: checkpoint_id,
+      })
+      .then((res) => {
+        setStatus({ success: res.data.status });
+        console.log(res);
 
-          if (success === true) {
-            console.log("yes");
-            props.onClose();
-            Swal.fire({
-              title: "Success!",
-              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-            window.location.reload();
-          }
+        if (success == true) {
+          console.log("yes");
+          props.onClose();
+          Swal.fire({
+            title: "Success!",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          }) 
+          window.location.reload();
+        }
 
-          if (success === false) {
-            props.onClose();
-            Swal.fire({
-              icon: "error",
-              text: "ตรวจสอบข้อมูลของท่าน",
-            });
-            console.log("no");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        if (success == false) {
           props.onClose();
           Swal.fire({
             icon: "error",
-            text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+            text: "ตรวจสอบข้อมูลของท่าน",
           });
-        })
-    );
+          console.log("no");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        props.onClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+    // .then(() => {
+
+    // });
 
     // console.log("fromSubmit:", inputModal);
     // console.log(position_id);

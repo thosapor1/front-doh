@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api",
+  baseURL: "http://202.183.167.119:3011/audit/api",
 });
 
 export default function User() {
@@ -107,6 +107,7 @@ export default function User() {
 
   const handleClose = () => {
     setOpen(false);
+    setDataForEdit(null)
   };
 
   const handleOpenModalEdit = () => {
@@ -133,33 +134,32 @@ export default function User() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
-          () => {
-            apiURL
-              .post("/delete-user", { user_id: userId })
-              .then((res) =>
-                setProgressStatus({ progressStatus: res.data.status })
-              );
-            if (progressStatus == true) {
-              Swal.fire({
-                title: "Success!",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            }
-            window.location.reload();
-            if (progressStatus === false) {
-              Swal.fire({
-                icon: "error",
-                text: "ตรวจสอบข้อมูลของท่าน",
-              });
-              console.log("no");
-            }
+        Swal.fire("Deleted!", "ขอมูลของคุณถูกลบแล้ว.", "success").then(() => {
+          apiURL
+            .post("/delete-user", { user_id: userId })
+            .then((res) =>
+              setProgressStatus({ progressStatus: res.data.status })
+            );
+          if (progressStatus == true) {
+            Swal.fire({
+              title: "Success!",
+              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
           }
-        );
+          window.location.reload();
+          if (progressStatus === false) {
+            Swal.fire({
+              icon: "error",
+              text: "ตรวจสอบข้อมูลของท่าน",
+            });
+            console.log("no");
+          }
+        });
       } else {
         console.log();
       }
