@@ -21,6 +21,7 @@ import {
 // import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Cookies from "js-cookie";
 
 const data = [
   ["วันที่", "จำนวนรถ"],
@@ -78,6 +79,7 @@ const useStyle = makeStyles((theme) => {
 });
 
 export default function DashBoard() {
+  console.log(Cookies.get('name'))
   const classes = useStyle();
   return (
     <div className={classes.root}>

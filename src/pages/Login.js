@@ -13,6 +13,7 @@ import logo_doh from "../image/logo_doh.png";
 import axios from "axios";
 import { Redirect, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -50,11 +51,14 @@ const useStyle = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:5010/audit/api/",
+  baseURL: "http://202.183.167.119:3011/audit/api",
 });
 
 export default function Login() {
   const classes = useStyle();
+
+  const [login, setLogin] = useState(false);
+  
 
   const [state, setState] = useState({
     username: "",
@@ -73,34 +77,51 @@ export default function Login() {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    try {
-      apiURL
-        .post("/auth", {
-          username: state.username,
-          password: state.password,
-        })
-        .then((res) => {
-          setResData(res.data);
-        });
-    } catch (error) {
-      alert(error);
-    }
+  
 
-    console.log(state.username, state.password);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const userName = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    console.log(userName, password);
+
+    const sendData = {
+      username: userName,
+      password: password,
+    };
+
+    apiURL.post("/auth", sendData).then((res) => {
+      setResData(res.data);
+      console.log(res.data);
+      if (res.data.status == true) {
+        console.log("pass", resData.status);
+        // return <Redirect to="/dashboard" />;
+        Cookies.set('name', 'pu')
+        setLogin(true);
+      } else {
+        Swal.fire({
+          icon: "error",
+          text: "ตรวจสอบ username และ password ของท่าน",
+        });
+      }
+    });
+
+    // console.log(state.username, state.password);
   };
-  if (resData.status === true) {
-    return <Redirect to="/dashboard" />;
-  } else if (resData.status === false) {
-    // console.log("false");
-    // Swal.fire({
-    //   icon: "error",
-    //   text: "ตรวจสอบ username และ password ของท่าน",
-    // });
-  }
+  // if (resData.status == true) {
+  //   return <Redirect to="/dashboard" />;
+  // } if (resData.status == false) {
+  //   console.log("false");
+  //   Swal.fire({
+  //     icon: "error",
+  //     text: "ตรวจสอบ username และ password ของท่าน",
+  //   });
+  // }
 
   return (
     <div className={classes.root}>
+      {login == true ? <Redirect to="/dashboard" /> : null}
       <Paper className={classes.paper}>
         <Grid container>
           <Grid item className={classes.leftSide} md={6}>
@@ -139,11 +160,11 @@ export default function Login() {
               กรมทางหลวง
             </Typography>
 
-            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <form noValidate autoComplete="off">
               <div style={{ textAlign: "center", marginTop: "2rem" }}>
                 <TextField
                   className={classes.textField}
-                  id="user"
+                  id="username"
                   label="ผู้ใช้งาน"
                   value={state.username}
                   variant="outlined"
@@ -174,6 +195,7 @@ export default function Login() {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  onClick={handleSubmit}
                 >
                   เข้าสู่ระบบ
                 </Button>

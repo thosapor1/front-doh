@@ -47,6 +47,11 @@ const menuItems = [
     path: "/auditDisplay",
   },
   {
+    text: "Pk3Display",
+    icon: <MonetizationOnRoundedIcon />,
+    path: "/pk3Display",
+  },
+  {
     text: "รายได้คงค้าง",
     icon: <AccountBalanceWalletRoundedIcon />,
     path: "/2",

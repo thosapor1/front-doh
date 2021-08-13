@@ -54,14 +54,6 @@ export default function ModalAdd(props) {
     checkpoint_id: "0",
   });
 
-  const [status, setStatus] = useState({
-    success: "",
-    fail: "",
-    warning: "",
-  });
-
-  const { success, fail, warning } = status;
-
   const {
     username,
     password,
@@ -75,6 +67,8 @@ export default function ModalAdd(props) {
     highway_id,
     checkpoint_id,
   } = inputModal;
+
+  const [status, setStatus] = useState(false);
 
   const [switch1, setSwitch] = useState({
     tc1: false,
@@ -119,10 +113,10 @@ export default function ModalAdd(props) {
         checkpoint_id: checkpoint_id,
       })
       .then((res) => {
-        setStatus({ success: res.data.status });
-        console.log(res);
+        setStatus(res.data.status);
+        console.log(res.data, "status", status);
 
-        if (success == true) {
+        if (res.data.status == true) {
           console.log("yes");
           props.onClose();
           Swal.fire({
@@ -130,17 +124,16 @@ export default function ModalAdd(props) {
             text: "ข้อมูลของท่านถูกบันทึกแล้ว",
             icon: "success",
             confirmButtonText: "OK",
-          }) 
+          });
           window.location.reload();
-        }
-
-        if (success == false) {
+        } else {
           props.onClose();
           Swal.fire({
             icon: "error",
             text: "ตรวจสอบข้อมูลของท่าน",
           });
           console.log("no");
+          window.location.reload();
         }
       })
       .catch((err) => {

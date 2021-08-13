@@ -88,7 +88,6 @@ export default function ModalEdit(props) {
     const sendData = {
       user_id: user_id,
       username: username,
-      // password: password,
       first_name: fname,
       last_name: lname,
       position_id: position_id,
@@ -99,7 +98,7 @@ export default function ModalEdit(props) {
       checkpoint_id: checkpoint_id,
     };
     console.log(sendData);
-    apiURL.put("/update-user", sendData).then((res) => {
+    apiURL.post("/update-user", sendData).then((res) => {
       setStatus({ status: res.data.status });
       console.log(res.data);
       props.onClose();

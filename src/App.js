@@ -6,6 +6,8 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import AuditDisplay from "./pages/AuditDisplay";
+import Pk3Display from "./pages/Pk3Display";
+
 
 const theme = createTheme({
   typography: {
@@ -34,6 +36,9 @@ function App() {
             </Route>
             <Route path="/auditDisplay">
               <AuditDisplay />
+            </Route>
+            <Route path="/pk3Display">
+              <Pk3Display />
             </Route>
             <Route path="/user">
               <User />

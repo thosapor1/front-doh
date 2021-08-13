@@ -261,22 +261,6 @@ export default function AuditDisplay() {
       endTime: "0",
       transactionStatus: "0",
     };
-    // var data = JSON.stringify({
-    //   "checkpoint_id": "1",
-    //   "datetime": "2021-08-10",
-    //   "startTime": "0",
-    //   "endTime": "0",
-    //   "transactionStatus": "0"
-    // });
-    
-    // var config = {
-    //   method: 'post',
-    //   url: 'http://202.183.167.119:3010/audit/api/display',
-    //   headers: { 
-    //     'Content-Type': 'application/json'
-    //   },
-    //   data : data
-    // };
     console.log(sendData);
     apiURL.post('/display', sendData).then((res) => {
       console.log(

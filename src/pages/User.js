@@ -8,11 +8,6 @@ import {
   TableContainer,
   TableHead,
   TableCell,
-  Modal,
-  TextField,
-  Grid,
-  Divider,
-  FormControlLabel,
   Switch,
   TableBody,
   TableRow,
@@ -75,16 +70,23 @@ export default function User() {
 
   const [state, setState] = useState({
     status: "",
-    User_list: [
+    user_list: [
       {
+        checkpoint: "",
+        checkpoint_id: "",
+        department: "",
+        department_id: "",
+        email: "",
+        fname: "",
+        highway: "",
+        highway_id: "",
+        lname: "",
+        position: "",
+        position_id: "",
+        status: "",
+        tel: "",
         user_id: "",
         username: "",
-        fname: "",
-        lname: "",
-        position_id: "",
-        department_id: "",
-        highway_id: "",
-        checkpoint_id: "",
       },
     ],
   });
@@ -107,7 +109,7 @@ export default function User() {
 
   const handleClose = () => {
     setOpen(false);
-    setDataForEdit(null)
+    setDataForEdit(null);
   };
 
   const handleOpenModalEdit = () => {
@@ -164,12 +166,6 @@ export default function User() {
         console.log();
       }
     });
-
-    // try {
-    //   apiURL.post("/delete-user", { user_id: userId }).then((res) => {});
-    // } catch (error) {
-    //   alert(error);
-    // }
   };
 
   const handlegetDataForEdit = async (item) => {
@@ -178,9 +174,9 @@ export default function User() {
   };
 
   const fetchData = async () => {
-    await apiURL.get("/user-list").then((res) => {
+    await apiURL.post("/user-list").then((res) => {
       setState(res.data);
-      console.log(res.data);
+      console.log(res.data, "state:", state);
     });
   };
 
@@ -217,36 +213,42 @@ export default function User() {
               ))}
             </TableHead>
             <TableBody>
-              {state.User_list.map((item) => (
-                <TableRow key={item.user_id}>
-                  <TableCell align="center">{item.user_id} </TableCell>
-                  <TableCell align="center">{item.username} </TableCell>
-                  <TableCell align="center">{item.fname} </TableCell>
-                  <TableCell align="center">{item.lname} </TableCell>
-                  <TableCell align="center">{item.position} </TableCell>
-                  <TableCell align="center">{item.department} </TableCell>
-                  <TableCell align="center">
-                    <IconButton>
-                      <EditTwoToneIcon
-                        color="primary"
-                        onClick={() => {
-                          handleOpenModalEdit();
-                          handlegetDataForEdit(item);
-                        }}
-                      />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(item)}
-                      color="secondary"
-                    >
-                      <DeleteForeverTwoToneIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Switch color="primary" />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {!!state.user_list
+                ? state.user_list.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell align="center">{item.user_id} </TableCell>
+                      <TableCell align="center">{item.username} </TableCell>
+                      <TableCell align="center">{item.fname} </TableCell>
+                      <TableCell align="center">{item.lname} </TableCell>
+                      <TableCell align="center">
+                        {item.position}{" "}
+                      </TableCell>
+                      <TableCell align="center">
+                        {item.department}{" "}
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton>
+                          <EditTwoToneIcon
+                            color="primary"
+                            onClick={() => {
+                              handleOpenModalEdit();
+                              handlegetDataForEdit(item);
+                            }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDelete(item)}
+                          color="secondary"
+                        >
+                          <DeleteForeverTwoToneIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Switch color="primary" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : state.user_list}
             </TableBody>
           </Table>
         </TableContainer>
