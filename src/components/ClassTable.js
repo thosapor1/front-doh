@@ -74,35 +74,42 @@ export default function ClassTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {dataList.map((data) => (
-              <StyledTableRow key={data.id}>
-                <TableCell align="center">{data.id} </TableCell>
-                <TableCell align="center">{data.name} </TableCell>
-                <TableCell align="center">{data.value} </TableCell>
-                <TableCell align="center">{data.id} </TableCell>
-                <TableCell align="center">{data.value} </TableCell>
-              </StyledTableRow>
-            ))}
+            {!!dataList
+              ? dataList.map((data, index) =>
+                  dataList.length == index + 1 ? (
+                    <TableRow
+                      style={{ left: 0, bottom: 0, position: "sticky" }}
+                    >
+                      <TableCell align="center" className={classes.header}>
+                        {data.class}
+                      </TableCell>
+                      <TableCell align="center" className={classes.header}>
+                        {data.ts_count}
+                      </TableCell>
+                      <TableCell align="center" className={classes.header}>
+                        {data.ts_reject}
+                      </TableCell>
+                      <TableCell align="center" className={classes.header}>
+                        {data.ts_countState1}
+                      </TableCell>
+                      <TableCell align="center" className={classes.header}>
+                        {data.sumAmount}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    <StyledTableRow key={data.class}>
+                      <TableCell align="center">{data.class} </TableCell>
+                      <TableCell align="center">{data.ts_count} </TableCell>
+                      <TableCell align="center">{data.ts_reject} </TableCell>
+                      <TableCell align="center">
+                        {data.ts_countState1}{" "}
+                      </TableCell>
+                      <TableCell align="center">{data.sumAmount} </TableCell>
+                    </StyledTableRow>
+                  )
+                )
+              : dataList}
           </TableBody>
-          <TableFooter>
-            <TableRow style={{ left: 0, bottom: 0, position: "sticky" }}>
-              <TableCell align="center" className={classes.header}>
-                รวม
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                100
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                0
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                100
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                1,120
-              </TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
       </TableContainer>
     </div>

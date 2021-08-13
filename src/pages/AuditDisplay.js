@@ -118,9 +118,9 @@ const valueStatus = [
 
 const dataTest = [
   {
-    id: 1,
-    name: "test1",
-    value: 10,
+    che_name: 1,
+    gate_name: "test1",
+    ts_count: 10,
   },
   {
     id: 2,
@@ -178,17 +178,39 @@ const dataCard = [
 ];
 
 export default function AuditDisplay() {
-
-  const [state, setState] = useState({});
-  const [gate_select, setGate_select] = useState(null)
-  const [status_select, setStatus_select] = useState(null)
+  const [state, setState] = useState();
+  const [gateTable, setGateTable] = useState("");
+  const [classTable, setClassTable] = useState("");
+  const [allTsTable, setAllTsTable] = useState("");
+  const [summary, setSummary] = useState("");
+  const [gate_select, setGate_select] = useState(null);
+  const [status_select, setStatus_select] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeStart, setSelectedTimeStart] = useState(new Date());
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.value });
-  };
+  const dataCard = [
+    {
+      value: summary.ts_total,
+      status: "ts_total",
+      label: "จำนวนรายการทั้งหมดของวัน",
+    },
+    {
+      value: summary.ts_normal,
+      status: "ts_normal",
+      label: "จำนวนรายการปกติ",
+    },
+    {
+      value: summary.ts_not_normal,
+      status: "ts_not_normal",
+      label: "จำนวนรายการตรวจสอบ",
+    },
+    {
+      value: summary.revenue,
+      status: "revenue",
+      label: "รายได้พึงได้รายวัน",
+    },
+  ];
 
   const handleFilter = () => {
     console.log(
@@ -203,20 +225,81 @@ export default function AuditDisplay() {
       "selectedTimeEnd: ",
       selectedTimeEnd
     );
-  };
+    const sendData = {
+      checkpoint_id: gate_select,
+      datetime: selectedDate,
+      startTime: selectedTimeStart,
+      endTime: setSelectedTimeEnd,
+      transactionStatus: status_select,
+    };
+    console.log(sendData);
+    apiURL.get("/display", sendData).then((res) => {
+      console.log(
+        "res: ",
+        res.data,
+        "tsClass:",
+        res.data.ts_class,
+        "tsGate: ",
+        res.data.ts_gate_table,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setSummary(res.data.summary);
+      setGateTable(res.data.ts_gate_table);
+      setClassTable(res.data.ts_class);
+      setAllTsTable(res.data.ts_table);
+  })
+}
 
-  useEffect(() => {
+  const fetchData = () => {
     const sendData = {
       checkpoint_id: "1",
-      datetime: "0",
+      datetime: "2021-08-10",
       startTime: "0",
       endTime: "0",
       transactionStatus: "0",
     };
+    // var data = JSON.stringify({
+    //   "checkpoint_id": "1",
+    //   "datetime": "2021-08-10",
+    //   "startTime": "0",
+    //   "endTime": "0",
+    //   "transactionStatus": "0"
+    // });
+    
+    // var config = {
+    //   method: 'post',
+    //   url: 'http://202.183.167.119:3010/audit/api/display',
+    //   headers: { 
+    //     'Content-Type': 'application/json'
+    //   },
+    //   data : data
+    // };
     console.log(sendData);
-    apiURL.get("/display", sendData).then((res) => {
-      console.log(res.data);
+    apiURL.post('/display', sendData).then((res) => {
+      console.log(
+        "res: ",
+        res.data,
+        "tsClass:",
+        res.data.ts_class,
+        "tsGate: ",
+        res.data.ts_gate_table,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setSummary(res.data.summary);
+      setGateTable(res.data.ts_gate_table);
+      setClassTable(res.data.ts_class);
+      setAllTsTable(res.data.ts_table);
     });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const classes = useStyles();
@@ -230,7 +313,7 @@ export default function AuditDisplay() {
           select
           label="ด่าน"
           value={gate_select}
-          onChange={handleChange}
+          onChange={(e) => setGate_select(e.target.value)}
           style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
@@ -245,7 +328,7 @@ export default function AuditDisplay() {
           select
           label="สถานะ"
           value={status_select}
-          onChange={handleChange}
+          onChange={(e) => setStatus_select(e.target.value)}
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
         >
@@ -274,7 +357,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardTimePicker
+          <TimePicker
             ampm={false}
             variant="inline"
             label="เวลาเริ่มต้น"
@@ -288,7 +371,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardTimePicker
+          <TimePicker
             ampm={false}
             variant="inline"
             label="เวลาสิ้นสุด"
@@ -317,12 +400,12 @@ export default function AuditDisplay() {
             className={classes.card}
             style={{
               borderLeft:
-                card.status === "all"
+                card.status === "ts_total"
                   ? "3px solid gray"
-                  : card.status === "normal"
+                  : card.status === "ts_normal"
                   ? "3px solid gray"
-                  : card.status === "waitToCheck"
-                  ? "3px solid red"
+                  : card.status === "ts_not_normal"
+                  ? "3px solid orange"
                   : "3px solid green",
             }}
           >
@@ -331,19 +414,19 @@ export default function AuditDisplay() {
                 <Typography
                   style={{
                     color:
-                      card.status === "all"
+                      card.status === "ts_total"
                         ? "gray"
-                        : card.status === "normal"
+                        : card.status === "ts_normal"
                         ? "gray"
-                        : card.status === "waitToCheck"
-                        ? "red"
+                        : card.status === "ts_not_normal"
+                        ? "orange"
                         : "green",
                   }}
                 >
                   {card.label}
                 </Typography>
                 <Typography>
-                  {card.value} {card.status === "summary" ? "บาท" : "รายการ"}
+                  {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
                 </Typography>
               </Grid>
               <Grid>
@@ -356,15 +439,15 @@ export default function AuditDisplay() {
 
       {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>
-        <Grid component={Paper} item md={5}>
-          <GateTable dataList={dataTest} />
+        <Grid item md={5}>
+          <GateTable dataList={gateTable} />
         </Grid>
         <Grid item md={7} style={{ paddingLeft: 20 }}>
-          <ClassTable dataList={dataTest} />
+          <ClassTable dataList={classTable} />
         </Grid>
       </Grid>
-      <div component="Paper" className={classes.allTsTable}>
-        <AllTsTable />
+      <div className={classes.allTsTable}>
+        <AllTsTable dataList={allTsTable} />
       </div>
     </Container>
   );

@@ -13,17 +13,17 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
-    '@global': {
-        '*::-webkit-scrollbar': {
-          width: '0.3em'
-        },
-        '*::-webkit-scrollbar-track': {
-          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
-        },
-        '*::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(0,0,0,.1)',
-          outline: '1px  lightgray',
-        }
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
     },
     container: {
       maxHeight: 270,
@@ -52,8 +52,6 @@ const headCells = [
   },
 ];
 
-
-
 const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
@@ -80,13 +78,15 @@ export default function GateTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {dataList.map((data) => (
-              <StyledTableRow key={data.id}>
-                <TableCell align="center">{data.id}</TableCell>
-                <TableCell align="center">{data.name}</TableCell>
-                <TableCell align="center">{data.value}</TableCell>
-              </StyledTableRow>
-            ))}
+            {!!dataList
+              ? dataList.map((data) => (
+                  <StyledTableRow key={data.id}>
+                    <TableCell align="center">{data.che_name}</TableCell>
+                    <TableCell align="center">{data.gate_name}</TableCell>
+                    <TableCell align="center">{data.ts_count}</TableCell>
+                  </StyledTableRow>
+                ))
+              : dataList}
           </TableBody>
         </Table>
       </TableContainer>

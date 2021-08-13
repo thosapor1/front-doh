@@ -7,12 +7,14 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: 300,
+      maxHeight: 600,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -57,15 +59,24 @@ const headerCells = [
   },
 ];
 
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
 export default function AllTsTable(props) {
   const classes = useStyles();
+  const { dataList } = props;
 
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table>
+        <Table stickyHeader>
           <TableHead>
-            <TableRow>
+            <StyledTableRow>
               {headerCells.map((headerCell) => (
                 <TableCell
                   align="center"
@@ -75,14 +86,36 @@ export default function AllTsTable(props) {
                   {headerCell.label}
                 </TableCell>
               ))}
-            </TableRow>
-            <TableBody></TableBody>
-            <TableRow>
-              <TableCell>test</TableCell>
-              <TableCell>test</TableCell>
-              <TableCell>test</TableCell>
-            </TableRow>
+            </StyledTableRow>
           </TableHead>
+          <TableBody>
+            {!!dataList
+              ? dataList.map((data) => (
+                  <StyledTableRow key={data.transactionId}>
+                    <TableCell align="center">
+                      <FiberManualRecordIcon
+                        fontSize="small"
+                        style={{
+                          color:
+                            data.state === 2
+                              ? "orange"
+                              : data.state === 3
+                              ? "red"
+                              : "green",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">{data.transactionId}</TableCell>
+                    <TableCell align="center">{data.timestamp}</TableCell>
+                    <TableCell align="center">{data.class}</TableCell>
+                    <TableCell align="center">{data.fee}</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center">-</TableCell>
+                  </StyledTableRow>
+                ))
+              : dataList}
+          </TableBody>
         </Table>
       </TableContainer>
     </div>

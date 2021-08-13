@@ -215,6 +215,16 @@ export default function AuditTable(props) {
                   </TableCell>
                   <TableCell align="center">{row.brand_description}</TableCell>
                   <TableCell align="center">{row.colors_description}</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">-</TableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
