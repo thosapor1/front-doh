@@ -70,13 +70,6 @@ export default function ModalAdd(props) {
 
   const [status, setStatus] = useState(false);
 
-  const [switch1, setSwitch] = useState({
-    tc1: false,
-    tc2: false,
-    ty1: false,
-    ty2: false,
-  });
-
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
@@ -114,10 +107,10 @@ export default function ModalAdd(props) {
       })
       .then((res) => {
         setStatus(res.data.status);
-        console.log(res.data, "status", status);
+        // console.log(res.data, "status", status);
 
         if (res.data.status == true) {
-          console.log("yes");
+          // console.log("yes");
           props.onClose();
           Swal.fire({
             title: "Success!",
@@ -132,12 +125,12 @@ export default function ModalAdd(props) {
             icon: "error",
             text: "ตรวจสอบข้อมูลของท่าน",
           });
-          console.log("no");
+          // console.log("no");
           window.location.reload();
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         props.onClose();
         Swal.fire({
           icon: "error",
@@ -153,10 +146,6 @@ export default function ModalAdd(props) {
   };
 
   const [showResult, setshowResult] = useState(false);
-
-  const setSwitchFalse = () => {
-    setSwitch({ tc1: false, tc2: false, ty1: false, ty2: false });
-  };
 
   const body = (
     <div className={classes.modal}>

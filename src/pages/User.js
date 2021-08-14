@@ -58,6 +58,11 @@ const useStyles = makeStyles((theme) => {
       margin: theme.spacing(1, 1, 0, 0),
       backgroundColor: "#46005E",
     },
+    header: {
+      backgroundColor: "#7C85BFff",
+      border: "1px solid white",
+      color: "white",
+    },
   };
 });
 
@@ -122,7 +127,11 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
-    setSwitch({ ...switch1, [event.target.name]: event.target.checked });
+    const status = state.user_list.state
+    setState({ ...state, status: !event.target.checked });
+    const userId = event.target.id;
+    console.log('click',userId);
+    
   };
 
   const handleDelete = async (item) => {
@@ -207,7 +216,11 @@ export default function User() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               {tableHeader.map((header) => (
-                <TableCell key={header.id} align="center">
+                <TableCell
+                  key={header.id}
+                  align="center"
+                  className={classes.header}
+                >
                   {header.label}
                 </TableCell>
               ))}
@@ -220,12 +233,8 @@ export default function User() {
                       <TableCell align="center">{item.username} </TableCell>
                       <TableCell align="center">{item.fname} </TableCell>
                       <TableCell align="center">{item.lname} </TableCell>
-                      <TableCell align="center">
-                        {item.position}{" "}
-                      </TableCell>
-                      <TableCell align="center">
-                        {item.department}{" "}
-                      </TableCell>
+                      <TableCell align="center">{item.position} </TableCell>
+                      <TableCell align="center">{item.department} </TableCell>
                       <TableCell align="center">
                         <IconButton>
                           <EditTwoToneIcon
@@ -244,7 +253,13 @@ export default function User() {
                         </IconButton>
                       </TableCell>
                       <TableCell align="center">
-                        <Switch color="primary" />
+                        <Switch
+                          checked={item.status}
+                          onChange={handleChangeSwitch}
+                          name="status"
+                          id={item.user_id}
+                          color="primary"
+                        />
                       </TableCell>
                     </TableRow>
                   ))

@@ -120,7 +120,7 @@ export default function RawTransaction(props) {
   };
 
   async function fetchData() {
-    axios.get(url).then((res) => {
+    axios.post(url).then((res) => {
       setState(res.data);
       console.log(res.data);
     });
