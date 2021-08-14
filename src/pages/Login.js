@@ -121,7 +121,7 @@ export default function Login() {
 
   return (
     <div className={classes.root}>
-      {login == true ? <Redirect to="/dashboard" /> : null}
+      {/* {login == true ? <Redirect to="/dashboard" /> : null} */}
       <Paper className={classes.paper}>
         <Grid container>
           <Grid item className={classes.leftSide} md={6}>

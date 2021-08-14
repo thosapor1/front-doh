@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import User from "./pages/User";
 import AuditDisplay from "./pages/AuditDisplay";
 import Pk3Display from "./pages/Pk3Display";
+import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 
 
 const theme = createTheme({
@@ -39,6 +40,9 @@ function App() {
             </Route>
             <Route path="/pk3Display">
               <Pk3Display />
+            </Route>
+            <Route path="/superAuditDisplay">
+              <SuperAuditDisplay />
             </Route>
             <Route path="/user">
               <User />

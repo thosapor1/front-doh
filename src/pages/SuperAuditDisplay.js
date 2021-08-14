@@ -15,7 +15,8 @@ import {
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { TimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-
+import GateTable from "../components/GateTable";
+import ClassTable from "../components/ClassTable";
 import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
 
@@ -286,7 +287,7 @@ export default function AuditDisplay() {
   const classes = useStyles();
   return (
     <Container className={classes.root}>
-      <Typography variant="h6">รายการรอการตรวจสอบ</Typography>
+      <Typography variant="h6">super admin display</Typography>
 
       {/* Filter Section */}
       <Paper className={classes.filterSection}>
