@@ -26,6 +26,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
 import s_logo_doh from "../image/s_logo_doh.png";
+import {controlData} from '../data/controlData.js'
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -180,7 +181,7 @@ export default function Layout({ children }) {
         </div>
         <Divider variant="middle" style={{ background: "#9e9e9e" }} />
         <List>
-          {menuItems.map((item) => (
+          {controlData.menuItems.map((item) => (
             <ListItem
               key={item.text}
               className={

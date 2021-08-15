@@ -44,9 +44,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AuditTable(props) {
-  const statusBullet = (prpps) => {
-    const { className, size, color, ...rest } = prpps;
-  };
+ 
   const classes = useStyle();
   return (
     <div>

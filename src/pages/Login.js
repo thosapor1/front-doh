@@ -57,6 +57,8 @@ const apiURL = axios.create({
 export default function Login() {
   const classes = useStyle();
 
+  const history = useHistory()
+
   const [login, setLogin] = useState(false);
   
 
@@ -96,8 +98,7 @@ export default function Login() {
       console.log(res.data);
       if (res.data.status == true) {
         console.log("pass", resData.status);
-        // return <Redirect to="/dashboard" />;
-        Cookies.set('name', 'pu')
+        history.push('/dashboard')
         setLogin(true);
       } else {
         Swal.fire({
@@ -121,7 +122,6 @@ export default function Login() {
 
   return (
     <div className={classes.root}>
-      {/* {login == true ? <Redirect to="/dashboard" /> : null} */}
       <Paper className={classes.paper}>
         <Grid container>
           <Grid item className={classes.leftSide} md={6}>
