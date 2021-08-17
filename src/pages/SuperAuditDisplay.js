@@ -15,13 +15,11 @@ import {
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { TimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import GateTable from "../components/GateTable";
-import ClassTable from "../components/ClassTable";
 import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3010/audit/api",
+  baseURL: "http://202.183.167.119:3012/audit/api",
 });
 
 const useStyles = makeStyles((theme) => {
@@ -70,6 +68,11 @@ const useStyles = makeStyles((theme) => {
 
 const valueOption = [
   {
+    id: 0,
+    value: 0,
+    label: "ทุกด่าน",
+  },
+  {
     id: 1,
     value: 1,
     label: "ทับช้าง1",
@@ -88,11 +91,6 @@ const valueOption = [
     id: 4,
     value: 4,
     label: "ธัญบุรี1",
-  },
-  {
-    id: 5,
-    value: 5,
-    label: "ทุกด่าน",
   },
 ];
 
@@ -114,71 +112,8 @@ const valueStatus = [
   },
 ];
 
-const dataTest = [
-  {
-    che_name: 1,
-    gate_name: "test1",
-    ts_count: 10,
-  },
-  {
-    id: 2,
-    name: "test2",
-    value: 20,
-  },
-  {
-    id: 3,
-    name: "test3",
-    value: 30,
-  },
-  {
-    id: 4,
-    name: "test4",
-    value: 40,
-  },
-  {
-    id: 5,
-    name: "test5",
-    value: 50,
-  },
-  {
-    id: 6,
-    name: "test6",
-    value: 60,
-  },
-  {
-    id: 7,
-    name: "test7",
-    value: 70,
-  },
-];
-
-const dataCard = [
-  {
-    value: 20,
-    status: "all",
-    label: "จำนวนรายการทั้งหมดของวัน",
-  },
-  {
-    value: 10,
-    status: "normal",
-    label: "จำนวนรายการปกติ",
-  },
-  {
-    value: 30,
-    status: "waitToCheck",
-    label: "จำนวนรายการตรวจสอบ",
-  },
-  {
-    value: 500,
-    status: "summary",
-    label: "รายได้พึงได้รายวัน",
-  },
-];
-
 export default function AuditDisplay() {
   const [state, setState] = useState();
-  const [gateTable, setGateTable] = useState("");
-  const [classTable, setClassTable] = useState("");
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
   const [gate_select, setGate_select] = useState(null);
@@ -188,26 +123,26 @@ export default function AuditDisplay() {
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
 
   const dataCard = [
-    {
-      value: summary.ts_total,
-      status: "ts_total",
-      label: "จำนวนรายการทั้งหมดของวัน",
-    },
-    {
-      value: summary.ts_normal,
-      status: "ts_normal",
-      label: "จำนวนรายการปกติ",
-    },
+    // {
+    //   value: summary.ts_total,
+    //   status: "ts_total",
+    //   label: "จำนวนรายการทั้งหมดของวัน",
+    // },
+    // {
+    //   value: summary.ts_normal,
+    //   status: "ts_normal",
+    //   label: "จำนวนรายการปกติ",
+    // },
     {
       value: summary.ts_not_normal,
       status: "ts_not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
-    {
-      value: summary.revenue,
-      status: "revenue",
-      label: "รายได้พึงได้รายวัน",
-    },
+    // {
+    //   value: summary.revenue,
+    //   status: "revenue",
+    //   label: "รายได้พึงได้รายวัน",
+    // },
   ];
 
   const handleFilter = () => {
@@ -231,51 +166,38 @@ export default function AuditDisplay() {
       transactionStatus: status_select,
     };
     console.log(sendData);
-    apiURL.get("/display", sendData).then((res) => {
+    apiURL.post("/pk3display-superaudit", sendData).then((res) => {
       console.log(
         "res: ",
         res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
         "ts_Table:",
         res.data.ts_table,
         "Summary: ",
         res.data.summary
       );
       setSummary(res.data.summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
       setAllTsTable(res.data.ts_table);
-    })
-  }
+    });
+  };
 
   const fetchData = () => {
     const sendData = {
       checkpoint_id: "1",
       datetime: "2021-08-10",
-      startTime: "0",
-      endTime: "0",
-      transactionStatus: "0",
+      startTime: "01:00:00",
+      endTime: "23:00:00",
     };
     console.log(sendData);
-    apiURL.post('/display', sendData).then((res) => {
+    apiURL.post("/pk3display-superaudit", sendData).then((res) => {
       console.log(
         "res: ",
         res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
         "ts_Table:",
         res.data.ts_table,
         "Summary: ",
         res.data.summary
       );
       setSummary(res.data.summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
       setAllTsTable(res.data.ts_table);
     });
   };
@@ -313,6 +235,7 @@ export default function AuditDisplay() {
           onChange={(e) => setStatus_select(e.target.value)}
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
+          disabled
         >
           {valueStatus.map((item) => (
             <option key={item.value} value={item.value}>
@@ -385,10 +308,10 @@ export default function AuditDisplay() {
                 card.status === "ts_total"
                   ? "3px solid gray"
                   : card.status === "ts_normal"
-                    ? "3px solid gray"
-                    : card.status === "ts_not_normal"
-                      ? "3px solid orange"
-                      : "3px solid green",
+                  ? "3px solid gray"
+                  : card.status === "ts_not_normal"
+                  ? "3px solid orange"
+                  : "3px solid green",
             }}
           >
             <Grid container justifyContent="space-around" alignItems="center">
@@ -399,10 +322,10 @@ export default function AuditDisplay() {
                       card.status === "ts_total"
                         ? "gray"
                         : card.status === "ts_normal"
-                          ? "gray"
-                          : card.status === "ts_not_normal"
-                            ? "orange"
-                            : "green",
+                        ? "gray"
+                        : card.status === "ts_not_normal"
+                        ? "orange"
+                        : "green",
                   }}
                 >
                   {card.label}

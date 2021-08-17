@@ -8,10 +8,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import p_login from "../image/p_login.jpg";
-import logo_doh from "../image/logo_doh.png";
+import P_login from "../image/P_login.jpg";
+import Logo_doh from "../image/Logo_doh.png";
 import axios from "axios";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
@@ -57,29 +57,17 @@ const apiURL = axios.create({
 export default function Login() {
   const classes = useStyle();
 
-  const history = useHistory()
-
-  const [login, setLogin] = useState(false);
-  
+  const history = useHistory();
 
   const [state, setState] = useState({
     username: "",
     password: "",
   });
 
-  const [resData, setResData] = useState({
-    status: "",
-    result: [
-      { user_id: "", username: "", department_id: "", permission_id: "" },
-    ],
-  });
-
   const handleChange = (e) => {
     e.preventDefault();
     setState({ ...state, [e.target.name]: e.target.value });
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -94,13 +82,30 @@ export default function Login() {
     };
 
     apiURL.post("/auth", sendData).then((res) => {
-      setResData(res.data);
-      console.log(res.data);
-      if (res.data.status == true) {
-        console.log("pass", resData.status);
-        history.push('/dashboard')
-        setLogin(true);
+      console.log("res:", res.data);
+      const setCookies = () => {
+        Cookies.set("checkpoint_id", res.data.result[0].checkpoint_id);
+        Cookies.set("department_id", res.data.result[0].department_id);
+        Cookies.set("highway_id", res.data.result[0].highway_id);
+        Cookies.set("id", res.data.result[0].id);
+        Cookies.set("permission_id", res.data.result[0].permission_id);
+        Cookies.set("position_id", res.data.result[0].position_id);
+        Cookies.set("username", res.data.result[0].username);
+      };
+
+      if (res.data.status == true && res.data.result[0].department_id == 1) {
+        console.log("pass", res.data.status);
+        setCookies()
+        history.push("/dashboard");
+      } else if (
+        res.data.status == true &&
+        res.data.result[0].department_id == 2
+      ) {
+        setCookies()
+        history.push("/pk3Display");
+        console.log("res:", res.data);
       } else {
+        console.log("res:", res.data);
         Swal.fire({
           icon: "error",
           text: "ตรวจสอบ username และ password ของท่าน",
@@ -110,15 +115,6 @@ export default function Login() {
 
     // console.log(state.username, state.password);
   };
-  // if (resData.status == true) {
-  //   return <Redirect to="/dashboard" />;
-  // } if (resData.status == false) {
-  //   console.log("false");
-  //   Swal.fire({
-  //     icon: "error",
-  //     text: "ตรวจสอบ username และ password ของท่าน",
-  //   });
-  // }
 
   return (
     <div className={classes.root}>
@@ -127,14 +123,14 @@ export default function Login() {
           <Grid item className={classes.leftSide} md={6}>
             <CardMedia
               component="img"
-              image={p_login}
+              image={P_login}
               style={{ height: "100%", width: "100%" }}
             />
           </Grid>
           <Grid item className={classes.rightSide} sm={12} md={6}>
             <CardMedia
               component="image"
-              image={logo_doh}
+              image={Logo_doh}
               style={{
                 maxWidth: 150,
                 height: 150,
@@ -203,6 +199,7 @@ export default function Login() {
                   className={classes.btn}
                   variant="contained"
                   color="secondary"
+                  onClick={() => setState({ username: "", password: "" })}
                 >
                   ยกเลิก
                 </Button>

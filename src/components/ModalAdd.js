@@ -49,7 +49,7 @@ export default function ModalAdd(props) {
     department_id: null,
     email: "",
     tel: "",
-    permission_id: "1",
+    permission_id: "",
     highway_id: null,
     checkpoint_id: "0",
   });
@@ -78,19 +78,7 @@ export default function ModalAdd(props) {
   };
 
   const handleSubmit = () => {
-    if (position_id == 1) {
-      setInputModal({ ...inputModal, permission_id: "1" });
-    }
-    if (position_id == 2) {
-      setInputModal({ ...inputModal, permission_id: "2" });
-    }
-
-    //onload
     props.onClose();
-    // Swal.fire({
-    //   title: "Auto close alert!",
-    //   html: "I will close in <b></b> milliseconds.",
-    // });
     apiURL
       .post("/add-user", {
         username: username,
@@ -101,16 +89,14 @@ export default function ModalAdd(props) {
         department_id: department_id,
         email: email,
         tel: tel,
-        permission_id: permission_id,
+        permission_id: position_id,
         highway_id: highway_id,
         checkpoint_id: checkpoint_id,
       })
       .then((res) => {
         setStatus(res.data.status);
-        // console.log(res.data, "status", status);
 
         if (res.data.status == true) {
-          // console.log("yes");
           props.onClose();
           Swal.fire({
             title: "Success!",
@@ -125,24 +111,16 @@ export default function ModalAdd(props) {
             icon: "error",
             text: "ตรวจสอบข้อมูลของท่าน",
           });
-          // console.log("no");
           window.location.reload();
         }
       })
       .catch((err) => {
-        // console.log(err);
         props.onClose();
         Swal.fire({
           icon: "error",
           text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
         });
       });
-    // .then(() => {
-
-    // });
-
-    // console.log("fromSubmit:", inputModal);
-    // console.log(position_id);
   };
 
   const [showResult, setshowResult] = useState(false);
@@ -200,10 +178,13 @@ export default function ModalAdd(props) {
             value={position_id}
           >
             <option key="1" value="1">
-              หัวหน้างาน
+              super admin
             </option>
             <option key="2" value="2">
-              เจ้าหน้าที่ตรวจสอบระบบ
+              หัวหน้างาน
+            </option>
+            <option key="3" value="3">
+              เจ้าหน้าที่
             </option>
           </TextField>
           <TextField
@@ -219,8 +200,8 @@ export default function ModalAdd(props) {
             <option key="1" value="1">
               เจ้าหน้าที่ตรวจสอบรายได้
             </option>
-            <option key="2" value="2">
-              เจ้าหน้าที่ตรวจสอบระบบ
+            <option key="1" value="2">
+              เจ้าหน้าที่จัดเก็บ
             </option>
           </TextField>
           <TextField
@@ -279,6 +260,9 @@ export default function ModalAdd(props) {
               value={checkpoint_id}
               onChange={handleChange}
             >
+              <option key="0" value="0">
+                ทุกด่าน
+              </option>
               <option key="1" value="1">
                 ทับช้าง1
               </option>
@@ -290,9 +274,6 @@ export default function ModalAdd(props) {
               </option>
               <option key="4" value="4">
                 ธัญบุรี2
-              </option>
-              <option key="5" value="5">
-                ทุกด่าน
               </option>
             </TextField>
           ) : null}

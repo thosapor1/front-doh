@@ -19,6 +19,7 @@ import GateTable from "../components/GateTable";
 import ClassTable from "../components/ClassTable";
 import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.119:3010/audit/api",
@@ -70,6 +71,11 @@ const useStyles = makeStyles((theme) => {
 
 const valueOption = [
   {
+    id: 0,
+    value: 0,
+    label: "ทุกด่าน",
+  },
+  {
     id: 1,
     value: 1,
     label: "ทับช้าง1",
@@ -89,11 +95,6 @@ const valueOption = [
     value: 4,
     label: "ธัญบุรี1",
   },
-  {
-    id: 5,
-    value: 5,
-    label: "ทุกด่าน",
-  },
 ];
 
 const valueStatus = [
@@ -111,67 +112,6 @@ const valueStatus = [
     id: "3",
     value: "3",
     label: "ข้อมูลสูญหาย",
-  },
-];
-
-const dataTest = [
-  {
-    che_name: 1,
-    gate_name: "test1",
-    ts_count: 10,
-  },
-  {
-    id: 2,
-    name: "test2",
-    value: 20,
-  },
-  {
-    id: 3,
-    name: "test3",
-    value: 30,
-  },
-  {
-    id: 4,
-    name: "test4",
-    value: 40,
-  },
-  {
-    id: 5,
-    name: "test5",
-    value: 50,
-  },
-  {
-    id: 6,
-    name: "test6",
-    value: 60,
-  },
-  {
-    id: 7,
-    name: "test7",
-    value: 70,
-  },
-];
-
-const dataCard = [
-  {
-    value: 20,
-    status: "all",
-    label: "จำนวนรายการทั้งหมดของวัน",
-  },
-  {
-    value: 10,
-    status: "normal",
-    label: "จำนวนรายการปกติ",
-  },
-  {
-    value: 30,
-    status: "waitToCheck",
-    label: "จำนวนรายการตรวจสอบ",
-  },
-  {
-    value: 500,
-    status: "summary",
-    label: "รายได้พึงได้รายวัน",
   },
 ];
 
@@ -209,6 +149,14 @@ export default function AuditDisplay() {
       label: "รายได้พึงได้รายวัน",
     },
   ];
+
+  const setDate = ()=>{
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate()-1)
+    today.toDateString()
+    return yesterday.toDateString()
+  } 
 
   const handleFilter = () => {
     console.log(
@@ -254,7 +202,7 @@ export default function AuditDisplay() {
   const fetchData = () => {
     const sendData = {
       checkpoint_id: "1",
-      datetime: "2021-08-10",
+      datetime: format(new Date()-1,"yyyy-MM-dd"),
       startTime: "0",
       endTime: "0",
       transactionStatus: "0",

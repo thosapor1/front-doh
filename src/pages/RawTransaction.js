@@ -102,10 +102,9 @@ export default function RawTransaction(props) {
   });
 
   const [select, setSelect] = useState({
-    station:null,
-    status:null,
-  })
-  const [textField, setTextField] = useState("all");
+    station: null,
+    status: null,
+  });
 
   const classes = useStyle();
 
@@ -116,7 +115,7 @@ export default function RawTransaction(props) {
   };
 
   const handleSelectChange = (event) => {
-    setSelect({...select, [event.target.name]:event.target.value});
+    setSelect({ ...select, [event.target.name]: event.target.value });
   };
 
   async function fetchData() {
@@ -133,7 +132,6 @@ export default function RawTransaction(props) {
   return (
     <Container className={classes.root}>
       <Typography variant="h6">ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ</Typography>
-
       {/* Search Block */}
       <Grid container className={classes.allSelect}>
         <Grid item className={classes.containedSelect} md={8}>
@@ -158,7 +156,7 @@ export default function RawTransaction(props) {
             label="ด่าน"
             className={classes.textField}
             onChange={handleSelectChange}
-            name='station'
+            name="station"
             value={select.station}
           >
             {stations.map((station) => (

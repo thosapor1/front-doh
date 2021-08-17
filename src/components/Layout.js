@@ -1,96 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
   CardMedia,
   Divider,
+  Icon,
   makeStyles,
 } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
-import AssessmentRoundedIcon from "@material-ui/icons/AssessmentRounded";
-import AssignmentRoundedIcon from "@material-ui/icons/AssignmentRounded";
-import StorageRoundedIcon from "@material-ui/icons/StorageRounded";
-import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWalletRounded";
-import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
-import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
-import PermDataSettingRoundedIcon from "@material-ui/icons/PermDataSettingRounded";
-import InsertDriveFileRoundedIcon from "@material-ui/icons/InsertDriveFileRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import { useHistory, useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
-import s_logo_doh from "../image/s_logo_doh.png";
-import {controlData} from '../data/controlData.js'
+import s_logo_doh from "../image/S_logo_doh.png";
+import {
+  menuItemsForAdmin,
+  menuConfigForAdmin,
+  menuItemsForPk3,
+  menuConfigForPk3,
+  menuItemsForSuperAdmin,
+  menuConfigForSuperAdmin,
+  menuItemsForMember,
+  menuConfigForMember,
+} from "../data/menuControl";
+import Cookies, { set } from "js-cookie";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
-
-const menuItems = [
-  {
-    text: "ตรวจสอบรายได้พึงได้รายวัน",
-    icon: <AssignmentRoundedIcon />,
-    path: "/dashboard",
-  },
-  {
-    text: "รายการฐานข้อมูลรถ",
-    icon: <StorageRoundedIcon />,
-    path: "/rawTransaction",
-  },
-  {
-    text: "รายได้รายวัน",
-    icon: <MonetizationOnRoundedIcon />,
-    path: "/auditDisplay",
-  },
-  {
-    text: "รายการรอตรวจสอบ",
-    icon: <MonetizationOnRoundedIcon />,
-    path: "/pk3Display",
-  },
-  {
-    text: "super audit display",
-    icon: <MonetizationOnRoundedIcon />,
-    path: "/superAuditDisplay",
-  },
-  {
-    text: "รายได้คงค้าง",
-    icon: <AccountBalanceWalletRoundedIcon />,
-    path: "/2",
-  },
-  {
-    text: "รายงาน",
-    icon: <AssessmentRoundedIcon />,
-    path: "/3",
-  },
-];
-
-const menuConfig = [
-  {
-    text: "ผู้ใช้งาน",
-    icon: <AccountCircleRoundedIcon />,
-    path: "/user",
-  },
-  {
-    text: "สำรองช้อมูล",
-    icon: <BackupRoundedIcon />,
-    path: "/5",
-  },
-  {
-    text: "ค่าภายในระบบ",
-    icon: <PermDataSettingRoundedIcon />,
-    path: "/6",
-  },
-  {
-    text: "รายงานความเคลื่อนไหวผู้ใช้งาน",
-    icon: <InsertDriveFileRoundedIcon />,
-    path: "/7x",
-  },
-];
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -145,15 +85,39 @@ export default function Layout({ children }) {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
+  const [menuItems, setMenuItems] = useState([]);
+  const [configItems, setConfigItems] = useState([]);
+  const [userName, setUserName] = useState();
+
+  useEffect(() => {
+    const permissionId = Cookies.get("permission_id");
+    const departmentId = Cookies.get("department_id");
+    const userName = Cookies.get("username");
+    setUserName(userName);
+    if (permissionId == 1 && departmentId == 1) {
+      setMenuItems(menuItemsForSuperAdmin);
+      setConfigItems(menuConfigForSuperAdmin);
+    } else if (permissionId == 2 && departmentId == 1) {
+      setMenuItems(menuItemsForAdmin);
+      setConfigItems(menuConfigForAdmin);
+    } else if (permissionId == 3 && departmentId == 1) {
+      setMenuItems(menuItemsForMember);
+      setConfigItems(menuConfigForMember);
+    } else {
+      setMenuItems(menuItemsForPk3);
+      setConfigItems(menuConfigForPk3);
+    }
+    console.log("menu", menuItems, permissionId, departmentId);
+  }, []);
 
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} elevation={0}>
         <ToolBar>
           <Typography variant="body1" className={classes.avatarName}>
-            Thosaporn Chu
+            {userName}
           </Typography>
-          <Avatar className={classes.avatar}>TH</Avatar>
+          <Avatar className={classes.avatar}>{userName}</Avatar>
         </ToolBar>
       </AppBar>
       <Drawer
@@ -181,28 +145,30 @@ export default function Layout({ children }) {
         </div>
         <Divider variant="middle" style={{ background: "#9e9e9e" }} />
         <List>
-          {controlData.menuItems.map((item) => (
-            <ListItem
-              key={item.text}
-              className={
-                location.pathname === item.path
-                  ? classes.active
-                  : classes.ListItemText
-              }
-              button
-              onClick={() => history.push(item.path)}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                classes={{ primary: classes.listItemText }}
-              />
-            </ListItem>
-          ))}
+          {!!menuItems
+            ? menuItems.map((item) => (
+                <ListItem
+                  key={item.text}
+                  className={
+                    location.pathname === item.path
+                      ? classes.active
+                      : classes.ListItemText
+                  }
+                  button
+                  onClick={() => history.push(item.path)}
+                >
+                  <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+                  <ListItemText
+                    primary={item.text}
+                    classes={{ primary: classes.listItemText }}
+                  />
+                </ListItem>
+              ))
+            : menuItems}
         </List>
         <Divider variant="middle" style={{ background: "#9e9e9e" }} />
         <List>
-          {menuConfig.map((item) => (
+          {configItems.map((item) => (
             <ListItem
               key={item.text}
               className={
@@ -213,7 +179,7 @@ export default function Layout({ children }) {
               button
               onClick={() => history.push(item.path)}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
               <ListItemText
                 primary={item.text}
                 classes={{ primary: classes.listItemText }}
@@ -228,7 +194,7 @@ export default function Layout({ children }) {
           color="primary"
           startIcon={<ExitToAppRoundedIcon />}
           className={classes.btn}
-          onClick={()=> history.push("/")}
+          onClick={() => history.push("/")}
         >
           ออกจากระบบ
         </Button>

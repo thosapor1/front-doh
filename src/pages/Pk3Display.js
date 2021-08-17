@@ -20,11 +20,23 @@ import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3010/audit/api",
+  baseURL: "http://202.183.167.119:3012/audit/api",
 });
 
 const useStyles = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {
       backgroundColor: "#f9f9f9",
       paddingTop: 20,
@@ -69,6 +81,11 @@ const useStyles = makeStyles((theme) => {
 
 const valueOption = [
   {
+    id: 0,
+    value: 0,
+    label: "ทุกด่าน",
+  },
+  {
     id: 1,
     value: 1,
     label: "ทับช้าง1",
@@ -87,11 +104,6 @@ const valueOption = [
     id: 4,
     value: 4,
     label: "ธัญบุรี1",
-  },
-  {
-    id: 5,
-    value: 5,
-    label: "ทุกด่าน",
   },
 ];
 
@@ -113,71 +125,8 @@ const valueStatus = [
   },
 ];
 
-const dataTest = [
-  {
-    che_name: 1,
-    gate_name: "test1",
-    ts_count: 10,
-  },
-  {
-    id: 2,
-    name: "test2",
-    value: 20,
-  },
-  {
-    id: 3,
-    name: "test3",
-    value: 30,
-  },
-  {
-    id: 4,
-    name: "test4",
-    value: 40,
-  },
-  {
-    id: 5,
-    name: "test5",
-    value: 50,
-  },
-  {
-    id: 6,
-    name: "test6",
-    value: 60,
-  },
-  {
-    id: 7,
-    name: "test7",
-    value: 70,
-  },
-];
-
-const dataCard = [
-  {
-    value: 20,
-    status: "all",
-    label: "จำนวนรายการทั้งหมดของวัน",
-  },
-  {
-    value: 10,
-    status: "normal",
-    label: "จำนวนรายการปกติ",
-  },
-  {
-    value: 30,
-    status: "waitToCheck",
-    label: "จำนวนรายการตรวจสอบ",
-  },
-  {
-    value: 500,
-    status: "summary",
-    label: "รายได้พึงได้รายวัน",
-  },
-];
-
 export default function AuditDisplay() {
   const [state, setState] = useState();
-  const [gateTable, setGateTable] = useState("");
-  const [classTable, setClassTable] = useState("");
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
   const [gate_select, setGate_select] = useState(null);
@@ -187,25 +136,32 @@ export default function AuditDisplay() {
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
 
   const dataCard = [
-    {
-      value: summary.ts_total,
-      status: "ts_total",
-      label: "จำนวนรายการทั้งหมดของวัน",
-    },
-    {
-      value: summary.ts_normal,
-      status: "ts_normal",
-      label: "จำนวนรายการปกติ",
-    },
+    // {
+    //   value: summary.ts_total,
+    //   status: "ts_total",
+    //   label: "จำนวนรายการทั้งหมดของวัน",
+    // },
+    // {
+    //   value: summary.ts_normal,
+    //   status: "ts_normal",
+    //   label: "จำนวนรายการปกติ",
+    // },
     {
       value: summary.ts_not_normal,
       status: "ts_not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
+    // {
+    //   value: summary.revenue,
+    //   status: "revenue",
+    //   label: "รายได้พึงได้รายวัน",
+    // },
+  ];
+  const emtryCard = [
     {
-      value: summary.revenue,
-      status: "revenue",
-      label: "รายได้พึงได้รายวัน",
+      value: "",
+      status: "ts_not_normal",
+      label: "จำนวนรายการตรวจสอบ",
     },
   ];
 
@@ -230,51 +186,38 @@ export default function AuditDisplay() {
       transactionStatus: status_select,
     };
     console.log(sendData);
-    apiURL.get("/display", sendData).then((res) => {
+    apiURL.post("/pk3display", sendData).then((res) => {
       console.log(
         "res: ",
         res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
         "ts_Table:",
         res.data.ts_table,
         "Summary: ",
         res.data.summary
       );
       setSummary(res.data.summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
       setAllTsTable(res.data.ts_table);
-    })
-  }
+    });
+  };
 
   const fetchData = () => {
     const sendData = {
-      checkpoint_id: "1",
+      checkpoint_id: "0",
       datetime: "2021-08-10",
       startTime: "0",
       endTime: "0",
-      transactionStatus: "0",
     };
     console.log(sendData);
-    apiURL.post('/display', sendData).then((res) => {
+    apiURL.post("/pk3display", sendData).then((res) => {
       console.log(
         "res: ",
         res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
         "ts_Table:",
         res.data.ts_table,
         "Summary: ",
         res.data.summary
       );
       setSummary(res.data.summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
       setAllTsTable(res.data.ts_table);
     });
   };
@@ -376,46 +319,53 @@ export default function AuditDisplay() {
 
       {/* Card Section */}
       <div className={classes.cardSection}>
-        {dataCard.map((card) => (
-          <Paper
-            className={classes.card}
-            style={{
-              borderLeft:
-                card.status === "ts_total"
-                  ? "3px solid gray"
-                  : card.status === "ts_normal"
-                    ? "3px solid gray"
-                    : card.status === "ts_not_normal"
+        {!!dataCard
+          ? dataCard.map((card) => (
+              <Paper
+                className={classes.card}
+                style={{
+                  borderLeft:
+                    card.status === "ts_total"
+                      ? "3px solid gray"
+                      : card.status === "ts_normal"
+                      ? "3px solid gray"
+                      : card.status === "ts_not_normal"
                       ? "3px solid orange"
                       : "3px solid green",
-            }}
-          >
-            <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item>
-                <Typography
-                  style={{
-                    color:
-                      card.status === "ts_total"
-                        ? "gray"
-                        : card.status === "ts_normal"
-                          ? "gray"
-                          : card.status === "ts_not_normal"
+                }}
+              >
+                <Grid
+                  container
+                  justifyContent="space-around"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color:
+                          card.status === "ts_total"
+                            ? "gray"
+                            : card.status === "ts_normal"
+                            ? "gray"
+                            : card.status === "ts_not_normal"
                             ? "orange"
                             : "green",
-                  }}
-                >
-                  {card.label}
-                </Typography>
-                <Typography>
-                  {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
-                </Typography>
-              </Grid>
-              <Grid>
-                <DescriptionTwoToneIcon />
-              </Grid>
-            </Grid>
-          </Paper>
-        ))}
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography>
+                      {card.value}{" "}
+                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <DescriptionTwoToneIcon />
+                  </Grid>
+                </Grid>
+              </Paper>
+            ))
+          :dataCard}
       </div>
 
       {/* Table Section */}

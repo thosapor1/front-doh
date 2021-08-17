@@ -50,7 +50,7 @@ export default function ModalEdit(props) {
     department_id: "",
     email: "",
     tel: "",
-    // permission_id: "",
+    permission_id: "",
     highway_id: "",
     checkpoint_id: "",
   });
@@ -72,13 +72,6 @@ export default function ModalEdit(props) {
     checkpoint_id,
   } = inputModal;
 
-  const [switch1, setSwitch] = useState({
-    tc1: false,
-    tc2: false,
-    ty1: false,
-    ty2: false,
-  });
-
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
@@ -96,6 +89,8 @@ export default function ModalEdit(props) {
       tel: tel,
       highway_id: highway_id,
       checkpoint_id: checkpoint_id,
+      permission_id: position_id,
+      password: password
     };
     console.log(sendData);
     apiURL.post("/update-user", sendData).then((res) => {
@@ -123,15 +118,9 @@ export default function ModalEdit(props) {
       });
       console.log("no");
     }
-    // console.log("fromSubmit:", inputModal);
-    // console.log(position_id);
   };
 
   const [showResult, setshowResult] = useState(false);
-
-  const setSwitchFalse = () => {
-    setSwitch({ tc1: false, tc2: false, ty1: false, ty2: false });
-  };
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
@@ -191,8 +180,15 @@ export default function ModalEdit(props) {
             name="position_id"
             value={position_id}
           >
-            <option value="1">หัวหน้างาน</option>
-            <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
+            <option key="1" value="1">
+              super admin
+            </option>
+            <option key="2" value="2">
+              หัวหน้างาน
+            </option>
+            <option key="3" value="3">
+              เจ้าหน้าที่
+            </option>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -263,6 +259,9 @@ export default function ModalEdit(props) {
               value={checkpoint_id}
               onChange={handleChange}
             >
+              <option key="0" value="0">
+                ทุกด่าน
+              </option>
               <option key="1" value="1">
                 ทับช้าง1
               </option>
@@ -274,9 +273,6 @@ export default function ModalEdit(props) {
               </option>
               <option key="4" value="4">
                 ธัญบุรี2
-              </option>
-              <option key="5" value="5">
-                ทุกด่าน
               </option>
             </TextField>
           ) : null}
