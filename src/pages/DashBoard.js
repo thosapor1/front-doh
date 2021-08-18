@@ -79,7 +79,6 @@ const useStyle = makeStyles((theme) => {
 });
 
 export default function DashBoard() {
-  console.log(Cookies.get('name'))
   const classes = useStyle();
   return (
     <div className={classes.root}>
