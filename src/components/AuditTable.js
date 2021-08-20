@@ -6,14 +6,13 @@ import {
   TableCell,
   Paper,
   TableBody,
-  TableFooter,
-  TablePagination,
   makeStyles,
 } from "@material-ui/core";
 import ImageIcon from "@material-ui/icons/Image";
 import React from "react";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import { Pagination } from "@material-ui/lab";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -22,15 +21,17 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: "#46005E",
       border: "1px solid white",
       color: "white",
-      position: "sticky",
-      top: 0,
+      padding:10,
+      height:10,
+      fontSize:'0.8rem'
     },
     headerPK: {
       backgroundColor: "#ef6c00",
       border: "1px solid white",
       color: "white",
-      position: "sticky",
-      top: 0,
+      padding:10,
+      height:10,
+      fontSize:'0.8rem'
     },
   };
 });
@@ -40,19 +41,31 @@ const StyledTableRow = withStyles((theme) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
+    "& > *": {
+      marginTop: theme.spacing(2),
+    },
   },
 }))(TableRow);
 
 export default function AuditTable(props) {
- 
+  let index = 1
+  const {page, onChange, datalist} = props
   const classes = useStyle();
   return (
     <div>
       <Paper style={{ marginTop: 20 }}>
-        <TableContainer style={{ width: "auto" }}>
+        <TableContainer style={{ width: "auto", height: 760 }}>
+          <Pagination
+            count={datalist.totalPages}
+            color="primary"
+            page={page}
+            onChange={onChange}
+            style={{ display: "inline", margin: "6rem", position:'sticky', top:0}}
+          />
+
           <Table>
             <TableHead>
-              <TableRow>
+              <TableRow style={{padding:5}}>
                 <TableCell colSpan={13} className={classes.headerAudit}>
                   ระบบตรวจสอบรายได้ (Audit)
                 </TableCell>
@@ -182,7 +195,7 @@ export default function AuditTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.datalist.map((row) => (
+              {datalist.record.map((row) => (
                 <StyledTableRow key={row.transactionId}>
                   <TableCell align="center">
                     <FiberManualRecordIcon
@@ -196,6 +209,7 @@ export default function AuditTable(props) {
                             : "green",
                       }}
                     />
+                    {index++}
                   </TableCell>
                   <TableCell align="center">{row.transactionId}</TableCell>
                   <TableCell align="center">{row.lane_id}</TableCell>
@@ -226,11 +240,6 @@ export default function AuditTable(props) {
                 </StyledTableRow>
               ))}
             </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination />
-              </TableRow>
-            </TableFooter>
           </Table>
         </TableContainer>
       </Paper>

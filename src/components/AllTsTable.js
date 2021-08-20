@@ -10,6 +10,7 @@ import {
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import React from "react";
+import { Pagination } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -69,11 +70,23 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AllTsTable(props) {
   const classes = useStyles();
-  const { dataList } = props;
+  const { dataList, page, onChange } = props;
 
   return (
     <div>
       <TableContainer className={classes.container}>
+        <Pagination
+          count={dataList.totalPages}
+          color="primary"
+          page={page}
+          onChange={onChange}
+          style={{
+            display: "inline",
+            margin: "6rem",
+            position: "sticky",
+            top: 0,
+          }}
+        />
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>

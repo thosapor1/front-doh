@@ -116,6 +116,7 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
+  const [page, setPage] = useState(1);
   const [state, setState] = useState();
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
@@ -126,6 +127,10 @@ export default function AuditDisplay() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeStart, setSelectedTimeStart] = useState(new Date());
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
   const dataCard = [
     {
@@ -150,13 +155,13 @@ export default function AuditDisplay() {
     },
   ];
 
-  const setDate = ()=>{
-    const today = new Date()
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate()-1)
-    today.toDateString()
-    return yesterday.toDateString()
-  } 
+  const setDate = () => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    today.toDateString();
+    return yesterday.toDateString();
+  };
 
   const handleFilter = () => {
     console.log(
@@ -196,19 +201,19 @@ export default function AuditDisplay() {
       setGateTable(res.data.ts_gate_table);
       setClassTable(res.data.ts_class);
       setAllTsTable(res.data.ts_table);
-  })
-}
+    });
+  };
 
   const fetchData = () => {
     const sendData = {
       checkpoint_id: "1",
-      datetime: format(new Date()-1,"yyyy-MM-dd"),
+      datetime: format(new Date(), "yyyy-MM-dd"),
       startTime: "0",
       endTime: "0",
       transactionStatus: "0",
     };
     console.log(sendData);
-    apiURL.post('/display', sendData).then((res) => {
+    apiURL.post("/display", sendData).then((res) => {
       console.log(
         "res: ",
         res.data,
@@ -377,7 +382,11 @@ export default function AuditDisplay() {
         </Grid>
       </Grid>
       <div className={classes.allTsTable}>
-        <AllTsTable dataList={allTsTable} />
+        <AllTsTable
+          dataList={allTsTable}
+          page={page}
+          onChange={handlePageChange}
+        />
       </div>
     </Container>
   );

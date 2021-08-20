@@ -69,7 +69,9 @@ const statusValue = [
   { value: "4", label: "รายการสูญหาย" },
 ];
 
-const url = "http://202.183.167.119:3011/audit/api/rawdata";
+const apiURL = axios.create({
+  baseURL: "http://202.183.167.119:3013/audit/api/v2",
+});
 
 export default function RawTransaction(props) {
   const [state, setState] = useState({
@@ -95,11 +97,13 @@ export default function RawTransaction(props) {
         laserTimestamp: "",
         cameras_cameraTimestamp: "",
         cameras_platePicture: "",
-        state: 1,
-        sub_state: 1,
+        state: "",
+        sub_state: "",
       },
     ],
   });
+
+  const [page, setPage] = useState(1);
 
   const [select, setSelect] = useState({
     station: null,
@@ -110,6 +114,10 @@ export default function RawTransaction(props) {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -119,15 +127,15 @@ export default function RawTransaction(props) {
   };
 
   async function fetchData() {
-    axios.post(url).then((res) => {
-      setState(res.data);
+    await apiURL.post(`/rawdata?page=${page}`).then((res) => {
+    setState(res.data);
       console.log(res.data);
     });
   }
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
     <Container className={classes.root}>
@@ -269,7 +277,7 @@ export default function RawTransaction(props) {
 
       {/* Table Blcok */}
       <div>
-        <AuditTable datalist={state.record} />
+        <AuditTable datalist={state} page={page} onChange={handlePageChange} />
       </div>
     </Container>
   );
