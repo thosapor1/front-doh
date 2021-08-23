@@ -21,17 +21,17 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: "#46005E",
       border: "1px solid white",
       color: "white",
-      padding:10,
-      height:10,
-      fontSize:'0.8rem'
+      padding: 10,
+      height: 10,
+      fontSize: "0.8rem",
     },
     headerPK: {
       backgroundColor: "#ef6c00",
       border: "1px solid white",
       color: "white",
-      padding:10,
-      height:10,
-      fontSize:'0.8rem'
+      padding: 10,
+      height: 10,
+      fontSize: "0.8rem",
     },
   };
 });
@@ -48,8 +48,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AuditTable(props) {
-  let index = 1
-  const {page, onChange, datalist} = props
+  const { page, onChange, datalist } = props;
   const classes = useStyle();
   return (
     <div>
@@ -60,12 +59,17 @@ export default function AuditTable(props) {
             color="primary"
             page={page}
             onChange={onChange}
-            style={{ display: "inline", margin: "6rem", position:'sticky', top:0}}
+            style={{
+              display: "inline",
+              margin: "6rem",
+              position: "sticky",
+              top: 0,
+            }}
           />
 
           <Table>
             <TableHead>
-              <TableRow style={{padding:5}}>
+              <TableRow style={{ padding: 5 }}>
                 <TableCell colSpan={13} className={classes.headerAudit}>
                   ระบบตรวจสอบรายได้ (Audit)
                 </TableCell>
@@ -202,14 +206,14 @@ export default function AuditTable(props) {
                       fontSize="small"
                       style={{
                         color:
-                          row.state === 2 && row.sub_state === 1
+                          row.state == 2 && row.sub_state == 1
                             ? "orange"
-                            : row.state === 2 && row.sub_state === 2
+                            : row.state == 2 && row.sub_state == 2
                             ? "red"
                             : "green",
                       }}
                     />
-                    {index++}
+                    {row.match_id}
                   </TableCell>
                   <TableCell align="center">{row.transactionId}</TableCell>
                   <TableCell align="center">{row.lane_id}</TableCell>

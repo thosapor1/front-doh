@@ -132,6 +132,7 @@ export default function ModalAdd(props) {
       <Grid Container style={{ marginTop: 20, display: "flex" }}>
         <Grid item md={6} style={{ textAlign: "center" }}>
           <TextField
+            error={username.length === 0 ? false : true}
             className={classes.modalTextField}
             size="small"
             variant="outlined"

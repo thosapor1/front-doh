@@ -13,13 +13,14 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import { TimePicker } from "@material-ui/pickers";
+import { TimePicker, KeyboardTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3012/audit/api",
+  baseURL: "http://202.183.167.119:3015/audit/api/v2",
 });
 
 const useStyles = makeStyles((theme) => {
@@ -113,14 +114,20 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
-  const [state, setState] = useState();
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
-  const [gate_select, setGate_select] = useState(null);
+  const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTimeStart, setSelectedTimeStart] = useState(new Date());
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setDate(new Date().getDate() - 1)
+  );
+  const [selectedTimeStart, setSelectedTimeStart] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
+  const [page, setPage] = useState(1);
 
   const dataCard = [
     // {
@@ -145,49 +152,65 @@ export default function AuditDisplay() {
     // },
   ];
 
-  const handleFilter = () => {
-    console.log(
-      "gate_select: ",
-      gate_select,
-      "status_select: ",
-      status_select,
-      "selectedDate: ",
-      selectedDate,
-      "selectedTimeStart: ",
-      selectedTimeStart,
-      "selectedTimeEnd: ",
-      selectedTimeEnd
-    );
-    const sendData = {
-      checkpoint_id: gate_select,
-      datetime: selectedDate,
-      startTime: selectedTimeStart,
-      endTime: setSelectedTimeEnd,
-      transactionStatus: status_select,
-    };
-    console.log(sendData);
-    apiURL.post("/pk3display-superaudit", sendData).then((res) => {
-      console.log(
-        "res: ",
-        res.data,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setSummary(res.data.summary);
-      setAllTsTable(res.data.ts_table);
-    });
+  const handlePageChange = (value) => {
+    fetchData(value);
   };
 
-  const fetchData = () => {
+  // const handleFilter = () => {
+  //   setPage(1);
+  //   console.log(
+  //     "gate_select: ",
+  //     checkpoint,
+  //     "status_select: ",
+  //     status_select,
+  //     "selectedDate: ",
+  //     selectedDate,
+  //     "selectedTimeStart: ",
+  //     selectedTimeStart,
+  //     "selectedTimeEnd: ",
+  //     selectedTimeEnd
+  //   );
+  //   const sendData = {
+  //     checkpoint_id: checkpoint,
+  //     datetime: selectedDate,
+  //     startTime: selectedTimeStart,
+  //     endTime: setSelectedTimeEnd,
+  //     transactionStatus: status_select,
+  //   };
+  //   console.log(sendData);
+  //   apiURL.post("/pk3display-superaudit", sendData).then((res) => {
+  //     console.log(
+  //       "res: ",
+  //       res.data,
+  //       "ts_Table:",
+  //       res.data.ts_table,
+  //       "Summary: ",
+  //       res.data.summary
+  //     );
+  //     setSummary(res.data.summary);
+  //     setAllTsTable(res.data.ts_table);
+  //   });
+  // };
+
+  const fetchData = (pageId=1) => {
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const timeStart = format(selectedTimeStart, "HH:mm:ss");
+    const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
+
     const sendData = {
-      checkpoint_id: "1",
-      datetime: "2021-08-10",
-      startTime: "01:00:00",
-      endTime: "23:00:00",
+      page: 1,
+      checkpoint_id: checkpoint,
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
     };
-    console.log(sendData);
+    console.log(`sendData: ${JSON.stringify(sendData)}`);
     apiURL.post("/pk3display-superaudit", sendData).then((res) => {
       console.log(
         "res: ",
@@ -198,7 +221,7 @@ export default function AuditDisplay() {
         res.data.summary
       );
       setSummary(res.data.summary);
-      setAllTsTable(res.data.ts_table);
+      setAllTsTable(res.data);
     });
   };
 
@@ -216,8 +239,8 @@ export default function AuditDisplay() {
         <TextField
           select
           label="ด่าน"
-          value={gate_select}
-          onChange={(e) => setGate_select(e.target.value)}
+          value={checkpoint}
+          onChange={(e) => setCheckpoint(e.target.value)}
           style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
@@ -262,7 +285,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <TimePicker
+          <KeyboardTimePicker
             ampm={false}
             variant="inline"
             label="เวลาเริ่มต้น"
@@ -276,7 +299,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <TimePicker
+          <KeyboardTimePicker
             ampm={false}
             variant="inline"
             label="เวลาสิ้นสุด"
@@ -292,7 +315,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn}
-          onClick={handleFilter}
+          onClick={()=>fetchData(1)}
         >
           ดูข้อมูล
         </Button>
@@ -345,7 +368,11 @@ export default function AuditDisplay() {
       {/* Table Section */}
 
       <div className={classes.allTsTable}>
-        <AllTsTable dataList={allTsTable} />
+        <AllTsTable
+          dataList={allTsTable}
+          page={page}
+          onChange={handlePageChange}
+        />
       </div>
     </Container>
   );

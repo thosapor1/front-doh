@@ -82,7 +82,7 @@ export default function AllTsTable(props) {
           onChange={onChange}
           style={{
             display: "inline",
-            margin: "6rem",
+            margin: "2rem",
             position: "sticky",
             top: 0,
           }}
@@ -103,7 +103,7 @@ export default function AllTsTable(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data) => (
+              ? dataList.ts_table.map((data) => (
                   <StyledTableRow key={data.transactionId}>
                     <TableCell align="center">
                       <FiberManualRecordIcon
@@ -117,6 +117,7 @@ export default function AllTsTable(props) {
                               : "green",
                         }}
                       />
+                      {data.match_id}
                     </TableCell>
                     <TableCell align="center">{data.transactionId}</TableCell>
                     <TableCell align="center">{data.timestamp}</TableCell>

@@ -14,6 +14,7 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchTwoToneIcon from "@material-ui/icons/SearchTwoTone";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import axios from "axios";
+import { format } from "date-fns";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -60,62 +61,48 @@ const stations = [
   { value: "2", label: "ทับช้าง2" },
   { value: "3", label: "ธัญบุรี1" },
   { value: "4", label: "ธัญบุรี2" },
-  { value: "5", label: "ทุกด่าน" },
+  { value: "0", label: "ทุกด่าน" },
 ];
 const statusValue = [
-  { value: "1", label: "ทุกสถานะ" },
-  { value: "2", label: "รายการปกติ" },
-  { value: "3", label: "รายการข้อมูลไม่ตรงกัน" },
-  { value: "4", label: "รายการสูญหาย" },
+  { value: "0", label: "ทุกสถานะ" },
+  { value: "1", label: "รายการปกติ" },
+  { value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
+  { value: "3", label: "รายการสูญหาย" },
 ];
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3013/audit/api/v2",
+  baseURL: "http://202.183.167.119:3014/audit/api/v3",
 });
 
-export default function RawTransaction(props) {
+export default function RawTransaction() {
   const [state, setState] = useState({
-    state: "",
     summary: {
-      total: "",
-      normal: "",
-      unMatch: "",
-      miss: "",
+      total: 0,
+      normal: 0,
+      unMatch: 0,
+      miss: 0,
     },
-    record: [
-      {
-        transactionId: "",
-        lane_id: "",
-        timestamp: "",
-        vehicleClass: "",
-        path_images: "",
-        wheel_description: "",
-        cameras_plateNo1: "",
-        province_description: "",
-        brand_description: "",
-        colors_description: "",
-        laserTimestamp: "",
-        cameras_cameraTimestamp: "",
-        cameras_platePicture: "",
-        state: "",
-        sub_state: "",
-      },
-    ],
+    record: [{}],
   });
 
   const [page, setPage] = useState(1);
 
   const [select, setSelect] = useState({
-    station: null,
-    status: null,
+    station: 0,
+    status: 0,
   });
+
+  const { station, status } = select;
 
   const classes = useStyle();
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setDate(new Date().getDate() - 1)
+  );
 
   const handlePageChange = (event, value) => {
-    setPage(value);
+    // setPage(value);
+    fetchData(value);
   };
 
   const handleDateChange = (date) => {
@@ -126,16 +113,42 @@ export default function RawTransaction(props) {
     setSelect({ ...select, [event.target.name]: event.target.value });
   };
 
-  async function fetchData() {
-    await apiURL.post(`/rawdata?page=${page}`).then((res) => {
-    setState(res.data);
+  async function fetchData(pageId = 1) {
+
+    const date = format(selectedDate, "yyyy-MM-dd")
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    const sendData = {
+      checkpoint_id: station,
+      datetime: date,
+      transactionStatus: status,
+      page: pageId,
+    };
+    console.log(sendData)
+    await apiURL.post("/rawdata", sendData).then((res) => {
+      setState({
+        summary: {
+          total: 0,
+          normal: 0,
+          unMatch: 0,
+          miss: 0,
+        },
+        record: [],
+      });
+      setState(res.data);
       console.log(res.data);
+      // console.log(`state_length: ${state.record.length}`);
     });
   }
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+    // console.log('hello test')
+  }, []);
 
   return (
     <Container className={classes.root}>
@@ -150,7 +163,7 @@ export default function RawTransaction(props) {
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
-              id="date-picker-inline"
+              id="date"
               label="วันที่เข้าด่าน"
               value={selectedDate}
               onChange={handleDateChange}
@@ -194,6 +207,9 @@ export default function RawTransaction(props) {
             variant="contained"
             style={{ marginTop: 23, marginLeft: 20 }}
             startIcon={<FilterListIcon />}
+            onClick={() => {
+              fetchData(1);
+            }}
           >
             กรองข้อมูล
           </Button>
@@ -226,7 +242,10 @@ export default function RawTransaction(props) {
           <Grid container justifyContent="space-around" alignItems="center">
             <Grid item>
               <Typography>รายการทั้งหมด</Typography>
-              <Typography> {state.summary.total} รายการ</Typography>
+              <Typography>
+                {state.summary.total}
+                รายการ
+              </Typography>
             </Grid>
             <Grid>
               <DescriptionTwoToneIcon />

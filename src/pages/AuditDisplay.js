@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
+  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
@@ -22,7 +23,7 @@ import axios from "axios";
 import { format } from "date-fns";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3010/audit/api",
+  baseURL: "http://202.183.167.119:3016/audit/api/v2",
 });
 
 const useStyles = makeStyles((theme) => {
@@ -99,6 +100,11 @@ const valueOption = [
 
 const valueStatus = [
   {
+    id: "0",
+    value: "0",
+    label: "ทุกสถานะ",
+  },
+  {
     id: "1",
     value: "1",
     label: "ปกติ",
@@ -117,19 +123,24 @@ const valueStatus = [
 
 export default function AuditDisplay() {
   const [page, setPage] = useState(1);
-  const [state, setState] = useState();
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
-  const [gate_select, setGate_select] = useState(null);
-  const [status_select, setStatus_select] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTimeStart, setSelectedTimeStart] = useState(new Date());
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState(new Date());
+  const [checkpoint, setCheckpoint] = useState(0);
+  const [status_select, setStatus_select] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setDate(new Date().getDate() - 1)
+  );
+  const [selectedTimeStart, setSelectedTimeStart] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
 
   const handlePageChange = (event, value) => {
-    setPage(value);
+    fetchData(value);
   };
 
   const dataCard = [
@@ -155,65 +166,79 @@ export default function AuditDisplay() {
     },
   ];
 
-  const setDate = () => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    today.toDateString();
-    return yesterday.toDateString();
-  };
+  // const handleFilter = () => {
+  //   console.log(
+  //     "gate_select: ",
+  //     gate_select,
+  //     "status_select: ",
+  //     status_select,
+  //     "selectedDate: ",
+  //     selectedDate,
+  //     "selectedTimeStart: ",
+  //     selectedTimeStart,
+  //     "selectedTimeEnd: ",
+  //     selectedTimeEnd
+  //   );
+  //   const sendData = {
+  //     "page": page,
+  //     "checkpoint_id": "0",
+  //     "datetime": "2021-08-10",
+  //     "startTime": "14:00:00",
+  //     "endTime": "16:00:00",
+  //     "transactionStatus": "0"
+  // }
+  //   console.log(sendData);
+  //   apiURL.get("/display", sendData).then((res) => {
+  //     console.log(
+  //       "res: ",
+  //       res.data,
+  //       "tsClass:",
+  //       res.data.ts_class,
+  //       "tsGate: ",
+  //       res.data.ts_gate_table,
+  //       "ts_Table:",
+  //       res.data.ts_table,
+  //       "Summary: ",
+  //       res.data.summary
+  //     );
+  //     setSummary(res.data.summary);
+  //     setGateTable(res.data.ts_gate_table);
+  //     setClassTable(res.data.ts_class);
+  //     setAllTsTable(res.data.ts_table);
+  //   });
+  // };
 
-  const handleFilter = () => {
-    console.log(
-      "gate_select: ",
-      gate_select,
-      "status_select: ",
-      status_select,
-      "selectedDate: ",
-      selectedDate,
-      "selectedTimeStart: ",
-      selectedTimeStart,
-      "selectedTimeEnd: ",
-      selectedTimeEnd
-    );
+  const fetchData = (pageId = 1) => {
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const timeStart = format(selectedTimeStart, "HH:mm:ss");
+    const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
+
     const sendData = {
-      checkpoint_id: gate_select,
-      datetime: selectedDate,
-      startTime: selectedTimeStart,
-      endTime: setSelectedTimeEnd,
+      page: pageId,
+      checkpoint_id: checkpoint,
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
       transactionStatus: status_select,
     };
     console.log(sendData);
-    apiURL.get("/display", sendData).then((res) => {
-      console.log(
-        "res: ",
-        res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setSummary(res.data.summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
-      setAllTsTable(res.data.ts_table);
-    });
-  };
 
-  const fetchData = () => {
-    const sendData = {
-      checkpoint_id: "1",
-      datetime: format(new Date(), "yyyy-MM-dd"),
-      startTime: "0",
-      endTime: "0",
-      transactionStatus: "0",
-    };
-    console.log(sendData);
     apiURL.post("/display", sendData).then((res) => {
+      setAllTsTable({
+        summary: {
+          total: 0,
+          normal: 0,
+          unMatch: 0,
+          miss: 0,
+        },
+        ts_table: [],
+      });
       console.log(
         "res: ",
         res.data,
@@ -229,7 +254,7 @@ export default function AuditDisplay() {
       setSummary(res.data.summary);
       setGateTable(res.data.ts_gate_table);
       setClassTable(res.data.ts_class);
-      setAllTsTable(res.data.ts_table);
+      setAllTsTable(res.data);
     });
   };
 
@@ -247,8 +272,8 @@ export default function AuditDisplay() {
         <TextField
           select
           label="ด่าน"
-          value={gate_select}
-          onChange={(e) => setGate_select(e.target.value)}
+          value={checkpoint}
+          onChange={(e) => setCheckpoint(e.target.value)}
           style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
@@ -292,7 +317,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <TimePicker
+          <KeyboardTimePicker
             ampm={false}
             variant="inline"
             label="เวลาเริ่มต้น"
@@ -306,7 +331,7 @@ export default function AuditDisplay() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <TimePicker
+          <KeyboardTimePicker
             ampm={false}
             variant="inline"
             label="เวลาสิ้นสุด"
@@ -322,7 +347,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn}
-          onClick={handleFilter}
+          onClick={() => fetchData(1)}
         >
           ดูข้อมูล
         </Button>
