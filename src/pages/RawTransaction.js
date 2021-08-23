@@ -86,36 +86,42 @@ export default function RawTransaction() {
   });
 
   const [page, setPage] = useState(1);
-
-  const [select, setSelect] = useState({
-    station: 0,
-    status: 0,
-  });
-
-  const { station, status } = select;
-
+  const [station, setStation] = useState(0);
+  const [status, setStatus] = useState(0);
+  const [subState, setSubState] = useState(0);
   const classes = useStyle();
-
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
-
   const handlePageChange = (event, value) => {
     // setPage(value);
     fetchData(value);
   };
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const handleSelectChange = (event) => {
-    setSelect({ ...select, [event.target.name]: event.target.value });
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+    if(event.target.value == 3){
+      setStatus(2)
+      setSubState(2)
+    }else if(event.target.value== 2){
+      setStatus(2)
+      setSubState(1)
+    }else if(event.target.value==1){
+      setStatus(1)
+      setSubState(1)
+    }else if(event.target.value==0){
+      setStatus(0)
+      setSubState(0)
+    }
+    console.log(`subState: ${subState}`)
+    console.log(`status: ${status}`)
   };
-
   async function fetchData(pageId = 1) {
+    const date = format(selectedDate, "yyyy-MM-dd");
 
-    const date = format(selectedDate, "yyyy-MM-dd")
     if (pageId == 1) {
       setPage(1);
     } else {
@@ -127,8 +133,9 @@ export default function RawTransaction() {
       datetime: date,
       transactionStatus: status,
       page: pageId,
+      subState: subState,
     };
-    console.log(sendData)
+    console.log(`sendData: ${JSON.stringify(sendData)}`);
     await apiURL.post("/rawdata", sendData).then((res) => {
       setState({
         summary: {
@@ -176,9 +183,9 @@ export default function RawTransaction() {
             select
             label="ด่าน"
             className={classes.textField}
-            onChange={handleSelectChange}
+            onChange={(event) => setStation(event.target.value)}
             name="station"
-            value={select.station}
+            value={station}
           >
             {stations.map((station) => (
               <option key={station.value} value={station.value}>
@@ -191,11 +198,11 @@ export default function RawTransaction() {
             select
             label="สถานะ"
             className={classes.textField}
-            value={select.status}
-            onChange={handleSelectChange}
+            value={status}
+            onChange={(event) => {handleStatusChange(event)}}
           >
             {statusValue.map((item) => (
-              <option key={item.value} value={item.value}>
+              <option key={item.label} value={item.value} >
                 {item.label}
               </option>
             ))}

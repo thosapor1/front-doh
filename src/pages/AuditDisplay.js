@@ -1,10 +1,16 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Button,
+  CardMedia,
   Container,
   Grid,
   makeStyles,
   Paper,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -21,6 +27,8 @@ import ClassTable from "../components/ClassTable";
 import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
 import { format } from "date-fns";
+import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
+import Logo_doh from '../image/Logo_doh.png'
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.119:3016/audit/api/v2",
@@ -126,7 +134,7 @@ export default function AuditDisplay() {
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
   const [allTsTable, setAllTsTable] = useState("");
-  const [summary, setSummary] = useState("");
+  const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
@@ -165,48 +173,6 @@ export default function AuditDisplay() {
       label: "รายได้พึงได้รายวัน",
     },
   ];
-
-  // const handleFilter = () => {
-  //   console.log(
-  //     "gate_select: ",
-  //     gate_select,
-  //     "status_select: ",
-  //     status_select,
-  //     "selectedDate: ",
-  //     selectedDate,
-  //     "selectedTimeStart: ",
-  //     selectedTimeStart,
-  //     "selectedTimeEnd: ",
-  //     selectedTimeEnd
-  //   );
-  //   const sendData = {
-  //     "page": page,
-  //     "checkpoint_id": "0",
-  //     "datetime": "2021-08-10",
-  //     "startTime": "14:00:00",
-  //     "endTime": "16:00:00",
-  //     "transactionStatus": "0"
-  // }
-  //   console.log(sendData);
-  //   apiURL.get("/display", sendData).then((res) => {
-  //     console.log(
-  //       "res: ",
-  //       res.data,
-  //       "tsClass:",
-  //       res.data.ts_class,
-  //       "tsGate: ",
-  //       res.data.ts_gate_table,
-  //       "ts_Table:",
-  //       res.data.ts_table,
-  //       "Summary: ",
-  //       res.data.summary
-  //     );
-  //     setSummary(res.data.summary);
-  //     setGateTable(res.data.ts_gate_table);
-  //     setClassTable(res.data.ts_class);
-  //     setAllTsTable(res.data.ts_table);
-  //   });
-  // };
 
   const fetchData = (pageId = 1) => {
     if (pageId == 1) {
@@ -251,7 +217,7 @@ export default function AuditDisplay() {
         "Summary: ",
         res.data.summary
       );
-      setSummary(res.data.summary);
+      setSummary(!!res.data.summary ? res.data.summary : summary);
       setGateTable(res.data.ts_gate_table);
       setClassTable(res.data.ts_class);
       setAllTsTable(res.data);
@@ -412,6 +378,33 @@ export default function AuditDisplay() {
           page={page}
           onChange={handlePageChange}
         />
+      </div>
+
+      {/* activity */}
+      <div>
+        <div className={classes.head}>
+          <Typography>ผิดประเภท</Typography>
+          <Typography>transaction: </Typography>
+          <Typography>
+            ทางหลวงหมายเลข 9 / ด่านทับช้าง1 / ช่องจราจรที่ 10
+          </Typography>
+        </div>
+        <div>
+        <div><CameraEnhanceTwoToneIcon />กล้อง Audit</div>
+          <CardMedia image={Logo_doh} style={{height:50,width:50}}/>
+          <TableContainer>
+            <table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    กรมขนส่งทางบก
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody></TableBody>
+            </table>
+          </TableContainer>
+        </div>
       </div>
     </Container>
   );

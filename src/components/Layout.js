@@ -194,7 +194,7 @@ export default function Layout({ children }) {
           color="primary"
           startIcon={<ExitToAppRoundedIcon />}
           className={classes.btn}
-          onClick={() => history.push("/")}
+          onClick={() => history.push("/audit_dev")}
         >
           ออกจากระบบ
         </Button>
