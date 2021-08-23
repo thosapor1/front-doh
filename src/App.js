@@ -9,7 +9,6 @@ import AuditDisplay from "./pages/AuditDisplay";
 import Pk3Display from "./pages/Pk3Display";
 import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 
-
 const theme = createTheme({
   typography: {
     fontFamily: "Prompt",
@@ -25,7 +24,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/audit_dev">
             <Login />
           </Route>
           <Layout>
