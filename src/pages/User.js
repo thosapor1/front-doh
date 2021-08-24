@@ -138,7 +138,7 @@ export default function User() {
 
     await Swal.fire({
       title: "ต้องการลบข้อมูลนี้?",
-      text: "ไม่สามารถย้อนกลับได้หากยืนยันแล้ว",
+      text: "ไม่สามารถเรียกข้อมูลคืนได้หากยืนยันแล้ว",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

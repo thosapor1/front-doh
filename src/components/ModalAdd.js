@@ -63,7 +63,6 @@ export default function ModalAdd(props) {
     department_id,
     email,
     tel,
-    permission_id,
     highway_id,
     checkpoint_id,
   } = inputModal;

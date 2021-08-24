@@ -9,9 +9,14 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination } from "@material-ui/lab";
+import axios from "axios";
+import ModalActivity from "./ModalActivity";
 
+const apiURL = axios.create({
+  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+});
 const useStyles = makeStyles((theme) => {
   return {
     container: {
@@ -21,6 +26,11 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+    },
+    tableRow: {
+      "&:hover": {
+        backgroundColor: "#e8eaf6 !important",
+      },
     },
   };
 });
@@ -68,9 +78,33 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function AllTsTable(props) {
+export default function AllTsTableForActivity(props) {
+  const [open, setOpen] = useState(false);
+  const [dataForActivity, SetDataForActivity] = useState({});
+
+  const fetchData = async (ts) => {
+    const res = await apiURL.post("/display-activity", {
+      transactionId: ts,
+    });
+    console.log("res2:", res.data);
+    await SetDataForActivity(res.data);
+  };
+
+  const handleOpen = async () => {
+    // await fetchData();
+    await setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const classes = useStyles();
   const { dataList, page, onChange } = props;
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return (
     <div>
@@ -104,7 +138,16 @@ export default function AllTsTable(props) {
           <TableBody>
             {!!dataList
               ? dataList.ts_table.map((data) => (
-                  <StyledTableRow key={data.transactionId}>
+                  <StyledTableRow
+                    key={data.transactionId}
+                    onClick={() => {
+                      fetchData(
+                        "T20210714-6104bdec-69d7-4d4b-980e-7e5893e1a1136"
+                      );
+                      handleOpen();
+                    }}
+                    className={classes.tableRow}
+                  >
                     <TableCell align="center">
                       <FiberManualRecordIcon
                         fontSize="small"
@@ -133,7 +176,11 @@ export default function AllTsTable(props) {
         </Table>
       </TableContainer>
 
-      
+      <ModalActivity
+        dataList={dataForActivity}
+        open={open}
+        onClick={handleClose}
+      />
     </div>
   );
 }

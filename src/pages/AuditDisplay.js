@@ -6,11 +6,6 @@ import {
   Grid,
   makeStyles,
   Paper,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -20,19 +15,18 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import { TimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import GateTable from "../components/GateTable";
 import ClassTable from "../components/ClassTable";
-import AllTsTable from "../components/AllTsTable";
+
 import axios from "axios";
 import { format } from "date-fns";
-import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from '../image/Logo_doh.png'
+import AllTsTableForActivity from "../components/AllTsTableForActivity";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.119:3016/audit/api/v2",
 });
+
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -130,6 +124,8 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
+  const [open, setOpen] = useState(false);
+  const [dataList, setDataList] = useState({});
   const [page, setPage] = useState(1);
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
@@ -149,6 +145,9 @@ export default function AuditDisplay() {
 
   const handlePageChange = (event, value) => {
     fetchData(value);
+  };
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const dataCard = [
@@ -181,7 +180,8 @@ export default function AuditDisplay() {
       setPage(pageId);
     }
 
-    const date = format(selectedDate, "yyyy-MM-dd");
+    // const date = format(selectedDate, "yyyy-MM-dd");
+    const date = "2021-08-10";
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
@@ -373,38 +373,11 @@ export default function AuditDisplay() {
         </Grid>
       </Grid>
       <div className={classes.allTsTable}>
-        <AllTsTable
+        <AllTsTableForActivity
           dataList={allTsTable}
           page={page}
           onChange={handlePageChange}
         />
-      </div>
-
-      {/* activity */}
-      <div>
-        <div className={classes.head}>
-          <Typography>ผิดประเภท</Typography>
-          <Typography>transaction: </Typography>
-          <Typography>
-            ทางหลวงหมายเลข 9 / ด่านทับช้าง1 / ช่องจราจรที่ 10
-          </Typography>
-        </div>
-        <div>
-        <div><CameraEnhanceTwoToneIcon />กล้อง Audit</div>
-          <CardMedia image={Logo_doh} style={{height:50,width:50}}/>
-          <TableContainer>
-            <table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    กรมขนส่งทางบก
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody></TableBody>
-            </table>
-          </TableContainer>
-        </div>
       </div>
     </Container>
   );

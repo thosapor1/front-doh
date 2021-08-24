@@ -64,14 +64,14 @@ const stations = [
   { value: "0", label: "ทุกด่าน" },
 ];
 const statusValue = [
-  { value: "0", label: "ทุกสถานะ" },
-  { value: "1", label: "รายการปกติ" },
-  { value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
-  { value: "3", label: "รายการสูญหาย" },
+  { id:0,value: "0", label: "ทุกสถานะ" },
+  { id:1,value: "1", label: "รายการปกติ" },
+  { id:2,value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
+  { id:3,value: "3", label: "รายการสูญหาย" },
 ];
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3014/audit/api/v3",
+  baseURL: "http://202.183.167.92:3010/audit/api/v2",
 });
 
 export default function RawTransaction() {
@@ -87,6 +87,7 @@ export default function RawTransaction() {
 
   const [page, setPage] = useState(1);
   const [station, setStation] = useState(0);
+  const [id, setId] = useState(0)
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
   const classes = useStyle();
@@ -102,6 +103,7 @@ export default function RawTransaction() {
   };
 
   const handleStatusChange = (event) => {
+    setId(event.target.value)
     setStatus(event.target.value);
     if(event.target.value == 3){
       setStatus(2)
@@ -198,11 +200,11 @@ export default function RawTransaction() {
             select
             label="สถานะ"
             className={classes.textField}
-            value={status}
+            value={id}
             onChange={(event) => {handleStatusChange(event)}}
           >
             {statusValue.map((item) => (
-              <option key={item.label} value={item.value} >
+              <option key={item.label} value={item.id} >
                 {item.label}
               </option>
             ))}
