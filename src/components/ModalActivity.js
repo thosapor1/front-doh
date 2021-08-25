@@ -198,7 +198,7 @@ export default function ModalActivity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
     };
-    const res = await apiURL.post('/display-activity-update',sendData)
+    const res = await apiURL.post("/display-activity-update", sendData);
     console.log(sendData);
     console.log(res.data);
   };
@@ -581,7 +581,7 @@ export default function ModalActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="audit_vehicleClass"
-                      value={audit_vehicleClass }
+                      value={audit_vehicleClass || ""}
                       onChange={handleChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
