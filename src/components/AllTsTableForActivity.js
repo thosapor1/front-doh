@@ -87,11 +87,10 @@ export default function AllTsTableForActivity(props) {
       transactionId: ts,
     });
     console.log("res2:", res.data);
-    await SetDataForActivity(res.data);
+    SetDataForActivity(res.data);
   };
 
   const handleOpen = async () => {
-    // await fetchData();
     await setOpen(true);
   };
 
@@ -101,10 +100,6 @@ export default function AllTsTableForActivity(props) {
 
   const classes = useStyles();
   const { dataList, page, onChange } = props;
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   return (
     <div>
@@ -141,9 +136,7 @@ export default function AllTsTableForActivity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(
-                        "T20210714-6104bdec-69d7-4d4b-980e-7e5893e1a1136"
-                      );
+                      fetchData("T20210714-6104bdec-69d7-4d4b-980e-7e5893e1a1136");
                       handleOpen();
                     }}
                     className={classes.tableRow}

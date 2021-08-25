@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardMedia,
@@ -6,11 +7,13 @@ import {
   Grid,
   makeStyles,
   Modal,
+  Tab,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -25,6 +28,61 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
+
+function TabPanel1(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabs1-${index}`}
+      aria-labelledby={`tab1-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
+
+function TabPanel2(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`taps2-${index}`}
+      aria-labelledby={`taps2-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
+
+function TabPanel3(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`taps3-${index}`}
+      aria-labelledby={`taps3-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -84,6 +142,10 @@ const useStyle = makeStyles((theme) => {
       bottom: 5,
       width: 130,
     },
+    tab: {
+      fontSize: "0.7rem",
+      minWidth: "25%",
+    },
   };
 });
 
@@ -91,31 +153,72 @@ export default function ModalActivity(props) {
   const classes = useStyle();
   const { dataList } = props;
 
-  const [state, setState] = useState({
-    dlt_lp: "",
-    dlt_lp_province: "",
-    dlt_class: "",
-    dlt_fee_ref: "",
-  });
-  const handleChange = (event) => {
-    event.preventDefault();
-    setState({ ...state, [event.target.name]: event.target.value });
+  const [value1, setValue1] = React.useState(2);
+  const [value2, setValue2] = React.useState(2);
+  const [value3, setValue3] = React.useState(2);
 
-    console.log(state.dlt_lp, event.target.value);
+  const handleChangeTabs1 = (event, newValue) => {
+    setValue1(newValue);
+  };
+  const handleChangeTabs2 = (event, newValue) => {
+    setValue2(newValue);
+  };
+  const handleChangeTabs3 = (event, newValue) => {
+    setValue3(newValue);
+  };
+
+  const [state, setState] = useState({
+    audit_lp: "",
+    audit_province: "",
+    audit_vehicleClass: "",
+    audit_feeAmount: "",
+    audit_comment: "",
+  });
+  const {
+    audit_lp,
+    audit_province,
+    audit_vehicelClass,
+    audit_feeAmount,
+    audit_comment,
+  } = state;
+
+  const handleChange = (event) => {
+    setState({ [event.target.name]: event.target.value });
+
+    console.log(event.target.name, event.target.value);
+  };
+
+  const handleUpdate = () => {
+    const sendData = {
+      transactionId: dataList.transactionId,
+      audit_lp: audit_lp,
+      audit_province: audit_province,
+      audit_vehicleClass: "1",
+      audit_feeAmount: "100",
+      audit_comment: audit_comment,
+    };
+
+    console.log(sendData);
   };
 
   useEffect(() => {
-    if (dataList) setState(dataList);
-    console.log("state", state, "dataList", dataList);
-  }, []);
+    if (dataList) {
+      setState(dataList);
+      console.log("MyState", state, "dataList", dataList);
+    }
+  }, [dataList]);
 
   const body = (
     <div className={classes.modal}>
       <div className={classes.head}>
         <div>
-          <Typography>ผิดประเภท</Typography>
-          <Typography style={{color:"blue"}}>transaction: {dataList.transactionId} </Typography>
-          <Typography>
+          <Typography variant="h6" style={{ color: "#c80000" }}>
+            รถผิดประเภท
+          </Typography>
+          <Typography style={{ color: "blue", fontSize: 14 }}>
+            transaction: {dataList.transactionId}{" "}
+          </Typography>
+          <Typography style={{ color: "gray", fontSize: 14 }}>
             {dataList.highway} / {dataList.checkpoint} / {dataList.gate}
           </Typography>
         </div>
@@ -133,7 +236,39 @@ export default function ModalActivity(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
           </div>
-          <div>
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value1}
+              onChange={handleChangeTabs1}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel1 value={value1} index={0}>
             <CardMedia
               component="img"
               src={
@@ -143,7 +278,41 @@ export default function ModalActivity(props) {
               }
               className={classes.image}
             />
-          </div>
+          </TabPanel1>
+          <TabPanel1 value={value1} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    Logo_doh
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TabPanel1 value={value1} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TabPanel1 value={value1} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
           <TableContainer>
             <table className={classes.table}>
               <TableHead>
@@ -180,7 +349,82 @@ export default function ModalActivity(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
           </div>
-          <CardMedia image={noImage} className={classes.image} />
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value2}
+              onChange={handleChangeTabs2}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel2 value={value2} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_pic != 0
+                  ? `data:image/png;base64, ${dataList.mf_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel2>
+          <TabPanel2 value={value2} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_pic != 0
+                  ? `data:image/png;base64, ${dataList.mf_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel2>
+          <TabPanel2 value={value2} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_pic != 0
+                  ? `data:image/png;base64, ${dataList.mf_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel2>
+          <TabPanel2 value={value2} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_pic != 0
+                  ? `data:image/png;base64, ${dataList.mf_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel2>
           <TableContainer>
             <table className={classes.table}>
               <TableHead>
@@ -217,15 +461,78 @@ export default function ModalActivity(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
           </div>
-          <CardMedia
-            component="img"
-            src={
-              dataList.audit_pic_crop != 0
-                ? `data:image/png;base64, ${dataList.audit_pic}`
-                : noImage
-            }
-            className={classes.image}
-          />
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <Tabs
+            value={value3}
+            onChange={handleChangeTabs3}
+            aria-label="simple tabs example"
+            indicatorColor="primary"
+          >
+            <Tab label="ก่อน 2 คัน" {...a11yProps(0)} className={classes.tab} />
+            <Tab
+              label="ก่อน 1 คัน"
+              {...a11yProps(1)}
+              style={{ minWidth: "15%" }}
+              className={classes.tab}
+            />
+            <Tab
+              label="คันที่ตรวจ"
+              {...a11yProps(2)}
+              style={{ minWidth: "15%" }}
+              className={classes.tab}
+            />
+            <Tab
+              label="วิดีโอ"
+              {...a11yProps(3)}
+              style={{ minWidth: "15%" }}
+              className={classes.tab}
+            />
+          </Tabs>
+          </div>
+          <TabPanel3 value={value3} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel3>
+          <TabPanel3 value={value3} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel3>
+          <TabPanel3 value={value3} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel3>
+          <TabPanel3 value={value3} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel3>
           <TableContainer>
             <table className={classes.table}>
               <TableHead>
@@ -242,8 +549,8 @@ export default function ModalActivity(props) {
                     <TextField
                       size="small"
                       className={classes.textField}
-                      name="plate"
-                      value={dataList.audit_lp}
+                      name="audit_lp"
+                      value={audit_lp}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -254,8 +561,8 @@ export default function ModalActivity(props) {
                     <TextField
                       size="small"
                       className={classes.textField}
-                      name="plateProvince"
-                      value={dataList.audit_province}
+                      name="audit_province"
+                      value={audit_province}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -264,12 +571,21 @@ export default function ModalActivity(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
+                      select
                       size="small"
                       className={classes.textField}
-                      name="class"
-                      value={dataList.audit_vehicleClass}
+                      name="audit_vehicelClass"
+                      value={audit_vehicelClass || ""}
                       onChange={handleChange}
-                    />
+                    >
+                      {!!dataList.dropdown_audit_vehicelClass
+                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
+                            <option key={item.id} value={item.class}>
+                              {item.class}
+                            </option>
+                          ))
+                        : []}
+                    </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -277,15 +593,15 @@ export default function ModalActivity(props) {
                   <TableCell>
                     <TextField
                       size="small"
-                      name="fee"
+                      name="audit_feeAmount"
                       select
-                      value={dataList.dlt_fee_ref}
+                      value={audit_feeAmount || ""}
                       className={classes.textField}
                       onChange={handleChange}
                     >
-                      {!!dataList.audit_feeAmount
-                        ? dataList.audit_feeAmount.map((item) => (
-                            <option key={item.fee} value={item.fee}>
+                      {!!dataList.dropdown_audit_feeAmount
+                        ? dataList.dropdown_audit_feeAmount.map((item) => (
+                            <option key={item.id} value={item.fee}>
                               {item.fee}
                             </option>
                           ))
@@ -306,9 +622,9 @@ export default function ModalActivity(props) {
           >
             <TextField
               style={{ width: 180, height: 20, padding: "10px" }}
-              name="command"
+              name="audit_comment"
               label="คำสั่งแก้ไข"
-              value={dataList.audit_comment}
+              value={audit_comment}
               onChange={handleChange}
             />
             <Button
@@ -316,6 +632,7 @@ export default function ModalActivity(props) {
               color="primary"
               style={{ top: 17 }}
               endIcon={<SendTwoToneIcon fontSize="small" />}
+              onClick={handleUpdate}
             >
               ส่งคำสั่งแก้ไข
             </Button>

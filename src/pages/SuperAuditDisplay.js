@@ -20,7 +20,7 @@ import axios from "axios";
 import { format } from "date-fns";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.119:3015/audit/api/v2",
+  baseURL: "http://202.183.167.92:3010/audit/api/v2",
 });
 
 const useStyles = makeStyles((theme) => {
