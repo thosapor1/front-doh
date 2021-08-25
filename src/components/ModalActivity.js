@@ -22,12 +22,15 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import Logo_doh from "../image/Logo_doh.png";
-import P_login from "../image/P_login.jpg";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
+
+const apiURL = axios.create({
+  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -177,28 +180,27 @@ export default function ModalActivity(props) {
   const {
     audit_lp,
     audit_province,
-    audit_vehicelClass,
+    audit_vehicleClass,
     audit_feeAmount,
     audit_comment,
   } = state;
 
   const handleChange = (event) => {
-    setState({ [event.target.name]: event.target.value });
-
-    console.log(event.target.name, event.target.value);
+    setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const sendData = {
       transactionId: dataList.transactionId,
       audit_lp: audit_lp,
       audit_province: audit_province,
-      audit_vehicleClass: "1",
-      audit_feeAmount: "100",
+      audit_vehicleClass: audit_vehicleClass,
+      audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
     };
-
+    const res = await apiURL.post('/display-activity-update',sendData)
     console.log(sendData);
+    console.log(res.data);
   };
 
   useEffect(() => {
@@ -462,32 +464,36 @@ export default function ModalActivity(props) {
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
-          <Tabs
-            value={value3}
-            onChange={handleChangeTabs3}
-            aria-label="simple tabs example"
-            indicatorColor="primary"
-          >
-            <Tab label="ก่อน 2 คัน" {...a11yProps(0)} className={classes.tab} />
-            <Tab
-              label="ก่อน 1 คัน"
-              {...a11yProps(1)}
-              style={{ minWidth: "15%" }}
-              className={classes.tab}
-            />
-            <Tab
-              label="คันที่ตรวจ"
-              {...a11yProps(2)}
-              style={{ minWidth: "15%" }}
-              className={classes.tab}
-            />
-            <Tab
-              label="วิดีโอ"
-              {...a11yProps(3)}
-              style={{ minWidth: "15%" }}
-              className={classes.tab}
-            />
-          </Tabs>
+            <Tabs
+              value={value3}
+              onChange={handleChangeTabs3}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
           </div>
           <TabPanel3 value={value3} index={0}>
             <CardMedia
@@ -574,8 +580,8 @@ export default function ModalActivity(props) {
                       select
                       size="small"
                       className={classes.textField}
-                      name="audit_vehicelClass"
-                      value={audit_vehicelClass || ""}
+                      name="audit_vehicleClass"
+                      value={audit_vehicleClass }
                       onChange={handleChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
