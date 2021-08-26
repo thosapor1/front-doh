@@ -15,9 +15,9 @@ import {
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { TimePicker, KeyboardTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import AllTsTable from "../components/AllTsTable";
 import axios from "axios";
 import { format } from "date-fns";
+import AllTsTableForSuperAdminActivity from "../components/AllTsTableForSuperAdminActivity";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -156,42 +156,6 @@ export default function AuditDisplay() {
     fetchData(value);
   };
 
-  // const handleFilter = () => {
-  //   setPage(1);
-  //   console.log(
-  //     "gate_select: ",
-  //     checkpoint,
-  //     "status_select: ",
-  //     status_select,
-  //     "selectedDate: ",
-  //     selectedDate,
-  //     "selectedTimeStart: ",
-  //     selectedTimeStart,
-  //     "selectedTimeEnd: ",
-  //     selectedTimeEnd
-  //   );
-  //   const sendData = {
-  //     checkpoint_id: checkpoint,
-  //     datetime: selectedDate,
-  //     startTime: selectedTimeStart,
-  //     endTime: setSelectedTimeEnd,
-  //     transactionStatus: status_select,
-  //   };
-  //   console.log(sendData);
-  //   apiURL.post("/pk3display-superaudit", sendData).then((res) => {
-  //     console.log(
-  //       "res: ",
-  //       res.data,
-  //       "ts_Table:",
-  //       res.data.ts_table,
-  //       "Summary: ",
-  //       res.data.summary
-  //     );
-  //     setSummary(res.data.summary);
-  //     setAllTsTable(res.data.ts_table);
-  //   });
-  // };
-
   const fetchData = (pageId=1) => {
     if (pageId == 1) {
       setPage(1);
@@ -199,7 +163,8 @@ export default function AuditDisplay() {
       setPage(pageId);
     }
 
-    const date = format(selectedDate, "yyyy-MM-dd");
+    // const date = format(selectedDate, "yyyy-MM-dd");
+    const date = '2021-08-10';
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
@@ -368,7 +333,7 @@ export default function AuditDisplay() {
       {/* Table Section */}
 
       <div className={classes.allTsTable}>
-        <AllTsTable
+        <AllTsTableForSuperAdminActivity
           dataList={allTsTable}
           page={page}
           onChange={handlePageChange}

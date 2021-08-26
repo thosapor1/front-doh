@@ -21,8 +21,6 @@ import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
-import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
-import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 
 const apiURL = axios.create({
@@ -130,10 +128,19 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid white",
       color: "white",
     },
+    tableHead4: {
+      backgroundColor: "red",
+      border: "1px solid white",
+      color: "white",
+    },
     table: {
       width: "100%",
       padding: "1rem",
-      "& .MuiTableCell-root": { paddingTop: "0.2rem", paddingBottom: "0.2rem" },
+      "& .MuiTableCell-root": {
+        paddingTop: "0.2rem",
+        paddingBottom: "0.2rem",
+        width: "50%",
+      },
     },
     btn: {
       margin: theme.spacing(1),
@@ -142,19 +149,25 @@ const useStyle = makeStyles((theme) => {
       height: 20,
       bottom: 5,
       width: 130,
-      '& .MuiInput-input':{fontSize:'0.9rem'}
+      "& .MuiInput-input": { fontSize: "0.9rem" },
     },
     tab: {
       fontSize: "0.7rem",
       minWidth: "25%",
     },
-    tabs: {
-      height: "0.3rem",
+    disableLabel: {
+      "& .MuiInputLabel-root": {
+        color: "blue",
+      },
+      marginLeft: 20,
+      marginRight: 20,
+      width: "91%",
+      marginTop: 2,
     },
   };
 });
 
-export default function ModalActivity(props) {
+export default function ModalSuperAdminActivity(props) {
   const classes = useStyle();
   const { dataList } = props;
 
@@ -178,6 +191,7 @@ export default function ModalActivity(props) {
     audit_vehicleClass: "",
     audit_feeAmount: "",
     audit_comment: "",
+    pk3_comment: "",
   });
   const {
     audit_lp,
@@ -185,6 +199,7 @@ export default function ModalActivity(props) {
     audit_vehicleClass,
     audit_feeAmount,
     audit_comment,
+    pk3_comment,
   } = state;
 
   const handleChange = (event) => {
@@ -199,10 +214,11 @@ export default function ModalActivity(props) {
       audit_vehicleClass: audit_vehicleClass,
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
+      pk3_comment: pk3_comment,
     };
-    const res = await apiURL.post("/display-activity-update", sendData);
+    // const res = await apiURL.post("/display-activity-update", sendData);
     console.log(sendData);
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -236,6 +252,7 @@ export default function ModalActivity(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         <Grid item sm={4} className={classes.cardItem}>
+          {/* Dlt Block */}
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
@@ -246,7 +263,6 @@ export default function ModalActivity(props) {
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
-              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -347,8 +363,36 @@ export default function ModalActivity(props) {
               </TableBody>
             </table>
           </TableContainer>
+          <div
+            style={{
+              paddingLeft: 10,
+              paddingRight: 10,
+              display: "flex",
+              justifyContent: "space-around",
+              marginTop: 178,
+            }}
+          >
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+              // startIcon={<AddTwoToneIcon fontSize="small" />}
+              style={{ width: 130 }}
+            >
+              สร้างรายการใหม่
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="secondary"
+              style={{ width: 130 }}
+            >
+              ลบรายการนี้
+            </Button>
+          </div>
         </Grid>
 
+        {/* Pk3 Block */}
         <Grid item sm={4}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -459,8 +503,97 @@ export default function ModalActivity(props) {
               </TableBody>
             </table>
           </TableContainer>
+
+          <TextField
+            disabled
+            variant="outlined"
+            label="ข้อความจากระบบจัดเก็บ"
+            value={audit_comment || ""}
+            className={classes.disableLabel}
+          />
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead4}>
+                  <TableCell colSpan={2} style={{ color: "white" }}>
+                    ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ทะเบียน</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      className={classes.textField}
+                      name="audit_lp"
+                      value={audit_lp}
+                      onChange={handleChange}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>จังหวัด</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      className={classes.textField}
+                      name="audit_province"
+                      value={audit_province}
+                      onChange={handleChange}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    <TextField
+                      select
+                      size="small"
+                      className={classes.textField}
+                      name="audit_vehicleClass"
+                      value={audit_vehicleClass || ""}
+                      onChange={handleChange}
+                    >
+                      {!!dataList.dropdown_audit_vehicelClass
+                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
+                            <option key={item.id} value={item.class}>
+                              {item.class}
+                            </option>
+                          ))
+                        : []}
+                    </TextField>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ค่าธรรมเนียม</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      name="audit_feeAmount"
+                      select
+                      value={audit_feeAmount || ""}
+                      className={classes.textField}
+                      onChange={handleChange}
+                    >
+                      {!!dataList.dropdown_audit_feeAmount
+                        ? dataList.dropdown_audit_feeAmount.map((item) => (
+                            <option key={item.id} value={item.fee}>
+                              {item.fee}
+                            </option>
+                          ))
+                        : []}
+                    </TextField>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
+        {/* Audit Block */}
         <Grid item sm={4}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -554,79 +687,39 @@ export default function ModalActivity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="audit_lp"
-                      value={audit_lp}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{dataList.audit_lp}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="audit_province"
-                      value={audit_province}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{dataList.audit_province}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      select
-                      size="small"
-                      className={classes.textField}
-                      name="audit_vehicleClass"
-                      value={audit_vehicleClass || ""}
-                      onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
-                              {item.class}
-                            </option>
-                          ))
-                        : []}
-                    </TextField>
-                  </TableCell>
+                  <TableCell>{dataList.audit_vehicleClass}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      name="audit_feeAmount"
-                      select
-                      value={audit_feeAmount || ""}
-                      className={classes.textField}
-                      onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_feeAmount
-                        ? dataList.dropdown_audit_feeAmount.map((item) => (
-                            <option key={item.id} value={item.fee}>
-                              {item.fee}
-                            </option>
-                          ))
-                        : []}
-                    </TextField>
-                  </TableCell>
+                  <TableCell>{dataList.audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
+
+          <TextField
+            disabled
+            variant="outlined"
+            label="ข้อความจากผู้ตรวจสอบ"
+            value={audit_comment || ""}
+            className={classes.disableLabel}
+          />
+
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               paddingLeft: 20,
               paddingRight: 20,
+              marginTop:'106px',
             }}
           >
             <TextField
@@ -648,24 +741,6 @@ export default function ModalActivity(props) {
           </div>
         </Grid>
       </Grid>
-      <div>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
-          สร้างรายการใหม่
-        </Button>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="secondary"
-          startIcon={<RemoveTwoToneIcon fontSize="small" />}
-        >
-          ลบรายการนี้
-        </Button>
-      </div>
     </div>
   );
 

@@ -23,7 +23,7 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
-import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
+import { withStyles } from "@material-ui/styles";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -148,13 +148,19 @@ const useStyle = makeStyles((theme) => {
       fontSize: "0.7rem",
       minWidth: "25%",
     },
-    tabs: {
-      height: "0.3rem",
+    disableLabel: {
+      "& .MuiInputLabel-root": {
+        color: "blue",
+      },
+      marginLeft:20,
+      marginRight:20,
+      width:'91%',
+      marginTop:2,
     },
   };
 });
 
-export default function ModalActivity(props) {
+export default function ModalPk3Activity(props) {
   const classes = useStyle();
   const { dataList } = props;
 
@@ -178,6 +184,7 @@ export default function ModalActivity(props) {
     audit_vehicleClass: "",
     audit_feeAmount: "",
     audit_comment: "",
+    pk3_comment: "",
   });
   const {
     audit_lp,
@@ -185,6 +192,7 @@ export default function ModalActivity(props) {
     audit_vehicleClass,
     audit_feeAmount,
     audit_comment,
+    pk3_comment,
   } = state;
 
   const handleChange = (event) => {
@@ -199,10 +207,11 @@ export default function ModalActivity(props) {
       audit_vehicleClass: audit_vehicleClass,
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
+      pk3_comment: pk3_comment,
     };
-    const res = await apiURL.post("/display-activity-update", sendData);
+    // const res = await apiURL.post("/display-activity-update", sendData);
     console.log(sendData);
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -246,7 +255,6 @@ export default function ModalActivity(props) {
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
-              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -459,6 +467,14 @@ export default function ModalActivity(props) {
               </TableBody>
             </table>
           </TableContainer>
+
+          <TextField
+            disabled
+            variant="outlined"
+            label="ข้อความจากผู้ตรวจสอบ"
+            value={audit_comment || ""}
+            className={classes.disableLabel}
+          />
         </Grid>
 
         <Grid item sm={4}>
@@ -554,73 +570,24 @@ export default function ModalActivity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="audit_lp"
-                      value={audit_lp}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{dataList.audit_lp}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="audit_province"
-                      value={audit_province}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{dataList.audit_province}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      select
-                      size="small"
-                      className={classes.textField}
-                      name="audit_vehicleClass"
-                      value={audit_vehicleClass || ""}
-                      onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
-                              {item.class}
-                            </option>
-                          ))
-                        : []}
-                    </TextField>
-                  </TableCell>
+                  <TableCell>{dataList.audit_vehicleClass}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      name="audit_feeAmount"
-                      select
-                      value={audit_feeAmount || ""}
-                      className={classes.textField}
-                      onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_feeAmount
-                        ? dataList.dropdown_audit_feeAmount.map((item) => (
-                            <option key={item.id} value={item.fee}>
-                              {item.fee}
-                            </option>
-                          ))
-                        : []}
-                    </TextField>
-                  </TableCell>
+                  <TableCell>{dataList.audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
+
           <div
             style={{
               display: "flex",
@@ -630,21 +597,30 @@ export default function ModalActivity(props) {
             }}
           >
             <TextField
-              style={{ width: 180, height: 20, padding: "10px" }}
-              name="audit_comment"
+              style={{ width: "1000%", height: 20, padding: "10px" }}
+              name="pk3_comment"
               label="คำสั่งแก้ไข"
-              value={audit_comment || ""}
+              value={pk3_comment || ""}
               onChange={handleChange}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ top: 17 }}
-              endIcon={<SendTwoToneIcon fontSize="small" />}
-              onClick={handleUpdate}
-            >
-              ส่งคำสั่งแก้ไข
-            </Button>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdate}
+                style={{ width: "6rem", margin: "0.2rem" }}
+              >
+                ยินยอม
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleUpdate}
+                style={{ width: "6rem", margin: "0.2rem" }}
+              >
+                ไม่ยินยอม
+              </Button>
+            </div>
           </div>
         </Grid>
       </Grid>
