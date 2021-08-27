@@ -151,8 +151,10 @@ export default function AllTsTableForPk3Activity(props) {
                             data.state === 2
                               ? "orange"
                               : data.state === 3
-                              ? "red"
-                              : "green",
+                              ? "blue"
+                              : data.state === 4
+                              ?'#990000'
+                              :'black'
                         }}
                       />
                       {data.match_id}

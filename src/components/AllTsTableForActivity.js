@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme) => {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
       },
+      pagination:{
+        '$ .MuiPagination-root' : {
+          position:'fixed',
+          top:0
+        }
+      }
     },
   };
 });
@@ -112,8 +118,9 @@ export default function AllTsTableForActivity(props) {
           style={{
             display: "inline",
             margin: "2rem",
-            position: "sticky",
+            position: "static",
             top: 0,
+
           }}
         />
         <Table stickyHeader>

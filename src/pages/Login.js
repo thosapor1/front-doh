@@ -87,7 +87,7 @@ export default function Login() {
         Cookies.set("checkpoint_id", res.data.result[0].checkpoint_id);
         Cookies.set("department_id", res.data.result[0].department_id);
         Cookies.set("highway_id", res.data.result[0].highway_id);
-        Cookies.set("id", res.data.result[0].id);
+        Cookies.set("userId", res.data.result[0].id);
         Cookies.set("permission_id", res.data.result[0].permission_id);
         Cookies.set("position_id", res.data.result[0].position_id);
         Cookies.set("username", res.data.result[0].username);

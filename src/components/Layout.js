@@ -81,6 +81,16 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+const removeCookies = () => {
+  Cookies.remove("checkpoint_id");
+  Cookies.remove("department_id");
+  Cookies.remove("highway_id");
+  Cookies.remove("userId");
+  Cookies.remove("permission_id");
+  Cookies.remove("position_id");
+  Cookies.remove("username");
+};
+
 export default function Layout({ children }) {
   const classes = useStyles();
   const history = useHistory();
@@ -194,7 +204,10 @@ export default function Layout({ children }) {
           color="primary"
           startIcon={<ExitToAppRoundedIcon />}
           className={classes.btn}
-          onClick={() => history.push("/audit_dev")}
+          onClick={() => {
+            history.push("/audit_dev");
+            removeCookies();
+          }}
         >
           ออกจากระบบ
         </Button>

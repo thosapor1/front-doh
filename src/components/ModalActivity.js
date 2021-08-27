@@ -24,6 +24,7 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
+import Cookies from "js-cookie";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -142,7 +143,7 @@ const useStyle = makeStyles((theme) => {
       height: 20,
       bottom: 5,
       width: 130,
-      '& .MuiInput-input':{fontSize:'0.9rem'}
+      "& .MuiInput-input": { fontSize: "0.9rem" },
     },
     tab: {
       fontSize: "0.7rem",
@@ -193,6 +194,7 @@ export default function ModalActivity(props) {
 
   const handleUpdate = async () => {
     const sendData = {
+      user_id: Cookies.get('userId'),
       transactionId: dataList.transactionId,
       audit_lp: audit_lp,
       audit_province: audit_province,
@@ -461,6 +463,7 @@ export default function ModalActivity(props) {
           </TableContainer>
         </Grid>
 
+        {/* Audit Block */}
         <Grid item sm={4}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -603,19 +606,19 @@ export default function ModalActivity(props) {
                     <TextField
                       size="small"
                       name="audit_feeAmount"
-                      select
-                      value={audit_feeAmount || ""}
+                      // select
+                      value={audit_vehicleClass==='C1'?'30':audit_vehicleClass==="C2"?'50':'70'}
                       className={classes.textField}
                       onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_feeAmount
+                    />
+                      {/* {!!dataList.dropdown_audit_feeAmount
                         ? dataList.dropdown_audit_feeAmount.map((item) => (
                             <option key={item.id} value={item.fee}>
                               {item.fee}
                             </option>
                           ))
                         : []}
-                    </TextField>
+                    </TextField> */}
                   </TableCell>
                 </TableRow>
               </TableBody>

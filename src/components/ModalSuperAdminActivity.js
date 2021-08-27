@@ -192,6 +192,7 @@ export default function ModalSuperAdminActivity(props) {
     audit_feeAmount: "",
     audit_comment: "",
     pk3_comment: "",
+    super_audit_comment: "",
   });
   const {
     audit_lp,
@@ -200,6 +201,7 @@ export default function ModalSuperAdminActivity(props) {
     audit_feeAmount,
     audit_comment,
     pk3_comment,
+    super_audit_comment,
   } = state;
 
   const handleChange = (event) => {
@@ -215,6 +217,7 @@ export default function ModalSuperAdminActivity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
+      super_audit_comment: super_audit_comment,
     };
     // const res = await apiURL.post("/display-activity-update", sendData);
     console.log(sendData);
@@ -369,25 +372,28 @@ export default function ModalSuperAdminActivity(props) {
               paddingRight: 10,
               display: "flex",
               justifyContent: "space-around",
-              marginTop: 178,
+              marginTop: 150,
             }}
           >
             <Button
               className={classes.btn}
               variant="contained"
-              color="primary"
+              color="secondary"
               // startIcon={<AddTwoToneIcon fontSize="small" />}
               style={{ width: 130 }}
             >
-              สร้างรายการใหม่
+              ลบรายการนี้
             </Button>
             <Button
               className={classes.btn}
               variant="contained"
-              color="secondary"
-              style={{ width: 130 }}
+              style={{
+                width: 130,
+                color: "white",
+                backgroundColor: "orange",
+              }}
             >
-              ลบรายการนี้
+              บันทึกแบบรายการพิเศษ
             </Button>
           </div>
         </Grid>
@@ -508,7 +514,7 @@ export default function ModalSuperAdminActivity(props) {
             disabled
             variant="outlined"
             label="ข้อความจากระบบจัดเก็บ"
-            value={audit_comment || ""}
+            value={dataList.pk3_comment || ""}
             className={classes.disableLabel}
           />
 
@@ -517,7 +523,7 @@ export default function ModalSuperAdminActivity(props) {
               <TableHead>
                 <TableRow className={classes.tableHead4}>
                   <TableCell colSpan={2} style={{ color: "white" }}>
-                    ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
+                    ระบุข้อมูลสุดท้าย
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -573,19 +579,25 @@ export default function ModalSuperAdminActivity(props) {
                     <TextField
                       size="small"
                       name="audit_feeAmount"
-                      select
-                      value={audit_feeAmount || ""}
+                      // select
+                      value={
+                        audit_vehicleClass === "C1"
+                          ? 30
+                          : audit_vehicleClass === "C2"
+                          ? 50
+                          : 70
+                      }
                       className={classes.textField}
                       onChange={handleChange}
-                    >
-                      {!!dataList.dropdown_audit_feeAmount
+                    />
+                    {/* {!!dataList.dropdown_audit_feeAmount
                         ? dataList.dropdown_audit_feeAmount.map((item) => (
                             <option key={item.id} value={item.fee}>
                               {item.fee}
                             </option>
                           ))
                         : []}
-                    </TextField>
+                    </TextField> */}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -719,14 +731,14 @@ export default function ModalSuperAdminActivity(props) {
               justifyContent: "space-between",
               paddingLeft: 20,
               paddingRight: 20,
-              marginTop:'106px',
+              marginTop: "106px",
             }}
           >
             <TextField
               style={{ width: 180, height: 20, padding: "10px" }}
-              name="audit_comment"
+              name="super_audit_comment"
               label="คำสั่งแก้ไข"
-              value={audit_comment || ""}
+              value={super_audit_comment || ""}
               onChange={handleChange}
             />
             <Button
