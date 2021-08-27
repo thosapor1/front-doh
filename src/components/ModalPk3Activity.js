@@ -142,7 +142,7 @@ const useStyle = makeStyles((theme) => {
       height: 20,
       bottom: 5,
       width: 130,
-      '& .MuiInput-input':{fontSize:'0.9rem'}
+      "& .MuiInput-input": { fontSize: "0.9rem" },
     },
     tab: {
       fontSize: "0.7rem",
@@ -152,10 +152,10 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-root": {
         color: "blue",
       },
-      marginLeft:20,
-      marginRight:20,
-      width:'91%',
-      marginTop:2,
+      marginLeft: 20,
+      marginRight: 20,
+      width: "91%",
+      marginTop: 2,
     },
   };
 });
@@ -244,6 +244,7 @@ export default function ModalPk3Activity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
+        {/* Dlt Block */}
         <Grid item sm={4} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -355,6 +356,32 @@ export default function ModalPk3Activity(props) {
               </TableBody>
             </table>
           </TableContainer>
+          <div
+            style={{
+              paddingLeft: 10,
+              paddingRight: 10,
+              marginTop: 33,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+            >
+              สร้างรายการใหม่
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="secondary"
+              startIcon={<RemoveTwoToneIcon fontSize="small" />}
+            >
+              ลบรายการนี้
+            </Button>
+          </div>
         </Grid>
 
         <Grid item sm={4}>
@@ -474,6 +501,7 @@ export default function ModalPk3Activity(props) {
             label="ข้อความจากผู้ตรวจสอบ"
             value={audit_comment || ""}
             className={classes.disableLabel}
+            style={{ marginTop: 26 }}
           />
         </Grid>
 
@@ -597,7 +625,12 @@ export default function ModalPk3Activity(props) {
             }}
           >
             <TextField
-              style={{ width: "1000%", height: 20, padding: "10px" }}
+              style={{
+                width: "1000%",
+                height: 20,
+                padding: "10px",
+                marginTop: 25,
+              }}
               name="pk3_comment"
               label="คำสั่งแก้ไข"
               value={pk3_comment || ""}
@@ -624,24 +657,6 @@ export default function ModalPk3Activity(props) {
           </div>
         </Grid>
       </Grid>
-      <div>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
-          สร้างรายการใหม่
-        </Button>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="secondary"
-          startIcon={<RemoveTwoToneIcon fontSize="small" />}
-        >
-          ลบรายการนี้
-        </Button>
-      </div>
     </div>
   );
 
