@@ -27,7 +27,7 @@ import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: "http://202.183.167.92:3010/audit/api/v1",
 });
 
 function TabPanel1(props) {
@@ -192,9 +192,19 @@ export default function ModalActivity(props) {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
+  const handleOptionChange = (event) => {
+    setState({...state,audit_vehicleClass:event.target.value})
+    if(event.target.value==='C1'){
+      setState({...state,audit_feeAmount:30})
+    }else if(event.target.value==='C2'){
+      setState({...state,audit_feeAmount:50})
+    }
+    console.log(audit_feeAmount)
+  };
+
   const handleUpdate = async () => {
     const sendData = {
-      user_id: Cookies.get('userId'),
+      user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
       audit_lp: audit_lp,
       audit_province: audit_province,
@@ -202,7 +212,7 @@ export default function ModalActivity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
     };
-    const res = await apiURL.post("/display-activity-update", sendData);
+    const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
     console.log(res.data);
   };
@@ -588,7 +598,7 @@ export default function ModalActivity(props) {
                       className={classes.textField}
                       name="audit_vehicleClass"
                       value={audit_vehicleClass || ""}
-                      onChange={handleChange}
+                      onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
@@ -602,24 +612,7 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      name="audit_feeAmount"
-                      // select
-                      value={audit_vehicleClass==='C1'?'30':audit_vehicleClass==="C2"?'50':'70'}
-                      className={classes.textField}
-                      onChange={handleChange}
-                    />
-                      {/* {!!dataList.dropdown_audit_feeAmount
-                        ? dataList.dropdown_audit_feeAmount.map((item) => (
-                            <option key={item.id} value={item.fee}>
-                              {item.fee}
-                            </option>
-                          ))
-                        : []}
-                    </TextField> */}
-                  </TableCell>
+                  <TableCell>{audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
