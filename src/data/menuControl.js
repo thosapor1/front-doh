@@ -15,11 +15,6 @@ export const menuItemsForSuperAdmin = [
     path: "/auditDisplay",
   },
   {
-    text: "รายการรอตรวจสอบ",
-    icon: "playlist_add_check",
-    path: "/pk3Display",
-  },
-  {
     text: "super audit display",
     icon: "remove_red_eye",
     path: "/superAuditDisplay",
@@ -143,8 +138,7 @@ export const menuItemsForMember = [
   },
 ];
 
-export const menuConfigForMember = [
-];
+export const menuConfigForMember = [];
 
 export const menuItemsForPk3 = [
   {

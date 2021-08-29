@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import P_login from "../image/p_login.jpg";
-import Logo_doh from "../image/logo_doh.png";
+import P_login from "../image/P_login.jpg";
+import Logo_doh from "../image/Logo_doh.png";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -96,7 +96,7 @@ export default function Login() {
       if (res.data.status == true && res.data.result[0].department_id == 1) {
         console.log("pass", res.data.status);
         setCookies()
-        history.push("/dashboard");
+        history.push("/rawTransaction");
       } else if (
         res.data.status == true &&
         res.data.result[0].department_id == 2

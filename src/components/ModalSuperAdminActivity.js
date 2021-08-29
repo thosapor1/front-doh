@@ -18,7 +18,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/logo_doh.png";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
@@ -76,6 +76,22 @@ function TabPanel3(props) {
   );
 }
 
+function TabPanel4(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`taps3-${index}`}
+      aria-labelledby={`taps3-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -87,7 +103,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
-      width: "60%",
+      width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
@@ -175,6 +191,7 @@ export default function ModalSuperAdminActivity(props) {
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);
   const [value3, setValue3] = React.useState(2);
+  const [value4, setValue4] = React.useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -185,52 +202,87 @@ export default function ModalSuperAdminActivity(props) {
   const handleChangeTabs3 = (event, newValue) => {
     setValue3(newValue);
   };
+  const handleChangeTabs4 = (event, newValue) => {
+    setValue4(newValue);
+  };
 
+  const mockPic = 0;
   const [state, setState] = useState({
     super_audit_lp: "",
     super_audit_province: "",
-    super_audit_vehicleClass: "",
-    super_audit_feeAmount: "",
     super_audit_comment: "",
-    super_audit_approve_id: "",
   });
-  const {
-    super_audit_lp,
-    super_audit_province,
-    super_audit_comment,
-    super_audit_approve_id,
-  } = state;
+  const { super_audit_lp, super_audit_province, super_audit_comment } = state;
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
+  const [super_audit_vehicleClass, setSuper_audit_vehicleClass] = useState("");
+  const [super_audit_feeAmount, setSuper_audit_feeAmount] = useState("");
+  const [super_audit_vehicleClass_id, setSuper_Audit_vehicleClass_id] =
+    useState(0);
 
-  const [super_audit_vehicleClass, setSuper_audit_vehicleClass] = useState("")
-  const [super_audit_feeAmount, setSuper_audit_feeAmount] = useState("")
+  // const handleOptionChange = (event) => {
+  //   setSuper_audit_vehicleClass(event.target.value);
+  //   if (event.target.value === dataList.dropdown_audit_vehicelClass[0].class) {
+  //     setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[0].fee);
+  //   } else if (
+  //     event.target.value === dataList.dropdown_audit_vehicelClass[1].class
+  //   ) {
+  //     setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[1].fee);
+  //   } else if (
+  //     event.target.value === dataList.dropdown_audit_vehicelClass[2].class
+  //   ) {
+  //     setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[2].fee);
+  //   } else {
+  //     setSuper_audit_feeAmount("");
+  //   }
+  //   console.log(super_audit_feeAmount)
+  // };
+
   const handleOptionChange = (event) => {
-    setSuper_audit_vehicleClass(event.target.value)
-    if (event.target.value === dataList.dropdown_audit_vehicelClass[0].class) {
-      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[0].fee)
-    } else if (event.target.value === dataList.dropdown_audit_vehicelClass[1].class) {
-      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[1].fee)
-    } else if (event.target.value === dataList.dropdown_audit_vehicelClass[2].class) {
-      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[2].fee)
-    } else {
-      setSuper_audit_feeAmount("")
+    setSuper_audit_vehicleClass(event.target.value);
+    setSuper_Audit_vehicleClass_id(1);
+    if (event.target.value === "C1") {
+      setSuper_audit_feeAmount(30);
+    } else if (event.target.value === "C2") {
+      setSuper_audit_feeAmount(50);
+    } else if (event.target.value === "C3") {
+      setSuper_audit_feeAmount(70);
+    } else if (event.target.value === "C1 + C1") {
+      setSuper_audit_feeAmount(60);
+    } else if (event.target.value === "C2 + C1") {
+      setSuper_audit_feeAmount(80);
+    } else if (event.target.value === "C2 + C2") {
+      setSuper_audit_feeAmount(100);
+    } else if (event.target.value === "C2 + C3") {
+      setSuper_audit_feeAmount(120);
+    } else if (event.target.value === "C3 + C1") {
+      setSuper_audit_feeAmount(100);
+    } else if (event.target.value === "C3 + C2") {
+      setSuper_audit_feeAmount(120);
+    } else if (event.target.value === "C3 + C3") {
+      setSuper_audit_feeAmount(140);
     }
-    // console.log(super_audit_feeAmount)
+
+    console.log(
+      super_audit_feeAmount,
+      super_audit_vehicleClass,
+      event.target.value
+    );
   };
 
   const handleUpdate = async () => {
     const sendData = {
-      super_audit_approve_id: Cookies.get('userId'),
+      super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
       super_audit_lp: super_audit_lp,
       super_audit_province: super_audit_province,
       super_audit_vehicleClass: super_audit_vehicleClass,
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
+      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
     // const res = await apiURL.post("/display-activity-update", sendData);
     console.log(sendData);
@@ -267,8 +319,8 @@ export default function ModalSuperAdminActivity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        <Grid item sm={4} className={classes.cardItem}>
-          {/* Dlt Block */}
+        <Grid item sm={3} className={classes.cardItem}>
+          {/* Audit Block */}
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
@@ -309,7 +361,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -320,9 +372,9 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  Logo_doh
+                    Logo_doh
                   : noImage
               }
               className={classes.image}
@@ -343,7 +395,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -411,8 +463,93 @@ export default function ModalSuperAdminActivity(props) {
           </div>
         </Grid>
 
+        {/* Audit-DVES block */}
+        <Grid item sm={3} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
+          </div>
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value4}
+              onChange={handleChangeTabs4}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value4} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
         {/* Pk3 Block */}
-        <Grid item sm={4}>
+        <Grid item sm={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
@@ -453,7 +590,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -464,7 +601,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -486,7 +623,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -578,10 +715,10 @@ export default function ModalSuperAdminActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                          <option key={item.id} value={item.class}>
-                            {item.class}
-                          </option>
-                        ))
+                            <option key={item.id} value={item.class}>
+                              {item.class}
+                            </option>
+                          ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -602,8 +739,8 @@ export default function ModalSuperAdminActivity(props) {
                         //       : ""
                         super_audit_feeAmount
                       }
-                    // className={classes.textField}
-                    // onChange={handleChange}
+                      // className={classes.textField}
+                      // onChange={handleChange}
                     />
                     {/* {!!dataList.dropdown_audit_feeAmount
                         ? dataList.dropdown_audit_feeAmount.map((item) => (
@@ -621,7 +758,7 @@ export default function ModalSuperAdminActivity(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={4}>
+        <Grid item sm={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
@@ -662,7 +799,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -673,7 +810,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -695,7 +832,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -742,15 +879,15 @@ export default function ModalSuperAdminActivity(props) {
 
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
+              // display: "flex",
+              // justifyContent: "space-between",
               paddingLeft: 20,
               paddingRight: 20,
-              marginTop: "106px",
+              marginTop: 70,
             }}
           >
             <TextField
-              style={{ width: 180, height: 20, padding: "10px" }}
+              style={{ width: "100%", height: 20, padding: "10px" }}
               name="super_audit_comment"
               label="คำสั่งแก้ไข"
               value={super_audit_comment || ""}
@@ -759,8 +896,8 @@ export default function ModalSuperAdminActivity(props) {
             <Button
               variant="contained"
               color="primary"
-              style={{ top: 17 }}
-              endIcon={<SendTwoToneIcon fontSize="small" />}
+              style={{ top: 17, marginTop: 10 }}
+              // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >
               ส่งคำสั่งแก้ไข

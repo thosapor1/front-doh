@@ -64,10 +64,10 @@ const stations = [
   { value: "0", label: "ทุกด่าน" },
 ];
 const statusValue = [
-  { id:0,value: "0", label: "ทุกสถานะ" },
-  { id:1,value: "1", label: "รายการปกติ" },
-  { id:2,value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
-  { id:3,value: "3", label: "รายการสูญหาย" },
+  { id: 0, value: "0", label: "ทุกสถานะ" },
+  { id: 1, value: "1", label: "รายการปกติ" },
+  { id: 2, value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
+  { id: 3, value: "3", label: "รายการสูญหาย" },
 ];
 
 const apiURL = axios.create({
@@ -87,7 +87,7 @@ export default function RawTransaction() {
 
   const [page, setPage] = useState(1);
   const [station, setStation] = useState(0);
-  const [id, setId] = useState(0)
+  const [id, setId] = useState(0);
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
   const classes = useStyle();
@@ -103,23 +103,23 @@ export default function RawTransaction() {
   };
 
   const handleStatusChange = (event) => {
-    setId(event.target.value)
+    setId(event.target.value);
     setStatus(event.target.value);
-    if(event.target.value == 3){
-      setStatus(2)
-      setSubState(2)
-    }else if(event.target.value== 2){
-      setStatus(2)
-      setSubState(1)
-    }else if(event.target.value==1){
-      setStatus(1)
-      setSubState(1)
-    }else if(event.target.value==0){
-      setStatus(0)
-      setSubState(0)
+    if (event.target.value == 3) {
+      setStatus(2);
+      setSubState(2);
+    } else if (event.target.value == 2) {
+      setStatus(2);
+      setSubState(1);
+    } else if (event.target.value == 1) {
+      setStatus(1);
+      setSubState(1);
+    } else if (event.target.value == 0) {
+      setStatus(0);
+      setSubState(0);
     }
-    console.log(`subState: ${subState}`)
-    console.log(`status: ${status}`)
+    console.log(`subState: ${subState}`);
+    console.log(`status: ${status}`);
   };
   async function fetchData(pageId = 1) {
     const date = format(selectedDate, "yyyy-MM-dd");
@@ -160,7 +160,7 @@ export default function RawTransaction() {
   }, []);
 
   return (
-    <Container className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ</Typography>
       {/* Search Block */}
       <Grid container className={classes.allSelect}>
@@ -201,10 +201,12 @@ export default function RawTransaction() {
             label="สถานะ"
             className={classes.textField}
             value={id}
-            onChange={(event) => {handleStatusChange(event)}}
+            onChange={(event) => {
+              handleStatusChange(event);
+            }}
           >
             {statusValue.map((item) => (
-              <option key={item.label} value={item.id} >
+              <option key={item.label} value={item.id}>
                 {item.label}
               </option>
             ))}

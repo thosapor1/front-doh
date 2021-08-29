@@ -16,7 +16,7 @@ import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import { useHistory, useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
-import s_logo_doh from "../image/s_logo_doh.png";
+import s_logo_doh from "../image/S_logo_doh.png";
 import {
   menuItemsForAdmin,
   menuConfigForAdmin,

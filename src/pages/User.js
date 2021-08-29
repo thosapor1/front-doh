@@ -195,7 +195,7 @@ export default function User() {
   // Body Modal
 
   return (
-    <Container className={classes.root}>
+    <Container maxWidth='xl' className={classes.root}>
       <Typography variant="h6">ตั้งค่า : ผู้ใช้งาน</Typography>
       <Paper className={classes.paper}>
         <div style={{ textAlign: "right" }}>

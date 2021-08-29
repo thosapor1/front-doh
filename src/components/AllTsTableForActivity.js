@@ -143,7 +143,7 @@ export default function AllTsTableForActivity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData("T20210714-6104bdec-69d7-4d4b-980e-7e5893e1a1136");
+                      fetchData(data.transactionId);
                       handleOpen();
                     }}
                     className={classes.tableRow}
@@ -160,7 +160,7 @@ export default function AllTsTableForActivity(props) {
                               : "green",
                         }}
                       />
-                      {data.match_id}
+                      {/* {data.match_id} */}
                     </TableCell>
                     <TableCell align="center">{data.transactionId}</TableCell>
                     <TableCell align="center">{data.timestamp}</TableCell>

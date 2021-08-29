@@ -213,7 +213,7 @@ export default function AuditTable(props) {
                             : "green",
                       }}
                     />
-                    {row.match_id}
+                    {/* {row.match_id} */}
                   </TableCell>
                   <TableCell align="center">{row.transactionId}</TableCell>
                   <TableCell align="center">{row.lane_id}</TableCell>

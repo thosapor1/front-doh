@@ -18,7 +18,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/logo_doh.png";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
@@ -76,6 +76,21 @@ function TabPanel3(props) {
     </div>
   );
 }
+function TabPanel4(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`taps3-${index}`}
+      aria-labelledby={`taps3-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
 
 function a11yProps(index) {
   return {
@@ -88,7 +103,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
-      width: "60%",
+      width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
@@ -137,6 +152,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn: {
       margin: theme.spacing(1),
+      fontSize:12
     },
     textField: {
       height: 20,
@@ -167,6 +183,7 @@ export default function ModalPk3Activity(props) {
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);
   const [value3, setValue3] = React.useState(2);
+  const [value4, setValue4] = React.useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -177,7 +194,11 @@ export default function ModalPk3Activity(props) {
   const handleChangeTabs3 = (event, newValue) => {
     setValue3(newValue);
   };
+  const handleChangeTabs4 = (event, newValue) => {
+    setValue4(newValue);
+  };
 
+  const mockPic = 0;
   const [state, setState] = useState({
     audit_lp: "",
     audit_province: "",
@@ -260,8 +281,8 @@ export default function ModalPk3Activity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* Dlt Block */}
-        <Grid item sm={4} className={classes.cardItem}>
+        {/* Audit Block */}
+        <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
@@ -400,7 +421,94 @@ export default function ModalPk3Activity(props) {
           </div>
         </Grid>
 
-        <Grid item sm={4}>
+        {/* Audit-DVES block */}
+        <Grid item sm={3} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
+          </div>
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value4}
+              onChange={handleChangeTabs4}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value4} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    Logo_doh
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
+        {/* ALPR Block */}
+        <Grid item sm={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
@@ -521,10 +629,12 @@ export default function ModalPk3Activity(props) {
           />
         </Grid>
 
-        <Grid item sm={4}>
+
+              {/* DVES Block */}
+        <Grid item sm={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
+            <Typography style={{ marginLeft: 10 }}>DVES</Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
             <Tabs

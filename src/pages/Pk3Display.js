@@ -211,7 +211,7 @@ export default function AuditDisplay() {
 
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
+    <Container maxWidth='xl' className={classes.root}>
       <Typography variant="h6">รายการรอการตรวจสอบ</Typography>
 
       {/* Filter Section */}
