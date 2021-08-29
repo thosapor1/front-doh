@@ -18,15 +18,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
+import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
-import { withStyles } from "@material-ui/styles";
+import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: "http://202.183.167.92:3010/audit/api/v1",
 });
 
 function TabPanel1(props) {
@@ -199,8 +199,9 @@ export default function ModalPk3Activity(props) {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const handleUpdate = async () => {
+  const handleUpdateState3To4 = async () => {
     const sendData = {
+      user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
       audit_lp: audit_lp,
       audit_province: audit_province,
@@ -209,9 +210,24 @@ export default function ModalPk3Activity(props) {
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
     };
-    // const res = await apiURL.post("/display-activity-update", sendData);
+    const res = await apiURL.post("/changeState3to4", sendData);
     console.log(sendData);
-    // console.log(res.data);
+    console.log(res.data);
+  };
+  const handleUpdateState3To6 = async () => {
+    const sendData = {
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.transactionId,
+      audit_lp: audit_lp,
+      audit_province: audit_province,
+      audit_vehicleClass: audit_vehicleClass,
+      audit_feeAmount: audit_feeAmount,
+      audit_comment: audit_comment,
+      pk3_comment: pk3_comment,
+    };
+    const res = await apiURL.post("/changeState3to6", sendData);
+    console.log(sendData);
+    console.log(res.data);
   };
 
   useEffect(() => {
@@ -640,7 +656,7 @@ export default function ModalPk3Activity(props) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleUpdate}
+                onClick={handleUpdateState3To4}
                 style={{ width: "6rem", margin: "0.2rem" }}
               >
                 ยินยอม
@@ -648,7 +664,7 @@ export default function ModalPk3Activity(props) {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleUpdate}
+                onClick={handleUpdateState3To6}
                 style={{ width: "6rem", margin: "0.2rem" }}
               >
                 ไม่ยินยอม

@@ -18,7 +18,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
+import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
@@ -176,28 +176,28 @@ export default function ModalActivity(props) {
   const [state, setState] = useState({
     audit_lp: "",
     audit_province: "",
-    audit_vehicleClass: "",
-    audit_feeAmount: "",
     audit_comment: "",
   });
   const {
     audit_lp,
     audit_province,
-    audit_vehicleClass,
-    audit_feeAmount,
     audit_comment,
   } = state;
 
+  const [audit_vehicleClass, setAudit_vehicleClass] = useState("")
+  const [audit_feeAmount, setAudit_feeAmount] = useState("")
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
   const handleOptionChange = (event) => {
-    setState({...state,audit_vehicleClass:event.target.value})
-    if(event.target.value==='C1'){
-      setState({...state,audit_feeAmount:30})
-    }else if(event.target.value==='C2'){
-      setState({...state,audit_feeAmount:50})
+    setAudit_vehicleClass(event.target.value)
+    if (event.target.value === 'C1') {
+      setAudit_feeAmount(30)
+    } else if (event.target.value === 'C2') {
+      setAudit_feeAmount(50)
+    } else if (event.target.value === 'C3') {
+      setAudit_feeAmount(70)
     }
     console.log(audit_feeAmount)
   };
@@ -220,6 +220,8 @@ export default function ModalActivity(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
+      setAudit_vehicleClass(dataList.audit_vehicleClass)
+      setAudit_feeAmount(dataList.audit_feeAmount)
       console.log("MyState", state, "dataList", dataList);
     }
   }, [dataList]);
@@ -302,7 +304,7 @@ export default function ModalActivity(props) {
               src={
                 dataList.audit_pic_crop != 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                  Logo_doh
                   : noImage
               }
               className={classes.image}
@@ -602,17 +604,17 @@ export default function ModalActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
-                              {item.class}
-                            </option>
-                          ))
+                          <option key={item.id} value={item.class}>
+                            {item.class}
+                          </option>
+                        ))
                         : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{audit_feeAmount}</TableCell>
+                  <TableCell>{audit_vehicleClass === 'C1' ? 30 : audit_vehicleClass === 'C2' ? 50 : 70}</TableCell>
                 </TableRow>
               </TableBody>
             </table>

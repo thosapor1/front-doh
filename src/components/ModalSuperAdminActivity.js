@@ -18,10 +18,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
+import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
+import Cookies from "js-cookie";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -186,37 +187,49 @@ export default function ModalSuperAdminActivity(props) {
   };
 
   const [state, setState] = useState({
-    audit_lp: "",
-    audit_province: "",
-    audit_vehicleClass: "",
-    audit_feeAmount: "",
-    audit_comment: "",
-    pk3_comment: "",
+    super_audit_lp: "",
+    super_audit_province: "",
+    super_audit_vehicleClass: "",
+    super_audit_feeAmount: "",
     super_audit_comment: "",
+    super_audit_approve_id: "",
   });
   const {
-    audit_lp,
-    audit_province,
-    audit_vehicleClass,
-    audit_feeAmount,
-    audit_comment,
-    pk3_comment,
+    super_audit_lp,
+    super_audit_province,
     super_audit_comment,
+    super_audit_approve_id,
   } = state;
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
+
+  const [super_audit_vehicleClass, setSuper_audit_vehicleClass] = useState("")
+  const [super_audit_feeAmount, setSuper_audit_feeAmount] = useState("")
+  const handleOptionChange = (event) => {
+    setSuper_audit_vehicleClass(event.target.value)
+    if (event.target.value === dataList.dropdown_audit_vehicelClass[0].class) {
+      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[0].fee)
+    } else if (event.target.value === dataList.dropdown_audit_vehicelClass[1].class) {
+      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[1].fee)
+    } else if (event.target.value === dataList.dropdown_audit_vehicelClass[2].class) {
+      setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[2].fee)
+    } else {
+      setSuper_audit_feeAmount("")
+    }
+    // console.log(super_audit_feeAmount)
+  };
+
   const handleUpdate = async () => {
     const sendData = {
+      super_audit_approve_id: Cookies.get('userId'),
       transactionId: dataList.transactionId,
-      audit_lp: audit_lp,
-      audit_province: audit_province,
-      audit_vehicleClass: audit_vehicleClass,
-      audit_feeAmount: audit_feeAmount,
-      audit_comment: audit_comment,
-      pk3_comment: pk3_comment,
+      super_audit_lp: super_audit_lp,
+      super_audit_province: super_audit_province,
+      super_audit_vehicleClass: super_audit_vehicleClass,
+      super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
     };
     // const res = await apiURL.post("/display-activity-update", sendData);
@@ -309,7 +322,7 @@ export default function ModalSuperAdminActivity(props) {
               src={
                 dataList.audit_pic_crop != 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                  Logo_doh
                   : noImage
               }
               className={classes.image}
@@ -534,8 +547,8 @@ export default function ModalSuperAdminActivity(props) {
                     <TextField
                       size="small"
                       className={classes.textField}
-                      name="audit_lp"
-                      value={audit_lp}
+                      name="super_audit_lp"
+                      value={super_audit_lp}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -546,8 +559,8 @@ export default function ModalSuperAdminActivity(props) {
                     <TextField
                       size="small"
                       className={classes.textField}
-                      name="audit_province"
-                      value={audit_province}
+                      name="super_audit_province"
+                      value={super_audit_province}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -559,16 +572,16 @@ export default function ModalSuperAdminActivity(props) {
                       select
                       size="small"
                       className={classes.textField}
-                      name="audit_vehicleClass"
-                      value={audit_vehicleClass || ""}
-                      onChange={handleChange}
+                      name="super_audit_vehicleClass"
+                      value={super_audit_vehicleClass || ""}
+                      onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
-                              {item.class}
-                            </option>
-                          ))
+                          <option key={item.id} value={item.class}>
+                            {item.class}
+                          </option>
+                        ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -578,17 +591,19 @@ export default function ModalSuperAdminActivity(props) {
                   <TableCell>
                     <TextField
                       size="small"
-                      name="audit_feeAmount"
+                      name="super_audit_feeAmount"
                       // select
                       value={
-                        audit_vehicleClass === "C1"
-                          ? 30
-                          : audit_vehicleClass === "C2"
-                          ? 50
-                          : 70
+                        // super_audit_vehicleClass === "C1"
+                        //   ? 30
+                        //   : super_audit_vehicleClass === "C2"
+                        //     ? 50
+                        //     : super_audit_vehicleClass === "C3" ? 70
+                        //       : ""
+                        super_audit_feeAmount
                       }
-                      className={classes.textField}
-                      onChange={handleChange}
+                    // className={classes.textField}
+                    // onChange={handleChange}
                     />
                     {/* {!!dataList.dropdown_audit_feeAmount
                         ? dataList.dropdown_audit_feeAmount.map((item) => (
@@ -721,7 +736,7 @@ export default function ModalSuperAdminActivity(props) {
             disabled
             variant="outlined"
             label="ข้อความจากผู้ตรวจสอบ"
-            value={audit_comment || ""}
+            value={dataList.audit_comment || ""}
             className={classes.disableLabel}
           />
 
