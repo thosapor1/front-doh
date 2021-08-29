@@ -191,14 +191,12 @@ export default function ModalActivity(props) {
   };
 
   const handleOptionChange = (event) => {
-    setAudit_vehicleClass(event.target.value)
-    if (event.target.value === 'C1') {
-      setAudit_feeAmount(30)
-    } else if (event.target.value === 'C2') {
-      setAudit_feeAmount(50)
-    } else if (event.target.value === 'C3') {
-      setAudit_feeAmount(70)
+    const id = event.target.value - 1
+    if (id > 0) {
+      setAudit_vehicleClass(dataList.dropdown_audit_vehicelClass[id].class)
+      setAudit_feeAmount(dataList.dropdown_audit_feeAmount[id].fee)
     }
+
     console.log(audit_feeAmount)
   };
 
@@ -604,7 +602,7 @@ export default function ModalActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                          <option key={item.id} value={item.class}>
+                          <option key={item.id} value={item.id}>
                             {item.class}
                           </option>
                         ))
@@ -614,7 +612,7 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{audit_vehicleClass === 'C1' ? 30 : audit_vehicleClass === 'C2' ? 50 : 70}</TableCell>
+                  <TableCell>{audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
