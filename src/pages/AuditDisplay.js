@@ -57,9 +57,11 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     card: {
-      width: 290,
-      height: 90,
+      width: '100%',
+      height: 100,
       display: "flex",
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(1)
     },
     btn: {
       backgroundColor: "#46005E",
@@ -336,7 +338,7 @@ export default function AuditDisplay() {
             }}
           >
             <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item>
+              <Grid item >
                 <Typography
                   style={{
                     color:
@@ -362,6 +364,8 @@ export default function AuditDisplay() {
           </Paper>
         ))}
       </div>
+
+      
 
       {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>

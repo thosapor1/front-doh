@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       width: 290,
-      height: 90,
+      height: 100,
       display: "flex",
     },
     btn: {

@@ -896,7 +896,7 @@ export default function ModalSuperAdminActivity(props) {
             <Button
               variant="contained"
               color="primary"
-              style={{ top: 17, marginTop: 10 }}
+              style={{ top: 17, marginTop: 10, float:'right' }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >

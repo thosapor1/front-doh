@@ -18,6 +18,18 @@ import { format } from "date-fns";
 
 const useStyle = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {
       backgroundColor: "#f9f9f9",
       paddingTop: 20,
@@ -53,6 +65,24 @@ const useStyle = makeStyles((theme) => {
       marginTop: 16,
       marginLeft: 50,
     },
+    card: {
+      width: "100%",
+      height: 100,
+      display: "flex",
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(1),
+    },
+    cardSection: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginTop: 10,
+    },
+    filterSection: {
+      display: "flex",
+      padding: theme.spacing(2),
+      width: "auto",
+      marginTop: 10,
+    },
   };
 });
 
@@ -85,6 +115,7 @@ export default function RawTransaction() {
     record: [{}],
   });
 
+  const [summary, setSummary] = useState([]);
   const [page, setPage] = useState(1);
   const [station, setStation] = useState(0);
   const [id, setId] = useState(0);
@@ -101,6 +132,29 @@ export default function RawTransaction() {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const dataCard = [
+    {
+      value: summary.total,
+      status: "total",
+      label: "รายการทั้งหมด",
+    },
+    {
+      value: summary.normal,
+      status: "normal",
+      label: "รายการปกติ",
+    },
+    {
+      value: summary.unMatch,
+      status: "unMatch",
+      label: "รายการข้อมูลไม่ตรงกัน",
+    },
+    {
+      value: summary.miss,
+      status: "miss",
+      label: "รายการสูญหาย",
+    },
+  ];
 
   const handleStatusChange = (event) => {
     setId(event.target.value);
@@ -122,7 +176,8 @@ export default function RawTransaction() {
     console.log(`status: ${status}`);
   };
   async function fetchData(pageId = 1) {
-    const date = format(selectedDate, "yyyy-MM-dd");
+    // const date = format(selectedDate, "yyyy-MM-dd");
+    const date = "2021-08-10";
 
     if (pageId == 1) {
       setPage(1);
@@ -149,6 +204,7 @@ export default function RawTransaction() {
         record: [],
       });
       setState(res.data);
+      setSummary(!!res.data.summary ? res.data.summary : summary);
       console.log(res.data);
       // console.log(`state_length: ${state.record.length}`);
     });
@@ -163,7 +219,7 @@ export default function RawTransaction() {
     <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ</Typography>
       {/* Search Block */}
-      <Grid container className={classes.allSelect}>
+      <Paper className={classes.filterSection}>
         <Grid item className={classes.containedSelect} md={8}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -242,67 +298,50 @@ export default function RawTransaction() {
             ค้นหา
           </Button>
         </Grid>
-      </Grid>
+      </Paper>
 
-      {/* CardMedia block */}
-      <div className={classes.containedPaper}>
-        <Paper
-          className={classes.paper}
-          style={{ borderLeft: "solid darkgray" }}
-        >
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item>
-              <Typography>รายการทั้งหมด</Typography>
-              <Typography>
-                {state.summary.total}
-                รายการ
-              </Typography>
+      {/* Card Section */}
+      <div className={classes.cardSection}>
+        {dataCard.map((card) => (
+          <Paper
+            className={classes.card}
+            style={{
+              borderLeft:
+                card.status === "total"
+                  ? "3px solid gray"
+                  : card.status === "normal"
+                  ? "3px solid green"
+                  : card.status === "unMatch"
+                  ? "3px solid orange"
+                  : "3px solid red",
+            }}
+          >
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item>
+                <Typography
+                  style={{
+                    color:
+                      card.status === "total"
+                        ? "gray"
+                        : card.status === "normal"
+                        ? "green"
+                        : card.status === "unMatch"
+                        ? "orange"
+                        : "red",
+                  }}
+                >
+                  {card.label}
+                </Typography>
+                <Typography>
+                  {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
+                </Typography>
+              </Grid>
+              <Grid>
+                <DescriptionTwoToneIcon />
+              </Grid>
             </Grid>
-            <Grid>
-              <DescriptionTwoToneIcon />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper className={classes.paper} style={{ borderLeft: "solid green" }}>
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item>
-              <Typography style={{ color: "green" }}>รายการปกติ</Typography>
-              <Typography> {state.summary.normal} รายการ</Typography>
-            </Grid>
-            <Grid>
-              <DescriptionTwoToneIcon />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          className={classes.paper}
-          style={{ borderLeft: "solid #ffa726" }}
-        >
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item>
-              <Typography style={{ color: "#ffa726" }}>
-                รายการข้อมูลไม่ตรงกัน
-              </Typography>
-              <Typography> {state.summary.unMatch} รายการ</Typography>
-            </Grid>
-            <Grid>
-              <DescriptionTwoToneIcon />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper className={classes.paper} style={{ borderLeft: "solid red" }}>
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item>
-              <Typography style={{ color: "red" }}>
-                รายการข้อมูลสูญหาย
-              </Typography>
-              <Typography> {state.summary.miss} รายการ</Typography>
-            </Grid>
-            <Grid>
-              <DescriptionTwoToneIcon />
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        ))}
       </div>
 
       {/* Table Blcok */}
