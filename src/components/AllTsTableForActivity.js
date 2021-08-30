@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalActivity from "./ModalActivity";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -31,12 +32,12 @@ const useStyles = makeStyles((theme) => {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
       },
-      pagination:{
-        '$ .MuiPagination-root' : {
-          position:'fixed',
-          top:0
-        }
-      }
+      pagination: {
+        "$ .MuiPagination-root": {
+          position: "fixed",
+          top: 0,
+        },
+      },
     },
   };
 });
@@ -89,11 +90,18 @@ export default function AllTsTableForActivity(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = async (ts) => {
-    const res = await apiURL.post("/display-activity", {
-      transactionId: ts,
-    });
-    console.log("res2:", res.data);
-    SetDataForActivity(res.data);
+  
+    apiURL
+      .post("/display-activity", { transactionId: ts })
+      .then((res) => {SetDataForActivity(res.data);console.log("res2:", res.data);})
+      .catch((error) => {
+        handleClose()
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+    
   };
 
   const handleOpen = async () => {
@@ -120,7 +128,6 @@ export default function AllTsTableForActivity(props) {
             margin: "2rem",
             position: "static",
             top: 0,
-
           }}
         />
         <Table stickyHeader>

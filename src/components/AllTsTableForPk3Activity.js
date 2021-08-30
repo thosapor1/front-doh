@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalPk3Activity from "./ModalPk3Activity";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -83,11 +84,19 @@ export default function AllTsTableForPk3Activity(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = async (ts) => {
-    const res = await apiURL.post("/pk3display-activity", {
-      transactionId: ts,
-    });
-    console.log("res2:", res.data);
-    SetDataForActivity(res.data);
+    apiURL
+      .post("/pk3display-activity", { transactionId: ts })
+      .then((res) => {
+        SetDataForActivity(res.data);
+        console.log("res2:", res.data);
+      })
+      .catch((error) => {
+        handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   const handleOpen = async () => {

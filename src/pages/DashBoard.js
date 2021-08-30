@@ -71,7 +71,7 @@ export default function DashBoard() {
           <DashBoardCalendar />
         </Grid>
 
-        <Grid item sm={3} style={{backgroundColor:'lightgray',height:'800px'}}>
+        <Grid item sm={3} style={{backgroundColor:'lightgray',height:'90vh'}}>
           <Typography variant="h6" align="center" style={{ marginTop: "1rem" }}>
             รายการเดือน มีนาคม 2564
           </Typography>

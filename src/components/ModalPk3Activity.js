@@ -252,6 +252,7 @@ export default function ModalPk3Activity(props) {
   };
 
   useEffect(() => {
+    
     if (dataList) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList);
@@ -346,7 +347,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                dataList.audit_pic_crop != 0 && !!dataList.audit_pic_crop
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
