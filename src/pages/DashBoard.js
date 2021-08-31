@@ -106,6 +106,8 @@ const useStyle = makeStyles((theme) => {
       paddingBottom: 10,
       height: "30vh",
       borderRadius: 10,
+      display: "sticky",
+      padding: 20,
     },
     btnContainer: {
       display: "flex",
@@ -157,6 +159,29 @@ export default function DashBoard() {
     });
     setPopUP(res.data);
 
+    return [
+      {
+        label: "C1",
+        value: popUP.C1,
+        sumValue: popUP.c1SumAmount,
+      },
+      {
+        label: "C2",
+        value: popUP.C2,
+        sumValue: popUP.c2SumAmount,
+      },
+      {
+        label: "C3",
+        value: popUP.C3,
+        sumValue: popUP.c3SumAmount,
+      },
+      {
+        label: "รายได้รายวัน",
+        value: popUP.reject,
+        sumValue: popUP.countReject,
+      },
+    ];
+
     console.log(res.data);
   };
 
@@ -206,12 +231,7 @@ export default function DashBoard() {
           </Grid>
         </Grid>
 
-        <Grid
-          item
-          lg={3}
-          md={3}
-          style={{ backgroundColor: "lightgray", height: "100vh" }}
-        >
+        <Grid item lg={3} md={3} style={{ backgroundColor: "lightgray" }}>
           <Typography variant="h6" align="center" style={{ marginTop: "1rem" }}>
             รายการเดือน
           </Typography>
@@ -230,45 +250,59 @@ export default function DashBoard() {
           </div>
 
           <Paper elevation={2} className={classes.cardPopup}>
-            <Typography>รายได้พึงได้รายวัน</Typography>
-            <Divider variant="middle" />
-            <Typography>
-              C1 ({popUP.C1}):{popUP.c1SumAmount}
-            </Typography>
-            <Typography>
-              {Math.round((popUP.C1 * 100) / popUP.c1SumAmount)}%
-            </Typography>
+            <div>
+              <Typography>รายได้พึงได้รายวัน</Typography>
+              <Divider variant="middle" />
+            </div>
+
+            <div>
+              <Typography>
+                C1 ({popUP.C1}):{popUP.c1SumAmount}
+              </Typography>
+              <Typography>
+                {Math.round((popUP.C1 * 100) / popUP.c1SumAmount)}%
+              </Typography>
+            </div>
             <LinearProgress
               variant="determinate"
               value={(popUP.C1 * 100) / popUP.c1SumAmount}
               className={classes.progress}
             />
-            <Typography>
-              C2 ({popUP.C2}):{popUP.c2SumAmount}
-            </Typography>
-            <Typography>
-              {Math.round((popUP.C2 * 100) / popUP.c2SumAmount)}%
-            </Typography>
+
+            <div>
+              <Typography>
+                C2 ({popUP.C2}):{popUP.c2SumAmount}
+              </Typography>
+              <Typography>
+                {Math.round((popUP.C2 * 100) / popUP.c2SumAmount)}%
+              </Typography>
+            </div>
             <LinearProgress
               variant="determinate"
               value={(popUP.C2 * 100) / popUP.c2SumAmount}
               className={classes.progress}
             />
-            <Typography>
-              C3 ({popUP.C3}):{popUP.c3SumAmount}
-            </Typography>
-            <Typography>
-              {Math.round((popUP.C3 * 100) / popUP.c3SumAmount)}%
-            </Typography>
+
+            <div>
+              <Typography>
+                C3 ({popUP.C3}):{popUP.c3SumAmount}
+              </Typography>
+              <Typography>
+                {Math.round((popUP.C3 * 100) / popUP.c3SumAmount)}%
+              </Typography>
+            </div>
             <LinearProgress
               variant="determinate"
               value={(popUP.C3 * 100) / popUP.c3SumAmount}
               className={classes.progress}
             />
-            <Typography>รายได้รายวัน {popUP.reject}</Typography>
-            <Typography>
-              {Math.round((popUP.reject * 100) / popUP.countReject)}%
-            </Typography>
+
+            <div>
+              <Typography>รายได้รายวัน {popUP.reject}</Typography>
+              <Typography>
+                {Math.round((popUP.reject * 100) / popUP.countReject)}%
+              </Typography>
+            </div>
             <LinearProgress
               variant="determinate"
               value={

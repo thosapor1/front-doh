@@ -152,7 +152,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn: {
       margin: theme.spacing(1),
-      fontSize:12
+      fontSize: 12,
     },
     textField: {
       height: 20,
@@ -252,7 +252,6 @@ export default function ModalPk3Activity(props) {
   };
 
   useEffect(() => {
-    
     if (dataList) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList);
@@ -408,10 +407,12 @@ export default function ModalPk3Activity(props) {
               variant="contained"
               color="primary"
               startIcon={<AddTwoToneIcon fontSize="small" />}
+              disable
             >
               สร้างรายการใหม่
             </Button>
             <Button
+              disable
               className={classes.btn}
               variant="contained"
               color="secondary"
@@ -630,8 +631,7 @@ export default function ModalPk3Activity(props) {
           />
         </Grid>
 
-
-              {/* DVES Block */}
+        {/* DVES Block */}
         <Grid item sm={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -767,7 +767,7 @@ export default function ModalPk3Activity(props) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleUpdateState3To4}
+                onClick={handleUpdateState3To6}
                 style={{ width: "6rem", margin: "0.2rem" }}
               >
                 ยินยอม
@@ -775,7 +775,7 @@ export default function ModalPk3Activity(props) {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleUpdateState3To6}
+                onClick={handleUpdateState3To4}
                 style={{ width: "6rem", margin: "0.2rem" }}
               >
                 ไม่ยินยอม

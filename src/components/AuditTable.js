@@ -206,11 +206,19 @@ export default function AuditTable(props) {
                       fontSize="small"
                       style={{
                         color:
-                          row.state == 2 && row.sub_state == 1
-                            ? "orange"
-                            : row.state == 2 && row.sub_state == 2
-                            ? "red"
-                            : "green",
+                            row.state === 2
+                              ? "#FF2400"
+                              : row.state === 3
+                              ? "blue"
+                              : row.state === 4
+                              ? "crimson"
+                              : row.state === 5
+                              ? "black"
+                              : row.state === 6
+                              ? "pink"
+                              : row.state === 7
+                              ? "crimson"
+                              : "gray",
                       }}
                     />
                     {/* {row.match_id} */}

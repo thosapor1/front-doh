@@ -161,10 +161,18 @@ export default function AllTsTableForActivity(props) {
                         style={{
                           color:
                             data.state === 2
-                              ? "orange"
+                              ? "#FF2400"
                               : data.state === 3
-                              ? "red"
-                              : "green",
+                              ? "blue"
+                              : data.state === 4
+                              ? "crimson"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "pink"
+                              : data.state === 7
+                              ? "crimson"
+                              : "gray",
                         }}
                       />
                       {/* {data.match_id} */}

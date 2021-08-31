@@ -26,7 +26,7 @@ import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: "http://202.183.167.92:3010/audit/api/v1",
 });
 
 function TabPanel1(props) {
@@ -274,7 +274,7 @@ export default function ModalSuperAdminActivity(props) {
     );
   };
 
-  const handleUpdate = async () => {
+  const handleUpdateState4To5 = async () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -285,9 +285,24 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
-    // const res = await apiURL.post("/display-activity-update", sendData);
+    const res = await apiURL.post("/changeState4to5", sendData);
     console.log(sendData);
-    // console.log(res.data);
+    console.log(res.data);
+  };
+  const handleUpdateState4To6 = async () => {
+    const sendData = {
+      super_audit_approve_id: Cookies.get("userId"),
+      transactionId: dataList.transactionId,
+      super_audit_lp: super_audit_lp,
+      super_audit_province: super_audit_province,
+      super_audit_vehicleClass: super_audit_vehicleClass,
+      super_audit_feeAmount: super_audit_feeAmount,
+      super_audit_comment: super_audit_comment,
+      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
+    };
+    const res = await apiURL.post("/changeState4to6", sendData);
+    console.log(sendData);
+    console.log(res.data);
   };
 
   useEffect(() => {
@@ -458,6 +473,7 @@ export default function ModalSuperAdminActivity(props) {
                 color: "white",
                 backgroundColor: "orange",
               }}
+              onClick={handleUpdateState4To5}
             >
               บันทึกแบบรายการพิเศษ
             </Button>
@@ -899,7 +915,7 @@ export default function ModalSuperAdminActivity(props) {
               color="primary"
               style={{ top: 17, marginTop: 10, float:'right' }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
-              onClick={handleUpdate}
+              onClick={handleUpdateState4To6}
             >
               ส่งคำสั่งแก้ไข
             </Button>

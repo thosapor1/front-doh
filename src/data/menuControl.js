@@ -71,11 +71,6 @@ export const menuItemsForAdmin = [
     path: "/auditDisplay",
   },
   {
-    text: "รายการรอตรวจสอบ",
-    icon: "playlist_add_check",
-    path: "/pk3Display",
-  },
-  {
     text: "รายได้คงค้าง",
     icon: "poll",
     path: "/2",
@@ -148,4 +143,3 @@ export const menuItemsForPk3 = [
   },
 ];
 export const menuConfigForPk3 = [];
-
