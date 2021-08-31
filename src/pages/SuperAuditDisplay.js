@@ -4,6 +4,7 @@ import {
   Container,
   Grid,
   makeStyles,
+  MenuItem,
   Paper,
   TextField,
   Typography,
@@ -79,7 +80,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const valueOption = [
+const valueMenuItem = [
   {
     id: 0,
     value: 0,
@@ -221,10 +222,10 @@ export default function AuditDisplay() {
           style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
-          {valueOption.map((item) => (
-            <option key={item.id} value={item.value}>
+          {valueMenuItem.map((item) => (
+            <MenuItem key={item.id} value={item.value}>
               {item.label}
-            </option>
+            </MenuItem>
           ))}
         </TextField>
 
@@ -238,9 +239,9 @@ export default function AuditDisplay() {
           disabled
         >
           {valueStatus.map((item) => (
-            <option key={item.value} value={item.value}>
+            <MenuItem key={item.value} value={item.value}>
               {item.label}
-            </option>
+            </MenuItem>
           ))}
         </TextField>
 

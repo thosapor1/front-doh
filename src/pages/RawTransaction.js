@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { Container, Grid, makeStyles, TextField } from "@material-ui/core";
+import { Container, Grid, makeStyles, MenuItem, TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -246,9 +246,9 @@ export default function RawTransaction() {
             value={station}
           >
             {stations.map((station) => (
-              <option key={station.value} value={station.value}>
+              <MenuItem key={station.value} value={station.value}>
                 {station.label}
-              </option>
+              </MenuItem>
             ))}
           </TextField>
           <TextField
@@ -262,9 +262,9 @@ export default function RawTransaction() {
             }}
           >
             {statusValue.map((item) => (
-              <option key={item.label} value={item.id}>
+              <MenuItem key={item.label} value={item.id}>
                 {item.label}
-              </option>
+              </MenuItem>
             ))}
           </TextField>
 

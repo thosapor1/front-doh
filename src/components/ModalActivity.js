@@ -3,6 +3,7 @@ import {
   CardMedia,
   Grid,
   makeStyles,
+  MenuItem,
   Modal,
   Tab,
   TableBody,
@@ -267,7 +268,7 @@ export default function ModalActivity(props) {
       setAudit_vehicleClass(dataList.audit_vehicleClass);
       setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
-      console.log("MyState", state, "dataList", dataList);
+      console.log( "dataList", dataList);
     }
   }, [dataList]);
 
@@ -736,9 +737,9 @@ export default function ModalActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
+                            <MenuItem key={item.id} value={item.class}>
                               {item.class}
-                            </option>
+                            </MenuItem>
                           ))
                         : []}
                     </TextField>

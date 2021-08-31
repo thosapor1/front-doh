@@ -3,6 +3,7 @@ import {
   CardMedia,
   Grid,
   makeStyles,
+  MenuItem,
   Modal,
   Tab,
   TableBody,
@@ -715,9 +716,9 @@ export default function ModalSuperAdminActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <option key={item.id} value={item.class}>
+                            <MenuItem key={item.id} value={item.class}>
                               {item.class}
-                            </option>
+                            </MenuItem>
                           ))
                         : []}
                     </TextField>
