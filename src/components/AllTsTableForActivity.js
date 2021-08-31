@@ -14,6 +14,7 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalActivity from "./ModalActivity";
 import Swal from "sweetalert2";
+import ModalReadOnly from "./ModalReadOnly";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v2",
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => {
           top: 0,
         },
       },
+    },
+    tableCell: {
+      cursor: "pointer",
     },
   };
 });
@@ -87,29 +91,43 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AllTsTableForActivity(props) {
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = async (ts) => {
-  
+  const fetchData = async (ts, State) => {
+    let endpoint = "";
+    if (State === 2) {
+      endpoint = "/display-activity";
+      setOpen(true);
+    } else {
+      endpoint = "/pk3display-activity";
+      setOpen1(true);
+    }
     apiURL
-      .post("/display-activity", { transactionId: ts })
-      .then((res) => {SetDataForActivity(res.data);console.log("res2:", res.data);})
+      .post(endpoint, { transactionId: ts })
+      .then((res) => {
+        SetDataForActivity(res.data);
+        console.log("res2:", res.data);
+      })
       .catch((error) => {
-        handleClose()
+        handleClose();
         Swal.fire({
           icon: "error",
           text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
         });
       });
-    
   };
 
-  const handleOpen = async () => {
-    await setOpen(true);
+  const handleOpen = (state) => {
+    if (state === 2) {
+      setOpen(true);
+    }
+    setOpen1(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setOpen1(false);
   };
 
   const classes = useStyles();
@@ -150,12 +168,11 @@ export default function AllTsTableForActivity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId);
-                      handleOpen();
+                      fetchData(data.transactionId, data.state);
                     }}
                     className={classes.tableRow}
                   >
-                    <TableCell align="center">
+                    <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
                         fontSize="small"
                         style={{
@@ -171,19 +188,33 @@ export default function AllTsTableForActivity(props) {
                               : data.state === 6
                               ? "pink"
                               : data.state === 7
-                              ? "crimson"
+                              ? "green"
                               : "gray",
                         }}
                       />
                       {/* {data.match_id} */}
                     </TableCell>
-                    <TableCell align="center">{data.transactionId}</TableCell>
-                    <TableCell align="center">{data.timestamp}</TableCell>
-                    <TableCell align="center">{data.class}</TableCell>
-                    <TableCell align="center">{data.fee}</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.transactionId}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.timestamp}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.class}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.fee}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
                   </StyledTableRow>
                 ))
               : dataList}
@@ -194,6 +225,11 @@ export default function AllTsTableForActivity(props) {
       <ModalActivity
         dataList={dataForActivity}
         open={open}
+        onClick={handleClose}
+      />
+      <ModalReadOnly
+        dataList={dataForActivity}
+        open={open1}
         onClick={handleClose}
       />
     </div>

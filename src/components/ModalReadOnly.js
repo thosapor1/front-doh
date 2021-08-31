@@ -22,7 +22,6 @@ import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
-import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
@@ -185,7 +184,7 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-export default function ModalSuperAdminActivity(props) {
+export default function ModalReadOnly(props) {
   const classes = useStyle();
   const { dataList } = props;
 
@@ -258,76 +257,6 @@ export default function ModalSuperAdminActivity(props) {
     );
   };
 
-  const handleUpdateState4To5 = async () => {
-    const sendData = {
-      super_audit_approve_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      super_audit_lp: super_audit_lp,
-      super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
-      super_audit_feeAmount: super_audit_feeAmount,
-      super_audit_comment: super_audit_comment,
-      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
-    };
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState4to5", sendData)
-          .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
-            }
-          })
-          .then(() => window.location.reload());
-      }
-    });
-
-    // const res = await apiURL.post("/changeState4to5", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
-  const handleUpdateState4To6 = async () => {
-    const sendData = {
-      super_audit_approve_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      super_audit_lp: super_audit_lp,
-      super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
-      super_audit_feeAmount: super_audit_feeAmount,
-      super_audit_comment: super_audit_comment,
-      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
-    };
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState4to6", sendData)
-          .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
-            }
-          })
-          .then(() => window.location.reload());
-      }
-    });
-
-    // const res = await apiURL.post("/changeState4to6", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
   const handleUpdateState6To7 = async () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
@@ -360,7 +289,7 @@ export default function ModalSuperAdminActivity(props) {
     });
 
     // const res = await apiURL.post("/changeState6to7", sendData);
-    // console.log(sendData);
+    console.log(sendData);
     // console.log(res.data);
   };
 
@@ -368,10 +297,9 @@ export default function ModalSuperAdminActivity(props) {
     if (dataList) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList);
+      setSuper_audit_vehicleClass(dataList.super_audit_vehicleClass);
+      setSuper_audit_feeAmount(dataList.super_audit_feeAmount);
     }
-    // if (dataList.state != 6) {
-    //   setDisable(true);
-    // }
   }, [dataList]);
 
   const body = (
@@ -522,6 +450,7 @@ export default function ModalSuperAdminActivity(props) {
               className={classes.btn}
               variant="contained"
               color="secondary"
+              disabled
               style={{ width: 130 }}
             >
               ลบรายการนี้
@@ -529,12 +458,13 @@ export default function ModalSuperAdminActivity(props) {
             <Button
               className={classes.btn}
               variant="contained"
+              disabled
               style={{
                 width: 130,
                 color: "white",
                 backgroundColor: "orange",
               }}
-              onClick={handleUpdateState4To5}
+              onClick={() => console.log("")}
             >
               บันทึกแบบรายการพิเศษ
             </Button>
@@ -754,7 +684,7 @@ export default function ModalSuperAdminActivity(props) {
           </TableContainer>
 
           <TextField
-            disabled={dataList.state !== 6 ? true : false}
+            disabled
             variant="outlined"
             label="ข้อความจากระบบจัดเก็บ"
             value={dataList.pk3_comment || ""}
@@ -773,83 +703,19 @@ export default function ModalSuperAdminActivity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="super_audit_lp"
-                      value={super_audit_lp}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{super_audit_lp}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="super_audit_province"
-                      value={super_audit_province}
-                      onChange={handleChange}
-                    />
-                  </TableCell>
+                  <TableCell>{super_audit_province}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      select
-                      size="small"
-                      className={classes.textField}
-                      name="super_audit_vehicleClass"
-                      value={super_audit_vehicleClass || ""}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem
-                                key={item.id}
-                                data-index={index}
-                                value={item.class}
-                              >
-                                {item.class}
-                              </MenuItem>
-                            )
-                          )
-                        : []}
-                    </TextField>
-                  </TableCell>
+                  <TableCell>{super_audit_vehicleClass}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      name="super_audit_feeAmount"
-                      // select
-                      value={
-                        // super_audit_vehicleClass === "C1"
-                        //   ? 30
-                        //   : super_audit_vehicleClass === "C2"
-                        //     ? 50
-                        //     : super_audit_vehicleClass === "C3" ? 70
-                        //       : ""
-                        super_audit_feeAmount
-                      }
-                      // className={classes.textField}
-                      // onChange={handleChange}
-                    />
-                    {/* {!!dataList.dropdown_audit_feeAmount
-                        ? dataList.dropdown_audit_feeAmount.map((item) => (
-                            <option key={item.id} value={item.fee}>
-                              {item.fee}
-                            </option>
-                          ))
-                        : []}
-                    </TextField> */}
-                  </TableCell>
+                  <TableCell>{super_audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -986,7 +852,7 @@ export default function ModalSuperAdminActivity(props) {
             }}
           >
             <TextField
-              disable={dataList.state === 6 ? true : false}
+              disabled
               style={{ width: "100%", height: 20, padding: "10px" }}
               name="super_audit_comment"
               label="คำสั่งแก้ไข"
@@ -994,12 +860,12 @@ export default function ModalSuperAdminActivity(props) {
               onChange={handleChange}
             />
             <Button
-              disable={dataList.state === 6 ? true : false}
+              disabled
               variant="contained"
               color="primary"
               style={{ top: 17, marginTop: 10, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
-              onClick={handleUpdateState4To6}
+              onClick={() => console.log("")}
             >
               ส่งคำสั่งแก้ไข
             </Button>

@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => {
         backgroundColor: "#e8eaf6 !important",
       },
     },
+    tableCell:{
+      cursor:'pointer'
+    }
   };
 });
 
@@ -150,7 +153,7 @@ export default function AllTsTableForPk3Activity(props) {
                     }}
                     className={classes.tableRow}
                   >
-                    <TableCell align="center">
+                    <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
                         fontSize="small"
                         style={{
@@ -166,13 +169,27 @@ export default function AllTsTableForPk3Activity(props) {
                       />
                       {/* {data.match_id} */}
                     </TableCell>
-                    <TableCell align="center">{data.transactionId}</TableCell>
-                    <TableCell align="center">{data.timestamp}</TableCell>
-                    <TableCell align="center">{data.class}</TableCell>
-                    <TableCell align="center">{data.fee}</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
-                    <TableCell align="center">-</TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.transactionId}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.timestamp}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.class}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.fee}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
                   </StyledTableRow>
                 ))
               : dataList}

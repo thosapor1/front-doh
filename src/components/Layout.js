@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "white",
+      zIndex:-1,
     },
     avatar: {
       marginLeft: 30,

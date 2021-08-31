@@ -257,9 +257,30 @@ export default function ModalActivity(props) {
       audit_comment: audit_comment,
       audit_vehicleClass_id: audit_vehicleClass_id,
     };
-    const res = await apiURL.post("/changeState2to3", sendData);
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, save it",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/changeState2to3", sendData)
+          .then((res) => {
+            if (res.data === true) {
+              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            }
+          })
+          .then(() => window.location.reload());
+      }
+    });
+
+    // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
-    console.log(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -268,7 +289,7 @@ export default function ModalActivity(props) {
       setAudit_vehicleClass(dataList.audit_vehicleClass);
       setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
-      console.log( "dataList", dataList);
+      console.log("dataList", dataList);
     }
   }, [dataList]);
 
@@ -811,6 +832,7 @@ export default function ModalActivity(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          zIndex: 2,
         }}
       >
         {body}

@@ -231,9 +231,30 @@ export default function ModalPk3Activity(props) {
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
     };
-    const res = await apiURL.post("/changeState3to4", sendData);
-    console.log(sendData);
-    console.log(res.data);
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, save it",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/changeState3to4", sendData)
+          .then((res) => {
+            if (res.data === true) {
+              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            }
+          })
+          .then(() => window.location.reload());
+      }
+    });
+
+    // const res = await apiURL.post("/changeState3to4", sendData);
+    // console.log(sendData);
+    // console.log(res.data);
   };
   const handleUpdateState3To6 = async () => {
     const sendData = {
@@ -246,9 +267,30 @@ export default function ModalPk3Activity(props) {
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
     };
-    const res = await apiURL.post("/changeState3to6", sendData);
-    console.log(sendData);
-    console.log(res.data);
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, save it",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/changeState3to6", sendData)
+          .then((res) => {
+            if (res.data === true) {
+              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            }
+          })
+          .then(() => window.location.reload());
+      }
+    });
+
+    // const res = await apiURL.post("/changeState3to6", sendData);
+    // console.log(sendData);
+    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -407,12 +449,12 @@ export default function ModalPk3Activity(props) {
               variant="contained"
               color="primary"
               startIcon={<AddTwoToneIcon fontSize="small" />}
-              disable
+              disabled
             >
               สร้างรายการใหม่
             </Button>
             <Button
-              disable
+              disabled
               className={classes.btn}
               variant="contained"
               color="secondary"
@@ -798,6 +840,7 @@ export default function ModalPk3Activity(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          zIndex: 2,
         }}
       >
         {body}
