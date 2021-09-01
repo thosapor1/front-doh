@@ -182,7 +182,7 @@ export default function AllTsTableForActivity(props) {
                               : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "crimson"
+                              ? "yellow"
                               : data.state === 5
                               ? "black"
                               : data.state === 6
@@ -226,11 +226,13 @@ export default function AllTsTableForActivity(props) {
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
+        onFetchData={props.onFetchData}
       />
       <ModalReadOnly
         dataList={dataForActivity}
         open={open1}
         onClick={handleClose}
+        onFetchData={props.onFetchData}
       />
     </div>
   );

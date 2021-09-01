@@ -26,6 +26,7 @@ import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v1",
@@ -274,7 +275,9 @@ export default function ModalActivity(props) {
               Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
             }
           })
-          .then(() => window.location.reload());
+          .then(() => props.onClick())
+          .then(() => props.onFetchData());
+        // .then(() => window.location.reload());
       }
     });
 
@@ -299,19 +302,19 @@ export default function ModalActivity(props) {
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
             {dataList.state === 1
-              ? "ข้อมูลปกติ"
+              ? "ข้อมูลปกติ (state 1)"
               : dataList.state === 2
-              ? "ข้อมูลรอตรวจสอบ"
+              ? "ข้อมูลรอตรวจสอบ (state 2)"
               : dataList.state === 3
-              ? "อยู่ระหว่างการตรวจสอบ"
+              ? "อยู่ระหว่างการตรวจสอบ (state 3)"
               : dataList.state === 4
-              ? "ตรวจสอบ:ส่งกลับแก้ไข"
+              ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
               : dataList.state === 5
-              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ"
+              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
               : dataList.state === 6
-              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง"
+              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
               : dataList.state === 7
-              ? "ตรวจสอบ:ยืนยันความถูกต้อง"
+              ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
               : "ไม่มีสถานะ"}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
@@ -334,7 +337,7 @@ export default function ModalActivity(props) {
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
+            <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
             <Tabs
@@ -437,7 +440,9 @@ export default function ModalActivity(props) {
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
+            <Typography style={{ marginLeft: 10 }}>
+              CCTV Audit (Vehicle)
+            </Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
             <Tabs

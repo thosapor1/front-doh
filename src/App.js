@@ -28,22 +28,22 @@ function App() {
             <Login />
           </Route>
           <Layout>
-            <Route exact path="/dashboard">
+            <Route path="/dashboard">
               <DashBoard />
             </Route>
-            <Route exact path="/rawTransaction">
+            <Route path="/rawTransaction">
               <RawTransaction />
             </Route>
-            <Route exact path="/auditDisplay">
+            <Route path="/auditDisplay">
               <AuditDisplay />
             </Route>
-            <Route exact path="/pk3Display">
+            <Route path="/pk3Display">
               <Pk3Display />
             </Route>
-            <Route exact path="/superAuditDisplay">
+            <Route path="/superAuditDisplay">
               <SuperAuditDisplay />
             </Route>
-            <Route exact path="/user">
+            <Route path="/user">
               <User />
             </Route>
           </Layout>

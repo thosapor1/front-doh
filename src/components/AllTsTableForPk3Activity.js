@@ -201,6 +201,7 @@ export default function AllTsTableForPk3Activity(props) {
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
+        onFetchData={props.onFetchData}
       />
     </div>
   );

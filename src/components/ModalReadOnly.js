@@ -23,6 +23,7 @@ import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
+import { Theme } from "@fullcalendar/react";
 
 const apiURL = axios.create({
   baseURL: "http://202.183.167.92:3010/audit/api/v1",
@@ -181,6 +182,20 @@ const useStyle = makeStyles((theme) => {
       width: "91%",
       marginTop: 2,
     },
+    normalBtn: {
+      width: 130,
+      color: "white",
+      backgroundColor: "green",
+      margin: theme.spacing(1),
+    },
+    disabledBtn: {
+      color: "gray",
+      backgroundColor: "lightgray",
+      marginTop:9,
+      height:60,
+      marginLeft:8,
+      width:130,
+    },
   };
 });
 
@@ -193,7 +208,7 @@ export default function ModalReadOnly(props) {
   const [value3, setValue3] = useState(2);
   const [value4, setValue4] = useState(2);
 
-  // const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -222,40 +237,6 @@ export default function ModalReadOnly(props) {
 
   const [super_audit_vehicleClass, setSuper_audit_vehicleClass] = useState("");
   const [super_audit_feeAmount, setSuper_audit_feeAmount] = useState("");
-  const [super_audit_vehicleClass_id, setSuper_Audit_vehicleClass_id] =
-    useState(0);
-
-  const handleOptionChange = (event) => {
-    setSuper_audit_vehicleClass(event.target.value);
-    setSuper_Audit_vehicleClass_id(1);
-    if (event.target.value === "C1") {
-      setSuper_audit_feeAmount(30);
-    } else if (event.target.value === "C2") {
-      setSuper_audit_feeAmount(50);
-    } else if (event.target.value === "C3") {
-      setSuper_audit_feeAmount(70);
-    } else if (event.target.value === "C1 + C1") {
-      setSuper_audit_feeAmount(60);
-    } else if (event.target.value === "C2 + C1") {
-      setSuper_audit_feeAmount(80);
-    } else if (event.target.value === "C2 + C2") {
-      setSuper_audit_feeAmount(100);
-    } else if (event.target.value === "C2 + C3") {
-      setSuper_audit_feeAmount(120);
-    } else if (event.target.value === "C3 + C1") {
-      setSuper_audit_feeAmount(100);
-    } else if (event.target.value === "C3 + C2") {
-      setSuper_audit_feeAmount(120);
-    } else if (event.target.value === "C3 + C3") {
-      setSuper_audit_feeAmount(140);
-    }
-
-    console.log(
-      super_audit_feeAmount,
-      super_audit_vehicleClass,
-      event.target.value
-    );
-  };
 
   const handleUpdateState6To7 = async () => {
     const sendData = {
@@ -266,7 +247,6 @@ export default function ModalReadOnly(props) {
       super_audit_vehicleClass: super_audit_vehicleClass,
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
-      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -284,7 +264,8 @@ export default function ModalReadOnly(props) {
               Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
             }
           })
-          .then(() => window.location.reload());
+          .then(() => props.onClick())
+          .then(() => props.onFetchData());
       }
     });
 
@@ -296,9 +277,15 @@ export default function ModalReadOnly(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      console.log("MyState", state, "dataList", dataList);
+      console.log("MyState", state, "dataList", dataList.state);
       setSuper_audit_vehicleClass(dataList.super_audit_vehicleClass);
       setSuper_audit_feeAmount(dataList.super_audit_feeAmount);
+    }
+
+    if (dataList.state !== 6) {
+      setDisable(true);
+    } else {
+      setDisable(false);
     }
   }, [dataList]);
 
@@ -308,19 +295,19 @@ export default function ModalReadOnly(props) {
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
             {dataList.state === 1
-              ? "ข้อมูลปกติ"
+              ? "ข้อมูลปกติ (state 1)"
               : dataList.state === 2
-              ? "ข้อมูลรอตรวจสอบ"
+              ? "ข้อมูลรอตรวจสอบ (state 2)"
               : dataList.state === 3
-              ? "อยู่ระหว่างการตรวจสอบ"
+              ? "อยู่ระหว่างการตรวจสอบ (state 3)"
               : dataList.state === 4
-              ? "ตรวจสอบ:ส่งกลับแก้ไข"
+              ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
               : dataList.state === 5
-              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ"
+              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
               : dataList.state === 6
-              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง"
+              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
               : dataList.state === 7
-              ? "ตรวจสอบ:ยืนยันความถูกต้อง"
+              ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
               : "ไม่มีสถานะ"}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
@@ -343,7 +330,7 @@ export default function ModalReadOnly(props) {
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
+            <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
             <Tabs
@@ -422,19 +409,31 @@ export default function ModalReadOnly(props) {
               className={classes.image}
             />
           </TabPanel4>
-          <div style={{ marginLeft: "-20px", marginTop: 335 }}>
+          <div
+            style={{
+              marginLeft: "-20px",
+              marginTop: 335,
+            }}
+          >
             <Button
               className={classes.btn}
               variant="contained"
-              disabled={dataList.state === 6 ? false : true}
+              color="secondary"
+              disabled
+              style={{ width: 130, height: 60 }}
+            >
+              ลบรายการนี้
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              disabled
               style={{
                 width: 130,
-                color: "white",
-                backgroundColor: "green",
               }}
-              onClick={handleUpdateState6To7}
+              onClick={() => console.log("")}
             >
-              จนท.ตรวจสอบรับทราบ
+              บันทึกแบบรายการพิเศษ
             </Button>
           </div>
         </Grid>
@@ -443,7 +442,9 @@ export default function ModalReadOnly(props) {
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
+            <Typography style={{ marginLeft: 10 }}>
+              CCTV Audit (Vehicle)
+            </Typography>
           </div>
           <div style={{ paddingLeft: 18, paddingRight: 18 }}>
             <Tabs
@@ -551,36 +552,22 @@ export default function ModalReadOnly(props) {
               </TableBody>
             </table>
           </TableContainer>
+
           <div
             style={{
               paddingLeft: 10,
               paddingRight: 10,
-              display: "flex",
-              justifyContent: "space-around",
               marginTop: 150,
+              marginLeft: -70,
             }}
           >
             <Button
-              className={classes.btn}
+              className={disable ? classes.disabledBtn : classes.normalBtn}
               variant="contained"
-              color="secondary"
-              disabled
-              style={{ width: 130 }}
+              disabled={disable}
+              onClick={handleUpdateState6To7}
             >
-              ลบรายการนี้
-            </Button>
-            <Button
-              className={classes.btn}
-              variant="contained"
-              disabled
-              style={{
-                width: 130,
-                color: "white",
-                backgroundColor: "orange",
-              }}
-              onClick={() => console.log("")}
-            >
-              บันทึกแบบรายการพิเศษ
+              จนท.ตรวจสอบรับทราบ
             </Button>
           </div>
         </Grid>

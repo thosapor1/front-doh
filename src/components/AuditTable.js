@@ -211,7 +211,7 @@ export default function AuditTable(props) {
                               : row.state === 3
                               ? "blue"
                               : row.state === 4
-                              ? "crimson"
+                              ? "yellow"
                               : row.state === 5
                               ? "black"
                               : row.state === 6

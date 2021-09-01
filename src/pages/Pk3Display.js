@@ -364,6 +364,7 @@ export default function AuditDisplay() {
           dataList={allTsTable}
           page={page}
           onChange={handlePageChange}
+          onFetchData={fetchData}
         />
       </div>
     </Container>

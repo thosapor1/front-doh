@@ -202,6 +202,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
+        onFetchData={props.onFetchData}
       />
     </div>
   );
