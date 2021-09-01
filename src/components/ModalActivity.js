@@ -511,7 +511,7 @@ export default function ModalActivity(props) {
               component="img"
               src={
                 dataList.audit_pic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
               className={classes.image}
