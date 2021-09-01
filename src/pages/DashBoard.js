@@ -49,34 +49,6 @@ const data = [
   ["21", 300000],
 ];
 
-const cardData = [
-  { label: "จำนวนรายการทั้งหมดของวัน", value: "845,646" },
-  { label: "จำนวนรายการตรวจสอบ", value: "1,809" },
-  { label: "จำนวนรายการตรวจสอบแก้ไขแล้ว", value: "908" },
-  { label: "จำนวนรายการตรวจสอบเสร็จสิ้น", value: "648" },
-];
-
-const dataChart = {
-  labels: [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-  ],
-  datasets: [
-    {
-      label: "จำนวนรถ",
-      data: [
-        320000, 200000, 340000, 630000, 760000, 320000, 200000, 340000, 630000,
-        760000, 320000, 200000, 340000, 630000, 760000, 320000, 200000, 340000,
-        630000, 760000, 320000, 200000, 340000, 630000, 760000, 320000, 200000,
-        340000, 630000, 760000, 760000,
-      ],
-      backgroundColor: ["rgba(153, 102, 255, 0.2)"],
-      borderColor: ["rgb(153, 102, 255)"],
-      borderWidth: 1,
-    },
-  ],
-};
-
 const useStyle = makeStyles((theme) => {
   return {
     root: {
@@ -98,7 +70,7 @@ const useStyle = makeStyles((theme) => {
       borderRadius: 10,
     },
     cardPopup: {
-      width: "80%",
+      width: "70%",
       marginRight: "auto",
       marginLeft: "auto",
       marginTop: 10,
@@ -133,11 +105,18 @@ const useStyle = makeStyles((theme) => {
       width: "90%",
       marginRight: "auto",
       marginLeft: "auto",
+      marginBottom: "1rem",
+    },
+    inPopup: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: "0.5rem",
     },
   };
 });
 
 export default function DashBoard() {
+  let cardData = [{}];
   const classes = useStyle();
 
   const [popUP, setPopUP] = useState({
@@ -152,7 +131,28 @@ export default function DashBoard() {
     countReject: 0,
     sumAmountallClass: 0,
   });
+  const [dayChart, setDayChart] = useState([]);
+  const [valueChart, setValueChart] = useState([]);
+
+  const [st_total, setSt_total] = useState();
+  const [st_wait, setSt_wait] = useState(0);
+  const [st_edited, setSt_edited] = useState(0);
+  const [st_finish, setSt_finish] = useState(0);
+  const [state, setState] = useState({});
   const [month, setMonth] = useState("");
+
+  const dataChart = {
+    labels: dayChart,
+    datasets: [
+      {
+        label: "จำนวนรถ",
+        data: valueChart,
+        backgroundColor: ["rgba(153, 102, 255, 0.2)"],
+        borderColor: ["rgb(153, 102, 255)"],
+        borderWidth: 1,
+      },
+    ],
+  };
   const handleClickDate = async (date) => {
     const res = await apiURL.post("/dashboard-listview", {
       date: date.dateStr,
@@ -182,11 +182,44 @@ export default function DashBoard() {
       },
     ];
 
-    console.log(res.data);
+    // console.log(res.data);
   };
 
+  const dataForCalendar = () => {};
+
+  // const fetchData = () => {
+ 
+  // };
+
   useEffect(() => {
+    // fetchData();
+    const dateCalendar = format(new Date(), "yyyy-MM-dd");
+    const sendData = { dateTime: dateCalendar };
+    apiURL
+      .post("/dashboard-month", { dateTime: "2021-08-02" })
+      .then((res) => {
+        setSt_total(res.data.st_total);
+        setSt_edited(res.data.st_edited);
+        setSt_wait(res.data.st_wait);
+        setSt_finish(res.data.st_finish);
+
+        const dataInMonth = res.data.month;
+        let chartData = () => {
+          dataInMonth.map((data) => console.log(data));
+        };
+        chartData()
+      })
+      // .then(() => {
+      //   console.log(st_total);
+      // });
     setMonth(format(new Date(), "MMMM yyyy", { locale: th }));
+    let cardData = [
+      { label: "จำนวนรายการทั้งหมดของวัน", value: st_total },
+      { label: "จำนวนรายการตรวจสอบ", value: st_wait },
+      { label: "จำนวนรายการตรวจสอบแก้ไขแล้ว", value: st_edited },
+      { label: "จำนวนรายการตรวจสอบเสร็จสิ้น", value: st_finish },
+    ];
+    return cardData;
   }, []);
 
   return (
@@ -221,7 +254,6 @@ export default function DashBoard() {
           >
             <Typography variant="h6">เลือกวันที่เพื่อดูข้อมูล</Typography>
             <FullCalendar
-              className={classes.calendar}
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               weekends={true}
@@ -250,14 +282,28 @@ export default function DashBoard() {
           </div>
 
           <Paper elevation={2} className={classes.cardPopup}>
-            <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "1rem",
+              }}
+            >
               <Typography>รายได้พึงได้รายวัน</Typography>
-              <Divider variant="middle" />
+              <Typography variant="subtitle2">
+                {popUP.sumAmountallClass}
+              </Typography>
+            </div>
+            <div>
+              <Divider
+                variant="middle"
+                style={{ marginTop: 10, marginBottom: "1rem" }}
+              />
             </div>
 
-            <div>
+            <div className={classes.inPopup}>
               <Typography>
-                C1 ({popUP.C1}):{popUP.c1SumAmount}
+                C1 ({popUP.C1}) : {popUP.c1SumAmount}
               </Typography>
               <Typography>
                 {Math.round((popUP.C1 * 100) / popUP.c1SumAmount)}%
@@ -269,49 +315,51 @@ export default function DashBoard() {
               className={classes.progress}
             />
 
-            <div>
+            <div className={classes.inPopup}>
               <Typography>
-                C2 ({popUP.C2}):{popUP.c2SumAmount}
+                C2 ({popUP.C2}) : {popUP.c2SumAmount}
               </Typography>
               <Typography>
                 {Math.round((popUP.C2 * 100) / popUP.c2SumAmount)}%
               </Typography>
             </div>
-            <LinearProgress
-              variant="determinate"
-              value={(popUP.C2 * 100) / popUP.c2SumAmount}
-              className={classes.progress}
-            />
-
             <div>
+              <LinearProgress
+                variant="determinate"
+                value={(popUP.C2 * 100) / popUP.c2SumAmount}
+                className={classes.progress}
+              />
+            </div>
+
+            <div className={classes.inPopup}>
               <Typography>
-                C3 ({popUP.C3}):{popUP.c3SumAmount}
+                C3 ({popUP.C3}) : {popUP.c3SumAmount}
               </Typography>
               <Typography>
                 {Math.round((popUP.C3 * 100) / popUP.c3SumAmount)}%
               </Typography>
             </div>
-            <LinearProgress
-              variant="determinate"
-              value={(popUP.C3 * 100) / popUP.c3SumAmount}
-              className={classes.progress}
-            />
-
             <div>
-              <Typography>รายได้รายวัน {popUP.reject}</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(popUP.C3 * 100) / popUP.c3SumAmount}
+                className={classes.progress}
+              />
+            </div>
+
+            <div className={classes.inPopup}>
+              <Typography>รายได้รายวัน : {popUP.reject}</Typography>
               <Typography>
                 {Math.round((popUP.reject * 100) / popUP.countReject)}%
               </Typography>
             </div>
-            <LinearProgress
-              variant="determinate"
-              value={
-                popUP.countReject === 0
-                  ? 0
-                  : (popUP.reject * 100) / popUP.countReject
-              }
-              className={classes.progress}
-            />
+            <div>
+              <LinearProgress
+                variant="determinate"
+                value={(popUP.reject * 100) / popUP.countReject}
+                className={classes.progress}
+              />
+            </div>
           </Paper>
           <div>{}</div>
 

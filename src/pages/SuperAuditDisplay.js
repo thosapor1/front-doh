@@ -176,8 +176,8 @@ export default function AuditDisplay() {
       setPage(pageId);
     }
 
-    // const date = format(selectedDate, "yyyy-MM-dd");
-    const date = '2021-08-10';
+    const date = format(selectedDate, "yyyy-MM-dd");
+    // const date = '2021-08-10';
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 

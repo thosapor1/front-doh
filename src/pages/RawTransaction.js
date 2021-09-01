@@ -176,8 +176,8 @@ export default function RawTransaction() {
     console.log(`status: ${status}`);
   };
   async function fetchData(pageId = 1) {
-    // const date = format(selectedDate, "yyyy-MM-dd");
-    const date = "2021-08-10";
+    const date = format(selectedDate, "yyyy-MM-dd");
+    // const date = "2021-08-10";
 
     if (pageId == 1) {
       setPage(1);
