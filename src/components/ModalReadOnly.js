@@ -307,7 +307,21 @@ export default function ModalReadOnly(props) {
       <div className={classes.head}>
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
-            รถผิดประเภท
+            {dataList.state === 1
+              ? "ข้อมูลปกติ"
+              : dataList.state === 2
+              ? "ข้อมูลรอตรวจสอบ"
+              : dataList.state === 3
+              ? "อยู่ระหว่างการตรวจสอบ"
+              : dataList.state === 4
+              ? "ตรวจสอบ:ส่งกลับแก้ไข"
+              : dataList.state === 5
+              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ"
+              : dataList.state === 6
+              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง"
+              : dataList.state === 7
+              ? "ตรวจสอบ:ยืนยันความถูกต้อง"
+              : "ไม่มีสถานะ"}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
             transaction: {dataList.transactionId}{" "}
@@ -536,7 +550,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                dataList.audit_pic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -786,7 +800,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
