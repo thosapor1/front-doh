@@ -330,8 +330,111 @@ export default function ModalActivity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
+        {/* Audit-DVES block */}
         <Grid item sm={3} className={classes.cardItem}>
-          {/* Audit Block */}
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
+          </div>
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value4}
+              onChange={handleChangeTabs4}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value4} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <div style={{ marginTop: 240 }}>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+            >
+              สร้างรายการใหม่
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="secondary"
+              startIcon={<RemoveTwoToneIcon fontSize="small" />}
+            >
+              ลบรายการนี้
+            </Button>
+          </div>
+        </Grid>
+
+        {/* Audit Block */}
+        <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
@@ -419,18 +522,18 @@ export default function ModalActivity(props) {
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} style={{ color: "white" }}>
-                    กรมขนส่งทางบก
+                    ระบบตรวจสอบรายได้
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
-                  <TableCell>{dataList.dlt_lp}</TableCell>
+                  <TableCell>กว้าง</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>{dataList.dlt_lp_province}</TableCell>
+                  <TableCell>ยาว</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
@@ -443,91 +546,6 @@ export default function ModalActivity(props) {
               </TableBody>
             </table>
           </TableContainer>
-        </Grid>
-
-        {/* Audit-DVES block */}
-        <Grid item sm={3} className={classes.cardItem}>
-          <div className={classes.headCard}>
-            <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit DVES</Typography>
-          </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
-            <Tabs
-              value={value4}
-              onChange={handleChangeTabs4}
-              aria-label="simple tabs example"
-              indicatorColor="primary"
-              className={classes.tabs}
-            >
-              <Tab
-                label="ก่อน 2 คัน"
-                {...a11yProps(0)}
-                className={classes.tab}
-              />
-              <Tab
-                label="ก่อน 1 คัน"
-                {...a11yProps(1)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="คันที่ตรวจ"
-                {...a11yProps(2)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="วิดีโอ"
-                {...a11yProps(3)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-            </Tabs>
-          </div>
-          <TabPanel4 value={value4} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-          <TabPanel4 value={value4} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-          <TabPanel4 value={value4} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.audit_pic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-          <TabPanel4 value={value4} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
         </Grid>
 
         {/* ALPR Block */}
@@ -789,14 +807,12 @@ export default function ModalActivity(props) {
           </TableContainer>
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
               paddingLeft: 20,
               paddingRight: 20,
             }}
           >
             <TextField
-              style={{ width: 180, height: 20, padding: "10px" }}
+              style={{ width: "100%", height: 20, padding: "10px" }}
               name="audit_comment"
               label="คำสั่งแก้ไข"
               value={audit_comment || ""}
@@ -805,7 +821,7 @@ export default function ModalActivity(props) {
             <Button
               variant="contained"
               color="primary"
-              style={{ top: 17, fontSize: 10 }}
+              style={{ marginTop: 25, marginLeft: 182 }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >
@@ -814,24 +830,6 @@ export default function ModalActivity(props) {
           </div>
         </Grid>
       </Grid>
-      <div>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
-          สร้างรายการใหม่
-        </Button>
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="secondary"
-          startIcon={<RemoveTwoToneIcon fontSize="small" />}
-        >
-          ลบรายการนี้
-        </Button>
-      </div>
     </div>
   );
 

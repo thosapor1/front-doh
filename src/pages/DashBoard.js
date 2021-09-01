@@ -116,6 +116,9 @@ const useStyle = makeStyles((theme) => {
 });
 
 export default function DashBoard() {
+  let dateArray = [];
+  let valueArray = [];
+  let event = []
   let cardData = [{}];
   const classes = useStyle();
 
@@ -133,7 +136,7 @@ export default function DashBoard() {
   });
   const [dayChart, setDayChart] = useState([]);
   const [valueChart, setValueChart] = useState([]);
-
+  const [eventCalendar, setEventCalendar] = useState({})
   const [st_total, setSt_total] = useState();
   const [st_wait, setSt_wait] = useState(0);
   const [st_edited, setSt_edited] = useState(0);
@@ -188,30 +191,76 @@ export default function DashBoard() {
   const dataForCalendar = () => {};
 
   // const fetchData = () => {
- 
+
   // };
 
   useEffect(() => {
     // fetchData();
     const dateCalendar = format(new Date(), "yyyy-MM-dd");
-    const sendData = { dateTime: dateCalendar };
-    apiURL
-      .post("/dashboard-month", { dateTime: "2021-08-02" })
-      .then((res) => {
-        setSt_total(res.data.st_total);
-        setSt_edited(res.data.st_edited);
-        setSt_wait(res.data.st_wait);
-        setSt_finish(res.data.st_finish);
+    const sendData = {dateTime: dateCalendar} ;
+    apiURL.post("/dashboard-month",  sendData).then((res) => {
+      setSt_total(res.data.st_total);
+      setSt_edited(res.data.st_edited);
+      setSt_wait(res.data.st_wait);
+      setSt_finish(res.data.st_finish);
 
-        const dataInMonth = res.data.month;
-        let chartData = () => {
-          dataInMonth.map((data) => console.log(data));
-        };
-        chartData()
-      })
-      // .then(() => {
-      //   console.log(st_total);
-      // });
+      const dataInMonth = res.data.month;
+      const chartData = () => {
+        dataInMonth.map((data) => {
+          dateArray.push(data.date.slice(-2));
+          valueArray.push(data.ts_count_all);
+        });
+        setDayChart(dateArray);
+        setValueChart(valueArray);
+      };
+
+      const eventCalendar = () => {
+        dataInMonth.map((data)=>{
+          var temp =  {
+            title: data.ts_red,
+            start: data.date,
+            display : 'list-item',
+            backgroundColor : 'rgb(200,0,0)'
+           };
+        
+          event.push(temp);
+        
+          var temp =  {
+            title: data.ts_green,
+            start: data.date,
+            display : 'list-item',
+            backgroundColor : 'rgb(0,200,0)'
+           };
+        
+          event.push(temp);
+        
+           var temp =  {
+            title: data.ts_yellow,
+            start: data.date,
+            display : 'list-item',
+            backgroundColor : 'rgb(200,200,0)'
+           };
+        
+          event.push(temp);
+        
+        
+           var temp =  {
+            title: data.ts_gray,
+            start: data.date,
+            display : 'list-item',
+            backgroundColor : 'rgb(200,200,200)'
+           };
+        
+          event.push(temp);
+        })
+        setEventCalendar(event)
+      };
+      chartData();
+      eventCalendar()
+    });
+    // .then(() => {
+    //   console.log(st_total);
+    // });
     setMonth(format(new Date(), "MMMM yyyy", { locale: th }));
     let cardData = [
       { label: "จำนวนรายการทั้งหมดของวัน", value: st_total },
@@ -258,7 +307,7 @@ export default function DashBoard() {
               initialView="dayGridMonth"
               weekends={true}
               dateClick={handleClickDate}
-              events={[]}
+              events={eventCalendar}
             />
           </Grid>
         </Grid>

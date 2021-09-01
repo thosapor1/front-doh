@@ -411,149 +411,6 @@ export default function ModalSuperAdminActivity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        <Grid item sm={3} className={classes.cardItem}>
-          {/* Audit Block */}
-          <div className={classes.headCard}>
-            <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
-          </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
-            <Tabs
-              value={value1}
-              onChange={handleChangeTabs1}
-              aria-label="simple tabs example"
-              indicatorColor="primary"
-            >
-              <Tab
-                label="ก่อน 2 คัน"
-                {...a11yProps(0)}
-                className={classes.tab}
-              />
-              <Tab
-                label="ก่อน 1 คัน"
-                {...a11yProps(1)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="คันที่ตรวจ"
-                {...a11yProps(2)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="วิดีโอ"
-                {...a11yProps(3)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-            </Tabs>
-          </div>
-          <TabPanel1 value={value1} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel1>
-          <TabPanel1 value={value1} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel1>
-          <TabPanel1 value={value1} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.audit_pic_crop != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel1>
-          <TabPanel1 value={value1} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic != 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel1>
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
-                    กรมขนส่งทางบก
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
-                  <TableCell>{dataList.dlt_lp}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>{dataList.dlt_lp_province}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.dlt_class}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-          <div
-            style={{
-              paddingLeft: 10,
-              paddingRight: 10,
-              display: "flex",
-              justifyContent: "space-around",
-              marginTop: 150,
-            }}
-          >
-            <Button
-              className={classes.btn}
-              variant="contained"
-              color="secondary"
-              style={{ width: 130 }}
-            >
-              ลบรายการนี้
-            </Button>
-            <Button
-              className={classes.btn}
-              variant="contained"
-              style={{
-                width: 130,
-                color: "white",
-                backgroundColor: "orange",
-              }}
-              onClick={handleUpdateState4To5}
-            >
-              บันทึกแบบรายการพิเศษ
-            </Button>
-          </div>
-        </Grid>
-
         {/* Audit-DVES block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
@@ -650,6 +507,149 @@ export default function ModalSuperAdminActivity(props) {
               onClick={handleUpdateState6To7}
             >
               จนท.ตรวจสอบรับทราบ
+            </Button>
+          </div>
+        </Grid>
+
+        {/* Audit Block */}
+        <Grid item sm={3} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
+          </div>
+          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+            <Tabs
+              value={value1}
+              onChange={handleChangeTabs1}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel1 value={value1} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TabPanel1 value={value1} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TabPanel1 value={value1} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.audit_pic_crop != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TabPanel1 value={value1} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic != 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel1>
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} style={{ color: "white" }}>
+                    ระบบตรวจสอบรายได้
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>กว้าง</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ยาว</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>{dataList.dlt_class}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ค่าธรรมเนียม</TableCell>
+                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+          <div
+            style={{
+              paddingLeft: 10,
+              paddingRight: 10,
+              display: "flex",
+              justifyContent: "space-around",
+              marginTop: 150,
+            }}
+          >
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="secondary"
+              style={{ width: 130 }}
+            >
+              ลบรายการนี้
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              style={{
+                width: 130,
+                color: "white",
+                backgroundColor: "orange",
+              }}
+              onClick={handleUpdateState4To5}
+            >
+              บันทึกแบบรายการพิเศษ
             </Button>
           </div>
         </Grid>
