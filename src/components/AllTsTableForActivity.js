@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import ModalReadOnly from "./ModalReadOnly";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 const useStyles = makeStyles((theme) => {
   return {

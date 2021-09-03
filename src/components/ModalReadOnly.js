@@ -26,7 +26,7 @@ import Cookies from "js-cookie";
 import { Theme } from "@fullcalendar/react";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v1",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -191,10 +191,10 @@ const useStyle = makeStyles((theme) => {
     disabledBtn: {
       color: "gray",
       backgroundColor: "lightgray",
-      marginTop:9,
-      height:60,
-      marginLeft:8,
-      width:130,
+      marginTop: 9,
+      height: 60,
+      marginLeft: 8,
+      width: 130,
     },
   };
 });
@@ -238,7 +238,7 @@ export default function ModalReadOnly(props) {
   const [super_audit_vehicleClass, setSuper_audit_vehicleClass] = useState("");
   const [super_audit_feeAmount, setSuper_audit_feeAmount] = useState("");
 
-  const handleUpdateState6To7 = async () => {
+  const handleUpdateState6To7 = () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -254,14 +254,27 @@ export default function ModalReadOnly(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
           .post("/changeState6to7", sendData)
           .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
           })
           .then(() => props.onClick())
@@ -547,7 +560,8 @@ export default function ModalReadOnly(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
+                  {/* <TableCell>{dataList.dlt_fee_ref}</TableCell> */}
+                  <TableCell>30</TableCell>
                 </TableRow>
               </TableBody>
             </table>

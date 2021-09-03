@@ -25,7 +25,7 @@ import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 
@@ -184,7 +184,6 @@ export default function AuditDisplay() {
     }
 
     const date = format(selectedDate, "yyyy-MM-dd");
-    // const date = "2021-08-10";
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 

@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Cookies from "js-cookie";
 import DashBoardCalendar from "../components/DashBoardCalendar";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { CalendarApi } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import BarChart from "../components/BarChart";
@@ -22,32 +22,8 @@ import { th } from "date-fns/locale";
 import axios from "axios";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v1",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const data = [
-  ["วันที่", "จำนวนรถ"],
-  ["1", 180000],
-  ["2", 180000],
-  ["3", 300000],
-  ["4", 200000],
-  ["5", 398742],
-  ["6", 163000],
-  ["7", 326547],
-  ["8", 285478],
-  ["9", 300000],
-  ["10", 398742],
-  ["11", 180000],
-  ["12", 300000],
-  ["13", 180000],
-  ["14", 180000],
-  ["15", 326547],
-  ["16", 180000],
-  ["17", 180000],
-  ["18", 285478],
-  ["19", 180000],
-  ["20", 180000],
-  ["21", 300000],
-];
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -118,7 +94,7 @@ const useStyle = makeStyles((theme) => {
 export default function DashBoard() {
   let dateArray = [];
   let valueArray = [];
-  let event = []
+  let event = [];
   let cardData = [{}];
   const classes = useStyle();
 
@@ -136,13 +112,14 @@ export default function DashBoard() {
   });
   const [dayChart, setDayChart] = useState([]);
   const [valueChart, setValueChart] = useState([]);
-  const [eventCalendar, setEventCalendar] = useState({})
+  const [eventCalendar, setEventCalendar] = useState({});
   const [st_total, setSt_total] = useState();
   const [st_wait, setSt_wait] = useState(0);
   const [st_edited, setSt_edited] = useState(0);
   const [st_finish, setSt_finish] = useState(0);
   const [state, setState] = useState({});
-  const [month, setMonth] = useState("");
+  const [monthChart, setMonthChart] = useState("");
+  const [dateCalendar, setDateCalendar] = useState(new Date());
 
   const dataChart = {
     labels: dayChart,
@@ -157,6 +134,7 @@ export default function DashBoard() {
     ],
   };
   const handleClickDate = async (date) => {
+    // console.log(date.dateStr);
     const res = await apiURL.post("/dashboard-listview", {
       date: date.dateStr,
     });
@@ -185,91 +163,79 @@ export default function DashBoard() {
       },
     ];
 
-    // console.log(res.data);
+    
   };
 
-  const dataForCalendar = () => {};
+  const getChartData = (dataInMonth) => {
+    if (!!dataInMonth) {
+      dataInMonth.map((data) => {
+        dateArray.push(data.date.slice(-2));
+        valueArray.push(data.ts_count_all);
+      });
+    }
+    setDayChart(dateArray);
+    setValueChart(valueArray);
+  };
 
-  // const fetchData = () => {
+  const getDataCalendar = (dataInMonth) => {
+    if (!!dataInMonth) {
+      dataInMonth.map((data) => {
+        let temp = {
+          title: data.ts_red,
+          start: data.date,
+          display: "list-item",
+          backgroundColor: "rgb(200,0,0)",
+        };
 
-  // };
+        event.push(temp);
+
+        temp = {
+          title: data.ts_green,
+          start: data.date,
+          display: "list-item",
+          backgroundColor: "rgb(0,200,0)",
+        };
+
+        event.push(temp);
+
+        temp = {
+          title: data.ts_yellow,
+          start: data.date,
+          display: "list-item",
+          backgroundColor: "rgb(200,200,0)",
+        };
+
+        event.push(temp);
+
+        temp = {
+          title: data.ts_gray,
+          start: data.date,
+          display: "list-item",
+          backgroundColor: "rgb(200,200,200)",
+        };
+
+        event.push(temp);
+      });
+    }
+    setEventCalendar(event);
+  };
+
+  const fetchData = () => {
+    const date = format(dateCalendar, "yyyy-MM-dd");
+    const sendData = { dateTime: date };
+    apiURL.post("/dashboard-month", sendData).then((res) => {
+      const dataInMonth = res.data.month;
+      getChartData(dataInMonth);
+      getDataCalendar(dataInMonth);
+    });
+  };
 
   useEffect(() => {
-    // fetchData();
-    const dateCalendar = format(new Date(), "yyyy-MM-dd");
-    const sendData = {dateTime: dateCalendar} ;
-    apiURL.post("/dashboard-month",  sendData).then((res) => {
-      setSt_total(res.data.st_total);
-      setSt_edited(res.data.st_edited);
-      setSt_wait(res.data.st_wait);
-      setSt_finish(res.data.st_finish);
-
-      const dataInMonth = res.data.month;
-      const chartData = () => {
-        dataInMonth.map((data) => {
-          dateArray.push(data.date.slice(-2));
-          valueArray.push(data.ts_count_all);
-        });
-        setDayChart(dateArray);
-        setValueChart(valueArray);
-      };
-
-      const eventCalendar = () => {
-        dataInMonth.map((data)=>{
-          var temp =  {
-            title: data.ts_red,
-            start: data.date,
-            display : 'list-item',
-            backgroundColor : 'rgb(200,0,0)'
-           };
-        
-          event.push(temp);
-        
-          var temp =  {
-            title: data.ts_green,
-            start: data.date,
-            display : 'list-item',
-            backgroundColor : 'rgb(0,200,0)'
-           };
-        
-          event.push(temp);
-        
-           var temp =  {
-            title: data.ts_yellow,
-            start: data.date,
-            display : 'list-item',
-            backgroundColor : 'rgb(200,200,0)'
-           };
-        
-          event.push(temp);
-        
-        
-           var temp =  {
-            title: data.ts_gray,
-            start: data.date,
-            display : 'list-item',
-            backgroundColor : 'rgb(200,200,200)'
-           };
-        
-          event.push(temp);
-        })
-        setEventCalendar(event)
-      };
-      chartData();
-      eventCalendar()
-    });
-    // .then(() => {
-    //   console.log(st_total);
-    // });
-    setMonth(format(new Date(), "MMMM yyyy", { locale: th }));
-    let cardData = [
-      { label: "จำนวนรายการทั้งหมดของวัน", value: st_total },
-      { label: "จำนวนรายการตรวจสอบ", value: st_wait },
-      { label: "จำนวนรายการตรวจสอบแก้ไขแล้ว", value: st_edited },
-      { label: "จำนวนรายการตรวจสอบเสร็จสิ้น", value: st_finish },
-    ];
-    return cardData;
+    fetchData();
+    setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
   }, []);
+
+  const calendarRef = React.createRef();
 
   return (
     <Container maxWidth="xl" className={classes.root}>
@@ -287,7 +253,9 @@ export default function DashBoard() {
               paddingTop: "1rem",
             }}
           >
-            <Typography variant="h6">ข้อมูลปริมาณรถ เดือน {month}</Typography>
+            <Typography variant="h6">
+              ข้อมูลปริมาณรถ เดือน {monthChart}
+            </Typography>
             <BarChart data={dataChart} />
           </Grid>
           <Grid
@@ -303,11 +271,67 @@ export default function DashBoard() {
           >
             <Typography variant="h6">เลือกวันที่เพื่อดูข้อมูล</Typography>
             <FullCalendar
+              ref={calendarRef}
+              customButtons={{
+                custom1: {
+                  text: "<",
+                  click: function () {
+                    let calendarApi = calendarRef.current.getApi();
+                    let date = calendarApi.getDate();
+                    let date2 = CalendarApi.toDate()
+                    console.log('dataInfo: ',date2)
+                    setDateCalendar(date);
+                    fetchData();
+                    setMonthChart(
+                      format(dateCalendar, "MMMM yyyy", { locale: th })
+                    );
+                    let dataTest1 = format(dateCalendar, "MMMM yyyy", {
+                      locale: th,
+                    });
+                    let dataTest2 = format(date, "MMMM yyyy", { locale: th });
+                    console.log(
+                      "state: ",
+                      dataTest1,
+                      "calendarAPI: ",
+                      dataTest2
+                    );
+                    calendarApi.prev();
+                  },
+                },
+                custom2: {
+                  text: ">",
+                  click: function () {
+                    let calendarApi = calendarRef.current.getApi();
+                    let date = calendarApi.getDate();
+                    setDateCalendar(calendarApi.getDate());
+                    setMonthChart(
+                      format(dateCalendar, "MMMM yyyy", { locale: th })
+                    );
+                    let dataTest1 = format(dateCalendar, "MMMM yyyy", {
+                      locale: th,
+                    });
+                    let dataTest2 = format(date, "MMMM yyyy", { locale: th });
+                    console.log(
+                      "state: ",
+                      dataTest1,
+                      "calendarAPI: ",
+                      dataTest2
+                    );
+                    calendarApi.next();
+                  },
+                },
+              }}
+              headerToolbar={{
+                left: "",
+                center: "title",
+                right: "custom1,custom2 prev,next today",
+              }}
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               weekends={true}
               dateClick={handleClickDate}
               events={eventCalendar}
+              datesSet={(args) => console.log("###datesSet:", args)}
             />
           </Grid>
         </Grid>

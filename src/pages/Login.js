@@ -14,6 +14,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import { useClearCache } from "react-clear-cache";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -51,7 +52,7 @@ const useStyle = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 export default function Login() {
@@ -95,13 +96,13 @@ export default function Login() {
 
       if (res.data.status == true && res.data.result[0].department_id == 1) {
         console.log("pass", res.data.status);
-        setCookies()
+        setCookies();
         history.push("/rawTransaction");
       } else if (
         res.data.status == true &&
         res.data.result[0].department_id == 2
       ) {
-        setCookies()
+        setCookies();
         history.push("/pk3Display");
         console.log("res:", res.data);
       } else {
@@ -115,7 +116,7 @@ export default function Login() {
 
     // console.log(state.username, state.password);
   };
-
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -205,6 +206,18 @@ export default function Login() {
                 </Button>
               </div>
             </form>
+            <div>
+              {!isLatestVersion && (
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    emptyCacheStorage();
+                  }}
+                >
+                  Update version
+                </Button>
+              )}
+            </div>
           </Grid>
         </Grid>
       </Paper>

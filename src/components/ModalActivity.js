@@ -29,7 +29,7 @@ import Cookies from "js-cookie";
 import { useHistory } from "react-router";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v1",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -247,7 +247,7 @@ export default function ModalActivity(props) {
     console.log(audit_feeAmount, audit_vehicleClass, event.target.value);
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -265,21 +265,75 @@ export default function ModalActivity(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState2to3", sendData)
-          .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL.post("/changeState2to3", sendData).then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-        // .then(() => window.location.reload());
-      }
-    });
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
+
+    // const res = await apiURL.post("/changeState2to3", sendData);
+    console.log(sendData);
+    // console.log(res.data);
+  };
+  const handleChangeState6To7 = () => {
+    const sendData = {
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.transactionId,
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL.post("/changeState2to7", sendData).then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -546,11 +600,25 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
+                  {/* <TableCell>{dataList.dlt_fee_ref}</TableCell> */}
+                  <TableCell>30</TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
+          <div>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                marginTop: 64,
+              }}
+              onClick={handleChangeState6To7}
+            >
+              บันทึกเป็นรายการปกติ
+            </Button>
+          </div>
         </Grid>
 
         {/* ALPR Block */}

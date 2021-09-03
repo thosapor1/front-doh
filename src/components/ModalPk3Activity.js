@@ -26,7 +26,7 @@ import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v1",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -221,7 +221,7 @@ export default function ModalPk3Activity(props) {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const handleUpdateState3To4 = async () => {
+  const handleUpdateState3To4 = () => {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -239,14 +239,27 @@ export default function ModalPk3Activity(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
           .post("/changeState3to4", sendData)
           .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
           })
           .then(() => props.onClick())
@@ -258,7 +271,7 @@ export default function ModalPk3Activity(props) {
     // console.log(sendData);
     // console.log(res.data);
   };
-  const handleUpdateState3To6 = async () => {
+  const handleUpdateState3To6 = () => {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -276,14 +289,17 @@ export default function ModalPk3Activity(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
           .post("/changeState3to6", sendData)
           .then((res) => {
-            if (res.data === true) {
+            if (res.data.status === true) {
               Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            } else {
+              Swal.fire("บันทึกข้อมูลไม่สำเร็จ");
             }
           })
           .then(() => props.onClick())
@@ -340,7 +356,7 @@ export default function ModalPk3Activity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* Audit-DVES block */}
+        {/* CCTV Audit  block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -425,7 +441,7 @@ export default function ModalPk3Activity(props) {
           </TabPanel4>
         </Grid>
 
-        {/* Audit Block */}
+        {/* CCTV Audit (Vehicle) Block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -533,7 +549,8 @@ export default function ModalPk3Activity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
+                  {/* <TableCell>{dataList.audit_feeAmount}</TableCell> */}
+                  <TableCell>30</TableCell>
                 </TableRow>
               </TableBody>
             </table>

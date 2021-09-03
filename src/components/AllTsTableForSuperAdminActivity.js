@@ -17,7 +17,7 @@ import ModalSuperAdminActivity from "./ModalSuperAdminActivity";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 const useStyles = makeStyles((theme) => {
   return {
@@ -164,7 +164,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
                               : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "#990000"
+                              ? "yellow"
                               : "black",
                         }}
                       />

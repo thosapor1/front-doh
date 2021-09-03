@@ -26,7 +26,7 @@ import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v1",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -258,7 +258,7 @@ export default function ModalSuperAdminActivity(props) {
     );
   };
 
-  const handleUpdateState4To5 = async () => {
+  const handleUpdateState4To5 = () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -275,26 +275,38 @@ export default function ModalSuperAdminActivity(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState4to5", sendData)
-          .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL.post("/changeState4to5", sendData).then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-      }
-    });
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
 
     // const res = await apiURL.post("/changeState4to5", sendData);
     console.log(sendData);
     // console.log(res.data);
   };
-  const handleUpdateState4To6 = async () => {
+  const handleUpdateState4To6 = () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -305,20 +317,34 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
+
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
           .post("/changeState4to6", sendData)
           .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
           })
           .then(() => props.onClick())
@@ -330,7 +356,7 @@ export default function ModalSuperAdminActivity(props) {
     console.log(sendData);
     // console.log(res.data);
   };
-  const handleUpdateState6To7 = async () => {
+  const handleUpdateState6To7 = () => {
     const sendData = {
       super_audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
@@ -347,14 +373,27 @@ export default function ModalSuperAdminActivity(props) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, save it",
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
           .post("/changeState6to7", sendData)
           .then((res) => {
-            if (res.data === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             }
           })
           .then(() => props.onClick())
@@ -372,7 +411,6 @@ export default function ModalSuperAdminActivity(props) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList);
     }
-
   }, [dataList]);
 
   const body = (
@@ -616,7 +654,8 @@ export default function ModalSuperAdminActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.dlt_fee_ref}</TableCell>
+                  {/* <TableCell>{dataList.dlt_fee_ref}</TableCell> */}
+                  <TableCell>30</TableCell>
                 </TableRow>
               </TableBody>
             </table>

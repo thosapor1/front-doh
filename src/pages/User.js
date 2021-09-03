@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: "http://202.183.167.92:3010/audit/api/v2",
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 export default function User() {
@@ -129,8 +129,7 @@ export default function User() {
   const handleChangeSwitch = (event, index) => {
     setSwitch({ ...switch1, [event.target.name]: event.target.checked });
     const userId = event.target.id;
-    console.log('click', userId, event.target.value);
-
+    console.log("click", userId, event.target.value);
   };
 
   const handleDelete = async (item) => {
@@ -195,7 +194,7 @@ export default function User() {
   // Body Modal
 
   return (
-    <Container maxWidth='xl' className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">ตั้งค่า : ผู้ใช้งาน</Typography>
       <Paper className={classes.paper}>
         <div style={{ textAlign: "right" }}>
@@ -227,51 +226,51 @@ export default function User() {
             <TableBody>
               {!!state.user_list
                 ? state.user_list.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell align="center">{item.user_id} </TableCell>
-                    <TableCell align="center">{item.username} </TableCell>
-                    <TableCell align="center">{item.fname} </TableCell>
-                    <TableCell align="center">{item.lname} </TableCell>
-                    <TableCell align="center">{item.position} </TableCell>
-                    <TableCell align="center">{item.department} </TableCell>
-                    <TableCell align="center">
-                      <IconButton>
-                        <EditTwoToneIcon
-                          color="primary"
-                          onClick={() => {
-                            handleOpenModalEdit();
-                            handlegetDataForEdit(item);
-                          }}
-                        />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleDelete(item)}
-                        color="secondary"
-                      >
-                        <DeleteForeverTwoToneIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="center">
-                      {item.status == true ?
-                        <Switch
-                          checked={switch1.activeChecked}
-                          onChange={handleChangeSwitch}
-                          name="activeChecked"
-                          id={(item.user_id).toString()}
-                          color="primary"
-                        /> :
-                        <Switch
-                          checked={switch1.inActiveChecked}
-                          onChange={handleChangeSwitch}
-                          name="inActiveChecked"
-                          id={(item.user_id).toString()}
-                          color="primary"
-                        />
-                      }
-
-                    </TableCell>
-                  </TableRow>
-                ))
+                    <TableRow key={item.id}>
+                      <TableCell align="center">{item.user_id} </TableCell>
+                      <TableCell align="center">{item.username} </TableCell>
+                      <TableCell align="center">{item.fname} </TableCell>
+                      <TableCell align="center">{item.lname} </TableCell>
+                      <TableCell align="center">{item.position} </TableCell>
+                      <TableCell align="center">{item.department} </TableCell>
+                      <TableCell align="center">
+                        <IconButton>
+                          <EditTwoToneIcon
+                            color="primary"
+                            onClick={() => {
+                              handleOpenModalEdit();
+                              handlegetDataForEdit(item);
+                            }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDelete(item)}
+                          color="secondary"
+                        >
+                          <DeleteForeverTwoToneIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
+                        {item.status == true ? (
+                          <Switch
+                            checked={switch1.activeChecked}
+                            onChange={handleChangeSwitch}
+                            name="activeChecked"
+                            id={item.user_id.toString()}
+                            color="primary"
+                          />
+                        ) : (
+                          <Switch
+                            checked={switch1.inActiveChecked}
+                            onChange={handleChangeSwitch}
+                            name="inActiveChecked"
+                            id={item.user_id.toString()}
+                            color="primary"
+                          />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))
                 : state.user_list}
             </TableBody>
           </Table>
