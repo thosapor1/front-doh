@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   Divider,
@@ -8,12 +7,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import Chart from "react-google-charts";
 import Paper from "@material-ui/core/Paper";
 import Cookies from "js-cookie";
-import DashBoardCalendar from "../components/DashBoardCalendar";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import FullCalendar, { CalendarApi } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import BarChart from "../components/BarChart";
@@ -29,6 +26,8 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {
       display: "flex",
+      backgroundColor: "#f9f9f9",
+      paddingTop: 20,
     },
     containerChartAndCalendar: {
       height: "100%",
@@ -95,7 +94,7 @@ export default function DashBoard() {
   let dateArray = [];
   let valueArray = [];
   let event = [];
-  let cardData = [{}];
+
   const classes = useStyle();
 
   const [popUP, setPopUP] = useState({
@@ -113,21 +112,17 @@ export default function DashBoard() {
   const [dayChart, setDayChart] = useState([]);
   const [valueChart, setValueChart] = useState([]);
   const [eventCalendar, setEventCalendar] = useState({});
-  const [st_total, setSt_total] = useState();
-  const [st_wait, setSt_wait] = useState(0);
-  const [st_edited, setSt_edited] = useState(0);
-  const [st_finish, setSt_finish] = useState(0);
-  const [state, setState] = useState({});
+  const [cardData, setcardData] = useState([{}]);
   const [monthChart, setMonthChart] = useState("");
   const [dateCalendar, setDateCalendar] = useState(new Date());
-
+  const [visible, setVisible] = useState("hidden");
   const dataChart = {
     labels: dayChart,
     datasets: [
       {
         label: "จำนวนรถ",
         data: valueChart,
-        backgroundColor: ["rgba(153, 102, 255, 0.2)"],
+        backgroundColor: ["rgba(153, 102, 255, 0.8)"],
         borderColor: ["rgb(153, 102, 255)"],
         borderWidth: 1,
       },
@@ -135,11 +130,12 @@ export default function DashBoard() {
   };
   const handleClickDate = async (date) => {
     // console.log(date.dateStr);
+    setVisible("visible");
     const res = await apiURL.post("/dashboard-listview", {
       date: date.dateStr,
     });
     setPopUP(res.data);
-
+    console.log(res.data);
     return [
       {
         label: "C1",
@@ -162,8 +158,36 @@ export default function DashBoard() {
         sumValue: popUP.countReject,
       },
     ];
+  };
 
-    
+  const getPopUpData = (dataInMonth) => {
+    let data = [
+      {
+        label: "จำนวนรายการทั้งหมดของวัน",
+        value: dataInMonth.st_total,
+        color: "gary",
+      },
+      {
+        label: "จำนวนรายการตรวจสอบ",
+        value: dataInMonth.st_wait,
+        color: "red",
+      },
+
+      {
+        label: "จำนวนรายการตรวจสอบแก้ไขแล้ว",
+        value: dataInMonth.st_edited,
+        color: "orange",
+      },
+
+      {
+        label: "จำนวนรายการตรวจสอบเสร็จสิ้น",
+        value: dataInMonth.st_finish,
+        color: "green",
+      },
+    ];
+
+    setcardData(data);
+    console.log(cardData);
   };
 
   const getChartData = (dataInMonth) => {
@@ -186,7 +210,6 @@ export default function DashBoard() {
           display: "list-item",
           backgroundColor: "rgb(200,0,0)",
         };
-
         event.push(temp);
 
         temp = {
@@ -195,7 +218,6 @@ export default function DashBoard() {
           display: "list-item",
           backgroundColor: "rgb(0,200,0)",
         };
-
         event.push(temp);
 
         temp = {
@@ -204,7 +226,6 @@ export default function DashBoard() {
           display: "list-item",
           backgroundColor: "rgb(200,200,0)",
         };
-
         event.push(temp);
 
         temp = {
@@ -213,21 +234,22 @@ export default function DashBoard() {
           display: "list-item",
           backgroundColor: "rgb(200,200,200)",
         };
-
         event.push(temp);
       });
     }
     setEventCalendar(event);
   };
 
-  const fetchData = () => {
-    const date = format(dateCalendar, "yyyy-MM-dd");
-    const sendData = { dateTime: date };
-    apiURL.post("/dashboard-month", sendData).then((res) => {
+  const fetchData = (month = new Date()) => {
+    apiURL.post("/dashboard-month", { dateTime: month }).then((res) => {
+      const allData = res.data;
       const dataInMonth = res.data.month;
+      console.log(dataInMonth);
       getChartData(dataInMonth);
       getDataCalendar(dataInMonth);
+      getPopUpData(allData);
     });
+    // console.log(dateCalendar);
   };
 
   useEffect(() => {
@@ -240,12 +262,16 @@ export default function DashBoard() {
   return (
     <Container maxWidth="xl" className={classes.root}>
       <Grid container>
+        <Grid item lg={12} md={12} style={{ marginBottom: 10 }}>
+          <Typography variant="h6">ข้อมูลประจำเดือน{monthChart} </Typography>
+        </Grid>
         <Grid item lg={9} md={9}>
           <Grid
             component={Paper}
             item
             style={{
-              width: "75%",
+              height: "200px",
+              width: "90%",
               marginRight: "auto",
               marginLeft: "auto",
               marginBottom: 20,
@@ -253,16 +279,14 @@ export default function DashBoard() {
               paddingTop: "1rem",
             }}
           >
-            <Typography variant="h6">
-              ข้อมูลปริมาณรถ เดือน {monthChart}
-            </Typography>
+            <Typography variant="h6">ข้อมูลปริมาณรถ</Typography>
             <BarChart data={dataChart} />
           </Grid>
           <Grid
             component={Paper}
             item
             style={{
-              width: "75%",
+              width: "90%",
               marginRight: "auto",
               marginLeft: "auto",
               padding: "3rem",
@@ -278,22 +302,14 @@ export default function DashBoard() {
                   click: function () {
                     let calendarApi = calendarRef.current.getApi();
                     let date = calendarApi.getDate();
-                    let date2 = CalendarApi.toDate()
-                    console.log('dataInfo: ',date2)
-                    setDateCalendar(date);
-                    fetchData();
+                    date = date.setMonth(date.getMonth() - 1);
+                    const sendData = format(date, "yyyy-MM-dd");
+                    // console.log(sendData);
+                    fetchData(sendData);
                     setMonthChart(
-                      format(dateCalendar, "MMMM yyyy", { locale: th })
-                    );
-                    let dataTest1 = format(dateCalendar, "MMMM yyyy", {
-                      locale: th,
-                    });
-                    let dataTest2 = format(date, "MMMM yyyy", { locale: th });
-                    console.log(
-                      "state: ",
-                      dataTest1,
-                      "calendarAPI: ",
-                      dataTest2
+                      format(date, "MMMM yyyy", {
+                        locale: th,
+                      })
                     );
                     calendarApi.prev();
                   },
@@ -303,19 +319,14 @@ export default function DashBoard() {
                   click: function () {
                     let calendarApi = calendarRef.current.getApi();
                     let date = calendarApi.getDate();
-                    setDateCalendar(calendarApi.getDate());
+                    date = date.setMonth(date.getMonth() + 1);
+                    const sendData = format(date, "yyyy-MM-dd");
+                    // console.log(sendData);
+                    fetchData(sendData);
                     setMonthChart(
-                      format(dateCalendar, "MMMM yyyy", { locale: th })
-                    );
-                    let dataTest1 = format(dateCalendar, "MMMM yyyy", {
-                      locale: th,
-                    });
-                    let dataTest2 = format(date, "MMMM yyyy", { locale: th });
-                    console.log(
-                      "state: ",
-                      dataTest1,
-                      "calendarAPI: ",
-                      dataTest2
+                      format(date, "MMMM yyyy", {
+                        locale: th,
+                      })
                     );
                     calendarApi.next();
                   },
@@ -323,38 +334,49 @@ export default function DashBoard() {
               }}
               headerToolbar={{
                 left: "",
-                center: "title",
-                right: "custom1,custom2 prev,next today",
+                center: "",
+                right: "custom1,custom2",
               }}
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               weekends={true}
               dateClick={handleClickDate}
               events={eventCalendar}
-              datesSet={(args) => console.log("###datesSet:", args)}
+              height="550px"
             />
           </Grid>
         </Grid>
 
         <Grid item lg={3} md={3} style={{ backgroundColor: "lightgray" }}>
           <Typography variant="h6" align="center" style={{ marginTop: "1rem" }}>
-            รายการเดือน
+            รายการ
           </Typography>
 
           <div>
-            {cardData.map((card) => (
-              <Paper elevation={2} className={classes.card}>
-                <Typography>{card.label}</Typography>
-                <Divider
-                  variant="middle"
-                  style={{ marginTop: 10, marginBottom: 10 }}
-                />
-                <Typography>{card.value}</Typography>
-              </Paper>
-            ))}
+            {!!cardData
+              ? cardData.map((card) => (
+                  <Paper elevation={2} className={classes.card}>
+                    <Typography>{card.label}</Typography>
+                    <Divider
+                      variant="middle"
+                      style={{ marginTop: 10, marginBottom: 10 }}
+                    />
+                    <Typography
+                      style={{ color: card.color }}
+                      variant="subtitle2"
+                    >
+                      {card.value}
+                    </Typography>
+                  </Paper>
+                ))
+              : [{}]}
           </div>
 
-          <Paper elevation={2} className={classes.cardPopup}>
+          <Paper
+            elevation={2}
+            className={classes.cardPopup}
+            style={{ visibility: visible }}
+          >
             <div
               style={{
                 display: "flex",
@@ -362,8 +384,8 @@ export default function DashBoard() {
                 marginTop: "1rem",
               }}
             >
-              <Typography>รายได้พึงได้รายวัน</Typography>
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" style={{fontSize:'1rem'}}>รายได้พึงได้รายวัน</Typography>
+              <Typography variant="subtitle2" style={{fontSize:'1rem'}}>
                 {popUP.sumAmountallClass}
               </Typography>
             </div>
@@ -436,14 +458,14 @@ export default function DashBoard() {
           </Paper>
           <div>{}</div>
 
-          <div className={classes.btnContainer}>
+          {/* <div className={classes.btnContainer}>
             <Button variant="contained" color="primary" size="small">
               พิมพ์รายงาน
             </Button>
             <Button variant="contained" color="primary" size="small">
               ดูข้อมูลทั้งหมด
             </Button>
-          </div>
+          </div> */}
         </Grid>
       </Grid>
     </Container>
