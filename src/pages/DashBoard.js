@@ -24,6 +24,18 @@ const apiURL = axios.create({
 
 const useStyle = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {
       display: "flex",
       backgroundColor: "#f9f9f9",
@@ -81,6 +93,9 @@ const useStyle = makeStyles((theme) => {
       marginRight: "auto",
       marginLeft: "auto",
       marginBottom: "1rem",
+      "& .MuiLinearProgress-barColorPrimary": {
+        backgroundColor: "green",
+      },
     },
     inPopup: {
       display: "flex",
@@ -331,11 +346,28 @@ export default function DashBoard() {
                     calendarApi.next();
                   },
                 },
+                custom3: {
+                  text: "today",
+                  click: function () {
+                    let calendarApi = calendarRef.current.getApi();
+                    let date = new Date();
+                    // date = date.setMonth(date.getMonth() + 1);
+                    const sendData = format(date, "yyyy-MM-dd");
+                    // console.log(sendData);
+                    fetchData(sendData);
+                    setMonthChart(
+                      format(date, "MMMM yyyy", {
+                        locale: th,
+                      })
+                    );
+                    calendarApi.today();
+                  },
+                },
               }}
               headerToolbar={{
                 left: "",
                 center: "",
-                right: "custom1,custom2",
+                right: "custom1,custom2 custom3",
               }}
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -347,8 +379,18 @@ export default function DashBoard() {
           </Grid>
         </Grid>
 
-        <Grid item lg={3} md={3} style={{ backgroundColor: "lightgray" }}>
-          <Typography variant="h6" align="center" style={{ marginTop: "1rem" }}>
+        <Grid
+          component={Paper}
+          item
+          lg={3}
+          md={3}
+          style={{ backgroundColor: "#75338c" }}
+        >
+          <Typography
+            variant="h6"
+            align="center"
+            style={{ marginTop: "1rem", color: "white" }}
+          >
             รายการ
           </Typography>
 
@@ -384,8 +426,10 @@ export default function DashBoard() {
                 marginTop: "1rem",
               }}
             >
-              <Typography variant="subtitle2" style={{fontSize:'1rem'}}>รายได้พึงได้รายวัน</Typography>
-              <Typography variant="subtitle2" style={{fontSize:'1rem'}}>
+              <Typography variant="subtitle2" style={{ fontSize: "1rem" }}>
+                รายได้พึงได้รายวัน
+              </Typography>
+              <Typography variant="subtitle2" style={{ fontSize: "1rem" }}>
                 {popUP.sumAmountallClass}
               </Typography>
             </div>
@@ -400,13 +444,11 @@ export default function DashBoard() {
               <Typography>
                 C1 ({popUP.C1}) : {popUP.c1SumAmount}
               </Typography>
-              <Typography>
-                {Math.round((popUP.C1 * 100) / popUP.c1SumAmount)}%
-              </Typography>
+              <Typography>{popUP.percentC1}%</Typography>
             </div>
             <LinearProgress
               variant="determinate"
-              value={(popUP.C1 * 100) / popUP.c1SumAmount}
+              value={popUP.percentC1}
               className={classes.progress}
             />
 
@@ -414,14 +456,12 @@ export default function DashBoard() {
               <Typography>
                 C2 ({popUP.C2}) : {popUP.c2SumAmount}
               </Typography>
-              <Typography>
-                {Math.round((popUP.C2 * 100) / popUP.c2SumAmount)}%
-              </Typography>
+              <Typography>{popUP.percentC2}%</Typography>
             </div>
             <div>
               <LinearProgress
                 variant="determinate"
-                value={(popUP.C2 * 100) / popUP.c2SumAmount}
+                value={popUP.percentC2}
                 className={classes.progress}
               />
             </div>
@@ -430,28 +470,24 @@ export default function DashBoard() {
               <Typography>
                 C3 ({popUP.C3}) : {popUP.c3SumAmount}
               </Typography>
-              <Typography>
-                {Math.round((popUP.C3 * 100) / popUP.c3SumAmount)}%
-              </Typography>
+              <Typography>{popUP.percentC3}%</Typography>
             </div>
             <div>
               <LinearProgress
                 variant="determinate"
-                value={(popUP.C3 * 100) / popUP.c3SumAmount}
+                value={popUP.percentC3}
                 className={classes.progress}
               />
             </div>
 
             <div className={classes.inPopup}>
               <Typography>รายได้รายวัน : {popUP.reject}</Typography>
-              <Typography>
-                {Math.round((popUP.reject * 100) / popUP.countReject)}%
-              </Typography>
+              <Typography>{popUP.percentReject}%</Typography>
             </div>
             <div>
               <LinearProgress
                 variant="determinate"
-                value={(popUP.reject * 100) / popUP.countReject}
+                value={popUP.percentReject}
                 className={classes.progress}
               />
             </div>

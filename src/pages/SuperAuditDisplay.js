@@ -14,7 +14,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import { TimePicker, KeyboardTimePicker } from "@material-ui/pickers";
+import { KeyboardTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
@@ -143,33 +143,18 @@ export default function AuditDisplay() {
   const [page, setPage] = useState(1);
 
   const dataCard = [
-    // {
-    //   value: summary.ts_total,
-    //   status: "ts_total",
-    //   label: "จำนวนรายการทั้งหมดของวัน",
-    // },
-    // {
-    //   value: summary.ts_normal,
-    //   status: "ts_normal",
-    //   label: "จำนวนรายการปกติ",
-    // },
     {
       value: summary.ts_not_normal,
       status: "ts_not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
-    // {
-    //   value: summary.revenue,
-    //   status: "revenue",
-    //   label: "รายได้พึงได้รายวัน",
-    // },
   ];
 
   const handlePageChange = (value) => {
     fetchData(value);
   };
 
-  const fetchData = (pageId=1) => {
+  const fetchData = (pageId = 1) => {
     if (pageId == 1) {
       setPage(1);
     } else {
@@ -209,7 +194,7 @@ export default function AuditDisplay() {
 
   const classes = useStyles();
   return (
-    <Container maxWidth='xl' className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">super admin display</Typography>
 
       {/* Filter Section */}
@@ -293,7 +278,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn}
-          onClick={()=>fetchData(1)}
+          onClick={() => fetchData(1)}
         >
           ดูข้อมูล
         </Button>

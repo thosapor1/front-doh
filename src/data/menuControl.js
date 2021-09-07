@@ -50,7 +50,7 @@ export const menuConfigForSuperAdmin = [
   {
     text: "รายงานความเคลื่อนไหวผู้ใช้งาน",
     icon: "text_snippet",
-    path: "/7x",
+    path: "/userLogs",
   },
 ];
 
