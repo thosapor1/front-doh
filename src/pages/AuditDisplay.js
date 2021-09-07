@@ -28,7 +28,6 @@ const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
-
 const useStyles = makeStyles((theme) => {
   return {
     root: {
@@ -58,18 +57,18 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     card: {
-      width: '100%',
+      width: "100%",
       height: 100,
       display: "flex",
       marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1)
+      marginLeft: theme.spacing(1),
     },
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      width: "auto",
-      height: 26,
-      marginTop: 37,
+      height: 40,
+      width: 150,
+      marginTop: 23,
       marginLeft: 30,
     },
   };
@@ -232,7 +231,7 @@ export default function AuditDisplay() {
 
   const classes = useStyles();
   return (
-    <Container maxWidth='xl' className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">ตรวจสอบ (DOH):รายได้พึงได้รายวัน</Typography>
 
       {/* Filter Section */}
@@ -338,7 +337,7 @@ export default function AuditDisplay() {
             }}
           >
             <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item >
+              <Grid item>
                 <Typography
                   style={{
                     color:
@@ -364,8 +363,6 @@ export default function AuditDisplay() {
           </Paper>
         ))}
       </div>
-
-      
 
       {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>

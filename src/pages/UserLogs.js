@@ -5,6 +5,7 @@ import {
   MenuItem,
   Paper,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
@@ -47,9 +48,9 @@ const useStyles = makeStyles((theme) => {
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      width: "auto",
-      height: 50,
-      marginTop: 13,
+      width: 150,
+      height: 40,
+      marginTop: 23,
       marginLeft: 30,
     },
   };
@@ -109,6 +110,7 @@ export default function UserLogs() {
   }, []);
   return (
     <Container maxWidth="xl" className={classes.root}>
+      <Typography variant='h6' style={{marginBottom:'1rem'}}>ตั้งค่า : รายงานความเคลื่อนไหวผู้ใช้งาน</Typography>
       <Paper className={classes.filterSection}>
         <TextField
           select
@@ -118,11 +120,12 @@ export default function UserLogs() {
           style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
-          {dropDrawUser.map((item) => (
+          {!!dropDrawUser?
+           dropDrawUser.map((item) => (
             <MenuItem key={item.id} value={item.id}>
               {item.username}
             </MenuItem>
-          ))}
+          )):[]}
         </TextField>
 
         <TextField
@@ -133,11 +136,12 @@ export default function UserLogs() {
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
         >
-          {dropDrawEvent.map((item) => (
+          {!!dropDrawEvent?
+          dropDrawEvent.map((item) => (
             <MenuItem key={item.value} value={item.id}>
               {item.events_name}
             </MenuItem>
-          ))}
+          )):[]}
         </TextField>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

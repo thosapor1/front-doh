@@ -73,8 +73,9 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#46005E",
       color: "white",
       width: "auto",
-      height: 26,
-      marginTop: 37,
+      height: 40,
+      width: 150,
+      marginTop: 22,
       marginLeft: 30,
     },
   };
@@ -167,7 +168,7 @@ export default function AuditDisplay() {
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
     const sendData = {
-      page: 1,
+      page: pageId,
       checkpoint_id: checkpoint,
       datetime: date,
       startTime: timeStart,

@@ -15,7 +15,7 @@ import axios from "axios";
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: '75vh',
+      maxHeight: '72vh',
     },
     header: {
       backgroundColor: "#7C85BFff",
