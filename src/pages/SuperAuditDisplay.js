@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForSuperAdminActivity from "../components/AllTsTableForSuperAdminActivity";
+import { useHistory } from "react-router";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
@@ -78,6 +79,14 @@ const useStyles = makeStyles((theme) => {
       marginTop: 22,
       marginLeft: 30,
     },
+    btn2: {
+      backgroundColor: "green",
+      color: "white",
+      height: 40,
+      width: 150,
+      marginTop: 23,
+      marginLeft: 30,
+    },
   };
 });
 
@@ -128,6 +137,7 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
+  const history = useHistory();
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
   const [checkpoint, setCheckpoint] = useState(0);
@@ -282,6 +292,14 @@ export default function AuditDisplay() {
           onClick={() => fetchData(1)}
         >
           ดูข้อมูล
+        </Button>
+
+        <Button
+          variant="contained"
+          className={classes.btn2}
+          onClick={() => history.go("/superAuditDisplay")}
+        >
+          refresh
         </Button>
       </Paper>
 

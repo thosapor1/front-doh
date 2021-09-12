@@ -15,7 +15,7 @@ import axios from "axios";
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: '72vh',
+      maxHeight: "72vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -74,17 +74,16 @@ export default function UserLogsTAble(props) {
 
   return (
     <div>
+      <Pagination
+        count={dataList.totalPages}
+        color="primary"
+        page={page}
+        style={{
+          display: "inline",
+          margin: "2rem",
+        }}
+      />
       <TableContainer className={classes.container}>
-        <Pagination
-          count={dataList.totalPages}
-          color="primary"
-          page={page}
-          style={{
-            display: "inline",
-            margin: "2rem",
-          }}
-        />
-
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
@@ -113,10 +112,10 @@ export default function UserLogsTAble(props) {
                       {data.transactionId === "0" ? "-" : data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.stateBefore}
+                      {data.stateBefore === 0 ? "-" : data.stateBefore}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.stateAfter}
+                      {data.stateAfter === 0 ? "-" : data.stateAfter}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.timestamp}

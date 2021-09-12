@@ -116,19 +116,19 @@ export default function AllTsTableForSuperAdminActivity(props) {
 
   return (
     <div>
+      <Pagination
+        count={dataList.totalPages}
+        color="primary"
+        page={page}
+        onChange={onChange}
+        style={{
+          display: "inline",
+          margin: "2rem",
+          position: "sticky",
+          top: 0,
+        }}
+      />
       <TableContainer className={classes.container}>
-        <Pagination
-          count={dataList.totalPages}
-          color="primary"
-          page={page}
-          onChange={onChange}
-          style={{
-            display: "inline",
-            margin: "2rem",
-            position: "sticky",
-            top: 0,
-          }}
-        />
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>

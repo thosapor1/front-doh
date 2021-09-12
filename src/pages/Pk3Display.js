@@ -16,8 +16,7 @@ import {
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { KeyboardTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-
-import AllTsTable from "../components/AllTsTable";
+import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
@@ -74,9 +73,17 @@ const useStyles = makeStyles((theme) => {
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      width: "auto",
       height: 40,
-      marginTop: 37,
+      width: 150,
+      marginTop: 22,
+      marginLeft: 30,
+    },
+    btn2: {
+      backgroundColor: "green",
+      color: "white",
+      height: 40,
+      width: 150,
+      marginTop: 23,
       marginLeft: 30,
     },
   };
@@ -129,6 +136,7 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
+  const history = useHistory();
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
   const [status_select, setStatus_select] = useState(null);
@@ -145,26 +153,11 @@ export default function AuditDisplay() {
   const [page, setPage] = useState(1);
 
   const dataCard = [
-    // {
-    //   value: summary.ts_total,
-    //   status: "ts_total",
-    //   label: "จำนวนรายการทั้งหมดของวัน",
-    // },
-    // {
-    //   value: summary.ts_normal,
-    //   status: "ts_normal",
-    //   label: "จำนวนรายการปกติ",
-    // },
     {
       value: summary.ts_not_normal,
       status: "ts_not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
-    // {
-    //   value: summary.revenue,
-    //   status: "revenue",
-    //   label: "รายได้พึงได้รายวัน",
-    // },
   ];
 
   const handlePageChange = (value) => {
@@ -212,7 +205,7 @@ export default function AuditDisplay() {
 
   const classes = useStyles();
   return (
-    <Container maxWidth='xl' className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <Typography variant="h6">รายการรอการตรวจสอบ</Typography>
 
       {/* Filter Section */}
@@ -303,6 +296,14 @@ export default function AuditDisplay() {
           }}
         >
           ดูข้อมูล
+        </Button>
+
+        <Button
+          variant="contained"
+          className={classes.btn2}
+          onClick={() => history.go("/pk3Display")}
+        >
+          refresh
         </Button>
       </Paper>
 

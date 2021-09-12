@@ -52,21 +52,20 @@ export default function AuditTable(props) {
   const classes = useStyle();
   return (
     <div>
+      <Pagination
+        count={datalist.totalPages}
+        color="primary"
+        page={page}
+        onChange={onChange}
+        style={{
+          display: "inline",
+          margin: "6rem",
+          position: "sticky",
+          top: 0,
+        }}
+      />
       <Paper style={{ marginTop: 20 }}>
         <TableContainer style={{ width: "auto", height: 760 }}>
-          <Pagination
-            count={datalist.totalPages}
-            color="primary"
-            page={page}
-            onChange={onChange}
-            style={{
-              display: "inline",
-              margin: "6rem",
-              position: "sticky",
-              top: 0,
-            }}
-          />
-
           <Table>
             <TableHead>
               <TableRow style={{ padding: 5 }}>
@@ -206,19 +205,19 @@ export default function AuditTable(props) {
                       fontSize="small"
                       style={{
                         color:
-                            row.state === 2
-                              ? "#FF2400"
-                              : row.state === 3
-                              ? "blue"
-                              : row.state === 4
-                              ? "yellow"
-                              : row.state === 5
-                              ? "black"
-                              : row.state === 6
-                              ? "pink"
-                              : row.state === 7
-                              ? "green"
-                              : "gray",
+                          row.state === 2
+                            ? "#FF2400"
+                            : row.state === 3
+                            ? "blue"
+                            : row.state === 4
+                            ? "yellow"
+                            : row.state === 5
+                            ? "black"
+                            : row.state === 6
+                            ? "pink"
+                            : row.state === 7
+                            ? "green"
+                            : "gray",
                       }}
                     />
                     {/* {row.match_id} */}

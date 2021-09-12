@@ -1,7 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Button,
-  CardMedia,
   Container,
   Grid,
   makeStyles,
@@ -19,7 +18,7 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import React, { useEffect, useState } from "react";
 import GateTable from "../components/GateTable";
 import ClassTable from "../components/ClassTable";
-
+import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
@@ -65,6 +64,14 @@ const useStyles = makeStyles((theme) => {
     },
     btn: {
       backgroundColor: "#46005E",
+      color: "white",
+      height: 40,
+      width: 150,
+      marginTop: 23,
+      marginLeft: 30,
+    },
+    btn2: {
+      backgroundColor: "green",
       color: "white",
       height: 40,
       width: 150,
@@ -126,6 +133,7 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const [dataList, setDataList] = useState({});
   const [page, setPage] = useState(1);
@@ -317,6 +325,13 @@ export default function AuditDisplay() {
           onClick={() => fetchData(1)}
         >
           ดูข้อมูล
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.btn2}
+          onClick={() => history.go("/auditDisplay")}
+        >
+          refresh
         </Button>
       </Paper>
 
