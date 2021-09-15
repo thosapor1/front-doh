@@ -19,6 +19,8 @@ import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
 import Swal from "sweetalert2";
 import axios from "axios";
 import ModalEdit from "./ModalEdit";
+import ModalAddTabFee from "./ModalAddTabFee";
+import ModalEditTabFee from "./ModalEditTabFee";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -94,6 +96,11 @@ export default function TableFeeTab(props) {
 
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setDataForEdit(null);
   };
 
   const handleCloseModalEdit = () => {
@@ -188,7 +195,14 @@ export default function TableFeeTab(props) {
         </Table>
       </TableContainer>
 
-      <ModalEdit
+      <ModalAddTabFee
+        open={open}
+        onClose={() => handleClose()}
+        onClick={() => handleClose()}
+        onFetchData={props.fetchData}
+      />
+
+      <ModalEditTabFee
         dataForEdit={dataForEdit}
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}

@@ -19,6 +19,8 @@ import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
 import Swal from "sweetalert2";
 import axios from "axios";
 import ModalEdit from "./ModalEdit";
+import ModalAddTabCheckpoint from "./ModalAddTabCheckpoint";
+import ModalEditTabCheckpoint from "./ModalEditTabCheckpoint";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -92,6 +94,11 @@ export default function TableCheckpointTab(props) {
     setOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    setDataForEdit(null);
+  };
+
   const handleCloseModalEdit = () => {
     setOpenModalEdit(false);
   };
@@ -133,7 +140,7 @@ export default function TableCheckpointTab(props) {
           startIcon={<AddTwoToneIcon />}
           variant="contained"
           color="primary"
-          onClick={handleOpen}
+          onClick={handleOpenModalEdit}
         >
           เพิ่มผู้ใช้งาน
         </Button>
@@ -183,11 +190,19 @@ export default function TableCheckpointTab(props) {
         </Table>
       </TableContainer>
 
-      <ModalEdit
+      <ModalAddTabCheckpoint
+        open={open}
+        onClose={() => handleClose()}
+        onClick={() => handleClose()}
+        onFetchData={props.fetchData}
+      />
+
+      <ModalEditTabCheckpoint
         dataForEdit={dataForEdit}
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
+        onFetchData={props.fetchData}
       />
     </Container>
   );

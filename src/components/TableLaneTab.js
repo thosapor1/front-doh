@@ -18,7 +18,8 @@ import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
 import Swal from "sweetalert2";
 import axios from "axios";
-import ModalEdit from "./ModalEdit";
+import ModalAddTabLane from "./ModalAddTabLane";
+import ModalEditTabLane from "./ModalEditTabLane";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -100,6 +101,11 @@ export default function TableLaneTab(props) {
     setOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    setDataForEdit(null);
+  };
+
   const handleCloseModalEdit = () => {
     setOpenModalEdit(false);
   };
@@ -141,7 +147,7 @@ export default function TableLaneTab(props) {
           startIcon={<AddTwoToneIcon />}
           variant="contained"
           color="primary"
-          onClick={handleOpen}
+          onClick={handleOpenModalEdit}
         >
           เพิ่มผู้ใช้งาน
         </Button>
@@ -193,11 +199,19 @@ export default function TableLaneTab(props) {
         </Table>
       </TableContainer>
 
-      <ModalEdit
+      <ModalAddTabLane
+        open={open}
+        onClose={() => handleClose()}
+        onClick={() => handleClose()}
+        onFetchData={props.fetchData}
+      />
+
+      <ModalEditTabLane
         dataForEdit={dataForEdit}
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
+        onFetchData={props.fetchData}
       />
     </Container>
   );
