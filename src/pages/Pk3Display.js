@@ -199,6 +199,42 @@ export default function AuditDisplay() {
     });
   };
 
+  const refresh = (pageId = 1) => {
+    console.log(pageId);
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    setSelectedDate(new Date().setDate(new Date().getDate() - 1));
+    const date = new Date().setDate(new Date().getDate() - 1);
+    // const date = '2021-08-10'
+    const timeStart = "00:00:00";
+    const timeEnd = "00:00:00";
+
+    const sendData = {
+      page: pageId,
+      checkpoint_id: "0",
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
+    };
+    console.log(sendData);
+    apiURL.post("/pk3display", sendData).then((res) => {
+      console.log(
+        "res: ",
+        res.data,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setSummary(res.data.summary);
+      setAllTsTable(res.data);
+    });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -301,7 +337,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn2}
-          onClick={() => history.go("/pk3Display")}
+          onClick={() => refresh(1)}
         >
           refresh
         </Button>

@@ -233,6 +233,57 @@ export default function AuditDisplay() {
     });
   };
 
+  const refresh = (pageId = 1) => {
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    setSelectedDate(new Date().setDate(new Date().getDate() - 1));
+    const date = new Date().setDate(new Date().getDate() - 1);
+    const timeStart = "00:00:00";
+    const timeEnd = "00:00:00";
+
+    const sendData = {
+      page: pageId,
+      checkpoint_id: "0",
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
+      transactionStatus: "0",
+    };
+    console.log(sendData);
+
+    apiURL.post("/display", sendData).then((res) => {
+      setAllTsTable({
+        summary: {
+          total: 0,
+          normal: 0,
+          unMatch: 0,
+          miss: 0,
+        },
+        ts_table: [],
+      });
+      console.log(
+        "res: ",
+        res.data,
+        "tsClass:",
+        res.data.ts_class,
+        "tsGate: ",
+        res.data.ts_gate_table,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setSummary(!!res.data.summary ? res.data.summary : summary);
+      setGateTable(res.data.ts_gate_table);
+      setClassTable(res.data.ts_class);
+      setAllTsTable(res.data);
+    });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -329,7 +380,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn2}
-          onClick={() => history.go("/auditDisplay")}
+          onClick={() => refresh(1)}
         >
           refresh
         </Button>

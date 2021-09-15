@@ -198,6 +198,41 @@ export default function AuditDisplay() {
       setAllTsTable(res.data);
     });
   };
+  const refresh = (pageId = 1) => {
+    if (pageId == 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
+
+    setSelectedDate(new Date().setDate(new Date().getDate() - 1));
+    setCheckpoint(0)
+    const date = new Date().setDate(new Date().getDate() - 1);
+    // const date = '2021-08-10'
+    const timeStart = "00:00:00";
+    const timeEnd = "00:00:00";
+
+    const sendData = {
+      page: pageId,
+      checkpoint_id: checkpoint,
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
+    };
+    console.log(`sendData: ${JSON.stringify(sendData)}`);
+    apiURL.post("/pk3display-superaudit", sendData).then((res) => {
+      console.log(
+        "res: ",
+        res.data,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setSummary(res.data.summary);
+      setAllTsTable(res.data);
+    });
+  };
 
   useEffect(() => {
     fetchData();
@@ -297,7 +332,7 @@ export default function AuditDisplay() {
         <Button
           variant="contained"
           className={classes.btn2}
-          onClick={() => history.go("/superAuditDisplay")}
+          onClick={() => refresh(1)}
         >
           refresh
         </Button>

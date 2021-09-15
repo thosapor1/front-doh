@@ -246,6 +246,7 @@ export default function ModalPk3Activity(props) {
         apiURL
           .post("/changeState3to4", sendData)
           .then((res) => {
+            console.log(res.data);
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -294,16 +295,27 @@ export default function ModalPk3Activity(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
-          .then((res) => {
-            if (res.data.status === true) {
-              Swal.fire("ข้อมูลของคุณถูกบักทึกแล้ว");
-            } else {
-              Swal.fire("บันทึกข้อมูลไม่สำเร็จ");
-            }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
+        .post("/changeState3to6", sendData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.status === true) {
+            Swal.fire({
+              title: "Success",
+              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Fail",
+              text: "บันทึกข้อมูลไม่สำเร็จ",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .then(() => props.onClick())
+        .then(() => props.onFetchData());
       }
     });
 

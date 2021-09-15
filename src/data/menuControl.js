@@ -45,7 +45,7 @@ export const menuConfigForSuperAdmin = [
   {
     text: "ค่าภายในระบบ",
     icon: "settings_applications",
-    path: "/6",
+    path: "/config",
   },
   {
     text: "รายงานความเคลื่อนไหวผู้ใช้งาน",

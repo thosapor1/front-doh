@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import Logo_doh from "../image/Logo_doh.png";
@@ -227,34 +227,15 @@ export default function ModalSuperAdminActivity(props) {
     useState(0);
 
   const handleOptionChange = (event) => {
-    setSuper_audit_vehicleClass(event.target.value);
-    setSuper_Audit_vehicleClass_id(1);
-    if (event.target.value === "C1") {
-      setSuper_audit_feeAmount(30);
-    } else if (event.target.value === "C2") {
-      setSuper_audit_feeAmount(50);
-    } else if (event.target.value === "C3") {
-      setSuper_audit_feeAmount(70);
-    } else if (event.target.value === "C1 + C1") {
-      setSuper_audit_feeAmount(60);
-    } else if (event.target.value === "C2 + C1") {
-      setSuper_audit_feeAmount(80);
-    } else if (event.target.value === "C2 + C2") {
-      setSuper_audit_feeAmount(100);
-    } else if (event.target.value === "C2 + C3") {
-      setSuper_audit_feeAmount(120);
-    } else if (event.target.value === "C3 + C1") {
-      setSuper_audit_feeAmount(100);
-    } else if (event.target.value === "C3 + C2") {
-      setSuper_audit_feeAmount(120);
-    } else if (event.target.value === "C3 + C3") {
-      setSuper_audit_feeAmount(140);
-    }
+    const id = event.target.value;
+    setSuper_audit_vehicleClass(id);
+    setSuper_Audit_vehicleClass_id(id);
+    setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[id - 1].fee);
 
     console.log(
-      super_audit_feeAmount,
-      super_audit_vehicleClass,
-      event.target.value
+      `super_audit_feeAmount: ${super_audit_feeAmount}
+      super_audit_vehicleClass: ${super_audit_vehicleClass}
+      event.target.value: ${id}`
     );
   };
 
@@ -318,39 +299,39 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
 
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState4to6", sendData)
-          .then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-      }
-    });
+    // Swal.fire({
+    //   text: "คุณต้องการบันทึกข้อมูล!",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "ยืนยัน",
+    //   cancelButtonText: "ยกเลิก",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     apiURL
+    //       .post("/changeState4to6", sendData)
+    //       .then((res) => {
+    //         if (res.data.status === true) {
+    //           Swal.fire({
+    //             title: "Success",
+    //             text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+    //             icon: "success",
+    //             confirmButtonText: "OK",
+    //           });
+    //         } else {
+    //           Swal.fire({
+    //             title: "Fail",
+    //             text: "บันทึกข้อมูลไม่สำเร็จ",
+    //             icon: "error",
+    //             confirmButtonText: "OK",
+    //           });
+    //         }
+    //       })
+    //       .then(() => props.onClick())
+    //       .then(() => props.onFetchData());
+    //   }
+    // });
 
     // const res = await apiURL.post("/changeState4to6", sendData);
     console.log(sendData);
@@ -365,7 +346,6 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_vehicleClass: super_audit_vehicleClass,
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
-      super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -409,7 +389,7 @@ export default function ModalSuperAdminActivity(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      console.log("MyState", state, "dataList", dataList);
+      console.log("dataList", dataList);
     }
   }, [dataList]);
 
@@ -854,21 +834,15 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_vehicleClass"
-                      value={super_audit_vehicleClass || ""}
+                      value={super_audit_vehicleClass}
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem
-                                key={item.id}
-                                data-index={index}
-                                value={item.class}
-                              >
-                                {item.class}
-                              </MenuItem>
-                            )
-                          )
+                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
+                            <MenuItem key={item.id} value={item.id}>
+                              {item.class}
+                            </MenuItem>
+                          ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -877,29 +851,17 @@ export default function ModalSuperAdminActivity(props) {
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
                     <TextField
+                      id="valueRef"
                       size="small"
-                      name="super_audit_feeAmount"
-                      // select
+                      name="valueRef"
                       value={
-                        // super_audit_vehicleClass === "C1"
-                        //   ? 30
-                        //   : super_audit_vehicleClass === "C2"
-                        //     ? 50
-                        //     : super_audit_vehicleClass === "C3" ? 70
-                        //       : ""
-                        super_audit_feeAmount
+                        super_audit_vehicleClass_id != ""
+                          ? dataList.dropdown_audit_feeAmount[
+                              super_audit_vehicleClass_id - 1
+                            ].fee
+                          : ""
                       }
-                      // className={classes.textField}
-                      // onChange={handleChange}
                     />
-                    {/* {!!dataList.dropdown_audit_feeAmount
-                        ? dataList.dropdown_audit_feeAmount.map((item) => (
-                            <option key={item.id} value={item.fee}>
-                              {item.fee}
-                            </option>
-                          ))
-                        : []}
-                    </TextField> */}
                   </TableCell>
                 </TableRow>
               </TableBody>

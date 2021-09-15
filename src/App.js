@@ -9,6 +9,7 @@ import AuditDisplay from "./pages/AuditDisplay";
 import Pk3Display from "./pages/Pk3Display";
 import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 import UserLogs from "./pages/UserLogs";
+import Config from "./pages/Config";
 
 const theme = createTheme({
   typography: {
@@ -21,11 +22,8 @@ const theme = createTheme({
 });
 
 function App() {
- 
-
   return (
     <ThemeProvider theme={theme}>
-      
       <Router>
         <Switch>
           <Route exact path="/audit_dev">
@@ -49,6 +47,9 @@ function App() {
             </Route>
             <Route path="/user">
               <User />
+            </Route>
+            <Route path="/config">
+              <Config />
             </Route>
             <Route path="/userLogs">
               <UserLogs />

@@ -210,15 +210,6 @@ export default function ModalActivity(props) {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  // const handleOptionChange = (event) => {
-  //   setAudit_vehicleClass_id(event.target.value);
-  //   const id = event.target.value - 1;
-
-  //   setAudit_vehicleClass(dataList.dropdown_audit_vehicelClass[id].class);
-  //   setAudit_feeAmount(dataList.dropdown_audit_feeAmount[id].fee);
-
-  //   console.log(audit_feeAmount, audit_vehicleClass, event.target.value);
-  // };
   const handleOptionChange = (event) => {
     setAudit_vehicleClass(event.target.value);
     setAudit_vehicleClass_id(1);
