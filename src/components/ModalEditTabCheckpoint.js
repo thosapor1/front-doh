@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -38,46 +38,16 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-const dropDrawHighway = [
-  {
-    id: 1,
-    label: "ทางหลวงหมายเลข9",
-  },
-  {
-    id: 2,
-    label: "SDFS",
-  },
-];
-const dropDrawCheckpoint = [
-  {
-    id: 1,
-    label: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    label: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    label: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    label: "ธัญบุรี2",
-  },
-];
-
 export default function ModalEditTabCheckpoint(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    user_id: "",
-    username: "",
+    id: "",
+    highway_id: "",
+    checkpoint_name: "",
   });
 
-  const [status, setStatus] = useState();
-
-  const { user_id, username } = inputModal;
+  const { id, highway_id, checkpoint_name } = inputModal;
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -86,8 +56,9 @@ export default function ModalEditTabCheckpoint(props) {
 
   const handleUpdate = async () => {
     const sendData = {
-      user_id: user_id,
-      username: username,
+      checkpoint_id: id,
+      highway_id: highway_id,
+      checkpoint_name: checkpoint_name,
     };
     console.log(sendData);
 
@@ -102,7 +73,7 @@ export default function ModalEditTabCheckpoint(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/update-checkpoint", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -127,11 +98,9 @@ export default function ModalEditTabCheckpoint(props) {
     });
   };
 
-  const [showResult, setshowResult] = useState(false);
-
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
-    console.log("dataModal", props.dataForEdit);
+    // console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (
@@ -146,13 +115,13 @@ export default function ModalEditTabCheckpoint(props) {
             size="small"
             variant="outlined"
             label="สายทาง"
-            name="highway"
+            name="highway_id"
             onChange={handleChange}
-            // value={""}
+            value={highway_id}
           >
-            {dropDrawHighway.map((item) => (
+            {props.dataList.highway_list.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.label}
+                {item.highway_name}
               </MenuItem>
             ))}
           </TextField>
@@ -161,10 +130,10 @@ export default function ModalEditTabCheckpoint(props) {
             fullWidth
             size="small"
             variant="outlined"
-            label="ชื่อสายทาง"
-            name="username"
+            label="ด่าน"
+            name="checkpoint_name"
             onChange={handleChange}
-            value={username}
+            value={checkpoint_name}
           />
         </Grid>
       </Grid>

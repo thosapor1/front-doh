@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -47,21 +47,17 @@ const dropDrawHighway = [
     id: 2,
     label: "SDFS",
   },
-  
 ];
-
 
 export default function ModalAddTabCheckpoint(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    username: "",
-    highway: 0,
+    highway_id: "",
+    checkpoint_name: "",
   });
 
-  const { username, highway } = inputModal;
-
-  const [status, setStatus] = useState(false);
+  const { highway_id, checkpoint_name } = inputModal;
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -72,7 +68,8 @@ export default function ModalAddTabCheckpoint(props) {
 
   const handleSubmit = () => {
     const sendData = {
-      username: username,
+      highway_id: highway_id,
+      checkpoint_name: checkpoint_name,
     };
     console.log(sendData);
 
@@ -87,7 +84,7 @@ export default function ModalAddTabCheckpoint(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/add-checkpoint", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -112,8 +109,6 @@ export default function ModalAddTabCheckpoint(props) {
     });
   };
 
-  const [showResult, setshowResult] = useState(false);
-
   const body = (
     <div className={classes.modal}>
       <Typography variant="h6">เพิ่มด่าน</Typography>
@@ -126,13 +121,13 @@ export default function ModalAddTabCheckpoint(props) {
             size="small"
             variant="outlined"
             label="สายทาง"
-            name="highway"
+            name="highway_id"
             onChange={handleChange}
-            value={highway}
+            value={highway_id}
           >
-            {dropDrawHighway.map((item) => (
+            {props.dataList.highway_list.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.label}
+                {item.highway_name}
               </MenuItem>
             ))}
           </TextField>
@@ -141,10 +136,10 @@ export default function ModalAddTabCheckpoint(props) {
             className={classes.modalTextField}
             size="small"
             variant="outlined"
-            label="username"
-            name="username"
+            label="ด่าน"
+            name="checkpoint_name"
             onChange={handleChange}
-            value={username}
+            value={checkpoint_name}
           />
         </Grid>
       </Grid>

@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -41,13 +41,13 @@ export default function ModalEditTabHighway(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    user_id: "",
-    username: "",
+    id: "",
+    highway_name: "",
   });
 
   const [status, setStatus] = useState();
 
-  const { user_id, username } = inputModal;
+  const { id, highway_name } = inputModal;
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -56,8 +56,8 @@ export default function ModalEditTabHighway(props) {
 
   const handleUpdate = async () => {
     const sendData = {
-      user_id: user_id,
-      username: username,
+      highway_id: id,
+      highway_name: highway_name,
     };
     console.log(sendData);
 
@@ -72,7 +72,7 @@ export default function ModalEditTabHighway(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/update-highway", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -101,7 +101,7 @@ export default function ModalEditTabHighway(props) {
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
-    console.log("dataModal", props.dataForEdit);
+    // console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (
@@ -116,9 +116,9 @@ export default function ModalEditTabHighway(props) {
             size="small"
             variant="outlined"
             label="ชื่อสายทาง"
-            name="username"
+            name="highway_name"
             onChange={handleChange}
-            value={username}
+            value={highway_name}
           />
         </Grid>
       </Grid>

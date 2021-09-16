@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -41,12 +41,12 @@ export default function ModalAddTabFee(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    username: "",
+    vehicle_class: "",
+    vehicle_name: "",
+    vehicle_fee: "",
   });
 
-  const { username } = inputModal;
-
-  const [status, setStatus] = useState(false);
+  const { vehicle_class, vehicle_name, vehicle_fee } = inputModal;
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -57,7 +57,9 @@ export default function ModalAddTabFee(props) {
 
   const handleSubmit = () => {
     const sendData = {
-      username: username,
+      vehicle_class: vehicle_class,
+      vehicle_name: vehicle_name,
+      vehicle_fee: vehicle_fee,
     };
     console.log(sendData);
 
@@ -72,7 +74,7 @@ export default function ModalAddTabFee(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/add-vehicle_type", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -97,8 +99,6 @@ export default function ModalAddTabFee(props) {
     });
   };
 
-  const [showResult, setshowResult] = useState(false);
-
   const body = (
     <div className={classes.modal}>
       <Typography variant="h6">เพิ่มด่าน</Typography>
@@ -110,10 +110,30 @@ export default function ModalAddTabFee(props) {
             className={classes.modalTextField}
             size="small"
             variant="outlined"
-            label="username"
-            name="username"
+            label="รหัสประเภทรถ"
+            name="vehicle_class"
             onChange={handleChange}
-            value={username}
+            value={vehicle_class}
+          />
+          <TextField
+            // error={username.length === 0 ? true : false}
+            className={classes.modalTextField}
+            size="small"
+            variant="outlined"
+            label="ชื่อประเภทรถ"
+            name="vehicle_name"
+            onChange={handleChange}
+            value={vehicle_name}
+          />
+          <TextField
+            // error={username.length === 0 ? true : false}
+            className={classes.modalTextField}
+            size="small"
+            variant="outlined"
+            label="ค่าผ่านทาง"
+            name="vehicle_fee"
+            onChange={handleChange}
+            value={vehicle_fee}
           />
         </Grid>
       </Grid>

@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -71,14 +71,14 @@ export default function ModalAddTabCheckpoint(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    highway: "",
-    checkpoint: "",
-    lane: "",
+    highway_id: "",
+    checkpoint_id: "",
+    gate_name: "",
     cam_ip: "",
     cam_lane: "",
   });
 
-  const { highway, checkpoint, lane, cam_ip, cam_lane } = inputModal;
+  const { highway_id, checkpoint_id, gate_name, cam_ip, cam_lane } = inputModal;
 
   const [status, setStatus] = useState(false);
 
@@ -91,11 +91,11 @@ export default function ModalAddTabCheckpoint(props) {
 
   const handleSubmit = () => {
     const sendData = {
-      highway: "",
-      checkpoint: "",
-      lane: "",
-      cam_ip: "",
-      cam_lane: "",
+      highway_id: highway_id,
+      checkpoint_id: checkpoint_id,
+      gate_name: gate_name,
+      cam_ip: cam_ip,
+      cam_lane: cam_lane,
     };
     console.log(sendData);
 
@@ -110,7 +110,7 @@ export default function ModalAddTabCheckpoint(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/add-gate", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -139,7 +139,7 @@ export default function ModalAddTabCheckpoint(props) {
 
   const body = (
     <div className={classes.modal}>
-      <Typography variant="h6">เพิ่มช่องจราจร</Typography>
+      <Typography variant="h6">เพิ่มช่องเก็บค่าผ่านทาง</Typography>
       <Divider />
       <Grid Container style={{ marginTop: 20, display: "flex" }}>
         <Grid item md={12} style={{ textAlign: "center" }}>
@@ -149,13 +149,13 @@ export default function ModalAddTabCheckpoint(props) {
             size="small"
             variant="outlined"
             label="สายทาง"
-            name="highway"
+            name="highway_id"
             onChange={handleChange}
-            value={highway}
+            value={highway_id}
           >
-            {dropDrawHighway.map((item) => (
+            {props.dataList.highway_list.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.label}
+                {item.highway_name}
               </MenuItem>
             ))}
           </TextField>
@@ -165,13 +165,13 @@ export default function ModalAddTabCheckpoint(props) {
             size="small"
             variant="outlined"
             label="ด่าน"
-            name="checkpoint"
+            name="checkpoint_id"
             onChange={handleChange}
-            value={checkpoint}
+            value={checkpoint_id}
           >
-            {dropDrawCheckpoint.map((item) => (
+            {props.dataList.checkpoint_list.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.label}
+                {item.checkpoint_name}
               </MenuItem>
             ))}
           </TextField>
@@ -180,9 +180,9 @@ export default function ModalAddTabCheckpoint(props) {
             size="small"
             variant="outlined"
             label="ช่องจราจร"
-            name="lane"
+            name="gate_name"
             onChange={handleChange}
-            value={lane}
+            value={gate_name}
           />
           <TextField
             className={classes.modalTextField}

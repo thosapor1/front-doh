@@ -211,31 +211,16 @@ export default function ModalActivity(props) {
   };
 
   const handleOptionChange = (event) => {
-    setAudit_vehicleClass(event.target.value);
-    setAudit_vehicleClass_id(1);
-    if (event.target.value === "C1") {
-      setAudit_feeAmount(30);
-    } else if (event.target.value === "C2") {
-      setAudit_feeAmount(50);
-    } else if (event.target.value === "C3") {
-      setAudit_feeAmount(70);
-    } else if (event.target.value === "C1 + C1") {
-      setAudit_feeAmount(60);
-    } else if (event.target.value === "C2 + C1") {
-      setAudit_feeAmount(80);
-    } else if (event.target.value === "C2 + C2") {
-      setAudit_feeAmount(100);
-    } else if (event.target.value === "C2 + C3") {
-      setAudit_feeAmount(120);
-    } else if (event.target.value === "C3 + C1") {
-      setAudit_feeAmount(100);
-    } else if (event.target.value === "C3 + C2") {
-      setAudit_feeAmount(120);
-    } else if (event.target.value === "C3 + C3") {
-      setAudit_feeAmount(140);
-    }
+    const id = event.target.value;
+    setAudit_vehicleClass(id);
+    setAudit_vehicleClass_id(id);
+    setAudit_feeAmount(dataList.dropdown_audit_feeAmount[id - 1].fee);
 
-    console.log(audit_feeAmount, audit_vehicleClass, event.target.value);
+    console.log(
+      `audit_feeAmount: ${audit_feeAmount}
+      audit_vehicleClass: ${audit_vehicleClass}
+      event.target.value: ${id}`
+    );
   };
 
   const handleUpdate = () => {
@@ -244,7 +229,7 @@ export default function ModalActivity(props) {
       transactionId: dataList.transactionId,
       audit_lp: audit_lp,
       audit_province: audit_province,
-      audit_vehicleClass: audit_vehicleClass,
+      // audit_vehicleClass: audit_vehicleClass,
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       audit_vehicleClass_id: audit_vehicleClass_id,
@@ -854,7 +839,7 @@ export default function ModalActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <MenuItem key={item.id} value={item.class}>
+                            <MenuItem key={item.id} value={item.id}>
                               {item.class}
                             </MenuItem>
                           ))
@@ -864,7 +849,20 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{audit_feeAmount}</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      name="valueRef"
+                      value={
+                        !!audit_vehicleClass_id
+                          ? dataList.dropdown_audit_feeAmount[
+                              audit_vehicleClass_id - 1
+                            ].fee
+                          : ""
+                        
+                      }
+                    />
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>

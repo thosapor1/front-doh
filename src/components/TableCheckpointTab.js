@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "80vh",
+      maxHeight: "60vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -65,11 +65,11 @@ const headerCells = [
   },
   {
     id: "highwayName",
-    label: "ชื่อสายทาง",
+    label: "สายทาง",
   },
   {
     id: "checkpointName",
-    label: "ชื่อด่าน",
+    label: "ด่าน",
   },
   {
     id: "action",
@@ -114,8 +114,45 @@ export default function TableCheckpointTab(props) {
   };
 
   const handleDelete = async (item) => {
-    alert("delete");
+    const checkpoint_id = item.id;
+    const sendData = { checkpoint_id: checkpoint_id };
+    console.log(sendData);
+    Swal.fire({
+      text: "คุณต้องการลบข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/delete-checkpoint", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกลบแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "ลบข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => handleClose())
+          .then(() => props.onFetchData());
+      }
+    });
   };
+
   const classes = useStyles();
   const { dataList, page, onChange } = props;
 
@@ -140,7 +177,7 @@ export default function TableCheckpointTab(props) {
           startIcon={<AddTwoToneIcon />}
           variant="contained"
           color="primary"
-          onClick={handleOpenModalEdit}
+          onClick={handleOpen}
         >
           เพิ่มผู้ใช้งาน
         </Button>
@@ -162,11 +199,11 @@ export default function TableCheckpointTab(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data, index) => (
+              ? dataList.checkpoint_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{data.username} </TableCell>
-                    <TableCell align="center">{data.firstname}</TableCell>
-                    <TableCell align="center">{data.lastname}</TableCell>
+                    <TableCell align="center">{index + 1} </TableCell>
+                    <TableCell align="center">{data.highway_name}</TableCell>
+                    <TableCell align="center">{data.checkpoint_name}</TableCell>
                     <TableCell align="center">
                       <IconButton
                         onClick={() => {
@@ -194,7 +231,8 @@ export default function TableCheckpointTab(props) {
         open={open}
         onClose={() => handleClose()}
         onClick={() => handleClose()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
+        dataList={props.dataList}
       />
 
       <ModalEditTabCheckpoint
@@ -202,7 +240,8 @@ export default function TableCheckpointTab(props) {
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
+        dataList={props.dataList}
       />
     </Container>
   );

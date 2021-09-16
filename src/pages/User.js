@@ -234,14 +234,13 @@ export default function User() {
                       <TableCell align="center">{item.position} </TableCell>
                       <TableCell align="center">{item.department} </TableCell>
                       <TableCell align="center">
-                        <IconButton>
-                          <EditTwoToneIcon
-                            color="primary"
-                            onClick={() => {
-                              handleOpenModalEdit();
-                              handlegetDataForEdit(item);
-                            }}
-                          />
+                        <IconButton
+                          onClick={() => {
+                            handleOpenModalEdit();
+                            handlegetDataForEdit(item);
+                          }}
+                        >
+                          <EditTwoToneIcon color="primary" />
                         </IconButton>
                         <IconButton
                           onClick={() => handleDelete(item)}

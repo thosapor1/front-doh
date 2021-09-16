@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "80vh",
+      maxHeight: "65vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -71,6 +71,10 @@ const headerCells = [
     label: "ด่าน",
   },
   {
+    id: "lane",
+    label: "ช่องจราจร",
+  },
+  {
     id: "cam_ip",
     label: "camera ip",
   },
@@ -92,7 +96,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableLaneTab(props) {
+export default function TableGateTab(props) {
   const [dataForEdit, setDataForEdit] = useState(null);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [open, setOpen] = useState(false);
@@ -121,8 +125,45 @@ export default function TableLaneTab(props) {
   };
 
   const handleDelete = async (item) => {
-    alert("delete");
+    const gate_id = item.id;
+    const sendData = { gate_id: gate_id };
+    console.log(sendData);
+    Swal.fire({
+      text: "คุณต้องการลบข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/delete-gate", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกลบแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "ลบข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => handleClose())
+          .then(() => props.onFetchData());
+      }
+    });
   };
+
   const classes = useStyles();
   const { dataList, page, onChange } = props;
 
@@ -147,7 +188,7 @@ export default function TableLaneTab(props) {
           startIcon={<AddTwoToneIcon />}
           variant="contained"
           color="primary"
-          onClick={handleOpenModalEdit}
+          onClick={handleOpen}
         >
           เพิ่มผู้ใช้งาน
         </Button>
@@ -169,13 +210,14 @@ export default function TableLaneTab(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data, index) => (
+              ? dataList.gate_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{data.username} </TableCell>
-                    <TableCell align="center">{data.firstname}</TableCell>
-                    <TableCell align="center">{data.lastname}</TableCell>
-                    <TableCell align="center">{data.department_name}</TableCell>
+                    <TableCell align="center">{data.id} </TableCell>
+                    <TableCell align="center">{data.highway_name}</TableCell>
                     <TableCell align="center">{data.checkpoint_name}</TableCell>
+                    <TableCell align="center">{data.gate_name}</TableCell>
+                    <TableCell align="center">{data.cam_ip}</TableCell>
+                    <TableCell align="center">{data.cam_lane}</TableCell>
                     <TableCell align="center">
                       <IconButton
                         onClick={() => {
@@ -203,7 +245,8 @@ export default function TableLaneTab(props) {
         open={open}
         onClose={() => handleClose()}
         onClick={() => handleClose()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
+        dataList={props.dataList}
       />
 
       <ModalEditTabLane
@@ -211,7 +254,8 @@ export default function TableLaneTab(props) {
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
+        dataList={props.dataList}
       />
     </Container>
   );

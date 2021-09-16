@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -41,23 +41,28 @@ export default function ModalEditTabFee(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    user_id: "",
-    username: "",
+    vehicleClass: "",
+    id: "",
+    name: "",
+    fee: "",
   });
 
-  const [status, setStatus] = useState();
-
-  const { user_id, username } = inputModal;
+  const { vehicleClass, name, fee, id } = inputModal;
 
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
+
+    console.log(inputModal);
   };
 
   const handleUpdate = async () => {
+    console.log(props.dataForEdit.class);
     const sendData = {
-      user_id: user_id,
-      username: username,
+      vehicle_id: id,
+      vehicle_class: vehicleClass,
+      vehicle_name: name,
+      vehicle_fee: fee,
     };
     console.log(sendData);
 
@@ -72,7 +77,7 @@ export default function ModalEditTabFee(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/update-vehicle_type", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -97,11 +102,10 @@ export default function ModalEditTabFee(props) {
     });
   };
 
-  const [showResult, setshowResult] = useState(false);
-
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
-    console.log("dataModal", props.dataForEdit);
+
+    // console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (
@@ -112,13 +116,30 @@ export default function ModalEditTabFee(props) {
         <Grid item md={12} style={{ textAlign: "center" }}>
           <TextField
             className={classes.modalTextField}
-            fullWidth
             size="small"
             variant="outlined"
-            label="ชื่อสายทาง"
-            name="username"
+            label="รหัสประเภทรถ"
+            name="vehicleClass"
             onChange={handleChange}
-            value={username}
+            value={vehicleClass}
+          />
+          <TextField
+            className={classes.modalTextField}
+            size="small"
+            variant="outlined"
+            label="ชื่อประเภทรถ"
+            name="name"
+            onChange={handleChange}
+            value={name}
+          />
+          <TextField
+            className={classes.modalTextField}
+            size="small"
+            variant="outlined"
+            label="ค่าผ่านทาง"
+            name="fee"
+            onChange={handleChange}
+            value={fee}
           />
         </Grid>
       </Grid>
@@ -155,7 +176,7 @@ export default function ModalEditTabFee(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex:2,
+          zIndex: 2,
         }}
       >
         {body}

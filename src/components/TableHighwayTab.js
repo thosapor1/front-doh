@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "80vh",
+      maxHeight: "60vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -110,11 +110,48 @@ export default function TableHighwayTAb(props) {
   };
 
   const handleDelete = async (item) => {
-    alert("delete");
+    const highway_id = item.id;
+    const sendData = { highway_id: highway_id };
+
+    Swal.fire({
+      text: "คุณต้องการลบข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/delete-highway", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกลบแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "ลบข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => handleClose())
+          .then(() => props.onFetchData());
+      }
+    });
   };
+
+  
   const classes = useStyles();
   const { dataList, page, onChange } = props;
-
   return (
     <Container maxWidth="xl">
       <div style={{ display: "flex", justifyContent: "right" }}>
@@ -158,10 +195,10 @@ export default function TableHighwayTAb(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data, index) => (
+              ? dataList.highway_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{data.username} </TableCell>
-                    <TableCell align="center">{data.firstname}</TableCell>
+                    <TableCell align="center">{index+1} </TableCell>
+                    <TableCell align="center">{data.highway_name}</TableCell>
                     <TableCell align="center">
                       <IconButton
                         onClick={() => {
@@ -189,7 +226,7 @@ export default function TableHighwayTAb(props) {
         open={open}
         onClose={() => handleClose()}
         onClick={() => handleClose()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
       />
 
       <ModalEditTabHighway
@@ -197,7 +234,7 @@ export default function TableHighwayTAb(props) {
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
       />
     </Container>
   );

@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -41,10 +41,10 @@ export default function ModalAddTabHighway(props) {
   const classes = useStyle();
 
   const [inputModal, setInputModal] = useState({
-    username: "",
+    highway_name: "",
   });
 
-  const { username } = inputModal;
+  const { highway_name } = inputModal;
 
   const [status, setStatus] = useState(false);
 
@@ -57,7 +57,7 @@ export default function ModalAddTabHighway(props) {
 
   const handleSubmit = () => {
     const sendData = {
-      username: username,
+      highway_name: highway_name,
     };
     console.log(sendData);
 
@@ -72,7 +72,7 @@ export default function ModalAddTabHighway(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState3to6", sendData)
+          .post("/add-highway", sendData)
           .then((res) => {
             console.log(res.data);
             if (res.data.status === true) {
@@ -110,10 +110,10 @@ export default function ModalAddTabHighway(props) {
             className={classes.modalTextField}
             size="small"
             variant="outlined"
-            label="username"
-            name="username"
+            label="สายทาง"
+            name="highway_name"
             onChange={handleChange}
-            value={username}
+            value={highway_name}
           />
         </Grid>
       </Grid>

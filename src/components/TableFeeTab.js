@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "80vh",
+      maxHeight: "65vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -65,7 +65,7 @@ const headerCells = [
   },
   {
     id: "class",
-    label: "ประเภทรถ",
+    label: "รหัสประเภทรถ",
   },
   {
     id: "class_name",
@@ -114,12 +114,49 @@ export default function TableFeeTab(props) {
 
   const handleOpenModalEdit = () => {
     setOpenModalEdit(true);
-    console.log("hello");
+    // console.log("hello");
   };
 
   const handleDelete = async (item) => {
-    alert("delete");
+    const vehicle_id = item.id;
+    const sendData = { vehicle_id: vehicle_id };
+    console.log(sendData);
+    Swal.fire({
+      text: "คุณต้องการลบข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/delete-vehicle_type", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกลบแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "ลบข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => handleClose())
+          .then(() => props.onFetchData());
+      }
+    });
   };
+
   const classes = useStyles();
   const { dataList, page, onChange } = props;
 
@@ -166,12 +203,12 @@ export default function TableFeeTab(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data, index) => (
+              ? dataList.vehicle_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{data.username} </TableCell>
-                    <TableCell align="center">{data.firstname}</TableCell>
-                    <TableCell align="center">{data.lastname}</TableCell>
-                    <TableCell align="center">{data.department_name}</TableCell>
+                    <TableCell align="center">{index+1} </TableCell>
+                    <TableCell align="center">{data.vehicleClass}</TableCell>
+                    <TableCell align="center">{data.name}</TableCell>
+                    <TableCell align="center">{data.fee}</TableCell>
                     <TableCell align="center">
                       <IconButton
                         onClick={() => {
@@ -199,7 +236,7 @@ export default function TableFeeTab(props) {
         open={open}
         onClose={() => handleClose()}
         onClick={() => handleClose()}
-        onFetchData={props.fetchData}
+        onFetchData={props.onFetchData}
       />
 
       <ModalEditTabFee
@@ -207,6 +244,7 @@ export default function TableFeeTab(props) {
         open={openModalEdit}
         onClose={() => handleCloseModalEdit()}
         onClick={() => handleCloseModalEdit()}
+        onFetchData={props.onFetchData}
       />
     </Container>
   );

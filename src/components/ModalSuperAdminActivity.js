@@ -245,7 +245,7 @@ export default function ModalSuperAdminActivity(props) {
       transactionId: dataList.transactionId,
       super_audit_lp: super_audit_lp,
       super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
+      // super_audit_vehicleClass: super_audit_vehicleClass,
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
@@ -293,72 +293,24 @@ export default function ModalSuperAdminActivity(props) {
       transactionId: dataList.transactionId,
       super_audit_lp: super_audit_lp,
       super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
+      // super_audit_vehicleClass: super_audit_vehicleClass,
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
 
-    // Swal.fire({
-    //   text: "คุณต้องการบันทึกข้อมูล!",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "ยืนยัน",
-    //   cancelButtonText: "ยกเลิก",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     apiURL
-    //       .post("/changeState4to6", sendData)
-    //       .then((res) => {
-    //         if (res.data.status === true) {
-    //           Swal.fire({
-    //             title: "Success",
-    //             text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-    //             icon: "success",
-    //             confirmButtonText: "OK",
-    //           });
-    //         } else {
-    //           Swal.fire({
-    //             title: "Fail",
-    //             text: "บันทึกข้อมูลไม่สำเร็จ",
-    //             icon: "error",
-    //             confirmButtonText: "OK",
-    //           });
-    //         }
-    //       })
-    //       .then(() => props.onClick())
-    //       .then(() => props.onFetchData());
-    //   }
-    // });
-
-    // const res = await apiURL.post("/changeState4to6", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
-  const handleUpdateState6To7 = () => {
-    const sendData = {
-      super_audit_approve_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      super_audit_lp: super_audit_lp,
-      super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
-      super_audit_feeAmount: super_audit_feeAmount,
-      super_audit_comment: super_audit_comment,
-    };
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "ตกลง",
+      confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-          .post("/changeState6to7", sendData)
+          .post("/changeState4to6", sendData)
           .then((res) => {
             if (res.data.status === true) {
               Swal.fire({
@@ -381,10 +333,12 @@ export default function ModalSuperAdminActivity(props) {
       }
     });
 
-    // const res = await apiURL.post("/changeState6to7", sendData);
-    // console.log(sendData);
+    // const res = await apiURL.post("/changeState4to6", sendData);
+    console.log(sendData);
     // console.log(res.data);
   };
+  
+  
 
   useEffect(() => {
     if (dataList) {
@@ -521,7 +475,7 @@ export default function ModalSuperAdminActivity(props) {
               style={{
                 width: 130,
               }}
-              onClick={handleUpdateState6To7}
+              // onClick={handleUpdateState6To7}
             >
               จนท.ตรวจสอบรับทราบ
             </Button>
@@ -834,7 +788,7 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_vehicleClass"
-                      value={super_audit_vehicleClass}
+                      value={super_audit_vehicleClass || ""}
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass

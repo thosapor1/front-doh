@@ -10,7 +10,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import TableCheckpointTab from "../components/TableCheckpointTab";
 import TableFeeTab from "../components/TableFeeTab";
-import TableLaneTab from "../components/TableLaneTab";
+import TableGateTab from "../components/TableGateTab";
 import TableHighwayTAb from "../components/TableHighwayTab";
 
 const apiURL = axios.create({
@@ -91,7 +91,7 @@ export default function Config() {
     }
 
     apiURL.post("/system-config").then((res) => {
-      setAllTsTable(res.data.result);
+      setAllTsTable(res.data);
       console.log("res: ", res.data);
     });
   };
@@ -143,7 +143,7 @@ export default function Config() {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <div className={classes.inTab}>
-            <TableLaneTab
+            <TableGateTab
               dataList={allTsTable}
               // page={page}
               onChange={handlePageChange}

@@ -123,7 +123,7 @@ export default function ModalEdit(props) {
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
-    console.log("dataModal", props.dataForEdit);
+    // console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (

@@ -23,7 +23,6 @@ import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
-import { Theme } from "@fullcalendar/react";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
