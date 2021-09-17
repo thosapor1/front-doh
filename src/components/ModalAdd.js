@@ -3,6 +3,7 @@ import {
   Divider,
   Grid,
   makeStyles,
+  MenuItem,
   Modal,
   TextField,
   Typography,
@@ -32,7 +33,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
-      backgroundColor: "#46005E",
+      // backgroundColor: "#46005E",
     },
   };
 });
@@ -177,15 +178,15 @@ export default function ModalAdd(props) {
             name="position_id"
             value={position_id}
           >
-            <option key="1" value="1">
+            <MenuItem key="1" value="1">
               super admin
-            </option>
-            <option key="2" value="2">
+            </MenuItem>
+            <MenuItem key="2" value="2">
               หัวหน้างาน
-            </option>
-            <option key="3" value="3">
+            </MenuItem>
+            <MenuItem key="3" value="3">
               เจ้าหน้าที่
-            </option>
+            </MenuItem>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -197,12 +198,12 @@ export default function ModalAdd(props) {
             name="department_id"
             value={department_id}
           >
-            <option key="1" value="1">
+            <MenuItem key="1" value="1">
               เจ้าหน้าที่ตรวจสอบรายได้
-            </option>
-            <option key="1" value="2">
+            </MenuItem>
+            <MenuItem key="1" value="2">
               เจ้าหน้าที่จัดเก็บ
-            </option>
+            </MenuItem>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -236,10 +237,10 @@ export default function ModalAdd(props) {
             name="highway_id"
             value={highway_id}
           >
-            <option key="1" value="1" onClick={() => setshowResult(true)}>
+            <MenuItem key="1" value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
-            </option>
-            <option
+            </MenuItem>
+            <MenuItem
               key="2"
               value="2"
               onClick={() => {
@@ -247,7 +248,7 @@ export default function ModalAdd(props) {
               }}
             >
               SDFS
-            </option>
+            </MenuItem>
           </TextField>
           {showResult == 1 ? (
             <TextField
@@ -260,21 +261,21 @@ export default function ModalAdd(props) {
               value={checkpoint_id}
               onChange={handleChange}
             >
-              <option key="0" value="0">
+              <MenuItem key="0" value="0">
                 ทุกด่าน
-              </option>
-              <option key="1" value="1">
+              </MenuItem>
+              <MenuItem key="1" value="1">
                 ทับช้าง1
-              </option>
-              <option key="2" value="2">
+              </MenuItem>
+              <MenuItem key="2" value="2">
                 ทับช้าง2
-              </option>
-              <option key="3" value="3">
+              </MenuItem>
+              <MenuItem key="3" value="3">
                 ธัญบุรี1
-              </option>
-              <option key="4" value="4">
+              </MenuItem>
+              <MenuItem key="4" value="4">
                 ธัญบุรี2
-              </option>
+              </MenuItem>
             </TextField>
           ) : null}
         </Grid>
@@ -293,9 +294,9 @@ export default function ModalAdd(props) {
           variant="contained"
           className={classes.btn2}
           onClick={props.onClick}
-          style={{ backgroundColor: "lightgray" }}
+          color='secondary'
         >
-          กลับ
+          ยกเลิก
         </Button>
       </div>
     </div>

@@ -250,6 +250,8 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
     };
+
+    console.log(sendData)
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",

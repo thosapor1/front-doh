@@ -179,7 +179,7 @@ export default function TableCheckpointTab(props) {
           color="primary"
           onClick={handleOpen}
         >
-          เพิ่มผู้ใช้งาน
+          เพิ่มด่าน
         </Button>
       </div>
       <TableContainer className={classes.container}>

@@ -183,7 +183,7 @@ export default function TableFeeTab(props) {
           color="primary"
           onClick={handleOpen}
         >
-          เพิ่มผู้ใช้งาน
+          เพิ่มประเภทรถ
         </Button>
       </div>
       <TableContainer className={classes.container}>

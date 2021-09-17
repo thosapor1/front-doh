@@ -190,7 +190,7 @@ export default function TableGateTab(props) {
           color="primary"
           onClick={handleOpen}
         >
-          เพิ่มผู้ใช้งาน
+          เพิ่มช่องเก็บค่าผ่านทาง
         </Button>
       </div>
       <TableContainer className={classes.container}>
@@ -210,32 +210,36 @@ export default function TableGateTab(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.gate_list.map((data, index) => (
-                  <StyledTableRow key={index}>
-                    <TableCell align="center">{data.id} </TableCell>
-                    <TableCell align="center">{data.highway_name}</TableCell>
-                    <TableCell align="center">{data.checkpoint_name}</TableCell>
-                    <TableCell align="center">{data.gate_name}</TableCell>
-                    <TableCell align="center">{data.cam_ip}</TableCell>
-                    <TableCell align="center">{data.cam_lane}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() => {
-                          handleOpenModalEdit();
-                          handleGetDataForEdit(data);
-                        }}
-                      >
-                        <EditTwoToneIcon color="primary" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleDelete(data)}
-                        color="secondary"
-                      >
-                        <DeleteForeverTwoToneIcon />
-                      </IconButton>
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+              ? dataList.gate_list
+                  .filter((data) => data.id > 0)
+                  .map((data, index) => (
+                    <StyledTableRow key={index}>
+                      <TableCell align="center">{data.id} </TableCell>
+                      <TableCell align="center">{data.highway_name}</TableCell>
+                      <TableCell align="center">
+                        {data.checkpoint_name}
+                      </TableCell>
+                      <TableCell align="center">{data.gate_name}</TableCell>
+                      <TableCell align="center">{data.cam_ip}</TableCell>
+                      <TableCell align="center">{data.cam_lane}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={() => {
+                            handleOpenModalEdit();
+                            handleGetDataForEdit(data);
+                          }}
+                        >
+                          <EditTwoToneIcon color="primary" />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDelete(data)}
+                          color="secondary"
+                        >
+                          <DeleteForeverTwoToneIcon />
+                        </IconButton>
+                      </TableCell>
+                    </StyledTableRow>
+                  ))
               : dataList}
           </TableBody>
         </Table>

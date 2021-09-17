@@ -239,14 +239,11 @@ export default function ModalReadOnly(props) {
 
   const handleUpdateState6To7 = () => {
     const sendData = {
-      super_audit_approve_id: Cookies.get("userId"),
+      audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
-      super_audit_lp: super_audit_lp,
-      super_audit_province: super_audit_province,
-      super_audit_vehicleClass: super_audit_vehicleClass,
-      super_audit_feeAmount: super_audit_feeAmount,
-      super_audit_comment: super_audit_comment,
     };
+
+    console.log(sendData);
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
