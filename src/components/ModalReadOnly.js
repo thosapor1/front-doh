@@ -25,7 +25,7 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -241,6 +241,7 @@ export default function ModalReadOnly(props) {
     const sendData = {
       audit_approve_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
+      timestamp: dataList.timestamp,
     };
 
     console.log(sendData);
@@ -277,10 +278,6 @@ export default function ModalReadOnly(props) {
           .then(() => props.onFetchData());
       }
     });
-
-    // const res = await apiURL.post("/changeState6to7", sendData);
-    console.log(sendData);
-    // console.log(res.data);
   };
 
   useEffect(() => {

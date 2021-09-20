@@ -26,7 +26,7 @@ import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -231,6 +231,7 @@ export default function ModalPk3Activity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -282,6 +283,7 @@ export default function ModalPk3Activity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -295,27 +297,27 @@ export default function ModalPk3Activity(props) {
     }).then((result) => {
       if (result.isConfirmed) {
         apiURL
-        .post("/changeState3to6", sendData)
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.status === true) {
-            Swal.fire({
-              title: "Success",
-              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Fail",
-              text: "บันทึกข้อมูลไม่สำเร็จ",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        })
-        .then(() => props.onClick())
-        .then(() => props.onFetchData());
+          .post("/changeState3to6", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => props.onClick())
+          .then(() => props.onFetchData());
       }
     });
 

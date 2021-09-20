@@ -3,6 +3,7 @@ import {
   Divider,
   Grid,
   makeStyles,
+  MenuItem,
   Modal,
   TextField,
   Typography,
@@ -32,7 +33,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
-      backgroundColor: "#46005E",
+      // backgroundColor: "#46005E",
     },
   };
 });
@@ -89,7 +90,7 @@ export default function ModalEdit(props) {
       highway_id: highway_id,
       checkpoint_id: checkpoint_id,
       permission_id: position_id,
-      password: password
+      password: password,
     };
     console.log(sendData);
     apiURL.post("/update-user", sendData).then((res) => {
@@ -123,12 +124,19 @@ export default function ModalEdit(props) {
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);
+
+    if (!!props.dataForEdit && props.dataForEdit.highway_id === 1) {
+      setshowResult(true);
+    } else {
+      setshowResult(false);
+    }
+
     // console.log("dataModal", props.dataForEdit);
   }, [props.dataForEdit]);
 
   const body = (
     <div className={classes.modal}>
-      <Typography variant="h6">แก้ไขข้อมูล</Typography>
+      <Typography variant="h6">แก้ไขข้อมูลผู้ใช้งาน</Typography>
       <Divider />
       <Grid Container style={{ marginTop: 20, display: "flex" }}>
         <Grid item md={6} style={{ textAlign: "center" }}>
@@ -179,15 +187,15 @@ export default function ModalEdit(props) {
             name="position_id"
             value={position_id}
           >
-            <option key="1" value="1">
+            <MenuItem key="1" value="1">
               super admin
-            </option>
-            <option key="2" value="2">
+            </MenuItem>
+            <MenuItem key="2" value="2">
               หัวหน้างาน
-            </option>
-            <option key="3" value="3">
+            </MenuItem>
+            <MenuItem key="3" value="3">
               เจ้าหน้าที่
-            </option>
+            </MenuItem>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -199,8 +207,8 @@ export default function ModalEdit(props) {
             name="department_id"
             value={department_id}
           >
-            <option value="1">เจ้าหน้าที่ตรวจสอบรายได้</option>
-            <option value="2">เจ้าหน้าที่ตรวจสอบระบบ</option>
+            <MenuItem value="1">เจ้าหน้าที่ตรวจสอบรายได้</MenuItem>
+            <MenuItem value="2">เจ้าหน้าที่ตรวจสอบระบบ</MenuItem>
           </TextField>
           <TextField
             className={classes.modalTextField}
@@ -234,10 +242,10 @@ export default function ModalEdit(props) {
             name="highway_id"
             value={highway_id}
           >
-            <option key="1" value="1" onClick={() => setshowResult(true)}>
+            <MenuItem key="1" value="1" onClick={() => setshowResult(true)}>
               ทางหลวงหมายเลข 9
-            </option>
-            <option
+            </MenuItem>
+            <MenuItem
               key="2"
               value="2"
               onClick={() => {
@@ -245,7 +253,7 @@ export default function ModalEdit(props) {
               }}
             >
               SDFS
-            </option>
+            </MenuItem>
           </TextField>
           {showResult == 1 ? (
             <TextField
@@ -258,21 +266,21 @@ export default function ModalEdit(props) {
               value={checkpoint_id}
               onChange={handleChange}
             >
-              <option key="0" value="0">
+              <MenuItem key="0" value="0">
                 ทุกด่าน
-              </option>
-              <option key="1" value="1">
+              </MenuItem>
+              <MenuItem key="1" value="1">
                 ทับช้าง1
-              </option>
-              <option key="2" value="2">
+              </MenuItem>
+              <MenuItem key="2" value="2">
                 ทับช้าง2
-              </option>
-              <option key="3" value="3">
+              </MenuItem>
+              <MenuItem key="3" value="3">
                 ธัญบุรี1
-              </option>
-              <option key="4" value="4">
+              </MenuItem>
+              <MenuItem key="4" value="4">
                 ธัญบุรี2
-              </option>
+              </MenuItem>
             </TextField>
           ) : null}
         </Grid>
@@ -291,9 +299,9 @@ export default function ModalEdit(props) {
           variant="contained"
           className={classes.btn2}
           onClick={props.onClick}
-          style={{ backgroundColor: "lightgray" }}
+          color="secondary"
         >
-          กลับ
+          ยกเลิก
         </Button>
       </div>
     </div>

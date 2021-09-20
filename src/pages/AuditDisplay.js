@@ -24,7 +24,7 @@ import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -133,16 +133,18 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
-  const history = useHistory();
   const [open, setOpen] = useState(false);
-  const [dataList, setDataList] = useState({});
   const [page, setPage] = useState(1);
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
-  const [allTsTable, setAllTsTable] = useState("");
+  const [allTsTable, setAllTsTable] = useState([]);
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
+  const [subState, setSubState] = useState(0);
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new Date("Sep 01, 2021")
+  // );
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -183,6 +185,16 @@ export default function AuditDisplay() {
     },
   ];
 
+  const setSubStateWhenChangeState = (e) => {
+    if (e === '2') {
+      setSubState(1);
+    } else if (e === '3') {
+      setSubState(2);
+    } else {
+      setSubState(0);
+    }
+  };
+
   const fetchData = (pageId = 1) => {
     if (pageId == 1) {
       setPage(1);
@@ -201,6 +213,7 @@ export default function AuditDisplay() {
       startTime: timeStart,
       endTime: timeEnd,
       transactionStatus: status_select,
+      sub_state: subState,
     };
     console.log(sendData);
 
@@ -226,10 +239,10 @@ export default function AuditDisplay() {
         "Summary: ",
         res.data.summary
       );
-      setSummary(!!res.data.summary ? res.data.summary : summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
-      setAllTsTable(res.data);
+      setSummary(res.data.status !== false ? res.data.summary : []);
+      setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
+      setClassTable(res.data.status !== false ? res.data.ts_class : []);
+      setAllTsTable(res.data.status !== false ? res.data : []);
     });
   };
 
@@ -241,9 +254,13 @@ export default function AuditDisplay() {
     }
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
-    const date = new Date().setDate(new Date().getDate() - 1);
+    setCheckpoint(0);
+    setStatus_select(0);
+    setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
+    setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
     const timeEnd = "00:00:00";
+    const date = new Date().setDate(new Date().getDate() - 1);
 
     const sendData = {
       page: pageId,
@@ -277,10 +294,10 @@ export default function AuditDisplay() {
         "Summary: ",
         res.data.summary
       );
-      setSummary(!!res.data.summary ? res.data.summary : summary);
-      setGateTable(res.data.ts_gate_table);
-      setClassTable(res.data.ts_class);
-      setAllTsTable(res.data);
+      setSummary(res.data.status !== false ? res.data.summary : []);
+      setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
+      setClassTable(res.data.status !== false ? res.data.ts_class : []);
+      setAllTsTable(res.data.status !== false ? res.data : []);
     });
   };
 
@@ -314,7 +331,10 @@ export default function AuditDisplay() {
           select
           label="สถานะ"
           value={status_select}
-          onChange={(e) => setStatus_select(e.target.value)}
+          onChange={(e) => {
+            setStatus_select(e.target.value);
+            setSubStateWhenChangeState(e.target.value);
+          }}
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
         >

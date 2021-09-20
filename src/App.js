@@ -10,6 +10,7 @@ import Pk3Display from "./pages/Pk3Display";
 import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
+import Report from "./pages/Report";
 
 const theme = createTheme({
   typography: {
@@ -53,6 +54,9 @@ function App() {
             </Route>
             <Route path="/userLogs">
               <UserLogs />
+            </Route>
+            <Route path="/report">
+              <Report />
             </Route>
           </Layout>
         </Switch>

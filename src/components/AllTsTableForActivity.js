@@ -15,9 +15,10 @@ import axios from "axios";
 import ModalActivity from "./ModalActivity";
 import Swal from "sweetalert2";
 import ModalReadOnly from "./ModalReadOnly";
+import format from "date-fns/format";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 const useStyles = makeStyles((theme) => {
   return {
@@ -94,7 +95,11 @@ export default function AllTsTableForActivity(props) {
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = async (ts, State) => {
+  const fetchData = async (ts, State, timeStamp) => {
+    const sendData = {
+      transactionId: ts,
+      timestamp: timeStamp,
+    };
     let endpoint = "";
     if (State === 2) {
       endpoint = "/display-activity";
@@ -104,7 +109,7 @@ export default function AllTsTableForActivity(props) {
       setOpen1(true);
     }
     apiURL
-      .post(endpoint, { transactionId: ts })
+      .post(endpoint, sendData)
       .then((res) => {
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
@@ -163,12 +168,12 @@ export default function AllTsTableForActivity(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList
+            {!!dataList.ts_table
               ? dataList.ts_table.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, data.state);
+                      fetchData(data.transactionId, data.state, data.timestamp);
                     }}
                     className={classes.tableRow}
                   >

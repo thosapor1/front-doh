@@ -198,7 +198,7 @@ export default function AuditTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {datalist.record.map((row) => (
+              {!!datalist.record?datalist.record.map((row) => (
                 <StyledTableRow key={row.transactionId}>
                   <TableCell align="center">
                     <FiberManualRecordIcon
@@ -249,7 +249,7 @@ export default function AuditTable(props) {
                   <TableCell align="center">-</TableCell>
                   <TableCell align="center">-</TableCell>
                 </StyledTableRow>
-              ))}
+              )):[]}
             </TableBody>
           </Table>
         </TableContainer>

@@ -22,7 +22,7 @@ import { format } from "date-fns";
 import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -194,8 +194,8 @@ export default function AuditDisplay() {
         "Summary: ",
         res.data.summary
       );
-      setSummary(res.data.summary);
-      setAllTsTable(res.data);
+      setSummary(res.data.status !== false ? res.data.summary : []);
+      setAllTsTable(res.data.status !== false ? res.data : "");
     });
   };
 
@@ -208,6 +208,9 @@ export default function AuditDisplay() {
     }
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
+    setCheckpoint(0);
+    setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
+    setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const date = new Date().setDate(new Date().getDate() - 1);
     // const date = '2021-08-10'
     const timeStart = "00:00:00";
@@ -222,16 +225,16 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
     apiURL.post("/pk3display", sendData).then((res) => {
-      console.log(
-        "res: ",
-        res.data,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setSummary(res.data.summary);
-      setAllTsTable(res.data);
+      // console.log(
+      //   "res: ",
+      //   res.data,
+      //   "ts_Table:",
+      //   res.data.ts_table,
+      //   "Summary: ",
+      //   res.data.summary
+      // );
+      setSummary(res.data.status !== false ? res.data.summary : []);
+      setAllTsTable(res.data.status !== false ? res.data : "");
     });
   };
 

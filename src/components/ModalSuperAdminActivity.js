@@ -26,7 +26,7 @@ import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -249,9 +249,10 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
+      timestamp: dataList.timestamp,
     };
 
-    console.log(sendData)
+    console.log(sendData);
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -299,6 +300,7 @@ export default function ModalSuperAdminActivity(props) {
       super_audit_feeAmount: super_audit_feeAmount,
       super_audit_comment: super_audit_comment,
       super_audit_vehicleClass_id: super_audit_vehicleClass_id,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -339,8 +341,6 @@ export default function ModalSuperAdminActivity(props) {
     console.log(sendData);
     // console.log(res.data);
   };
-  
-  
 
   useEffect(() => {
     if (dataList) {

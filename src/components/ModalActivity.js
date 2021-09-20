@@ -24,12 +24,10 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
-import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
-import { useHistory } from "react-router";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -233,6 +231,7 @@ export default function ModalActivity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       audit_vehicleClass_id: audit_vehicleClass_id,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -276,6 +275,7 @@ export default function ModalActivity(props) {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -859,7 +859,6 @@ export default function ModalActivity(props) {
                               audit_vehicleClass_id - 1
                             ].fee
                           : ""
-                        
                       }
                     />
                   </TableCell>

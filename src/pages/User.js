@@ -12,6 +12,7 @@ import {
   TableBody,
   TableRow,
   IconButton,
+  Tooltip,
 } from "@material-ui/core";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
@@ -180,8 +181,8 @@ export default function User() {
     console.log(item);
   };
 
-  const fetchData = async () => {
-    await apiURL.post("/user-list").then((res) => {
+  const fetchData =  () => {
+     apiURL.post("/user-list").then((res) => {
       setState(res.data);
       console.log(res.data, "state:", state);
     });
@@ -234,20 +235,24 @@ export default function User() {
                       <TableCell align="center">{item.position} </TableCell>
                       <TableCell align="center">{item.department} </TableCell>
                       <TableCell align="center">
-                        <IconButton
-                          onClick={() => {
-                            handleOpenModalEdit();
-                            handlegetDataForEdit(item);
-                          }}
-                        >
-                          <EditTwoToneIcon color="primary" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => handleDelete(item)}
-                          color="secondary"
-                        >
-                          <DeleteForeverTwoToneIcon />
-                        </IconButton>
+                        <Tooltip title="edit">
+                          <IconButton
+                            onClick={() => {
+                              handleOpenModalEdit();
+                              handlegetDataForEdit(item);
+                            }}
+                          >
+                            <EditTwoToneIcon color="primary" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="delete">
+                          <IconButton
+                            onClick={() => handleDelete(item)}
+                            color="secondary"
+                          >
+                            <DeleteForeverTwoToneIcon />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                       <TableCell align="center">
                         {item.status == true ? (

@@ -1,7 +1,13 @@
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { Container, Grid, makeStyles, MenuItem, TextField } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  makeStyles,
+  MenuItem,
+  TextField,
+} from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -15,6 +21,11 @@ import SearchTwoToneIcon from "@material-ui/icons/SearchTwoTone";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import axios from "axios";
 import { format } from "date-fns";
+
+const apiURL = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+});
+
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -100,10 +111,6 @@ const statusValue = [
   { id: 3, value: "3", label: "รายการสูญหาย" },
 ];
 
-const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
-});
-
 export default function RawTransaction() {
   const [state, setState] = useState({
     summary: {
@@ -175,6 +182,7 @@ export default function RawTransaction() {
     console.log(`subState: ${subState}`);
     console.log(`status: ${status}`);
   };
+
   async function fetchData(pageId = 1) {
     const date = format(selectedDate, "yyyy-MM-dd");
     // const date = "2021-08-10";
@@ -186,10 +194,10 @@ export default function RawTransaction() {
     }
 
     const sendData = {
+      page: pageId,
       checkpoint_id: station,
       datetime: date,
       transactionStatus: status,
-      page: pageId,
       subState: subState,
     };
     console.log(`sendData: ${JSON.stringify(sendData)}`);

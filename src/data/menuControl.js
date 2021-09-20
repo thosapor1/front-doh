@@ -27,7 +27,7 @@ export const menuItemsForSuperAdmin = [
   {
     text: "รายงาน",
     icon: "file_present",
-    path: "/3",
+    path: "/report",
   },
 ];
 

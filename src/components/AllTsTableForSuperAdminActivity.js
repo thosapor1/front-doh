@@ -17,7 +17,7 @@ import ModalSuperAdminActivity from "./ModalSuperAdminActivity";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 const useStyles = makeStyles((theme) => {
   return {
@@ -87,9 +87,13 @@ export default function AllTsTableForSuperAdminActivity(props) {
   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = (ts) => {
+  const fetchData = (ts,timestamp) => {
+    const sendData = {
+      transactionId:ts,
+      timestamp:timestamp
+    }
     apiURL
-      .post("/pk3display-activity", { transactionId: ts })
+      .post("/pk3display-activity", sendData)
       .then((res) => {
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
@@ -149,7 +153,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId);
+                      fetchData(data.transactionId,data.timestamp);
                       handleOpen();
                     }}
                     className={classes.tableRow}

@@ -86,9 +86,14 @@ export default function AllTsTableForPk3Activity(props) {
   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = async (ts) => {
+  const fetchData = async (ts,timestamp) => {
+
+    const sendData = {
+      transactionId:ts,
+      timestamp:timestamp
+    }
     apiURL
-      .post("/pk3display-activity", { transactionId: ts })
+      .post("/pk3display-activity", sendData)
       .then((res) => {
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
@@ -106,8 +111,8 @@ export default function AllTsTableForPk3Activity(props) {
     await setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = async () => {
+    await setOpen(false);
   };
 
   const classes = useStyles();
@@ -148,7 +153,7 @@ export default function AllTsTableForPk3Activity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId);
+                      fetchData(data.transactionId,data.timestamp);
                       handleOpen();
                     }}
                     className={classes.tableRow}
