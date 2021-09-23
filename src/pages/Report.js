@@ -1,14 +1,27 @@
 import {
   Box,
   Container,
+  Grid,
   makeStyles,
+  Paper,
   Tab,
   Tabs,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import FilterSection from "../components/FilterSection";
+import DailyReportBlock from "../components/report/DailyReportBlock";
+import FilterSection from "../components/report/FilterSection";
+import FilterSection2 from "../components/report/FilterSection2";
+import TableReportDaily from "../components/report/TableReportDaily";
+import TableReportDaily2 from "../components/report/TableReportDaily2";
+import { report1 } from "../data/mockDataReport";
+import { report2 } from "../data/mockDataReport2";
+import PdfDaily from "../components/report/PdfDaily";
+import SumMonthlyReportBlock from "../components/report/SumMonthlyReportBlock";
+import TableReportSumMonthly from "../components/report/TableReportSumMonthly";
+import TableReportRemainMonthly from "../components/report/TableReportReaminMonthly";
+import RemainReportBlock from "../components/report/RemainReportBlock";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -65,32 +78,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const data1 = [
+  {
+    id: "1",
+    label: "C1",
+    sumCar: 15,
+    miss: 5,
+    except: 4,
+    remain: 3,
+  },
+  {
+    id: "2",
+    label: "C2",
+    sumCar: 20,
+    miss: 9,
+    except: 0,
+    remain: 1,
+  },
+  {
+    id: "3",
+    label: "C3",
+    sumCar: 5,
+    miss: 6,
+    except: 1,
+    remain: 1,
+  },
+  {
+    id: "4",
+    label: "รวมทั้งหมด",
+    sumCar: 40,
+    miss: 20,
+    except: 5,
+    remain: 5,
+  },
+];
+
 export default function Report() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [page, setPage1] = useState(1);
-
   const [allTsTable, setAllTsTable] = useState("");
+  const [allTsTable2, setAllTsTable2] = useState("");
+  const [allTsTable3, setAllTsTable3] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handlePageChange = (event, value) => {
-    fetchData(value);
-  };
+  const fetchData = () => {
+    // apiURL.post("/system-config").then((res) => {
+    //   setAllTsTable(res.data);
+    //   console.log("res: ", res.data);
+    // });
 
-  const fetchData = (pageId = 1) => {
-    if (pageId == 1) {
-      setPage1(1);
-    } else {
-      setPage1(pageId);
-    }
-
-    apiURL.post("/system-config").then((res) => {
-      setAllTsTable(res.data);
-      console.log("res: ", res.data);
-    });
+    setAllTsTable(data1);
+    setAllTsTable2(report1);
+    setAllTsTable3(report2);
   };
 
   useEffect(() => {
@@ -131,18 +173,145 @@ export default function Report() {
         </Tabs>
 
         <TabPanel value={value} index={0}>
-          <div className={classes.inTab}>
-            <FilterSection />
-          </div>
+          <Container maxWidth="xl" className={classes.inTab}>
+            <FilterSection onFetchData={fetchData} report={PdfDaily} />
+            <Paper style={{ marginTop: 20 }}>
+              <Typography
+                style={{
+                  paddingTop: 20,
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                ทับช้าง1
+              </Typography>
+              <Typography
+                style={{
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
+              </Typography>
+
+              <div style={{ display: "flex", marginTop: 20 }}>
+                <div>
+                  <TableReportDaily dataList={allTsTable} />
+                </div>
+                <div>
+                  <DailyReportBlock />
+                </div>
+              </div>
+
+              <TableReportDaily2 dataList={allTsTable2} />
+            </Paper>
+          </Container>
         </TabPanel>
+
         <TabPanel value={value} index={1}>
-          <div className={classes.inTab}></div>
+          <Container maxWidth="xl" className={classes.inTab}>
+            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
+            <Paper style={{ marginTop: 20 }}>
+              <Typography
+                style={{
+                  paddingTop: 20,
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                ทับช้าง1
+              </Typography>
+              <Typography
+                style={{
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+              </Typography>
+
+              <SumMonthlyReportBlock />
+
+              <TableReportSumMonthly dataList={allTsTable3} />
+            </Paper>
+          </Container>
         </TabPanel>
+
         <TabPanel value={value} index={2}>
-          <div className={classes.inTab}></div>
+          <Container maxWidth="xl" className={classes.inTab}>
+            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
+            <Paper style={{ marginTop: 20 }}>
+              <Typography
+                style={{
+                  paddingTop: 20,
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                ทับช้าง1
+              </Typography>
+              <Typography
+                style={{
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+              </Typography>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: 20,
+                }}
+              >
+                <div>
+                  <RemainReportBlock />
+                </div>
+                <div>
+                  <TableReportDaily dataList={allTsTable} />
+                </div>
+              </div>
+
+              <TableReportRemainMonthly dataList={allTsTable3} />
+            </Paper>
+          </Container>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <div className={classes.inTab}></div>
+          <Container maxWidth="xl" className={classes.inTab}>
+            <Paper style={{ marginTop: 20 }}>
+              <Typography
+                style={{
+                  paddingTop: 20,
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                ทับช้าง1
+              </Typography>
+              <Typography
+                style={{
+                  paddingLeft: 20,
+                  fontWeight: 600,
+                  fontFamily: "sarabun",
+                }}
+              >
+                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
+              </Typography>
+
+              <DailyReportBlock />
+
+              <TableReportDaily2 dataList={allTsTable2} />
+            </Paper>
+          </Container>
         </TabPanel>
       </div>
     </Container>

@@ -231,9 +231,10 @@ export default function ModalPk3Activity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
-      timestamp: dataList.timestamp,
+      timestamp: dataList.timeStamp,
     };
 
+   
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -270,7 +271,7 @@ export default function ModalPk3Activity(props) {
     });
 
     // const res = await apiURL.post("/changeState3to4", sendData);
-    // console.log(sendData);
+    console.log(sendData);
     // console.log(res.data);
   };
   const handleUpdateState3To6 = () => {
@@ -283,7 +284,7 @@ export default function ModalPk3Activity(props) {
       audit_feeAmount: audit_feeAmount,
       audit_comment: audit_comment,
       pk3_comment: pk3_comment,
-      timestamp: dataList.timestamp,
+      timestamp: dataList.timeStamp,
     };
 
     Swal.fire({
@@ -322,7 +323,7 @@ export default function ModalPk3Activity(props) {
     });
 
     // const res = await apiURL.post("/changeState3to6", sendData);
-    // console.log(sendData);
+    console.log(sendData);
     // console.log(res.data);
   };
 
