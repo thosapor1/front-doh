@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DailyReportBlock from "../components/report/DailyReportBlock";
+import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
 import FilterSection2 from "../components/report/FilterSection2";
 import TableReportDaily from "../components/report/TableReportDaily";
@@ -18,10 +18,14 @@ import TableReportDaily2 from "../components/report/TableReportDaily2";
 import { report1 } from "../data/mockDataReport";
 import { report2 } from "../data/mockDataReport2";
 import PdfDaily from "../components/report/PdfDaily";
-import SumMonthlyReportBlock from "../components/report/SumMonthlyReportBlock";
+import BlockSumMonthlyReport from "../components/report/BlockSumMonthlyReport";
 import TableReportSumMonthly from "../components/report/TableReportSumMonthly";
 import TableReportRemainMonthly from "../components/report/TableReportReaminMonthly";
-import RemainReportBlock from "../components/report/RemainReportBlock";
+import BlockRemainReport from "../components/report/BlockRemainReport";
+import TableReportTrafficMonthly from "../components/report/TableReportTrafficMonthly";
+import BlockTrafficReport from "../components/report/BlockTrafficReport";
+import PdfSumMonthly from "../components/report/PdfSumMonthly";
+import PdfRemain from "../components/report/PdfRemain";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -201,7 +205,7 @@ export default function Report() {
                   <TableReportDaily dataList={allTsTable} />
                 </div>
                 <div>
-                  <DailyReportBlock />
+                  <BlockDailyReport />
                 </div>
               </div>
 
@@ -212,7 +216,7 @@ export default function Report() {
 
         <TabPanel value={value} index={1}>
           <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
+            <FilterSection2 onFetchData={fetchData} report={PdfSumMonthly} />
             <Paper style={{ marginTop: 20 }}>
               <Typography
                 style={{
@@ -234,7 +238,7 @@ export default function Report() {
                 เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
               </Typography>
 
-              <SumMonthlyReportBlock />
+              <BlockSumMonthlyReport />
 
               <TableReportSumMonthly dataList={allTsTable3} />
             </Paper>
@@ -243,7 +247,7 @@ export default function Report() {
 
         <TabPanel value={value} index={2}>
           <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
+            <FilterSection2 onFetchData={fetchData} report={PdfRemain} />
             <Paper style={{ marginTop: 20 }}>
               <Typography
                 style={{
@@ -273,7 +277,7 @@ export default function Report() {
                 }}
               >
                 <div>
-                  <RemainReportBlock />
+                  <BlockRemainReport />
                 </div>
                 <div>
                   <TableReportDaily dataList={allTsTable} />
@@ -286,6 +290,7 @@ export default function Report() {
         </TabPanel>
         <TabPanel value={value} index={3}>
           <Container maxWidth="xl" className={classes.inTab}>
+            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
             <Paper style={{ marginTop: 20 }}>
               <Typography
                 style={{
@@ -304,12 +309,12 @@ export default function Report() {
                   fontFamily: "sarabun",
                 }}
               >
-                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
+                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
               </Typography>
 
-              <DailyReportBlock />
+              <BlockTrafficReport />
 
-              <TableReportDaily2 dataList={allTsTable2} />
+              <TableReportTrafficMonthly dataList={allTsTable3} />
             </Paper>
           </Container>
         </TabPanel>

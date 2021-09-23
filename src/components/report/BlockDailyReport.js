@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => {
     root: {
       fontFamily: "Sarabun",
       padding: 20,
-    
     },
     th: {
       fontWeight: 600,
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      // width: 130,
+      width: 130,
       fontSize: 11,
       padding: "0px",
       textAlign: "left",
@@ -36,31 +35,29 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderLeft: "1px solid black",
-      // width: 130,
+      width: 130,
       fontSize: 11,
       paddingLeft: "10px",
-      // textAlign: "left",
+      textAlign: "left",
     },
     td3: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      // width: 150,
+      width: 150,
       fontSize: 11,
       padding: "0px",
-      textAlign: "left",
+      textAlign: "center",
     },
     td4: {
       fontWeight: 400,
       //   borderRight: "1px solid black",
-      // width: 150,
+      width: 150,
       fontSize: 12,
       padding: "0px",
-      textAlign: "left",
+      textAlign: "center",
     },
     table: {
       borderCollapse: "collapse",
-      width: "80%",
-      margin:'0px auto',
     },
     tr: {
       marginTop: "-20px",
@@ -68,7 +65,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function SumMonthlyReportBlock() {
+export default function BlockDailyReport() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -92,7 +89,7 @@ export default function SumMonthlyReportBlock() {
           <td className={classes.td4}>300,000</td>
           <td className={classes.td3}>บาท</td>
           <td className={classes.td2}>จำนวนรถทั้งหมด</td>
-          <td className={classes.td4}>132,246</td>
+          <td className={classes.td4}>40</td>
           <td className={classes.td3}>คัน</td>
         </tr>
         <tr className={classes.tr}>
@@ -103,9 +100,9 @@ export default function SumMonthlyReportBlock() {
           <td className={classes.td4}>300</td>
           <td className={classes.td3}>บาท</td>
           <td className={classes.td2} style={{ width: 250 }}>
-            จำนวนรถ C1 ทั้งหมด
+            จำนวนที่มีข้อยกเว้นพิเศษ
           </td>
-          <td className={classes.td4}>31,465</td>
+          <td className={classes.td4}>30</td>
           <td className={classes.td3}>คัน</td>
         </tr>
         <tr className={classes.tr}>
@@ -117,9 +114,13 @@ export default function SumMonthlyReportBlock() {
           </td>
           <td className={classes.td4}>200,000</td>
           <td className={classes.td3}>บาท</td>
-          <td className={classes.td2}>จำนวนรถ C2 ทั้งหมด</td>
-          <td className={classes.td4}>31,496</td>
-          <td className={classes.td3}>คัน</td>
+          <td
+            className={classes.td2}
+            style={{ borderRight: "1px solid black" }}
+            colSpan="3"
+          >
+            (จำนวนรถที่ผิดพลาด,รถยกเว้น,รถที่คงค้าง)
+          </td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td2}>คงค้าง</td>
@@ -128,55 +129,52 @@ export default function SumMonthlyReportBlock() {
           <td className={classes.td2}>รวมทั้งสิ้น</td>
           <td className={classes.td4}>200,000</td>
           <td className={classes.td3}>บาท</td>
-          <td className={classes.td2}>จำนวนรถ C3 ทั้งหมด</td>
-          <td className={classes.td4}>31,496</td>
-          <td className={classes.td3}>คัน</td>
-        </tr>
-        <tr className={classes.tr}>
-          <td className={classes.td2} colSpan="3"></td>
-          <td className={classes.td2}>คงค้าง</td>
-          <td className={classes.td4}>100,000</td>
-          <td className={classes.td3}>บาท</td>
-          <td className={classes.td2}>จำนวนรถยกเว้นทั้งหมด</td>
-          <td className={classes.td4}>31,558</td>
-          <td className={classes.td3}>คัน</td>
-        </tr>
-        <tr className={classes.tr}>
-          <td className={classes.td2} colSpan="3"></td>
-          <td className={classes.td2} colSpan="3"></td>
-          <td className={classes.td2}>จำนวนรถคงค้างทั้งหมด</td>
-          <td className={classes.td4}>6,200</td>
-          <td className={classes.td3}>คัน</td>
+          <td
+            className={classes.td2}
+            colSpan="3"
+            style={{ borderRight: "1px solid black" }}
+          ></td>
         </tr>
         <tr className={classes.tr}>
           <td
             className={classes.td2}
             colSpan="3"
-            style={{ borderBottom: "1px solid black" }}
+            style={{
+              borderBottom: "1px solid black",
+            }}
           ></td>
           <td
             className={classes.td2}
-            colSpan="3"
-            style={{ borderBottom: "1px solid black" }}
-          ></td>
-          <td
-            className={classes.td2}
-            style={{ borderBottom: "1px solid black" }}
+            style={{
+              borderBottom: "1px solid black",
+            }}
           >
-            ค่าปรับทั้งหมด
+            คงค้าง
           </td>
           <td
             className={classes.td4}
-            style={{ borderBottom: "1px solid black" }}
+            style={{
+              borderBottom: "1px solid black",
+            }}
           >
-            4,960,000
+            100,000
           </td>
           <td
             className={classes.td3}
-            style={{ borderBottom: "1px solid black" }}
+            style={{
+              borderBottom: "1px solid black",
+            }}
           >
             บาท
           </td>
+          <td
+            className={classes.td2}
+            colSpan="3"
+            style={{
+              borderRight: "1px solid black",
+              borderBottom: "1px solid black",
+            }}
+          ></td>
         </tr>
       </table>
     </div>

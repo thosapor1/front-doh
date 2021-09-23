@@ -20,8 +20,19 @@ const data = [];
 export default function PdfDaily() {
   const date = "วันอังคารที่ 29 ธันวาคม 2563";
   let docDefinition = {
-    footer: function () {
+    footer: function (currentPage, pageCount) {
       return [
+        {
+          columns: [
+            {},
+            {
+              text: `หน้า ${currentPage.toString()}`,
+              alignment: "right",
+              fontSize: 9,
+              margin: [0, 0, 40, 10],
+            },
+          ],
+        },
         {
           canvas: [
             {
@@ -229,7 +240,11 @@ export default function PdfDaily() {
                     alignment: "left",
                     margin: [0, -2, 0, 0],
                   },
-                  { text: "300,000", border: [false, false, false, false] },
+                  {
+                    text: "300,000",
+                    border: [false, false, false, false],
+                    margin: [0, -2, 0, 0],
+                  },
                   {
                     text: "บาท",
                     border: [false, false, true, false],
@@ -419,7 +434,7 @@ export default function PdfDaily() {
       {
         style: "table2",
         table: {
-          widths: "auto",
+          headerRows: 2,
           body: [
             [
               { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
@@ -496,5 +511,5 @@ export default function PdfDaily() {
     },
     defaultStyle: { font: "THSarabun" },
   };
-  pdfMake.createPdf(docDefinition).download();
+  pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
 }
