@@ -73,7 +73,7 @@ export default function TableReportDaily(props) {
         {!!dataList
           ? dataList.map((item) => (
               <tr key={item.id}>
-                <td className={classes.td}>{item.label} </td>
+                <td className={classes.td} style={{height:20}}>{item.label} </td>
                 <td className={classes.td}>{item.sumCar}</td>
                 <td className={classes.td}>{item.miss}</td>
                 <td className={classes.td}>{item.except}</td>

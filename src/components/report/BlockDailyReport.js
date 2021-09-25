@@ -147,6 +147,7 @@ export default function BlockDailyReport() {
             className={classes.td2}
             style={{
               borderBottom: "1px solid black",
+              paddingBottom: 6,
             }}
           >
             คงค้าง

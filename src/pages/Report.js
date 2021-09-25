@@ -26,6 +26,7 @@ import TableReportTrafficMonthly from "../components/report/TableReportTrafficMo
 import BlockTrafficReport from "../components/report/BlockTrafficReport";
 import PdfSumMonthly from "../components/report/PdfSumMonthly";
 import PdfRemain from "../components/report/PdfRemain";
+import PdfTraffic from "../components/report/PdfTraffic";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -290,7 +291,7 @@ export default function Report() {
         </TabPanel>
         <TabPanel value={value} index={3}>
           <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfDaily} />
+            <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
             <Paper style={{ marginTop: 20 }}>
               <Typography
                 style={{

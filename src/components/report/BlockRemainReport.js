@@ -71,35 +71,39 @@ export default function BlockRemainReport() {
           </td>
         </tr>
         <tr className={classes.tr}>
-          <td className={`${classes.td} ${classes.td3}`} colSpan="3">
-            จำนวนรถทั้งหมด 49,600 คัน
+          <td className={classes.td} style={{ width: 300 }}>
+            จำนวนรถทั้งหมด
           </td>
+          <td className={classes.td} style={{ width: 100 }}>
+            49,600
+          </td>
+          <td className={classes.td}>คัน</td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}>เงินพึงได้ทั้งหมด</td>
           <td className={classes.td}>49,600,000</td>
-          <td className={classes.td} style={{ textAlign: "center" }}>
+          <td className={classes.td}>
             บาท
           </td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}>เงินที่จัดเก็บได้ทั้งหมด</td>
           <td className={classes.td}>7,409,000</td>
-          <td className={classes.td} style={{ textAlign: "center" }}>
+          <td className={classes.td}>
             บาท
           </td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}>คงค้างทั้งหมด</td>
           <td className={classes.td}>42,191,000</td>
-          <td className={classes.td} style={{ textAlign: "center" }}>
+          <td className={classes.td}>
             บาท
           </td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}>ค่าปรับทั้งหมด</td>
           <td className={classes.td}>4,960,000</td>
-          <td className={classes.td} style={{ textAlign: "center" }}>
+          <td className={classes.td}>
             บาท
           </td>
         </tr>

@@ -108,10 +108,10 @@ export default function PdfSumMonthly() {
       },
 
       {
-        margin: [100, 10, 0, 0],
-        width: "auto",
+        margin: [13, 10, 0, 0],
         style: "table",
         table: {
+          widths: [70, 45, 20, 70, 45, 20, 70, 45, 20],
           body: [
             [
               {
@@ -119,6 +119,8 @@ export default function PdfSumMonthly() {
                 border: [true, true, true, false],
                 colSpan: 3,
                 bold: true,
+                alignment: "left",
+                fontSize:11
               },
               {},
               {},
@@ -127,6 +129,8 @@ export default function PdfSumMonthly() {
                 border: [true, true, true, false],
                 colSpan: 3,
                 bold: true,
+                alignment: "left",
+                fontSize:11
               },
               {},
               {},
@@ -135,6 +139,8 @@ export default function PdfSumMonthly() {
                 border: [true, true, true, false],
                 colSpan: 3,
                 bold: true,
+                alignment: "left",
+                fontSize:11
               },
               {},
               {},
@@ -150,6 +156,7 @@ export default function PdfSumMonthly() {
                 text: "1,000,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -166,6 +173,7 @@ export default function PdfSumMonthly() {
                 text: "300,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -182,6 +190,7 @@ export default function PdfSumMonthly() {
                 text: "132,246",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -200,6 +209,7 @@ export default function PdfSumMonthly() {
                 text: "500,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -216,6 +226,7 @@ export default function PdfSumMonthly() {
                 text: "300,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -232,6 +243,7 @@ export default function PdfSumMonthly() {
                 text: "31,465",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -250,6 +262,7 @@ export default function PdfSumMonthly() {
                 text: "500,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -266,6 +279,7 @@ export default function PdfSumMonthly() {
                 text: "200,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -282,6 +296,7 @@ export default function PdfSumMonthly() {
                 text: "31,496",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -302,6 +317,7 @@ export default function PdfSumMonthly() {
                 border: [false, false, false, true],
                 margin: [0, -5, 0, 5],
                 rowSpan: 4,
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -319,6 +335,7 @@ export default function PdfSumMonthly() {
                 text: "200,000",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -335,6 +352,7 @@ export default function PdfSumMonthly() {
                 text: "31,527",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -358,6 +376,7 @@ export default function PdfSumMonthly() {
                 border: [false, false, false, true],
                 margin: [0, -5, 0, 3],
                 rowSpan: 3,
+                alignment: "left",
               },
               {
                 text: "บาท",
@@ -375,6 +394,7 @@ export default function PdfSumMonthly() {
                 text: "31,496",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -399,6 +419,7 @@ export default function PdfSumMonthly() {
                 text: "31,558",
                 border: [false, false, false, false],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "คัน",
@@ -423,6 +444,7 @@ export default function PdfSumMonthly() {
                 text: "4,960,000",
                 border: [false, false, false, true],
                 margin: [0, -5, 0, 0],
+                alignment: "left",
               },
               {
                 text: "บาท",

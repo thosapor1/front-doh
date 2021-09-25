@@ -61,10 +61,18 @@ export default function BlockTrafficReport() {
           </th>
         </tr>
         <tr>
-          <td className={classes.td}>รายละเอียด ด่านทับช้าง 1</td>
-          <td className={classes.td}>จำนวนรถทั้งหมด</td>
-          <td className={classes.td}>132,246</td>
-          <td className={classes.td}>คัน</td>
+          <td className={classes.td} style={{ width: 300 }}>
+            รายละเอียด ด่านทับช้าง 1
+          </td>
+          <td className={classes.td} style={{ width: 200 }}>
+            จำนวนรถทั้งหมด
+          </td>
+          <td className={classes.td} style={{ width: 100 }}>
+            132,246
+          </td>
+          <td className={classes.td} style={{ width: 10 }}>
+            คัน
+          </td>
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}>
@@ -100,9 +108,9 @@ export default function BlockTrafficReport() {
         </tr>
         <tr className={classes.tr}>
           <td className={classes.td}></td>
-          <td className={classes.td}>จำนวนรถคงค้างทั้งหมด</td>
-          <td className={classes.td}>31,465</td>
-          <td className={classes.td}>คัน</td>
+          <td className={classes.td}>ค่าปรับทั้งหมด</td>
+          <td className={classes.td}>4,960,000</td>
+          <td className={classes.td}>บาท</td>
         </tr>
       </table>
     </div>
