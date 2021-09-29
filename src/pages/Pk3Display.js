@@ -211,7 +211,10 @@ export default function AuditDisplay() {
     setCheckpoint(0);
     setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
-    const date = new Date().setDate(new Date().getDate() - 1);
+    const date = format(
+      new Date().setDate(new Date().getDate() - 1),
+      "yyyy-MM-dd"
+    );
     // const date = '2021-08-10'
     const timeStart = "00:00:00";
     const timeEnd = "00:00:00";

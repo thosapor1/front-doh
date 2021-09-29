@@ -68,7 +68,6 @@ export default function UserLogs() {
 
   const [page, setPage] = useState(1);
   const [dataForTable, setDataForTable] = useState([]);
-  const [state, setState] = useState("");
 
   const handlePageChange = (value) => {
     fetchData(value);

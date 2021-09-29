@@ -2,6 +2,7 @@ import {
   Button,
   CardMedia,
   Grid,
+  IconButton,
   makeStyles,
   Modal,
   Tab,
@@ -12,18 +13,20 @@ import {
   TableRow,
   Tabs,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import Cookies from "js-cookie";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
@@ -155,6 +158,15 @@ const useStyle = makeStyles((theme) => {
       margin: theme.spacing(1),
       fontSize: 12,
     },
+    btnUpload: {
+      margin: theme.spacing(1),
+      fontSize: 12,
+      background: "#3f51b5",
+      color: "white",
+      "&:hover": {
+        background: "#303F9F",
+      },
+    },
     textField: {
       height: 20,
       bottom: 5,
@@ -174,12 +186,27 @@ const useStyle = makeStyles((theme) => {
       width: "91%",
       marginTop: 2,
     },
+    disableLabel2: {
+      // "& .MuiInputLabel-root": {
+      //   color: "blue",
+      // },
+      marginLeft: 15,
+      marginRight: 20,
+      marginTop: 20,
+      width: "91%",
+    },
+    input: {
+      // color:'red'
+    },
   };
 });
 
 export default function ModalPk3Activity(props) {
   const classes = useStyle();
   const { dataList } = props;
+
+  const [fileName, setFileName] = useState("");
+  const [selectFile, setSelectFile] = useState("");
 
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);
@@ -197,6 +224,48 @@ export default function ModalPk3Activity(props) {
   };
   const handleChangeTabs4 = (event, newValue) => {
     setValue4(newValue);
+  };
+
+  const upload = () => {
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", format(new Date(), "yyyy-MM-dd"));
+
+    if (fileName !== "") {
+      axios
+        .post(`${URL}/pk3-upload-file`, formData)
+        .then((res) => {
+          if (res.data.status === true) {
+            Swal.fire({
+              title: "Success",
+              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Fail",
+              text: "อัพโหลดข้อมูลไม่สำเร็จ",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .then(() => setFileName(""));
+    }
+  };
+
+  const download = () => {
+    // alert("test");
+    apiURL.post("/", { responseType: "blob" }).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download','file')
+      document.body.appendChild(link)
+      link.click()
+    });
   };
 
   const mockPic = 0;
@@ -234,7 +303,6 @@ export default function ModalPk3Activity(props) {
       timestamp: dataList.timeStamp,
     };
 
-   
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -245,6 +313,7 @@ export default function ModalPk3Activity(props) {
       cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
+        upload();
         apiURL
           .post("/changeState3to4", sendData)
           .then((res) => {
@@ -454,6 +523,88 @@ export default function ModalPk3Activity(props) {
               className={classes.image}
             />
           </TabPanel4>
+
+          <TextField
+            id="upload"
+            disabled
+            variant="outlined"
+            className={classes.disableLabel2}
+            label="upload file here"
+            value={fileName}
+            InputProps={{
+              endAdornment: (
+                <Tooltip title="cancel upload file" placement="top">
+                  <IconButton onClick={() => setFileName("")}>
+                    <HighlightOffIcon />{" "}
+                  </IconButton>
+                </Tooltip>
+              ),
+            }}
+          />
+          <div
+            style={{
+              paddingLeft: 6,
+              paddingRight: 6,
+              // marginTop: 10,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <input
+              // accept="image/*"
+              className={classes.input}
+              style={{ display: "none" }}
+              id="raised-button-file"
+              // multiple
+              type="file"
+              onChange={(e) => {
+                setFileName(e.target.files[0].name);
+                setSelectFile(e.target.files[0]);
+                console.log(selectFile);
+                // console.log(ref.current.value.split("\\").pop());
+              }}
+            />
+            <label htmlFor="raised-button-file">
+              <Button
+                variant="contained"
+                className={classes.btn}
+                color="primary"
+                component="span"
+                // onClick={() => {
+                //   alert("test");
+                // }}
+              >
+                choose file
+              </Button>
+            </label>
+            <Button
+              variant="contained"
+              className={classes.btn}
+              color="secondary"
+              onClick={() => {
+                upload();
+              }}
+            >
+              upload
+            </Button>
+          </div>
+          <div
+            style={{
+              display:'flex',
+              justifyContent:'right',
+              paddingRight: 6,
+              marginTop: 90,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => download()}
+            >
+              download
+            </Button>
+          </div>
         </Grid>
 
         {/* CCTV Audit (Vehicle) Block */}
@@ -570,6 +721,7 @@ export default function ModalPk3Activity(props) {
               </TableBody>
             </table>
           </TableContainer>
+
           <div
             style={{
               paddingLeft: 10,
@@ -711,7 +863,6 @@ export default function ModalPk3Activity(props) {
               </TableBody>
             </table>
           </TableContainer>
-
           <TextField
             disabled
             variant="outlined"

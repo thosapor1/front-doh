@@ -2,6 +2,7 @@ import {
   Button,
   CardMedia,
   Grid,
+  IconButton,
   makeStyles,
   MenuItem,
   Modal,
@@ -13,17 +14,18 @@ import {
   TableRow,
   Tabs,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
-import SendTwoToneIcon from "@material-ui/icons/SendTwoTone";
 import Cookies from "js-cookie";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
@@ -182,12 +184,24 @@ const useStyle = makeStyles((theme) => {
       width: "91%",
       marginTop: 2,
     },
+    disableLabel2: {
+      // "& .MuiInputLabel-root": {
+      //   color: "blue",
+      // },
+      marginLeft: 15,
+      marginRight: 20,
+      marginTop: 20,
+      width: "91%",
+    },
   };
 });
 
 export default function ModalSuperAdminActivity(props) {
   const classes = useStyle();
   const { dataList } = props;
+
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
 
   const [value1, setValue1] = useState(2);
   const [value2, setValue2] = useState(2);
@@ -207,6 +221,45 @@ export default function ModalSuperAdminActivity(props) {
   };
   const handleChangeTabs4 = (event, newValue) => {
     setValue4(newValue);
+  };
+
+  const upload = () => {
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", format(new Date(), "yyyy-MM-dd"));
+
+    if (fileName !== "") {
+      axios.post(`${URL}/super-audit-upload-file`, formData).then((res) => {
+        if (res.data.status === true) {
+          Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Fail",
+            text: "อัพโหลดข้อมูลไม่สำเร็จ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    }
+  };
+
+  const download = () => {
+    // alert("test");
+    apiURL.post("/", { responseType: "blob" }).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file");
+      document.body.appendChild(link);
+      link.click();
+    });
   };
 
   const mockPic = 0;
@@ -386,7 +439,7 @@ export default function ModalSuperAdminActivity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* Audit-DVES block */}
+        {/* CCTV Audit block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -469,7 +522,87 @@ export default function ModalSuperAdminActivity(props) {
               className={classes.image}
             />
           </TabPanel4>
-          <div style={{ marginLeft: "-20px", marginTop: 335 }}>
+          <TextField
+            id="upload"
+            disabled
+            variant="outlined"
+            className={classes.disableLabel2}
+            label="upload file here"
+            value={fileName}
+            InputProps={{
+              endAdornment: (
+                <Tooltip title="cancel upload file" placement="top">
+                  <IconButton onClick={() => setFileName("")}>
+                    <HighlightOffIcon />
+                  </IconButton>
+                </Tooltip>
+              ),
+            }}
+          />
+          <div
+            style={{
+              paddingLeft: 10,
+              paddingRight: 6,
+              // marginTop: 10,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <input
+              // accept="image/*"
+              className={classes.input}
+              style={{ display: "none" }}
+              id="raised-button-file"
+              // multiple
+              type="file"
+              onChange={(e) => {
+                setFileName(e.target.files[0].name);
+                setSelectFile(e.target.files[0]);
+                // console.log(ref.current.value.split("\\").pop());
+              }}
+            />
+            <label htmlFor="raised-button-file">
+              <Button
+                variant="contained"
+                className={classes.btn}
+                color="primary"
+                component="span"
+                // onClick={() => {
+                //   alert("test");
+                // }}
+              >
+                choose file
+              </Button>
+            </label>
+            <Button
+              variant="contained"
+              className={classes.btn}
+              color="secondary"
+              onClick={() => {
+                upload();
+              }}
+            >
+              upload
+            </Button>
+          </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "right",
+                paddingRight: 6,
+                marginTop: 20,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.btn}
+                onClick={() => download()}
+              >
+                download
+              </Button>
+            </div>
+          <div style={{ marginLeft: "10px", marginTop: 136 }}>
             <Button
               className={classes.btn}
               variant="contained"

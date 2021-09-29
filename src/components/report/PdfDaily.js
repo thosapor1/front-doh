@@ -17,8 +17,9 @@ pdfMake.fonts = {
 
 const data = [];
 
-export default function PdfDaily() {
-  const date = "วันอังคารที่ 29 ธันวาคม 2563";
+export default function PdfDaily(props) {
+  let win = window.open("", "_blank");
+  const date = "วันอังคารที่ 40 ธันวาคม 2563";
 
   let docDefinition = {
     footer: function (currentPage, pageCount) {
@@ -190,7 +191,7 @@ export default function PdfDaily() {
         },
       },
       {
-        fontSize:11,
+        fontSize: 11,
         style: "table",
         margin: [35, 20, 0, 450],
         table: {
@@ -631,7 +632,7 @@ export default function PdfDaily() {
                     margin: [0, -2, 0, 0],
                   },
                   {
-                    text: "40",
+                    text: "4444",
                     border: [false, false, false, false],
                     margin: [0, -2, 0, 0],
                   },
@@ -1823,5 +1824,6 @@ export default function PdfDaily() {
     },
     defaultStyle: { font: "THSarabun" },
   };
-  pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
+  // pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
+  pdfMake.createPdf(docDefinition).open({}, win);
 }

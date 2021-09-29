@@ -186,9 +186,9 @@ export default function AuditDisplay() {
   ];
 
   const setSubStateWhenChangeState = (e) => {
-    if (e === '2') {
+    if (e === "2") {
       setSubState(1);
-    } else if (e === '3') {
+    } else if (e === "3") {
       setSubState(2);
     } else {
       setSubState(0);
@@ -260,7 +260,10 @@ export default function AuditDisplay() {
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
     const timeEnd = "00:00:00";
-    const date = new Date().setDate(new Date().getDate() - 1);
+    const date = format(
+      new Date().setDate(new Date().getDate() - 1),
+      "yyyy-MM-dd"
+    );
 
     const sendData = {
       page: pageId,
@@ -269,6 +272,7 @@ export default function AuditDisplay() {
       startTime: timeStart,
       endTime: timeEnd,
       transactionStatus: "0",
+      sub_state: subState,
     };
     console.log(sendData);
 

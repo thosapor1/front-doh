@@ -128,9 +128,9 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
-    setSwitch({ ...switch1, [event.target.name]: event.target.checked });
+    setSwitch({ ...switch1, [event.target.id]: event.target.checked });
     const userId = event.target.id;
-    console.log("click", userId, event.target.value);
+    console.log("click", userId, index,event.target);
   };
 
   const handleDelete = async (item) => {
@@ -226,7 +226,7 @@ export default function User() {
             </TableHead>
             <TableBody>
               {!!state.user_list
-                ? state.user_list.map((item) => (
+                ? state.user_list.map((item,index) => (
                     <TableRow key={item.id}>
                       <TableCell align="center">{item.user_id} </TableCell>
                       <TableCell align="center">{item.username} </TableCell>
@@ -255,21 +255,21 @@ export default function User() {
                         </Tooltip>
                       </TableCell>
                       <TableCell align="center">
-                        {item.status == true ? (
+                        {item.status === "true" ? (
                           <Switch
-                            checked={switch1.activeChecked}
-                            onChange={handleChangeSwitch}
+                            checked={item.status}
+                            onChange={(e)=>handleChangeSwitch(e,index)}
                             name="activeChecked"
-                            id={item.user_id.toString()}
+                            id={item.user_id}
                             color="primary"
                           />
                         ) : (
                           <Switch
-                            checked={switch1.inActiveChecked}
-                            onChange={handleChangeSwitch}
+                            checked={item.status}
+                            onChange={(e)=>handleChangeSwitch(e,index)}
                             name="inActiveChecked"
-                            id={item.user_id.toString()}
-                            color="primary"
+                            id={item.user_id}
+                            color="secondary"
                           />
                         )}
                       </TableCell>
