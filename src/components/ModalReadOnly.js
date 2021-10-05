@@ -3,7 +3,6 @@ import {
   CardMedia,
   Grid,
   makeStyles,
-  MenuItem,
   Modal,
   Tab,
   TableBody,
@@ -222,6 +221,21 @@ export default function ModalReadOnly(props) {
     setValue4(newValue);
   };
 
+  const [fileDownloadPk3, setFileDownloadPk3] = useState(true);
+  const [fileDownloadAudit, setFileDownloadAudit] = useState(true);
+
+  const download = () => {
+    // alert("test");
+    apiURL.post("/", { responseType: "blob" }).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file");
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   const mockPic = 0;
   const [state, setState] = useState({
     super_audit_lp: "",
@@ -293,6 +307,13 @@ export default function ModalReadOnly(props) {
     } else {
       setDisable(false);
     }
+
+    if (dataList.pk3_upload_file === 1) {
+      setFileDownloadPk3(false);
+    }
+    if (dataList.super_audit_upload_file === 1) {
+      setFileDownloadAudit(false);
+    }
   }, [dataList]);
 
   const body = (
@@ -320,7 +341,8 @@ export default function ModalReadOnly(props) {
             transaction: {dataList.transactionId}{" "}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway} / {dataList.checkpoint} / {dataList.gate}
+            {dataList.highway_name} / {dataList.checkpoint_name} /
+            {dataList.gate_name}
           </Typography>
         </div>
         <div>
@@ -332,7 +354,7 @@ export default function ModalReadOnly(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* Audit-DVES block */}
+        {/* CCTV Audit block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -417,8 +439,38 @@ export default function ModalReadOnly(props) {
           </TabPanel4>
           <div
             style={{
-              marginLeft: "-20px",
-              marginTop: 335,
+              display: "flex",
+              justifyContent: "space-between",
+              paddingRight: 6,
+              marginTop: 10,
+              paddingLeft: 7,
+            }}
+          >
+            <Button
+              disabled={fileDownloadPk3}
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => download()}
+              style={{ fontSize: "0.7rem" }}
+            >
+              download from pk3
+            </Button>
+            <Button
+              disabled={fileDownloadAudit}
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => download()}
+              style={{ fontSize: "0.7rem" }}
+            >
+              download from audit
+            </Button>
+          </div>
+          <div
+            style={{
+              marginLeft: "7px",
+              marginTop: 258,
             }}
           >
             <Button
@@ -565,7 +617,7 @@ export default function ModalReadOnly(props) {
               paddingLeft: 10,
               paddingRight: 10,
               marginTop: 150,
-              marginLeft: -70,
+              marginLeft: -45,
             }}
           >
             <Button
@@ -643,7 +695,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }

@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 23,
       marginLeft: 30,
+      '&:hover':{
+        backgroundColor:'#6a008f'
+      },
     },
     btn2: {
       backgroundColor: "green",
@@ -77,6 +80,9 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 23,
       marginLeft: 30,
+      '&:hover':{
+        backgroundColor:'darkgreen'
+      },
     },
   };
 });
@@ -141,6 +147,7 @@ export default function AuditDisplay() {
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
+  const [valueMenuItem, setValueMenuItem] = useState([])
   const [subState, setSubState] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
@@ -243,6 +250,7 @@ export default function AuditDisplay() {
       setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
       setClassTable(res.data.status !== false ? res.data.ts_class : []);
       setAllTsTable(res.data.status !== false ? res.data : []);
+      setValueMenuItem(res.data.status !== false ? res.data.dropdown_Checkpoint : [])
     });
   };
 
@@ -325,8 +333,8 @@ export default function AuditDisplay() {
           name="gate_select"
         >
           {valueMenuItem.map((item) => (
-            <MenuItem key={item.id} value={item.value}>
-              {item.label}
+            <MenuItem key={item.id} value={item.id}>
+              {item.checkpoint_name}
             </MenuItem>
           ))}
         </TextField>

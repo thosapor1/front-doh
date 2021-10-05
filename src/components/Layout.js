@@ -28,9 +28,14 @@ import {
   menuConfigForMember,
 } from "../data/menuControl";
 import Cookies, { set } from "js-cookie";
+import axios from "axios";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
+
+const apiURL = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -56,6 +61,9 @@ const useStyles = makeStyles((theme) => {
       marginLeft: 10,
       marginRight: 10,
       backgroundColor: "#88489e",
+      "&:hover": {
+        backgroundColor: "#6a008f",
+      },
     },
     active: {
       background: "#61438Fff",
@@ -64,7 +72,7 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "white",
-      zIndex:-1,
+      zIndex: -1,
     },
     avatar: {
       marginLeft: 30,
@@ -77,11 +85,27 @@ const useStyles = makeStyles((theme) => {
       color: "gray",
     },
     listItemText: {
-      fontSize: "0.85rem",
+      fontSize: "0.7rem",
     },
-    
+    hr1:{
+      display:'none',
+      background: "#9e9e9e",
+    },
+    hr2:{
+      background: "#9e9e9e",
+    },
   };
 });
+
+const logout = () => {
+  const sendData = {
+    user_id: Cookies.get("userId"),
+  };
+  apiURL
+    .post("logout", sendData)
+    .then((res) => console.log(res.data))
+    .then(() => removeCookies);
+};
 
 const removeCookies = () => {
   Cookies.remove("checkpoint_id");
@@ -105,6 +129,7 @@ export default function Layout({ children }) {
     const permissionId = Cookies.get("permission_id");
     const departmentId = Cookies.get("department_id");
     const userName = Cookies.get("username");
+    const userId = Cookies.get("userId");
     setUserName(userName);
     if (permissionId == 1 && departmentId == 1) {
       setMenuItems(menuItemsForSuperAdmin);
@@ -155,7 +180,7 @@ export default function Layout({ children }) {
             DOH-AUDIT
           </Typography>
         </div>
-        <Divider variant="middle" style={{ background: "#9e9e9e" }} />
+        <Divider variant="middle" className={classes.hr2} />
         <List>
           {!!menuItems
             ? menuItems.map((item) => (
@@ -178,7 +203,7 @@ export default function Layout({ children }) {
               ))
             : menuItems}
         </List>
-        <Divider variant="middle" style={{ background: "#9e9e9e" }} />
+        <Divider variant="middle" className={classes.hr2} />
         <List>
           {configItems.map((item) => (
             <ListItem
@@ -199,7 +224,7 @@ export default function Layout({ children }) {
             </ListItem>
           ))}
         </List>
-        <Divider variant="middle" style={{ background: "#9e9e9e" }} />
+        <Divider variant="middle" className={classes.hr2} />
         <Button
           variant="contained"
           size="large"
@@ -208,7 +233,7 @@ export default function Layout({ children }) {
           className={classes.btn}
           onClick={() => {
             history.push("/audit_dev");
-            removeCookies();
+            logout();
           }}
         >
           ออกจากระบบ

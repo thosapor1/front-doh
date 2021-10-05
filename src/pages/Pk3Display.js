@@ -77,6 +77,9 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 22,
       marginLeft: 30,
+      "&:hover": {
+        backgroundColor: "#6a008f",
+      },
     },
     btn2: {
       backgroundColor: "green",
@@ -85,37 +88,12 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 23,
       marginLeft: 30,
+      "&:hover": {
+        backgroundColor: "darkgreen",
+      },
     },
   };
 });
-
-const valueMenuItem = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกด่าน",
-  },
-  {
-    id: 1,
-    value: 1,
-    label: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    value: 2,
-    label: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    value: 4,
-    label: "ธัญบุรี2",
-  },
-];
 
 const valueStatus = [
   {
@@ -141,6 +119,7 @@ export default function AuditDisplay() {
   const [summary, setSummary] = useState("");
   const [status_select, setStatus_select] = useState(null);
   const [checkpoint, setCheckpoint] = useState(0);
+  const [valueMenuItem, setValueMenuItem] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -196,6 +175,9 @@ export default function AuditDisplay() {
       );
       setSummary(res.data.status !== false ? res.data.summary : []);
       setAllTsTable(res.data.status !== false ? res.data : "");
+      setValueMenuItem(
+        res.data.status !== false ? res.data.dropdown_Checkpoint : []
+      );
     });
   };
 
@@ -228,16 +210,12 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
     apiURL.post("/pk3display", sendData).then((res) => {
-      // console.log(
-      //   "res: ",
-      //   res.data,
-      //   "ts_Table:",
-      //   res.data.ts_table,
-      //   "Summary: ",
-      //   res.data.summary
-      // );
+      console.log(res.data);
       setSummary(res.data.status !== false ? res.data.summary : []);
       setAllTsTable(res.data.status !== false ? res.data : "");
+      setValueMenuItem(
+        res.data.status !== false ? res.data.dropdown_Checkpoint : []
+      );
     });
   };
 
@@ -258,11 +236,11 @@ export default function AuditDisplay() {
           value={checkpoint}
           onChange={(e) => setCheckpoint(e.target.value)}
           style={{ width: 120, marginTop: 16 }}
-          name="gate_select"
+          name="checkpoint"
         >
-          {valueMenuItem.map((item) => (
-            <MenuItem key={item.id} value={item.value}>
-              {item.label}
+          {valueMenuItem.map((item, index) => (
+            <MenuItem key={index} value={item.id}>
+              {item.checkpoint_name}
             </MenuItem>
           ))}
         </TextField>

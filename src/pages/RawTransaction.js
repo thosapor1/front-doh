@@ -26,7 +26,6 @@ const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
-
 const useStyle = makeStyles((theme) => {
   return {
     "@global": {
@@ -70,6 +69,9 @@ const useStyle = makeStyles((theme) => {
       width: 150,
       height: 40,
       backgroundColor: "#46005E",
+      "&:hover": {
+        backgroundColor: "#6a008f",
+      },
     },
     textField: {
       width: 150,
@@ -97,13 +99,6 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-const stations = [
-  { value: "1", label: "ทับช้าง1" },
-  { value: "2", label: "ทับช้าง2" },
-  { value: "3", label: "ธัญบุรี1" },
-  { value: "4", label: "ธัญบุรี2" },
-  { value: "0", label: "ทุกด่าน" },
-];
 const statusValue = [
   { id: 0, value: "0", label: "ทุกสถานะ" },
   { id: 1, value: "1", label: "รายการปกติ" },
@@ -128,6 +123,7 @@ export default function RawTransaction() {
   const [id, setId] = useState(0);
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
+  const [stations, setStations] = useState([]);
   const classes = useStyle();
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -200,7 +196,7 @@ export default function RawTransaction() {
       transactionStatus: status,
       subState: subState,
     };
-    console.log(`sendData: ${JSON.stringify(sendData)}`);
+    // console.log(`sendData: ${JSON.stringify(sendData)}`);
     await apiURL.post("/rawdata", sendData).then((res) => {
       setState({
         summary: {
@@ -213,7 +209,10 @@ export default function RawTransaction() {
       });
       setState(res.data);
       setSummary(!!res.data.summary ? res.data.summary : summary);
-      console.log(res.data);
+      setStations(
+        !!res.data.dropdown_Checkpoint ? res.data.dropdown_Checkpoint : stations
+      );
+      console.log(res.data.dropdown_Checkpoint);
       // console.log(`state_length: ${state.record.length}`);
     });
   }
@@ -254,8 +253,8 @@ export default function RawTransaction() {
             value={station}
           >
             {stations.map((station) => (
-              <MenuItem key={station.value} value={station.value}>
-                {station.label}
+              <MenuItem key={station.id} value={station.id}>
+                {station.checkpoint_name}
               </MenuItem>
             ))}
           </TextField>
@@ -353,9 +352,9 @@ export default function RawTransaction() {
       </div>
 
       {/* Table Blcok */}
-      <div>
+      <Paper style={{ marginTop: 10, padding: "0px 10px" }}>
         <AuditTable datalist={state} page={page} onChange={handlePageChange} />
-      </div>
+      </Paper>
     </Container>
   );
 }

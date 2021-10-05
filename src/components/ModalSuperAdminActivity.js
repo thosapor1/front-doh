@@ -30,6 +30,9 @@ import { format } from "date-fns";
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
+const apiURLv1 = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -226,8 +229,10 @@ export default function ModalSuperAdminActivity(props) {
   const upload = () => {
     const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
     let formData = new FormData();
+    const getDate = dataList.timestamp.split(" ").shift();
     formData.append("file", selectFile);
-    formData.append("date", format(new Date(), "yyyy-MM-dd"));
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.transactionId);
 
     if (fileName !== "") {
       axios.post(`${URL}/super-audit-upload-file`, formData).then((res) => {
@@ -251,15 +256,27 @@ export default function ModalSuperAdminActivity(props) {
   };
 
   const download = () => {
-    // alert("test");
-    apiURL.post("/", { responseType: "blob" }).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "file");
-      document.body.appendChild(link);
-      link.click();
-    });
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: dataList.transactionId,
+      date: dataList.timestamp.split(" ").shift(),
+    };
+    apiURLv1
+      .post("/download-file-super-audit", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "file_PK3.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
   };
 
   const mockPic = 0;
@@ -279,16 +296,19 @@ export default function ModalSuperAdminActivity(props) {
   const [super_audit_vehicleClass_id, setSuper_Audit_vehicleClass_id] =
     useState(0);
 
+  const [fileDownloadPk3, setFileDownloadPk3] = useState(true);
+  const [fileDownloadAudit, setFileDownloadAudit] = useState(true);
+
   const handleOptionChange = (event) => {
-    const id = event.target.value;
-    setSuper_audit_vehicleClass(id);
-    setSuper_Audit_vehicleClass_id(id);
-    setSuper_audit_feeAmount(dataList.dropdown_audit_feeAmount[id - 1].fee);
+    const index = event.target.value;
+    setSuper_audit_vehicleClass(index);
+    setSuper_Audit_vehicleClass_id(dataList.dropdown_audit_vehicle[index].id);
+    setSuper_audit_feeAmount(dataList.dropdown_audit_vehicle[index].fee);
 
     console.log(
       `super_audit_feeAmount: ${super_audit_feeAmount}
       super_audit_vehicleClass: ${super_audit_vehicleClass}
-      event.target.value: ${id}`
+      event.target.value: ${index}`
     );
   };
 
@@ -396,9 +416,17 @@ export default function ModalSuperAdminActivity(props) {
   };
 
   useEffect(() => {
+    setFileDownloadPk3(true)
+    setFileDownloadAudit(true)
     if (dataList) {
       setState(dataList);
       console.log("dataList", dataList);
+    }
+    if (dataList.pk3_upload_file === 1) {
+      setFileDownloadPk3(false);
+    }
+    if (dataList.super_audit_upload_file === 1) {
+      setFileDownloadAudit(false);
     }
   }, [dataList]);
 
@@ -541,7 +569,7 @@ export default function ModalSuperAdminActivity(props) {
           />
           <div
             style={{
-              paddingLeft: 10,
+              paddingLeft: 7,
               paddingRight: 6,
               // marginTop: 10,
               display: "flex",
@@ -585,24 +613,37 @@ export default function ModalSuperAdminActivity(props) {
               upload
             </Button>
           </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "right",
-                paddingRight: 6,
-                marginTop: 20,
-              }}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingRight: 6,
+              marginTop: 20,
+              paddingLeft: 7,
+            }}
+          >
+            <Button
+              disabled={fileDownloadPk3}
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => download()}
+              style={{ fontSize: "0.7rem" }}
             >
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.btn}
-                onClick={() => download()}
-              >
-                download
-              </Button>
-            </div>
-          <div style={{ marginLeft: "10px", marginTop: 136 }}>
+              download from pk3
+            </Button>
+            <Button
+              disabled={fileDownloadAudit}
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => download()}
+              style={{ fontSize: "0.7rem" }}
+            >
+              download from audit
+            </Button>
+          </div>
+          <div style={{ marginLeft: "10px", marginTop: 121 }}>
             <Button
               className={classes.btn}
               variant="contained"
@@ -825,7 +866,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic  != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -923,12 +964,12 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_vehicleClass"
-                      value={super_audit_vehicleClass || ""}
+                      value={super_audit_vehicleClass}
                       onChange={handleOptionChange}
                     >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <MenuItem key={item.id} value={item.id}>
+                      {!!dataList.dropdown_audit_vehicle
+                        ? dataList.dropdown_audit_vehicle.map((item, index) => (
+                            <MenuItem key={index} value={index}>
                               {item.class}
                             </MenuItem>
                           ))
@@ -943,13 +984,7 @@ export default function ModalSuperAdminActivity(props) {
                       id="valueRef"
                       size="small"
                       name="valueRef"
-                      value={
-                        super_audit_vehicleClass_id != ""
-                          ? dataList.dropdown_audit_feeAmount[
-                              super_audit_vehicleClass_id - 1
-                            ].fee
-                          : ""
-                      }
+                      value={super_audit_feeAmount}
                     />
                   </TableCell>
                 </TableRow>

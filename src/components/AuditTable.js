@@ -18,7 +18,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     headerAudit: {
-      backgroundColor: "#46005E",
+      backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
       padding: 10,
@@ -26,7 +26,7 @@ const useStyle = makeStyles((theme) => {
       fontSize: "0.8rem",
     },
     headerPK: {
-      backgroundColor: "#ef6c00",
+      backgroundColor: "#BB564B",
       border: "1px solid white",
       color: "white",
       padding: 10,
@@ -64,7 +64,7 @@ export default function AuditTable(props) {
           top: 0,
         }}
       />
-      <Paper style={{ marginTop: 20 }}>
+      <Paper>
         <TableContainer style={{ width: "auto", height: 760 }}>
           <Table>
             <TableHead>
@@ -198,58 +198,68 @@ export default function AuditTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!!datalist.record?datalist.record.map((row) => (
-                <StyledTableRow key={row.transactionId}>
-                  <TableCell align="center">
-                    <FiberManualRecordIcon
-                      fontSize="small"
-                      style={{
-                        color:
-                          row.state === 2
-                            ? "#FF2400"
-                            : row.state === 3
-                            ? "blue"
-                            : row.state === 4
-                            ? "yellow"
-                            : row.state === 5
-                            ? "black"
-                            : row.state === 6
-                            ? "pink"
-                            : row.state === 7
-                            ? "green"
-                            : "gray",
-                      }}
-                    />
-                    {/* {row.match_id} */}
-                  </TableCell>
-                  <TableCell align="center">{row.transactionId}</TableCell>
-                  <TableCell align="center">{row.lane_id}</TableCell>
-                  <TableCell align="center">{row.timestamp}</TableCell>
-                  <TableCell align="center">{row.timestamp}</TableCell>
-                  <TableCell align="center">{row.vehicleClass}</TableCell>
-                  <TableCell align="center">
-                    <ImageIcon />
-                  </TableCell>
-                  <TableCell align="center">{row.timestamp}</TableCell>
-                  <TableCell align="center">{row.wheel_description}</TableCell>
-                  <TableCell align="center">{row.cameras_plateNo1}</TableCell>
-                  <TableCell align="center">
-                    {row.province_description}
-                  </TableCell>
-                  <TableCell align="center">{row.brand_description}</TableCell>
-                  <TableCell align="center">{row.colors_description}</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                  <TableCell align="center">-</TableCell>
-                </StyledTableRow>
-              )):[]}
+              {!!datalist.record
+                ? datalist.record.map((row) => (
+                    <StyledTableRow key={row.transactionId}>
+                      <TableCell align="center">
+                        <FiberManualRecordIcon
+                          fontSize="small"
+                          style={{
+                            color:
+                              row.state === 2
+                                ? "#FF2400"
+                                : row.state === 3
+                                ? "blue"
+                                : row.state === 4
+                                ? "yellow"
+                                : row.state === 5
+                                ? "black"
+                                : row.state === 6
+                                ? "pink"
+                                : row.state === 7
+                                ? "green"
+                                : "gray",
+                          }}
+                        />
+                        {/* {row.match_id} */}
+                      </TableCell>
+                      <TableCell align="center">{row.transactionId}</TableCell>
+                      <TableCell align="center">{row.lane_id}</TableCell>
+                      <TableCell align="center">{row.timestamp}</TableCell>
+                      <TableCell align="center">{row.timestamp}</TableCell>
+                      <TableCell align="center">{row.vehicleClass}</TableCell>
+                      <TableCell align="center">
+                        <ImageIcon />
+                      </TableCell>
+                      <TableCell align="center">{row.timestamp}</TableCell>
+                      <TableCell align="center">
+                        {row.wheel_description}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.cameras_plateNo1}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.province_description}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.brand_description}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.colors_description}
+                      </TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center">-</TableCell>
+                    </StyledTableRow>
+                  ))
+                : []}
             </TableBody>
           </Table>
         </TableContainer>

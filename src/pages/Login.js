@@ -20,24 +20,30 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {
       backgroundColor: "#933583",
-      height: "100vh",
+      // height: "100vh",
+      paddingBottom: "25%",
       paddingTop: "4%",
+      [theme.breakpoints.down("xs")]: {
+        padding: "0px 0px",
+      },
     },
     paper: {
       display: "flex",
       width: "60%",
-      height: "75%",
-      marginLeft: "auto",
-      marginRight: "auto",
+      margin: "0px auto",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
     leftSide: {},
-    rightSide: {},
+    rightSide: {
+      paddingBottom: "60px",
+      [theme.breakpoints.down("xs")]: {
+        paddingBottom: "30%",
+      },
+    },
     typography: {
       fontSize: "1.5rem",
-    },
-    form: {
-      marginRight: "auto",
-      marginLeft: "auto",
     },
     btn: {
       marginTop: "2rem",
@@ -45,8 +51,8 @@ const useStyle = makeStyles((theme) => {
       height: 40,
     },
     textField: {
-      marginTop: 20,
-      width: 340,
+      margin: "10px auto",
+      width: "60%",
     },
   };
 });
@@ -121,14 +127,14 @@ export default function Login() {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container>
-          <Grid item className={classes.leftSide} md={6}>
+          <Grid item className={classes.leftSide} md={6} sm={12}>
             <CardMedia
               component="img"
               image={P_login}
               style={{ height: "100%", width: "100%" }}
             />
           </Grid>
-          <Grid item className={classes.rightSide} sm={12} md={6}>
+          <Grid item className={classes.rightSide} sm={12} md={6} xs={12}>
             <CardMedia
               component="image"
               image={Logo_doh}
@@ -158,31 +164,39 @@ export default function Login() {
             </Typography>
 
             <form noValidate autoComplete="off">
-              <div style={{ textAlign: "center", marginTop: "2rem" }}>
-                <TextField
-                  className={classes.textField}
-                  id="username"
-                  label="ผู้ใช้งาน"
-                  value={state.username}
-                  variant="outlined"
-                  name="username"
-                  onChange={handleChange}
-                />
-                <TextField
-                  className={classes.textField}
-                  id="password"
-                  label="รหัสผ่าน"
-                  type="password"
-                  value={state.password}
-                  variant="outlined"
-                  name="password"
-                  onChange={handleChange}
-                />
-              </div>
+              <Grid
+                container
+                style={{ textAlign: "center", marginTop: "2rem" }}
+              >
+                <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    className={classes.textField}
+                    id="username"
+                    label="ผู้ใช้งาน"
+                    value={state.username}
+                    variant="outlined"
+                    name="username"
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    className={classes.textField}
+                    id="password"
+                    label="รหัสผ่าน"
+                    type="password"
+                    value={state.password}
+                    variant="outlined"
+                    name="password"
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
               <div
                 style={{
-                  marginRight: "auto",
-                  marginLeft: "auto",
+                  padding: "0px 8%",
                   display: "flex",
                   justifyContent: "space-around",
                 }}

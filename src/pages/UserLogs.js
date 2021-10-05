@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => {
       height: 40,
       marginTop: 23,
       marginLeft: 30,
+      "&:hover": {
+        backgroundColor: "#6a008f",
+      },
     },
   };
 });
@@ -109,22 +112,25 @@ export default function UserLogs() {
   }, []);
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant='h6' style={{marginBottom:'1rem'}}>ตั้งค่า : รายงานความเคลื่อนไหวผู้ใช้งาน</Typography>
+      <Typography variant="h6" style={{ marginBottom: "1rem" }}>
+        ตั้งค่า : รายงานความเคลื่อนไหวผู้ใช้งาน
+      </Typography>
       <Paper className={classes.filterSection}>
         <TextField
           select
           label="username"
           value={username}
           onChange={(e) => setUserName(e.target.value)}
-          style={{ width: 120, marginTop: 16 }}
+          style={{ width: 180, marginTop: 16 }}
           name="gate_select"
         >
-          {!!dropDrawUser?
-           dropDrawUser.map((item) => (
-            <MenuItem key={item.id} value={item.id}>
-              {item.username}
-            </MenuItem>
-          )):[]}
+          {!!dropDrawUser
+            ? dropDrawUser.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.username}
+                </MenuItem>
+              ))
+            : []}
         </TextField>
 
         <TextField
@@ -132,15 +138,16 @@ export default function UserLogs() {
           label="สถานะ"
           value={event}
           onChange={(e) => setEvent(e.target.value)}
-          style={{ width: 120, marginTop: 16, marginLeft: 30 }}
+          style={{ width: 180, marginTop: 16, marginLeft: 30 }}
           name="status_select"
         >
-          {!!dropDrawEvent?
-          dropDrawEvent.map((item) => (
-            <MenuItem key={item.value} value={item.id}>
-              {item.events_name}
-            </MenuItem>
-          )):[]}
+          {!!dropDrawEvent
+            ? dropDrawEvent.map((item) => (
+                <MenuItem key={item.value} value={item.id}>
+                  {item.events_name}
+                </MenuItem>
+              ))
+            : []}
         </TextField>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

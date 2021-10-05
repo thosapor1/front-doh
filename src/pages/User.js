@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
+      '&:hover':{
+        backgroundColor:'#6a008f'
+      },
     },
     modal: {
       width: "50%",
@@ -58,6 +61,9 @@ const useStyles = makeStyles((theme) => {
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
       backgroundColor: "#46005E",
+      '&:hover':{
+        backgroundColor:'#6a008f'
+      },
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -128,9 +134,9 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
-    setSwitch({ ...switch1, [event.target.id]: event.target.checked });
+    setSwitch({ ...switch1, [event.target.name]: event.target.checked });
     const userId = event.target.id;
-    console.log("click", userId, index,event.target);
+    console.log("click", userId, index, event.target.checked);
   };
 
   const handleDelete = async (item) => {
@@ -181,10 +187,10 @@ export default function User() {
     console.log(item);
   };
 
-  const fetchData =  () => {
-     apiURL.post("/user-list").then((res) => {
+  const fetchData = () => {
+    apiURL.post("/user-list").then((res) => {
       setState(res.data);
-      console.log(res.data, "state:", state);
+      console.log(res.data);
     });
   };
 
@@ -226,9 +232,9 @@ export default function User() {
             </TableHead>
             <TableBody>
               {!!state.user_list
-                ? state.user_list.map((item,index) => (
+                ? state.user_list.map((item, index) => (
                     <TableRow key={item.id}>
-                      <TableCell align="center">{item.user_id} </TableCell>
+                      <TableCell align="center">{item.id} </TableCell>
                       <TableCell align="center">{item.username} </TableCell>
                       <TableCell align="center">{item.fname} </TableCell>
                       <TableCell align="center">{item.lname} </TableCell>
@@ -258,7 +264,7 @@ export default function User() {
                         {item.status === "true" ? (
                           <Switch
                             checked={item.status}
-                            onChange={(e)=>handleChangeSwitch(e,index)}
+                            onChange={(e) => handleChangeSwitch(e, index)}
                             name="activeChecked"
                             id={item.user_id}
                             color="primary"
@@ -266,7 +272,7 @@ export default function User() {
                         ) : (
                           <Switch
                             checked={item.status}
-                            onChange={(e)=>handleChangeSwitch(e,index)}
+                            onChange={(e) => handleChangeSwitch(e, index)}
                             name="inActiveChecked"
                             id={item.user_id}
                             color="secondary"

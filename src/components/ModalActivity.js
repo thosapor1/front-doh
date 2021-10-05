@@ -29,6 +29,9 @@ import Cookies from "js-cookie";
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
+const apiURLv1 = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -193,6 +196,30 @@ export default function ModalActivity(props) {
     setValue4(newValue);
   };
 
+  const download = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: "M202109010000000014",
+      date: "2021-09-29",
+    };
+    apiURLv1
+      .post("/download-file-super-audit", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "M20210929000000014_PK3.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
+  };
+
   const mockPic = 0;
   const [state, setState] = useState({
     audit_lp: "",
@@ -209,15 +236,15 @@ export default function ModalActivity(props) {
   };
 
   const handleOptionChange = (event) => {
-    const id = event.target.value;
-    setAudit_vehicleClass(id);
-    setAudit_vehicleClass_id(id);
-    setAudit_feeAmount(dataList.dropdown_audit_feeAmount[id - 1].fee);
+    const index = event.target.value;
+    setAudit_vehicleClass(index);
+    setAudit_vehicleClass_id(dataList.dropdown_audit_vehicelClass[index].id);
+    setAudit_feeAmount(dataList.dropdown_audit_feeAmount[index].fee);
 
     console.log(
-      `audit_feeAmount: ${audit_feeAmount}
-      audit_vehicleClass: ${audit_vehicleClass}
-      event.target.value: ${id}`
+      `super_audit_feeAmount: ${audit_feeAmount}
+      super_audit_vehicleClass: ${audit_vehicleClass}
+      event.target.value: ${index}`
     );
   };
 
@@ -351,7 +378,8 @@ export default function ModalActivity(props) {
             transaction: {dataList.transactionId}{" "}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway} / {dataList.checkpoint} / {dataList.gate}
+            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
+            {dataList.gate_name}
           </Typography>
         </div>
         <div>
@@ -363,7 +391,7 @@ export default function ModalActivity(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* Audit-DVES block */}
+        {/* CCTV Audit block */}
         <Grid item sm={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
@@ -446,7 +474,8 @@ export default function ModalActivity(props) {
               className={classes.image}
             />
           </TabPanel4>
-          <div style={{ marginTop: 240 }}>
+
+          <div style={{ marginTop: 259 }}>
             <Button
               className={classes.btn}
               variant="contained"
@@ -588,7 +617,7 @@ export default function ModalActivity(props) {
               style={{
                 backgroundColor: "green",
                 color: "white",
-                marginTop: 64,
+                marginTop: 82,
               }}
               onClick={handleChangeState6To7}
             >
@@ -834,12 +863,12 @@ export default function ModalActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="audit_vehicleClass"
-                      value={audit_vehicleClass || ""}
+                      value={audit_vehicleClass}
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map((item) => (
-                            <MenuItem key={item.id} value={item.id}>
+                        ? dataList.dropdown_audit_vehicelClass.map((item,index) => (
+                            <MenuItem key={index} value={index}>
                               {item.class}
                             </MenuItem>
                           ))
@@ -851,15 +880,10 @@ export default function ModalActivity(props) {
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
                     <TextField
+                      className={classes.textField}
                       size="small"
                       name="valueRef"
-                      value={
-                        !!audit_vehicleClass_id
-                          ? dataList.dropdown_audit_feeAmount[
-                              audit_vehicleClass_id - 1
-                            ].fee
-                          : ""
-                      }
+                      value={audit_feeAmount}
                     />
                   </TableCell>
                 </TableRow>

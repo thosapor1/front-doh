@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
+      '&:hover':{
+        backgroundColor:'#6a008f'
+      },
     },
   };
 });

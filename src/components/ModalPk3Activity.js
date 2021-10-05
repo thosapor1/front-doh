@@ -4,6 +4,7 @@ import {
   Grid,
   IconButton,
   makeStyles,
+  MenuItem,
   Modal,
   Tab,
   TableBody,
@@ -30,6 +31,10 @@ import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+});
+
+const apiURLv1 = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -226,11 +231,15 @@ export default function ModalPk3Activity(props) {
     setValue4(newValue);
   };
 
+  const [fileDownload, setFileDownload] = useState(true);
+
   const upload = () => {
     const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = dataList.timestamp.split(" ").shift();
     let formData = new FormData();
     formData.append("file", selectFile);
-    formData.append("date", format(new Date(), "yyyy-MM-dd"));
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.transactionId);
 
     if (fileName !== "") {
       axios
@@ -257,50 +266,73 @@ export default function ModalPk3Activity(props) {
   };
 
   const download = () => {
-    // alert("test");
-    apiURL.post("/", { responseType: "blob" }).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download','file')
-      document.body.appendChild(link)
-      link.click()
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: "M202109010000000014",
+      date: "2021-09-29",
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
     });
   };
 
   const mockPic = 0;
   const [state, setState] = useState({
-    audit_lp: "",
-    audit_province: "",
-    audit_vehicleClass: "",
-    audit_feeAmount: "",
-    audit_comment: "",
+    pk3_lp: "",
+    pk3_province: "",
     pk3_comment: "",
   });
-  const {
-    audit_lp,
-    audit_province,
-    audit_vehicleClass,
-    audit_feeAmount,
-    audit_comment,
-    pk3_comment,
-  } = state;
+  const { pk3_lp, pk3_province, pk3_comment } = state;
+
+  const [pk3_vehicleClass, setPk3_vehicleClass] = useState("");
+  const [pk3_feeAmount, setPk3_feeAmount] = useState("");
+  const [pk3_vehicleClass_id, setPk3_vehicleClass_id] = useState(0);
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+    // console.log(event.target.value)
+  };
+
+  const handleOptionChange = (event) => {
+    const index = event.target.value;
+    setPk3_vehicleClass(index);
+    setPk3_feeAmount(dataList.dropdown_audit_vehicle[index].fee);
+    setPk3_vehicleClass_id(dataList.dropdown_audit_vehicle[index].id);
+
+    console.log(
+      "pk3_feeAmount:",
+      pk3_feeAmount,
+      "pk3_vehicleClass:",
+      pk3_vehicleClass,
+      "pk3_vehicleId:",
+      pk3_vehicleClass_id,
+      "event.target.value:",
+      index
+    );
   };
 
   const handleUpdateState3To4 = () => {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
-      audit_lp: audit_lp,
-      audit_province: audit_province,
-      audit_vehicleClass: audit_vehicleClass,
-      audit_feeAmount: audit_feeAmount,
-      audit_comment: audit_comment,
+      pk3_lp: pk3_lp,
+      pk3_province: pk3_province,
+      // pk3_vehicleClass: pk3_vehicleClass,
+      pk3_feeAmount: pk3_feeAmount,
       pk3_comment: pk3_comment,
       timestamp: dataList.timeStamp,
+      pk3_vehicleClass_id: pk3_vehicleClass_id,
     };
 
     Swal.fire({
@@ -347,13 +379,13 @@ export default function ModalPk3Activity(props) {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
-      audit_lp: audit_lp,
-      audit_province: audit_province,
-      audit_vehicleClass: audit_vehicleClass,
-      audit_feeAmount: audit_feeAmount,
-      audit_comment: audit_comment,
+      pk3_lp: pk3_lp,
+      pk3_province: pk3_province,
+      // pk3_vehicleClass: pk3_vehicleClass,
+      pk3_feeAmount: pk3_feeAmount,
       pk3_comment: pk3_comment,
       timestamp: dataList.timeStamp,
+      pk3_vehicleClass_id: pk3_vehicleClass_id,
     };
 
     Swal.fire({
@@ -401,6 +433,9 @@ export default function ModalPk3Activity(props) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList);
     }
+    if (dataList.pk3_upload_file === 1) {
+      setFileDownload(false);
+    }
   }, [dataList]);
 
   const body = (
@@ -428,7 +463,8 @@ export default function ModalPk3Activity(props) {
             transaction: {dataList.transactionId}{" "}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway} / {dataList.checkpoint} / {dataList.gate}
+            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
+            {dataList.gate_name}
           </Typography>
         </div>
         <div>
@@ -584,23 +620,26 @@ export default function ModalPk3Activity(props) {
               onClick={() => {
                 upload();
               }}
+              style={{ fontSize: "0.7rem" }}
             >
               upload
             </Button>
           </div>
           <div
             style={{
-              display:'flex',
-              justifyContent:'right',
+              display: "flex",
+              justifyContent: "right",
               paddingRight: 6,
               marginTop: 90,
             }}
           >
             <Button
+              disabled={fileDownload}
               variant="contained"
               color="secondary"
               className={classes.btn}
               onClick={() => download()}
+              style={{ fontSize: "0.7rem" }}
             >
               download
             </Button>
@@ -867,7 +906,7 @@ export default function ModalPk3Activity(props) {
             disabled
             variant="outlined"
             label="ข้อความจากผู้ตรวจสอบ"
-            value={audit_comment || ""}
+            value={dataList.audit_comment || ""}
             className={classes.disableLabel}
             style={{ marginTop: 26 }}
           />
@@ -967,19 +1006,58 @@ export default function ModalPk3Activity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>{dataList.audit_lp}</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      className={classes.textField}
+                      name="pk3_lp"
+                      value={pk3_lp}
+                      onChange={handleChange}
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
-                  <TableCell>{dataList.audit_province}</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      className={classes.textField}
+                      name="pk3_province"
+                      value={pk3_province}
+                      onChange={handleChange}
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.audit_vehicleClass}</TableCell>
+                  <TableCell>
+                    <TextField
+                      select
+                      size="small"
+                      className={classes.textField}
+                      name="pk3_vehicleClass"
+                      value={pk3_vehicleClass}
+                      onChange={handleOptionChange}
+                    >
+                      {!!dataList.dropdown_audit_vehicle
+                        ? dataList.dropdown_audit_vehicle.map((item, index) => (
+                            <MenuItem key={item.id} value={index}>
+                              {item.class}
+                            </MenuItem>
+                          ))
+                        : []}
+                    </TextField>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.audit_feeAmount}</TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      name="valueRef"
+                      value={pk3_feeAmount}
+                    />
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
