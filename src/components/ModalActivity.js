@@ -601,7 +601,9 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.dlt_class}</TableCell>
+                  <TableCell>
+                    {dataList.dlt_class === "Cnull" ? "-" : dataList.dlt_class}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
@@ -720,7 +722,9 @@ export default function ModalActivity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>{dataList.mf_lp}</TableCell>
+                  <TableCell>
+                    {dataList.mf_lp === "null null" ? "-" : dataList.mf_lp}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
@@ -728,7 +732,9 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.mf_class}</TableCell>
+                  <TableCell>
+                    {dataList.mf_class === "Cnull" ? "-" : dataList.mf_class}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
@@ -867,11 +873,13 @@ export default function ModalActivity(props) {
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map((item,index) => (
-                            <MenuItem key={index} value={index}>
-                              {item.class}
-                            </MenuItem>
-                          ))
+                        ? dataList.dropdown_audit_vehicelClass.map(
+                            (item, index) => (
+                              <MenuItem key={index} value={index}>
+                                {item.class}
+                              </MenuItem>
+                            )
+                          )
                         : []}
                     </TextField>
                   </TableCell>

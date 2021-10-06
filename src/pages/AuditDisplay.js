@@ -320,7 +320,7 @@ export default function AuditDisplay() {
   const classes = useStyles();
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6">ตรวจสอบ (DOH):รายได้พึงได้รายวัน</Typography>
+      <Typography variant="h6">ตรวจสอบ (DOH) : รายได้พึงได้รายวัน</Typography>
 
       {/* Filter Section */}
       <Paper className={classes.filterSection}>

@@ -230,7 +230,7 @@ export default function ModalReadOnly(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "file");
+      link.setAttribute("download", "file.pdf");
       document.body.appendChild(link);
       link.click();
     });
@@ -295,6 +295,8 @@ export default function ModalReadOnly(props) {
   };
 
   useEffect(() => {
+    setFileDownloadPk3(true);
+    setFileDownloadAudit(true);
     if (dataList) {
       setState(dataList);
       console.log("MyState", state, "dataList", dataList.state);

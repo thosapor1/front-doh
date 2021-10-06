@@ -100,18 +100,36 @@ export default function Login() {
         Cookies.set("username", res.data.result[0].username);
       };
 
-      if (res.data.status == true && res.data.result[0].department_id == 1) {
+      if (
+        res.data.result[0].status === 1 &&
+        res.data.status === true &&
+        res.data.result[0].department_id === 1
+      ) {
         console.log("pass", res.data.status);
         setCookies();
         history.push("/rawTransaction");
       } else if (
-        res.data.status == true &&
-        res.data.result[0].department_id == 2
+        res.data.result[0].status === 1 &&
+        res.data.status === true &&
+        res.data.result[0].department_id === 2
       ) {
         setCookies();
         history.push("/pk3Display");
         console.log("res:", res.data);
-      } else {
+      } else if (res.data.status === false) {
+        console.log("res:", res.data);
+        Swal.fire({
+          icon: "error",
+          text: "ตรวจสอบ username และ password ของท่าน",
+        });
+      }else if (res.data.result[0].status === 0) {
+        console.log("res:", res.data);
+        Swal.fire({
+          icon: "error",
+          text: "โปรดติดต่อ ADMIN",
+        });
+      }
+       else {
         console.log("res:", res.data);
         Swal.fire({
           icon: "error",

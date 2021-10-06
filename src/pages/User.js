@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
-      '&:hover':{
-        backgroundColor:'#6a008f'
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
     modal: {
@@ -61,14 +61,22 @@ const useStyles = makeStyles((theme) => {
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
       backgroundColor: "#46005E",
-      '&:hover':{
-        backgroundColor:'#6a008f'
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
     header: {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+    },
+    active: {
+      color: "green",
+      fontSize: 11,
+    },
+    inactive: {
+      color: "red",
+      fontSize: 11,
     },
   };
 });
@@ -80,33 +88,7 @@ const apiURL = axios.create({
 export default function User() {
   const classes = useStyles();
 
-  const [state, setState] = useState({
-    status: "",
-    user_list: [
-      {
-        checkpoint: "",
-        checkpoint_id: "",
-        department: "",
-        department_id: "",
-        email: "",
-        fname: "",
-        highway: "",
-        highway_id: "",
-        lname: "",
-        position: "",
-        position_id: "",
-        status: "",
-        tel: "",
-        user_id: "",
-        username: "",
-      },
-    ],
-  });
-
-  const [switch1, setSwitch] = useState({
-    activeChecked: true,
-    inActiveChecked: false,
-  });
+  const [state, setState] = useState({});
 
   const [progressStatus, setProgressStatus] = useState({});
 
@@ -126,7 +108,6 @@ export default function User() {
 
   const handleOpenModalEdit = () => {
     setOpenModalEdit(true);
-    console.log("hello");
   };
 
   const handleCloseModalEdit = () => {
@@ -134,15 +115,33 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
-    setSwitch({ ...switch1, [event.target.name]: event.target.checked });
-    const userId = event.target.id;
-    console.log("click", userId, index, event.target.checked);
+    const status = event.target.checked
+    let status1 = 1
+    if(status === false){
+      status1 = 0
+    }
+
+    const sendData = {
+      user_id: state.user_list[index].id,
+      status: status1,
+    };
+    let items = [...state.user_list];
+    items[index].status = status;
+    setState(items);
+
+    apiURL.post("/update-user-status", sendData).then((res) => {
+      if (res.data.status === true) {
+        fetchData();
+      }
+    });
+
+    console.log("click", sendData, typeof status1);
   };
 
-  const handleDelete = async (item) => {
-    const userId = item.user_id.toString();
+  const handleDelete = (item) => {
+    const userId = item.user_id;
 
-    await Swal.fire({
+    Swal.fire({
       title: "ต้องการลบข้อมูลนี้?",
       text: "ไม่สามารถเรียกข้อมูลคืนได้หากยืนยันแล้ว",
       icon: "warning",
@@ -159,7 +158,7 @@ export default function User() {
             .then((res) =>
               setProgressStatus({ progressStatus: res.data.status })
             );
-          if (progressStatus == true) {
+          if (progressStatus === true) {
             Swal.fire({
               title: "Success!",
               text: "ข้อมูลของท่านถูกบันทึกแล้ว",
@@ -261,23 +260,30 @@ export default function User() {
                         </Tooltip>
                       </TableCell>
                       <TableCell align="center">
-                        {item.status === "true" ? (
+                        {item.status === 1 ? (
                           <Switch
-                            checked={item.status}
+                            checked={true}
                             onChange={(e) => handleChangeSwitch(e, index)}
-                            name="activeChecked"
-                            id={item.user_id}
+                            name={`switch${index}`}
                             color="primary"
                           />
                         ) : (
                           <Switch
-                            checked={item.status}
+                            checked={false}
                             onChange={(e) => handleChangeSwitch(e, index)}
-                            name="inActiveChecked"
-                            id={item.user_id}
+                            name={`switch${index}`}
                             color="secondary"
                           />
                         )}
+                        <Typography
+                          className={
+                            item.status === 1
+                              ? classes.active
+                              : classes.inactive
+                          }
+                        >
+                          {item.status === 1 ? "active" : "inactive"}
+                        </Typography>
                       </TableCell>
                     </TableRow>
                   ))

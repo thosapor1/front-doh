@@ -331,8 +331,9 @@ export default function ModalPk3Activity(props) {
       // pk3_vehicleClass: pk3_vehicleClass,
       pk3_feeAmount: pk3_feeAmount,
       pk3_comment: pk3_comment,
-      timestamp: dataList.timeStamp,
+      timestamp: dataList.timestamp,
       pk3_vehicleClass_id: pk3_vehicleClass_id,
+      
     };
 
     Swal.fire({
@@ -750,7 +751,7 @@ export default function ModalPk3Activity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.dlt_class}</TableCell>
+                  <TableCell>{dataList.audit_vehicleClass}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>

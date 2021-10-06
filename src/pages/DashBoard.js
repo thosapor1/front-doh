@@ -319,7 +319,7 @@ export default function DashBoard() {
                     let calendarApi = calendarRef.current.getApi();
                     let date = calendarApi.getDate();
                     date = date.setMonth(date.getMonth() - 1);
-                    const sendData = format(date, "yyyy-MM-dd");
+                    const sendData = format(date, "yyyy-MM");
                     // console.log(sendData);
                     fetchData(sendData);
                     setMonthChart(
@@ -336,7 +336,7 @@ export default function DashBoard() {
                     let calendarApi = calendarRef.current.getApi();
                     let date = calendarApi.getDate();
                     date = date.setMonth(date.getMonth() + 1);
-                    const sendData = format(date, "yyyy-MM-dd");
+                    const sendData = format(date, "yyyy-MM");
                     // console.log(sendData);
                     fetchData(sendData);
                     setMonthChart(
