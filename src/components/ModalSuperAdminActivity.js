@@ -255,7 +255,28 @@ export default function ModalSuperAdminActivity(props) {
     }
   };
 
-  const download = () => {
+  const downloadPk3 = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: dataList.transactionId,
+      date: dataList.timestamp.split(" ").shift(),
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "downloadFromPk3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
+  const downloadSuperAudit = () => {
     const header = {
       "Content-Type": "application/pdf",
       responseType: "blob",
@@ -270,7 +291,7 @@ export default function ModalSuperAdminActivity(props) {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "file_PK3.pdf");
+        link.setAttribute("download", "downloadFromSuperAudit.pdf");
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -416,8 +437,8 @@ export default function ModalSuperAdminActivity(props) {
   };
 
   useEffect(() => {
-    setFileDownloadPk3(true)
-    setFileDownloadAudit(true)
+    setFileDownloadPk3(true);
+    setFileDownloadAudit(true);
     if (dataList) {
       setState(dataList);
       console.log("dataList", dataList);
@@ -627,7 +648,7 @@ export default function ModalSuperAdminActivity(props) {
               variant="contained"
               color="secondary"
               className={classes.btn}
-              onClick={() => download()}
+              onClick={() => downloadPk3()}
               style={{ fontSize: "0.7rem" }}
             >
               download from pk3
@@ -637,7 +658,7 @@ export default function ModalSuperAdminActivity(props) {
               variant="contained"
               color="secondary"
               className={classes.btn}
-              onClick={() => download()}
+              onClick={() => downloadSuperAudit()}
               style={{ fontSize: "0.7rem" }}
             >
               download from audit
@@ -866,7 +887,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic  != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }

@@ -202,7 +202,7 @@ export default function ModalActivity(props) {
       responseType: "blob",
     };
     const sendData = {
-      transactionId: "M202109010000000014",
+      transactionId: dataList.transactionId,
       date: "2021-09-29",
     };
     apiURLv1
@@ -728,7 +728,11 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>จังหวัด</TableCell>
-                  <TableCell>{dataList.mf_lp_province}</TableCell>
+                  <TableCell>
+                    {dataList.mf_lp_province === null
+                      ? "-"
+                      : dataList.mf_lp_province}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
@@ -738,7 +742,9 @@ export default function ModalActivity(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.mf_fee_ref}</TableCell>
+                  <TableCell>
+                    {dataList.mf_fee_ref === null ? "-" : dataList.mf_fee_ref}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>

@@ -271,14 +271,14 @@ export default function ModalPk3Activity(props) {
       responseType: "blob",
     };
     const sendData = {
-      transactionId: "M202109010000000014",
-      date: "2021-09-29",
+      transactionId: dataList.transactionId,
+      date: dataList.timestamp.split(" ").shift(),
     };
     apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      link.setAttribute("download", "downloadFromPk3.pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -333,7 +333,6 @@ export default function ModalPk3Activity(props) {
       pk3_comment: pk3_comment,
       timestamp: dataList.timestamp,
       pk3_vehicleClass_id: pk3_vehicleClass_id,
-      
     };
 
     Swal.fire({

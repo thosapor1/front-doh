@@ -27,6 +27,10 @@ const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
+const apiURLv1 = axios.create({
+  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
 
@@ -224,16 +228,49 @@ export default function ModalReadOnly(props) {
   const [fileDownloadPk3, setFileDownloadPk3] = useState(true);
   const [fileDownloadAudit, setFileDownloadAudit] = useState(true);
 
-  const download = () => {
-    // alert("test");
-    apiURL.post("/", { responseType: "blob" }).then((res) => {
+  const downloadPk3 = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: dataList.transactionId,
+      date: dataList.timestamp.split(" ").shift(),
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "file.pdf");
+      link.setAttribute("download", "downloadFromPk3.pdf");
       document.body.appendChild(link);
       link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
     });
+  };
+  const downloadSuperAudit = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: dataList.transactionId,
+      date: dataList.timestamp.split(" ").shift(),
+    };
+    apiURLv1
+      .post("/download-file-super-audit", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "downloadFromSuperAudit.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
   };
 
   const mockPic = 0;
@@ -453,7 +490,7 @@ export default function ModalReadOnly(props) {
               variant="contained"
               color="secondary"
               className={classes.btn}
-              onClick={() => download()}
+              onClick={() => downloadPk3()}
               style={{ fontSize: "0.7rem" }}
             >
               download from pk3
@@ -463,7 +500,7 @@ export default function ModalReadOnly(props) {
               variant="contained"
               color="secondary"
               className={classes.btn}
-              onClick={() => download()}
+              onClick={() => downloadSuperAudit()}
               style={{ fontSize: "0.7rem" }}
             >
               download from audit

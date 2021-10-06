@@ -100,16 +100,11 @@ export default function Login() {
         Cookies.set("username", res.data.result[0].username);
       };
 
-      if (
-        res.data.result[0].status === 1 &&
-        res.data.status === true &&
-        res.data.result[0].department_id === 1
-      ) {
+      if (res.data.status === true && res.data.result[0].department_id === 1) {
         console.log("pass", res.data.status);
         setCookies();
         history.push("/rawTransaction");
       } else if (
-        res.data.result[0].status === 1 &&
         res.data.status === true &&
         res.data.result[0].department_id === 2
       ) {
@@ -122,14 +117,13 @@ export default function Login() {
           icon: "error",
           text: "ตรวจสอบ username และ password ของท่าน",
         });
-      }else if (res.data.result[0].status === 0) {
+      } else if (res.data.result[0].status === 0) {
         console.log("res:", res.data);
         Swal.fire({
           icon: "error",
           text: "โปรดติดต่อ ADMIN",
         });
-      }
-       else {
+      } else {
         console.log("res:", res.data);
         Swal.fire({
           icon: "error",
