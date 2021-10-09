@@ -11,6 +11,7 @@ import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
+import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
 
 const theme = createTheme({
   typography: {
@@ -57,6 +58,9 @@ function App() {
             </Route>
             <Route path="/report">
               <Report />
+            </Route>
+            <Route path="/transactionMonitorV1">
+              <TransactionMonitorV1 />
             </Route>
           </Layout>
         </Switch>
