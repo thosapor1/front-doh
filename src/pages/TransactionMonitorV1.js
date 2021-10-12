@@ -1,4 +1,10 @@
-import { Container, Grid, Paper, Typography } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { format } from "date-fns";
 import React from "react";
 import { useEffect } from "react";
@@ -9,11 +15,29 @@ import TableSectionMonitorPage from "../components/TableSectionMonitorPage";
 import axios from "axios";
 import TableAWMonitorPage from "../components/TableAWMonitorPage";
 import ImageAWMonitorPage from "../components/ImageAWMonitorPage";
+import FilterAWMonitorPage from "../components/FilterAWMonitorPage";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+
+const useStyles = makeStyles((theme) => {
+  return {};
+});
+
+const inActiveAudit = {
+  // backgroundColor: "red",
+  cursor: "pointer",
+};
+const activeAudit = {
+  "&$active": {
+    backgroundColor: "red",
+    cursor: "pointer",
+  },
+};
+
 export default function TransactionMonitorV1() {
+  const classes = useStyles;
   const [dataAudit, setDataAudit] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     checkpointList: [],
@@ -21,6 +45,7 @@ export default function TransactionMonitorV1() {
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
+      { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
       { id: "2", label: "timestamp" },
     ],
@@ -31,24 +56,38 @@ export default function TransactionMonitorV1() {
 
   const [dataAW, setDataAW] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
-    checkpointList: [],
-    checkpointValue: 0,
+    checkpointList: [
+      { id: 1, checkpoint_name: "ด่านทับช้าง 1" },
+      { id: 2, checkpoint_name: "ด่านทับช้าง 2" },
+      { id: 3, checkpoint_name: "ด่านธัญบุรี 1" },
+      { id: 4, checkpoint_name: "ด่านธัญบุรี 1" },
+    ],
+    checkpointValue: "ด่านทับช้าง 1",
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
+      { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
       { id: "2", label: "refTransactionId" },
       { id: "3", label: "timestamp" },
     ],
     tableBodyData: [],
     gateValue: 0,
-    gateList: [],
+    gateList: [
+      { id: 0, gate_name: "ทุกด่าน" },
+      { id: 1, gate_name: "1" },
+      { id: 2, gate_name: "2" },
+      { id: 3, gate_name: "3" },
+      { id: 4, gate_name: "4" },
+      { id: 5, gate_name: "5" },
+      { id: 6, gate_name: "6" },
+    ],
   });
 
   const [dataFetc, setDataFETC] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     checkpointList: [],
-    checkpointValue: 1,
+    checkpointValue: "ทุกด่าน",
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
@@ -122,8 +161,8 @@ export default function TransactionMonitorV1() {
     apiURL.post("/aw-transaction-monitor", sendData).then((res) => {
       setDataAW({
         ...dataAW,
-        checkpointList: res.data.dropdown_Checkpoint,
-        gateList: res.data.dropdown_Gate,
+        checkpointList: dataAW.checkpointList,
+        gateList: dataAW.gateList,
         tableBodyData: res.data.results,
       });
       setPagination2({
@@ -199,28 +238,6 @@ export default function TransactionMonitorV1() {
     console.log(`${pagination3.page}`);
   };
 
-  const fetchData = async () => {
-    const sendData = {
-      date: new Date().setDate(new Date().getDate() - 1),
-      checkpoint_id: "0",
-      gate_id: "0",
-      page: 1,
-    };
-
-    await filter(
-      sendData.page,
-      sendData.date,
-      sendData.checkpoint_id,
-      sendData.gate_id
-    );
-    await filter2(
-      sendData.page,
-      sendData.date,
-      sendData.checkpoint_id,
-      sendData.gate_id
-    );
-  };
-
   const getImage1 = (item) => {
     console.log(item.audit_transactionId);
     console.log(item.timestamp);
@@ -260,9 +277,7 @@ export default function TransactionMonitorV1() {
     });
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => {}, []);
   return (
     <Container maxWidth>
       <Typography>transaction monitor</Typography>
@@ -312,6 +327,7 @@ export default function TransactionMonitorV1() {
             countPage={pagination1.countPage}
             page={pagination1.page}
             pageOnChange={pageOnChange1}
+            // style={?inActiveAudit:activeAudit}
             color={"red"}
           />
         </Grid>
@@ -320,7 +336,7 @@ export default function TransactionMonitorV1() {
           <Typography variant="h6" align="center">
             transaction (AW)
           </Typography>
-          <FilterSectionMonitorPage
+          <FilterAWMonitorPage
             dateValue={dataAW.date}
             dateOnChange={(date) => {
               setDataAW({

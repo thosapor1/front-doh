@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { withStyles } from "@material-ui/styles";
-import React from "react";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -26,6 +26,15 @@ const useStyles = makeStyles((theme) => {
         outline: "1px  lightgray",
       },
     },
+    selected: {
+      "&.Mui-selected, &.Mui-selected:hover": {
+        backgroundColor: "purple",
+        "& > .MuiTableCell-root": {
+          color: "yellow",
+          backgroundColor: "purple",
+        },
+      },
+    },
   };
 });
 
@@ -34,19 +43,15 @@ const StyledTableRow = withStyles((theme) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
+    cursor: "pointer",
   },
 }))(TableRow);
+
 export default function TableSectionMonitorPage(props) {
   const classes = useStyles();
-  const {
-    header,
-    body,
-    tableOnClick,
-    countPage,
-    page,
-    pageOnChange,
-    color,
-  } = props;
+  const [rowID, setRowID] = useState("");
+  const { header, body, tableOnClick, countPage, page, pageOnChange, color } =
+    props;
   const getItemData = (item) => {
     tableOnClick(item);
   };
@@ -77,10 +82,15 @@ export default function TableSectionMonitorPage(props) {
             {!!body
               ? body.map((item, index) => (
                   <StyledTableRow
-                    onClick={() => getItemData(item)}
-                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      getItemData(item);
+                      setRowID(index);
+                    }}
                     key={index}
+                    selected={rowID === index}
+                    className={classes.selected}
                   >
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.audit_transactionId}</TableCell>
                     <TableCell>{item.timestamp}</TableCell>
                   </StyledTableRow>
