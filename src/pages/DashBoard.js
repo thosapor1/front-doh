@@ -17,6 +17,7 @@ import BarChart from "../components/BarChart";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
@@ -208,8 +209,7 @@ export default function DashBoard() {
   const getChartData = (dataInMonth) => {
     if (!!dataInMonth) {
       dataInMonth.map((data) => {
-        if(!!data.date)
-        dateArray.push(data.date.slice(-2));
+        if (!!data.date) dateArray.push(data.date.slice(-2));
         valueArray.push(data.ts_count_all);
       });
     }
@@ -256,8 +256,14 @@ export default function DashBoard() {
     setEventCalendar(event);
   };
 
-  const fetchData = (month = format(new Date(), 'yyyy-MM')) => {
+  const fetchData = (month = format(new Date(), "yyyy-MM")) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     apiURL.post("/dashboard-month", { dateTime: month }).then((res) => {
+      Swal.close();
       const allData = res.data;
       const dataInMonth = res.data.month;
       console.log(dataInMonth);

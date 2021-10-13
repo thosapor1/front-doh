@@ -21,6 +21,7 @@ import SearchTwoToneIcon from "@material-ui/icons/SearchTwoTone";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import axios from "axios";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
@@ -182,6 +183,11 @@ export default function RawTransaction() {
   async function fetchData(pageId = 1) {
     const date = format(selectedDate, "yyyy-MM-dd");
     // const date = "2021-08-10";
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     if (pageId == 1) {
       setPage(1);
@@ -198,6 +204,7 @@ export default function RawTransaction() {
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
     await apiURL.post("/rawdata", sendData).then((res) => {
+      Swal.close();
       setState({
         summary: {
           total: 0,

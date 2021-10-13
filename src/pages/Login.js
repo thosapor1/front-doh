@@ -88,8 +88,15 @@ export default function Login() {
       password: password,
     };
 
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick:false,
+      didOpen: () => Swal.showLoading(),
+    });
+
     apiURL.post("/auth", sendData).then((res) => {
       console.log("res:", res.data);
+      Swal.close();
       const setCookies = () => {
         Cookies.set("checkpoint_id", res.data.result[0].checkpoint_id);
         Cookies.set("department_id", res.data.result[0].department_id);

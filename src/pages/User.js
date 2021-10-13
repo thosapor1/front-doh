@@ -115,6 +115,7 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
+   
     const status = event.target.checked
     let status1 = 1
     if(status === false){
@@ -187,7 +188,13 @@ export default function User() {
   };
 
   const fetchData = () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick:false,
+      didOpen: () => Swal.showLoading(),
+    });
     apiURL.post("/user-list").then((res) => {
+      Swal.close()
       setState(res.data);
       console.log(res.data);
     });

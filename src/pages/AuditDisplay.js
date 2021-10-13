@@ -22,6 +22,7 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
@@ -69,8 +70,8 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 23,
       marginLeft: 30,
-      '&:hover':{
-        backgroundColor:'#6a008f'
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
     btn2: {
@@ -80,8 +81,8 @@ const useStyles = makeStyles((theme) => {
       width: 150,
       marginTop: 23,
       marginLeft: 30,
-      '&:hover':{
-        backgroundColor:'darkgreen'
+      "&:hover": {
+        backgroundColor: "darkgreen",
       },
     },
   };
@@ -147,7 +148,7 @@ export default function AuditDisplay() {
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
-  const [valueMenuItem, setValueMenuItem] = useState([])
+  const [valueMenuItem, setValueMenuItem] = useState([]);
   const [subState, setSubState] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
@@ -203,6 +204,11 @@ export default function AuditDisplay() {
   };
 
   const fetchData = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     if (pageId == 1) {
       setPage(1);
     } else {
@@ -225,6 +231,7 @@ export default function AuditDisplay() {
     console.log(sendData);
 
     apiURL.post("/display", sendData).then((res) => {
+      Swal.close();
       setAllTsTable({
         summary: {
           total: 0,
@@ -250,11 +257,18 @@ export default function AuditDisplay() {
       setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
       setClassTable(res.data.status !== false ? res.data.ts_class : []);
       setAllTsTable(res.data.status !== false ? res.data : []);
-      setValueMenuItem(res.data.status !== false ? res.data.dropdown_Checkpoint : [])
+      setValueMenuItem(
+        res.data.status !== false ? res.data.dropdown_Checkpoint : []
+      );
     });
   };
 
   const refresh = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     if (pageId == 1) {
       setPage(1);
     } else {
@@ -285,6 +299,7 @@ export default function AuditDisplay() {
     console.log(sendData);
 
     apiURL.post("/display", sendData).then((res) => {
+      Swal.close();
       setAllTsTable({
         summary: {
           total: 0,

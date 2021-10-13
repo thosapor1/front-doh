@@ -88,6 +88,11 @@ export default function AllTsTableForSuperAdminActivity(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = (ts,timestamp) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     const sendData = {
       transactionId:ts,
       timestamp:timestamp
@@ -95,6 +100,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
     apiURL
       .post("/pk3display-activity", sendData)
       .then((res) => {
+        Swal.close()
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
       })

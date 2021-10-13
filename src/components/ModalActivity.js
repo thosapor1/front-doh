@@ -344,6 +344,7 @@ export default function ModalActivity(props) {
   };
 
   useEffect(() => {
+    
     if (dataList) {
       setState(dataList);
       setAudit_vehicleClass(dataList.audit_vehicleClass);

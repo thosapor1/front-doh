@@ -20,6 +20,7 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
@@ -144,6 +145,11 @@ export default function AuditDisplay() {
   };
 
   const fetchData = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     console.log(pageId);
     if (pageId == 1) {
       setPage(1);
@@ -165,6 +171,7 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
     apiURL.post("/pk3display", sendData).then((res) => {
+      Swal.close()
       console.log(
         "res: ",
         res.data,
@@ -182,6 +189,11 @@ export default function AuditDisplay() {
   };
 
   const refresh = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     console.log(pageId);
     if (pageId == 1) {
       setPage(1);
@@ -210,6 +222,7 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
     apiURL.post("/pk3display", sendData).then((res) => {
+      Swal.close();
       console.log(res.data);
       setSummary(res.data.status !== false ? res.data.summary : []);
       setAllTsTable(res.data.status !== false ? res.data : "");

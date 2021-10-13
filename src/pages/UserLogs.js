@@ -16,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import UserLogsTAble from "../components/UserLogsTable";
 import DateFnsUtils from "@date-io/date-fns";
 import format from "date-fns/format";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
@@ -77,6 +78,11 @@ export default function UserLogs() {
   };
 
   const fetchData = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     if (pageId == 1) {
       setPage(1);
     } else {
@@ -100,6 +106,7 @@ export default function UserLogs() {
     console.log("sendData", sendData);
 
     apiURL.post("/datalogging", sendData).then((res) => {
+      Swal.close();
       console.log("res: ", res.data);
       setDataForTable(res.data);
       setDropDrawUser(res.data.dropdownUserId);

@@ -96,6 +96,12 @@ export default function AllTsTableForActivity(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = async (ts, State, timeStamp) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
     const sendData = {
       transactionId: ts,
       timestamp: timeStamp,
@@ -111,6 +117,7 @@ export default function AllTsTableForActivity(props) {
     apiURL
       .post(endpoint, sendData)
       .then((res) => {
+        Swal.close();
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
       })

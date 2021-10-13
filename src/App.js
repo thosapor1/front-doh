@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, BrowserRouter } from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
 import RawTransaction from "./pages/RawTransaction";
 import { createTheme, ThemeProvider } from "@material-ui/core";
@@ -26,7 +26,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <BrowserRouter>
         <Switch>
           <Route exact path="/audit_dev">
             <Login />
@@ -64,7 +64,7 @@ function App() {
             </Route>
           </Layout>
         </Switch>
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

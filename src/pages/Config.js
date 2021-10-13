@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import TableCheckpointTab from "../components/TableCheckpointTab";
 import TableFeeTab from "../components/TableFeeTab";
 import TableGateTab from "../components/TableGateTab";
@@ -84,6 +85,11 @@ export default function Config() {
   };
 
   const fetchData = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick:false,
+      didOpen: () => Swal.showLoading(),
+    });
     if (pageId == 1) {
       setPage1(1);
     } else {
@@ -91,6 +97,7 @@ export default function Config() {
     }
 
     apiURL.post("/system-config").then((res) => {
+      Swal.close()
       setAllTsTable(res.data);
       console.log("res: ", res.data);
     });
