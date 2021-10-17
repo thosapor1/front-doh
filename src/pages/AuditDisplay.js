@@ -118,23 +118,23 @@ const valueMenuItem = [
 
 const valueStatus = [
   {
-    id: "0",
-    value: "0",
+    id: 0,
+    value: 0,
     label: "ทุกสถานะ",
   },
   {
-    id: "1",
-    value: "1",
+    id: 1,
+    value: 1,
     label: "ปกติ",
   },
   {
-    id: "2",
-    value: "2",
+    id: 2,
+    value: 2,
     label: "ข้อมูลไม่ตรงกัน",
   },
   {
-    id: "3",
-    value: "3",
+    id: 3,
+    value: 3,
     label: "ข้อมูลสูญหาย",
   },
 ];
@@ -148,6 +148,7 @@ export default function AuditDisplay() {
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
+  const [status, setStatus] = useState(0)
   const [valueMenuItem, setValueMenuItem] = useState([]);
   const [subState, setSubState] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
@@ -193,16 +194,6 @@ export default function AuditDisplay() {
     },
   ];
 
-  const setSubStateWhenChangeState = (e) => {
-    if (e === "2") {
-      setSubState(1);
-    } else if (e === "3") {
-      setSubState(2);
-    } else {
-      setSubState(0);
-    }
-  };
-
   const fetchData = (pageId = 1) => {
     Swal.fire({
       title: "Loading",
@@ -219,13 +210,15 @@ export default function AuditDisplay() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
+   
+
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
       datetime: date,
       startTime: timeStart,
       endTime: timeEnd,
-      transactionStatus: status_select,
+      transactionStatus: status,
       sub_state: subState,
     };
     console.log(sendData);
@@ -328,6 +321,27 @@ export default function AuditDisplay() {
     });
   };
 
+  const changeSubState = (e) => {
+    console.log(e);
+    if (e === 0) {
+      setStatus_select(0);
+      setStatus(0)
+      setSubState(0);
+    } else if (e === 1) {
+      setStatus_select(1);
+      setStatus(1)
+      setSubState(1);
+    } else if (e === 2) {
+      setStatus_select(2);
+      setStatus(2)
+      setSubState(1);
+    } else if (e === 3) {
+      setStatus_select(3);
+      setStatus(2)
+      setSubState(2);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -359,14 +373,13 @@ export default function AuditDisplay() {
           label="สถานะ"
           value={status_select}
           onChange={(e) => {
-            setStatus_select(e.target.value);
-            setSubStateWhenChangeState(e.target.value);
+            changeSubState(e.target.value);
           }}
           style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
         >
           {valueStatus.map((item) => (
-            <MenuItem key={item.value} value={item.value}>
+            <MenuItem key={item.value} value={item.id}>
               {item.label}
             </MenuItem>
           ))}
@@ -435,46 +448,53 @@ export default function AuditDisplay() {
 
       {/* Card Section */}
       <div className={classes.cardSection}>
-        {dataCard.map((card) => (
-          <Paper
-            className={classes.card}
-            style={{
-              borderLeft:
-                card.status === "ts_total"
-                  ? "3px solid gray"
-                  : card.status === "ts_normal"
-                  ? "3px solid gray"
-                  : card.status === "ts_not_normal"
-                  ? "3px solid orange"
-                  : "3px solid green",
-            }}
-          >
-            <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item>
-                <Typography
-                  style={{
-                    color:
-                      card.status === "ts_total"
-                        ? "gray"
-                        : card.status === "ts_normal"
-                        ? "gray"
-                        : card.status === "ts_not_normal"
-                        ? "orange"
-                        : "green",
-                  }}
+        {!!dataCard
+          ? dataCard.map((card) => (
+              <Paper
+                className={classes.card}
+                style={{
+                  borderLeft:
+                    card.status === "ts_total"
+                      ? "3px solid gray"
+                      : card.status === "ts_normal"
+                      ? "3px solid gray"
+                      : card.status === "ts_not_normal"
+                      ? "3px solid orange"
+                      : "3px solid green",
+                }}
+              >
+                <Grid
+                  container
+                  justifyContent="space-around"
+                  alignItems="center"
                 >
-                  {card.label}
-                </Typography>
-                <Typography>
-                  {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
-                </Typography>
-              </Grid>
-              <Grid>
-                <DescriptionTwoToneIcon />
-              </Grid>
-            </Grid>
-          </Paper>
-        ))}
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color:
+                          card.status === "ts_total"
+                            ? "gray"
+                            : card.status === "ts_normal"
+                            ? "gray"
+                            : card.status === "ts_not_normal"
+                            ? "orange"
+                            : "green",
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography>
+                      {card.value}{" "}
+                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <DescriptionTwoToneIcon />
+                  </Grid>
+                </Grid>
+              </Paper>
+            ))
+          : []}
       </div>
 
       {/* Table Section */}

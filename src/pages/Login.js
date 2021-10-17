@@ -1,8 +1,10 @@
 import {
   Button,
   CardMedia,
+  createTheme,
   Grid,
   makeStyles,
+  MuiThemeProvider,
   Paper,
   TextField,
   Typography,
@@ -14,7 +16,16 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { useClearCache } from "react-clear-cache";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Prompt",
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
+});
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -44,15 +55,18 @@ const useStyle = makeStyles((theme) => {
     },
     typography: {
       fontSize: "1.5rem",
+      fontFamily: "Prompt",
     },
     btn: {
       marginTop: "2rem",
       width: 100,
       height: 40,
+      fontFamily: "Prompt",
     },
     textField: {
       margin: "10px auto",
       width: "60%",
+      fontFamily: "Prompt",
     },
   };
 });
@@ -90,11 +104,12 @@ export default function Login() {
 
     Swal.fire({
       title: "Loading",
-      allowOutsideClick:false,
+      allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
     apiURL.post("/auth", sendData).then((res) => {
+      localStorage.setItem("isAuth", true);
       console.log("res:", res.data);
       Swal.close();
       const setCookies = () => {
@@ -141,119 +156,109 @@ export default function Login() {
 
     // console.log(state.username, state.password);
   };
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container>
-          <Grid item className={classes.leftSide} md={6} sm={12}>
-            <CardMedia
-              component="img"
-              image={P_login}
-              style={{ height: "100%", width: "100%" }}
-            />
-          </Grid>
-          <Grid item className={classes.rightSide} sm={12} md={6} xs={12}>
-            <CardMedia
-              component="image"
-              image={Logo_doh}
-              style={{
-                maxWidth: 150,
-                height: 150,
-                width: "100%",
-                marginTop: "2rem",
-                marginBottom: "2rem",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            />
-            <Typography
-              variant="body1"
-              align="center"
-              className={classes.typography}
-            >
-              ระบบตรวจสอบรายได้
-            </Typography>
-            <Typography
-              variant="body1"
-              align="center"
-              className={classes.typography}
-            >
-              กรมทางหลวง
-            </Typography>
-
-            <form noValidate autoComplete="off">
-              <Grid
-                container
-                style={{ textAlign: "center", marginTop: "2rem" }}
-              >
-                <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                  <TextField
-                    className={classes.textField}
-                    id="username"
-                    label="ผู้ใช้งาน"
-                    value={state.username}
-                    variant="outlined"
-                    name="username"
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                  <TextField
-                    className={classes.textField}
-                    id="password"
-                    label="รหัสผ่าน"
-                    type="password"
-                    value={state.password}
-                    variant="outlined"
-                    name="password"
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-              <div
+      <MuiThemeProvider theme={theme}>
+        <Paper className={classes.paper}>
+          <Grid container>
+            <Grid item className={classes.leftSide} md={6} sm={12}>
+              <CardMedia
+                component="img"
+                image={P_login}
+                style={{ height: "100%", width: "100%" }}
+              />
+            </Grid>
+            <Grid item className={classes.rightSide} sm={12} md={6} xs={12}>
+              <CardMedia
+                component="image"
+                image={Logo_doh}
                 style={{
-                  padding: "0px 8%",
-                  display: "flex",
-                  justifyContent: "space-around",
+                  maxWidth: 150,
+                  height: 150,
+                  width: "100%",
+                  marginTop: "2rem",
+                  marginBottom: "2rem",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                 }}
+              />
+              <Typography
+                variant="body1"
+                align="center"
+                className={classes.typography}
               >
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  onClick={handleSubmit}
+                ระบบตรวจสอบรายได้
+              </Typography>
+              <Typography
+                variant="body1"
+                align="center"
+                className={classes.typography}
+              >
+                กรมทางหลวง
+              </Typography>
+
+              <form noValidate autoComplete="off">
+                <Grid
+                  container
+                  style={{ textAlign: "center", marginTop: "2rem" }}
                 >
-                  เข้าสู่ระบบ
-                </Button>
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => setState({ username: "", password: "" })}
-                >
-                  ยกเลิก
-                </Button>
-              </div>
-            </form>
-            <div>
-              {!isLatestVersion && (
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    emptyCacheStorage();
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className={classes.textField}
+                      id="username"
+                      label="ผู้ใช้งาน"
+                      value={state.username}
+                      variant="outlined"
+                      name="username"
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className={classes.textField}
+                      id="password"
+                      label="รหัสผ่าน"
+                      type="password"
+                      value={state.password}
+                      variant="outlined"
+                      name="password"
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <div
+                  style={{
+                    padding: "0px 8%",
+                    display: "flex",
+                    justifyContent: "space-around",
                   }}
                 >
-                  Update version
-                </Button>
-              )}
-            </div>
+                  <Button
+                    className={classes.btn}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    เข้าสู่ระบบ
+                  </Button>
+                  <Button
+                    className={classes.btn}
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => setState({ username: "", password: "" })}
+                  >
+                    ยกเลิก
+                  </Button>
+                </div>
+              </form>
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </MuiThemeProvider>
     </div>
   );
 }

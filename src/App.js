@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Switch, Route, BrowserRouter } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  HashRouter,
+  Redirect,
+  BrowserRouter,
+} from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
 import RawTransaction from "./pages/RawTransaction";
 import { createTheme, ThemeProvider } from "@material-ui/core";
@@ -12,6 +19,8 @@ import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const theme = createTheme({
   typography: {
@@ -24,47 +33,76 @@ const theme = createTheme({
 });
 
 function App() {
+  const isAuth = !!localStorage.getItem("isAuth");
+
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <HashRouter hashType={"noslash"}>
         <Switch>
-          <Route exact path="/audit_dev">
-            <Login />
-          </Route>
+          <Route path="/audit_dev" component={Login} />
+
           <Layout>
-            <Route path="/dashboard">
-              <DashBoard />
-            </Route>
-            <Route path="/rawTransaction">
-              <RawTransaction />
-            </Route>
-            <Route path="/auditDisplay">
-              <AuditDisplay />
-            </Route>
-            <Route path="/pk3Display">
-              <Pk3Display />
-            </Route>
-            <Route path="/superAuditDisplay">
-              <SuperAuditDisplay />
-            </Route>
-            <Route path="/user">
-              <User />
-            </Route>
-            <Route path="/config">
-              <Config />
-            </Route>
-            <Route path="/userLogs">
-              <UserLogs />
-            </Route>
-            <Route path="/report">
-              <Report />
-            </Route>
-            <Route path="/transactionMonitorV1">
-              <TransactionMonitorV1 />
-            </Route>
+            <Route
+              path="/rawTransaction"
+              render={() =>
+                isAuth ? <RawTransaction /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/dashboard"
+              render={() =>
+                isAuth ? <DashBoard /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/auditDisplay"
+              render={() =>
+                isAuth ? <AuditDisplay /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/pk3Display"
+              render={() =>
+                isAuth ? <Pk3Display /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/superAuditDisplay"
+              render={() =>
+                isAuth ? <SuperAuditDisplay /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/user"
+              render={() => (isAuth ? <User /> : <Redirect to="/audit_dev" />)}
+            />
+            <Route
+              path="/config"
+              render={() =>
+                isAuth ? <Config /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/userLogs"
+              render={() =>
+                isAuth ? <UserLogs /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/report"
+              render={() =>
+                isAuth ? <Report /> : <Redirect to="/audit_dev" />
+              }
+            />
+            <Route
+              path="/transactionMonitorV1"
+              render={() =>
+                isAuth ? <TransactionMonitorV1 /> : <Redirect to="/audit_dev" />
+              }
+            />
           </Layout>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 }

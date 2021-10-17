@@ -29,6 +29,15 @@ import {
 } from "../data/menuControl";
 import Cookies, { set } from "js-cookie";
 import axios from "axios";
+import Login from "../pages/Login";
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  HashRouter,
+  Redirect,
+  BrowserRouter,
+} from "react-router-dom";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -87,24 +96,26 @@ const useStyles = makeStyles((theme) => {
     listItemText: {
       fontSize: "0.7rem",
     },
-    hr1:{
-      display:'none',
+    hr1: {
+      display: "none",
       background: "#9e9e9e",
     },
-    hr2:{
+    hr2: {
       background: "#9e9e9e",
     },
   };
 });
 
-const logout = () => {
+const logout = async () => {
   const sendData = {
     user_id: Cookies.get("userId"),
   };
-  apiURL
+  await apiURL
     .post("logout", sendData)
     .then((res) => console.log(res.data))
-    .then(() => removeCookies);
+    .then(() => removeCookies());
+
+  <Redirect to="audit_dev" />;
 };
 
 const removeCookies = () => {
@@ -115,6 +126,8 @@ const removeCookies = () => {
   Cookies.remove("permission_id");
   Cookies.remove("position_id");
   Cookies.remove("username");
+  Cookies.remove("status");
+  localStorage.removeItem("isAuth");
 };
 
 export default function Layout({ children }) {
