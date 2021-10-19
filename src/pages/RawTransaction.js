@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {
   Container,
+  createMuiTheme,
   Grid,
   makeStyles,
   MenuItem,
@@ -75,9 +76,10 @@ const useStyle = makeStyles((theme) => {
       },
     },
     textField: {
-      width: 150,
+      width: 120,
       marginTop: 16,
       marginLeft: 50,
+      fontSize: "0.8rem",
     },
     card: {
       width: "100%",
@@ -96,6 +98,11 @@ const useStyle = makeStyles((theme) => {
       padding: theme.spacing(2),
       width: "auto",
       marginTop: 10,
+    },
+    searchButton: {
+      textAlign: "right",
+      paddingTop: 16,
+      [theme.breakpoints.down("md")]: {},
     },
   };
 });
@@ -231,17 +238,20 @@ export default function RawTransaction() {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6">ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ</Typography>
+      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+        ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ
+      </Typography>
       {/* Search Block */}
-      <Paper className={classes.filterSection}>
-        <Grid item className={classes.containedSelect} md={8}>
+      <Grid container component={Paper} className={classes.filterSection}>
+        <Grid item className={classes.containedSelect} xl={8} lg={8} md={8}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              style={{ width: 170 }}
+              style={{ width: 150, fontSize: "0.8rem" }}
               disableToolbar
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
+              // minDate={selectedDate}
               id="date"
               label="วันที่เข้าด่าน"
               value={selectedDate}
@@ -286,7 +296,7 @@ export default function RawTransaction() {
             className={classes.btn}
             color="primary"
             variant="contained"
-            style={{ marginTop: 23, marginLeft: 20 }}
+            style={{ marginTop: 23, marginLeft: 20, fontSize: "0.8rem" }}
             startIcon={<FilterListIcon />}
             onClick={() => {
               fetchData(1);
@@ -295,24 +305,24 @@ export default function RawTransaction() {
             กรองข้อมูล
           </Button>
         </Grid>
-        <Grid item md={4} style={{ textAlign: "right", paddingTop: 16 }}>
+        <Grid item xl={4} lg={4} md={4} className={classes.searchButton}>
           <TextField
             id="search"
             label="ค้นหา"
             autoComplete="off"
-            style={{ width: 170 }}
+            style={{ width: 120 }}
           ></TextField>
           <Button
             className={classes.btn}
             color="primary"
             variant="contained"
-            style={{ marginTop: 7, marginLeft: 20 }}
+            style={{ marginTop: 7, marginLeft: 20, fontSize: "0.8rem" }}
             startIcon={<SearchTwoToneIcon />}
           >
             ค้นหา
           </Button>
         </Grid>
-      </Paper>
+      </Grid>
 
       {/* Card Section */}
       <div className={classes.cardSection}>
@@ -342,11 +352,12 @@ export default function RawTransaction() {
                         : card.status === "unMatch"
                         ? "orange"
                         : "red",
+                    fontSize: "0.9rem",
                   }}
                 >
                   {card.label}
                 </Typography>
-                <Typography>
+                <Typography style={{ fontSize: "0.9rem" }}>
                   {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
                 </Typography>
               </Grid>

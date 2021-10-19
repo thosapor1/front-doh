@@ -249,7 +249,7 @@ export default function Login() {
                     className={classes.btn}
                     variant="contained"
                     color="secondary"
-                    onClick={() => setState({ username: "", password: "" })}
+                    onClick={() => {setState({ username: "", password: "" });localStorage.removeItem('isAuth')}}
                   >
                     ยกเลิก
                   </Button>

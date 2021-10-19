@@ -37,10 +37,9 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter hashType={"noslash"}>
+      <HashRouter hashType={"noslash"} basename="/">
         <Switch>
           <Route path="/audit_dev" component={Login} />
-
           <Layout>
             <Route
               path="/rawTransaction"

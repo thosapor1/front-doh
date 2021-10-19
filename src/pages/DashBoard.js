@@ -284,10 +284,12 @@ export default function DashBoard() {
   return (
     <Container maxWidth="xl" className={classes.root}>
       <Grid container>
-        <Grid item lg={12} md={12} style={{ marginBottom: 10 }}>
-          <Typography variant="h6">ข้อมูลประจำเดือน{monthChart} </Typography>
+        <Grid item lg={12} md={12} sm={12} style={{ marginBottom: 10 }}>
+          <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+            ข้อมูลประจำเดือน{monthChart}{" "}
+          </Typography>
         </Grid>
-        <Grid item lg={9} md={9}>
+        <Grid item lg={9} md={12} sm={12}>
           <Grid
             component={Paper}
             item
@@ -301,7 +303,9 @@ export default function DashBoard() {
               paddingTop: "1rem",
             }}
           >
-            <Typography variant="h6">ข้อมูลปริมาณรถ</Typography>
+            <Typography variant="h6" style={{ fontSize: "0.8rem" }}>
+              ข้อมูลปริมาณรถ
+            </Typography>
             <BarChart data={dataChart} />
           </Grid>
           <Grid
@@ -313,9 +317,12 @@ export default function DashBoard() {
               marginLeft: "auto",
               padding: "3rem",
               paddingTop: "1rem",
+              marginBottom: 10,
             }}
           >
-            <Typography variant="h6">เลือกวันที่เพื่อดูข้อมูล</Typography>
+            <Typography variant="h6" style={{ fontSize: "0.8rem" }}>
+              เลือกวันที่เพื่อดูข้อมูล
+            </Typography>
             <FullCalendar
               ref={calendarRef}
               customButtons={{
@@ -390,13 +397,14 @@ export default function DashBoard() {
           component={Paper}
           item
           lg={3}
-          md={3}
-          style={{ backgroundColor: "#75338c" }}
+          md={12}
+          sm={12}
+          style={{ backgroundColor: "#75338c", marginBottom: 10 }}
         >
           <Typography
             variant="h6"
             align="center"
-            style={{ marginTop: "1rem", color: "white" }}
+            style={{ marginTop: "1rem", color: "white", fontSize: "0.9rem" }}
           >
             รายการ
           </Typography>
@@ -405,13 +413,15 @@ export default function DashBoard() {
             {!!cardData
               ? cardData.map((card) => (
                   <Paper elevation={2} className={classes.card}>
-                    <Typography>{card.label}</Typography>
+                    <Typography style={{ fontSize: "0.8rem" }}>
+                      {card.label}
+                    </Typography>
                     <Divider
                       variant="middle"
                       style={{ marginTop: 10, marginBottom: 10 }}
                     />
                     <Typography
-                      style={{ color: card.color }}
+                      style={{ color: card.color, fontSize: "0.8rem" }}
                       variant="subtitle2"
                     >
                       {card.value}
@@ -424,7 +434,7 @@ export default function DashBoard() {
           <Paper
             elevation={2}
             className={classes.cardPopup}
-            style={{ visibility: visible }}
+            style={{ visibility: visible, fontSize: "0.9rem" }}
           >
             <div
               style={{
@@ -433,10 +443,10 @@ export default function DashBoard() {
                 marginTop: "1rem",
               }}
             >
-              <Typography variant="subtitle2" style={{ fontSize: "1rem" }}>
+              <Typography variant="subtitle2" style={{ fontSize: "0.9rem" }}>
                 รายได้พึงได้รายวัน
               </Typography>
-              <Typography variant="subtitle2" style={{ fontSize: "1rem" }}>
+              <Typography variant="subtitle2" style={{ fontSize: "0.9rem" }}>
                 {popUP.sumAmountallClass}
               </Typography>
             </div>
@@ -448,10 +458,12 @@ export default function DashBoard() {
             </div>
 
             <div className={classes.inPopup}>
-              <Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
                 C1 ({popUP.C1}) : {popUP.c1SumAmount}
               </Typography>
-              <Typography>{popUP.percentC1}%</Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
+                {popUP.percentC1}%
+              </Typography>
             </div>
             <LinearProgress
               variant="determinate"
@@ -460,10 +472,12 @@ export default function DashBoard() {
             />
 
             <div className={classes.inPopup}>
-              <Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
                 C2 ({popUP.C2}) : {popUP.c2SumAmount}
               </Typography>
-              <Typography>{popUP.percentC2}%</Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
+                {popUP.percentC2}%
+              </Typography>
             </div>
             <div>
               <LinearProgress
@@ -474,10 +488,12 @@ export default function DashBoard() {
             </div>
 
             <div className={classes.inPopup}>
-              <Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
                 C3 ({popUP.C3}) : {popUP.c3SumAmount}
               </Typography>
-              <Typography>{popUP.percentC3}%</Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
+                {popUP.percentC3}%
+              </Typography>
             </div>
             <div>
               <LinearProgress
@@ -488,8 +504,12 @@ export default function DashBoard() {
             </div>
 
             <div className={classes.inPopup}>
-              <Typography>รายได้รายวัน : {popUP.reject}</Typography>
-              <Typography>{popUP.percentReject}%</Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
+                รายได้รายวัน : {popUP.reject}
+              </Typography>
+              <Typography style={{ fontSize: "0.8rem" }}>
+                {popUP.percentReject}%
+              </Typography>
             </div>
             <div>
               <LinearProgress

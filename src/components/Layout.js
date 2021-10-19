@@ -5,8 +5,12 @@ import {
   CardMedia,
   Divider,
   Icon,
+  IconButton,
   makeStyles,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
@@ -54,6 +58,7 @@ const useStyles = makeStyles((theme) => {
     },
     drawer: {
       width: drawerWidth,
+      flexShrink: 0,
     },
     drawerPaper: {
       width: drawerWidth,
@@ -66,6 +71,7 @@ const useStyles = makeStyles((theme) => {
       color: "white",
     },
     btn: {
+      fontSize: "0.8rem",
       marginTop: 20,
       marginLeft: 10,
       marginRight: 10,
@@ -80,18 +86,24 @@ const useStyles = makeStyles((theme) => {
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
-      background: "white",
-      zIndex: -1,
+      background: "#9A0049",
+      zIndex: theme.zIndex.drawer + 1,
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
+      },
     },
     avatar: {
       marginLeft: 30,
       marginRight: 30,
+      fontSize: "0.9rem",
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+      ...theme.mixins.toolbar,
+    },
     avatarName: {
       marginLeft: "auto",
       marginRight: 0,
-      color: "gray",
+      color: "white",
     },
     listItemText: {
       fontSize: "0.7rem",
@@ -102,6 +114,12 @@ const useStyles = makeStyles((theme) => {
     },
     hr2: {
       background: "#9e9e9e",
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up("lg")]: {
+        display: "none",
+      },
     },
   };
 });
@@ -137,6 +155,21 @@ export default function Layout({ children }) {
   const [menuItems, setMenuItems] = useState([]);
   const [configItems, setConfigItems] = useState([]);
   const [userName, setUserName] = useState();
+  const [open, setOpen] = React.useState(false);
+
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const toggleDrawer = (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setOpen(!open);
+  };
 
   useEffect(() => {
     const permissionId = Cookies.get("permission_id");
@@ -164,7 +197,20 @@ export default function Layout({ children }) {
     <div className={classes.root}>
       <AppBar className={classes.appBar} elevation={0}>
         <ToolBar>
-          <Typography variant="body1" className={classes.avatarName}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={toggleDrawer}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="body1"
+            className={classes.avatarName}
+            style={{ fontSize: "0.8rem" }}
+          >
             {userName}
           </Typography>
           <Avatar className={classes.avatar}>{userName}</Avatar>
@@ -172,9 +218,11 @@ export default function Layout({ children }) {
       </AppBar>
       <Drawer
         className={classes.drawer}
-        variant="permanent"
+        variant={isMdUp ? "permanent" : "temporary"}
         anchor="left"
         classes={{ paper: classes.drawerPaper }}
+        open={open}
+        onClose={toggleDrawer}
       >
         <div
           style={{
@@ -188,8 +236,10 @@ export default function Layout({ children }) {
             paddingLeft: 30,
           }}
         >
-          <CardMedia image={s_logo_doh} style={{ height: 55, width: 55 }} />
-          <Typography style={{ color: "white", fontWeight: 600 }}>
+          <CardMedia image={s_logo_doh} style={{ height: 45, width: 45 }} />
+          <Typography
+            style={{ color: "white", fontWeight: 600, fontSize: "0.85rem" }}
+          >
             DOH-AUDIT
           </Typography>
         </div>

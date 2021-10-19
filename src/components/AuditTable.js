@@ -33,6 +33,17 @@ const useStyle = makeStyles((theme) => {
       height: 10,
       fontSize: "0.8rem",
     },
+    bodyData: {
+      fontSize: "0.65rem",
+    },
+    pageStyle: {
+      display: "inline",
+      margin: "4rem",
+      position: "sticky",
+      "& .MuiPaginationItem-root": {
+        fontSize: "0.75rem",
+      },
+    },
   };
 });
 
@@ -57,12 +68,7 @@ export default function AuditTable(props) {
         color="primary"
         page={page}
         onChange={onChange}
-        style={{
-          display: "inline",
-          margin: "6rem",
-          position: "sticky",
-          top: 0,
-        }}
+        className={classes.pageStyle}
       />
       <Paper>
         <TableContainer style={{ width: "auto", height: 760 }}>
@@ -223,40 +229,72 @@ export default function AuditTable(props) {
                         />
                         {/* {row.match_id} */}
                       </TableCell>
-                      <TableCell align="center">{row.transactionId}</TableCell>
-                      <TableCell align="center">{row.lane_id}</TableCell>
-                      <TableCell align="center">{row.timestamp}</TableCell>
-                      <TableCell align="center">{row.timestamp}</TableCell>
-                      <TableCell align="center">{row.vehicleClass}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
+                        {row.transactionId}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        {row.lane_id}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        {!!row.timestamp ? row.timestamp.split(" ").pop() : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        {!!row.timestamp ? row.timestamp.split(" ").pop() : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        {row.vehicleClass}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
                         <ImageIcon />
                       </TableCell>
-                      <TableCell align="center">{row.timestamp}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
+                        {!!row.timestamp ? row.timestamp.split(" ").pop() : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
                         {row.wheel_description}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
                         {row.cameras_plateNo1}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
                         {row.province_description}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
                         {row.brand_description}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.bodyData}>
                         {row.colors_description}
                       </TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
-                      <TableCell align="center">-</TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
+                      <TableCell align="center" className={classes.bodyData}>
+                        -
+                      </TableCell>
                     </StyledTableRow>
                   ))
                 : []}

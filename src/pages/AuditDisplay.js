@@ -148,7 +148,7 @@ export default function AuditDisplay() {
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0)
+  const [status, setStatus] = useState(0);
   const [valueMenuItem, setValueMenuItem] = useState([]);
   const [subState, setSubState] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
@@ -209,8 +209,6 @@ export default function AuditDisplay() {
     const date = format(selectedDate, "yyyy-MM-dd");
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
-
-   
 
     const sendData = {
       page: pageId,
@@ -325,19 +323,19 @@ export default function AuditDisplay() {
     console.log(e);
     if (e === 0) {
       setStatus_select(0);
-      setStatus(0)
+      setStatus(0);
       setSubState(0);
     } else if (e === 1) {
       setStatus_select(1);
-      setStatus(1)
+      setStatus(1);
       setSubState(1);
     } else if (e === 2) {
       setStatus_select(2);
-      setStatus(2)
+      setStatus(2);
       setSubState(1);
     } else if (e === 3) {
       setStatus_select(3);
-      setStatus(2)
+      setStatus(2);
       setSubState(2);
     }
   };
@@ -349,7 +347,9 @@ export default function AuditDisplay() {
   const classes = useStyles();
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6">ตรวจสอบ (DOH) : รายได้พึงได้รายวัน</Typography>
+      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+        ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+      </Typography>
 
       {/* Filter Section */}
       <Paper className={classes.filterSection}>
@@ -471,6 +471,7 @@ export default function AuditDisplay() {
                   <Grid item>
                     <Typography
                       style={{
+                        fontSize: "0.9rem",
                         color:
                           card.status === "ts_total"
                             ? "gray"
@@ -483,7 +484,7 @@ export default function AuditDisplay() {
                     >
                       {card.label}
                     </Typography>
-                    <Typography>
+                    <Typography style={{fontSize: "0.9rem",}}>
                       {card.value}{" "}
                       {card.status === "revenue" ? "บาท" : "รายการ"}
                     </Typography>
@@ -499,10 +500,10 @@ export default function AuditDisplay() {
 
       {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>
-        <Grid item md={5}>
+        <Grid item md={5} sm={12}>
           <GateTable dataList={gateTable} />
         </Grid>
-        <Grid item md={7} style={{ paddingLeft: 20 }}>
+        <Grid item md={7} sm={12} style={{ paddingLeft: 20 }}>
           <ClassTable dataList={classTable} />
         </Grid>
       </Grid>

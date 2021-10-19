@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
     },
     tableRow: {
       "&:hover": {
@@ -37,12 +38,12 @@ const useStyles = makeStyles((theme) => {
       pagination: {
         "$ .MuiPagination-root": {
           position: "fixed",
-          top: 0,
         },
       },
     },
     tableCell: {
       cursor: "pointer",
+      fontSize: "0.75rem",
     },
   };
 });
@@ -210,7 +211,7 @@ export default function AllTsTableForActivity(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.timestamp}
+                      {!!data.timestamp ? data.timestamp.split(" ").pop() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.class}
