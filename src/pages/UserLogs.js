@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       width: 150,
       height: 40,
-      marginTop: 23,
+      marginTop: 19,
       marginLeft: 30,
       "&:hover": {
         backgroundColor: "#6a008f",
@@ -119,7 +119,10 @@ export default function UserLogs() {
   }, []);
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ marginBottom: "1rem" }}>
+      <Typography
+        variant="h6"
+        style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
+      >
         ตั้งค่า : รายงานความเคลื่อนไหวผู้ใช้งาน
       </Typography>
       <Paper className={classes.filterSection}>
@@ -128,7 +131,7 @@ export default function UserLogs() {
           label="username"
           value={username}
           onChange={(e) => setUserName(e.target.value)}
-          style={{ width: 180, marginTop: 16 }}
+          style={{ width: 180, marginTop: 12 }}
           name="gate_select"
         >
           {!!dropDrawUser
@@ -145,7 +148,7 @@ export default function UserLogs() {
           label="สถานะ"
           value={event}
           onChange={(e) => setEvent(e.target.value)}
-          style={{ width: 180, marginTop: 16, marginLeft: 30 }}
+          style={{ width: 180, marginTop: 12, marginLeft: 30 }}
           name="status_select"
         >
           {!!dropDrawEvent

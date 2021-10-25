@@ -122,12 +122,12 @@ export default function Login() {
         Cookies.set("username", res.data.result[0].username);
       };
 
-      if (res.data.status === true && res.data.result[0].department_id === 1) {
+      if (!!res.data.status && res.data.result[0].department_id === 1) {
         console.log("pass", res.data.status);
         setCookies();
         history.push("/rawTransaction");
       } else if (
-        res.data.status === true &&
+        !!res.data.status &&
         res.data.result[0].department_id === 2
       ) {
         setCookies();

@@ -87,7 +87,7 @@ export default function Config() {
   const fetchData = (pageId = 1) => {
     Swal.fire({
       title: "Loading",
-      allowOutsideClick:false,
+      allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
     if (pageId == 1) {
@@ -97,7 +97,7 @@ export default function Config() {
     }
 
     apiURL.post("/system-config").then((res) => {
-      Swal.close()
+      Swal.close();
       setAllTsTable(res.data);
       console.log("res: ", res.data);
     });
@@ -109,7 +109,10 @@ export default function Config() {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ marginBottom: "1rem" }}>
+      <Typography
+        variant="h6"
+        style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
+      >
         ตั้งค่า : ค่าภายในระบบ
       </Typography>
       <div className={classes.tabs}>

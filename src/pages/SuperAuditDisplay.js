@@ -94,6 +94,14 @@ const useStyles = makeStyles((theme) => {
         backgroundColor: "darkgreen",
       },
     },
+    input: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      width: 120,
+      marginTop: 14,
+      marginLeft: 30,
+    },
   };
 });
 
@@ -222,7 +230,7 @@ export default function AuditDisplay() {
     };
     console.log(`sendData: ${JSON.stringify(sendData)}`);
     apiURL.post("/display-superaudit", sendData).then((res) => {
-      Swal.close()
+      Swal.close();
       console.log(
         "res: ",
         res.data,
@@ -243,16 +251,18 @@ export default function AuditDisplay() {
   const classes = useStyles();
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6">super admin display</Typography>
+      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+        super admin display
+      </Typography>
 
       {/* Filter Section */}
       <Paper className={classes.filterSection}>
         <TextField
+          className={classes.input}
           select
           label="ด่าน"
           value={checkpoint}
           onChange={(e) => setCheckpoint(e.target.value)}
-          style={{ width: 120, marginTop: 16 }}
           name="gate_select"
         >
           {valueMenuItem.map((item) => (
@@ -263,11 +273,11 @@ export default function AuditDisplay() {
         </TextField>
 
         <TextField
+          className={classes.input}
           select
           label="สถานะ"
           value={status_select}
           onChange={(e) => setStatus_select(e.target.value)}
-          style={{ width: 120, marginTop: 16, marginLeft: 30 }}
           name="status_select"
           disabled
         >
@@ -280,7 +290,8 @@ export default function AuditDisplay() {
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            style={{ width: 170, marginLeft: 30 }}
+            className={classes.input}
+            style={{ width: 170, marginLeft: 30, marginTop: 18, }}
             disableToolbar
             variant="inlined"
             format="dd/MM/yyyy"
@@ -297,6 +308,7 @@ export default function AuditDisplay() {
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardTimePicker
+            className={classes.input}
             ampm={false}
             variant="inline"
             label="เวลาเริ่มต้น"
@@ -305,12 +317,17 @@ export default function AuditDisplay() {
             format="HH:mm:ss"
             value={selectedTimeStart}
             onChange={setSelectedTimeStart}
-            style={{ width: 170, marginLeft: 30, marginTop: 16 }}
+            style={{
+              width: 170,
+              marginLeft: 30,
+              marginTop: 18,
+            }}
           />
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardTimePicker
+            className={classes.input}
             ampm={false}
             variant="inline"
             label="เวลาสิ้นสุด"
@@ -319,7 +336,11 @@ export default function AuditDisplay() {
             format="HH:mm:ss"
             value={selectedTimeEnd}
             onChange={setSelectedTimeEnd}
-            style={{ width: 170, marginLeft: 30, marginTop: 16 }}
+            style={{
+              width: 170,
+              marginLeft: 30,
+              marginTop: 18,
+            }}
           />
         </MuiPickersUtilsProvider>
 
@@ -360,6 +381,7 @@ export default function AuditDisplay() {
               <Grid item>
                 <Typography
                   style={{
+                    fontSize: "0.8rem",
                     color:
                       card.status === "ts_total"
                         ? "gray"
@@ -372,7 +394,7 @@ export default function AuditDisplay() {
                 >
                   {card.label}
                 </Typography>
-                <Typography>
+                <Typography style={{ fontSize: "0.8rem" }}>
                   {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
                 </Typography>
               </Grid>

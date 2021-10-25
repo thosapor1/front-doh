@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
     },
     tableRow: {
       "&:hover": {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => {
     },
     tableCell: {
       cursor: "pointer",
+      fontSize: "0.8rem",
     },
   };
 });
@@ -87,20 +89,20 @@ export default function AllTsTableForSuperAdminActivity(props) {
   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = (ts,timestamp) => {
+  const fetchData = (ts, timestamp) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
     const sendData = {
-      transactionId:ts,
-      timestamp:timestamp
-    }
+      transactionId: ts,
+      timestamp: timestamp,
+    };
     apiURL
       .post("/pk3display-activity", sendData)
       .then((res) => {
-        Swal.close()
+        Swal.close();
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
       })
@@ -159,7 +161,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId,data.timestamp);
+                      fetchData(data.transactionId, data.timestamp);
                       handleOpen();
                     }}
                     className={classes.tableRow}
@@ -184,7 +186,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.timestamp}
+                      {(data.timestamp).split(" ").pop()}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.class}

@@ -295,7 +295,7 @@ export default function Layout({ children }) {
           startIcon={<ExitToAppRoundedIcon />}
           className={classes.btn}
           onClick={() => {
-            history.push("/audit_dev");
+            history.push("/");
             logout();
           }}
         >

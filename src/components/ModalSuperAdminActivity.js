@@ -109,6 +109,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
+      top: 50,
       width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,

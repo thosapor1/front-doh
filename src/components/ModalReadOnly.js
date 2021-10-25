@@ -106,6 +106,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
+      top: 50,
       width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
@@ -394,7 +395,7 @@ export default function ModalReadOnly(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
@@ -536,7 +537,7 @@ export default function ModalReadOnly(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
@@ -671,7 +672,7 @@ export default function ModalReadOnly(props) {
         </Grid>
 
         {/* Pk3 Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
@@ -822,7 +823,7 @@ export default function ModalReadOnly(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>

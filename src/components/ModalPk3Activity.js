@@ -477,7 +477,7 @@ export default function ModalPk3Activity(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit  block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={6} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
@@ -647,7 +647,7 @@ export default function ModalPk3Activity(props) {
         </Grid>
 
         {/* CCTV Audit (Vehicle) Block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={6} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
@@ -792,7 +792,7 @@ export default function ModalPk3Activity(props) {
         </Grid>
 
         {/* ALPR Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={6}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
@@ -913,7 +913,7 @@ export default function ModalPk3Activity(props) {
         </Grid>
 
         {/* DVES Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={6}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DVES</Typography>

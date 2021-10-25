@@ -77,9 +77,10 @@ const useStyle = makeStyles((theme) => {
     },
     textField: {
       width: 120,
-      marginTop: 16,
-      marginLeft: 50,
-      fontSize: "0.8rem",
+      margin: theme.spacing(1),
+      "& .MuiInputBase-input ": {
+        fontSize: "0.8rem",
+      },
     },
     card: {
       width: "100%",
@@ -101,7 +102,6 @@ const useStyle = makeStyles((theme) => {
     },
     searchButton: {
       textAlign: "right",
-      paddingTop: 16,
       [theme.breakpoints.down("md")]: {},
     },
   };
@@ -246,7 +246,8 @@ export default function RawTransaction() {
         <Grid item className={classes.containedSelect} xl={8} lg={8} md={8}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              style={{ width: 150, fontSize: "0.8rem" }}
+              className={classes.textField}
+              style={{ fontSize: "0.8rem", marginTop: 12 }}
               disableToolbar
               variant="inline"
               format="dd/MM/yyyy"
@@ -296,7 +297,7 @@ export default function RawTransaction() {
             className={classes.btn}
             color="primary"
             variant="contained"
-            style={{ marginTop: 23, marginLeft: 20, fontSize: "0.8rem" }}
+            style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
             startIcon={<FilterListIcon />}
             onClick={() => {
               fetchData(1);
@@ -310,13 +311,13 @@ export default function RawTransaction() {
             id="search"
             label="ค้นหา"
             autoComplete="off"
-            style={{ width: 120 }}
+            style={{ width: 120, marginTop: 8 }}
           ></TextField>
           <Button
             className={classes.btn}
             color="primary"
             variant="contained"
-            style={{ marginTop: 7, marginLeft: 20, fontSize: "0.8rem" }}
+            style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
             startIcon={<SearchTwoToneIcon />}
           >
             ค้นหา

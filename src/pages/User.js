@@ -115,11 +115,10 @@ export default function User() {
   };
 
   const handleChangeSwitch = (event, index) => {
-   
-    const status = event.target.checked
-    let status1 = 1
-    if(status === false){
-      status1 = 0
+    const status = event.target.checked;
+    let status1 = 1;
+    if (status === false) {
+      status1 = 0;
     }
 
     const sendData = {
@@ -190,11 +189,11 @@ export default function User() {
   const fetchData = () => {
     Swal.fire({
       title: "Loading",
-      allowOutsideClick:false,
+      allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
     apiURL.post("/user-list").then((res) => {
-      Swal.close()
+      Swal.close();
       setState(res.data);
       console.log(res.data);
     });
@@ -208,7 +207,9 @@ export default function User() {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6">ตั้งค่า : ผู้ใช้งาน</Typography>
+      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+        ตั้งค่า : ผู้ใช้งาน
+      </Typography>
       <Paper className={classes.paper}>
         <div style={{ textAlign: "right" }}>
           <Button

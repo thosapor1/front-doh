@@ -146,7 +146,10 @@ export default function Report() {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ marginBottom: "1rem" }}>
+      <Typography
+        variant="h6"
+        style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
+      >
         ตรวจสอบ (DOH) : รายงาน
       </Typography>
       <div className={classes.tabs}>

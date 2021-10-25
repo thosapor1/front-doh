@@ -37,67 +37,23 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter hashType={"noslash"} basename="/">
+      <HashRouter>
         <Switch>
+          <Route exact path="/" component={Login} />
           <Route path="/audit_dev" component={Login} />
           <Layout>
-            <Route
-              path="/rawTransaction"
-              render={() =>
-                isAuth ? <RawTransaction /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/dashboard"
-              render={() =>
-                isAuth ? <DashBoard /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/auditDisplay"
-              render={() =>
-                isAuth ? <AuditDisplay /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/pk3Display"
-              render={() =>
-                isAuth ? <Pk3Display /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/superAuditDisplay"
-              render={() =>
-                isAuth ? <SuperAuditDisplay /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/user"
-              render={() => (isAuth ? <User /> : <Redirect to="/audit_dev" />)}
-            />
-            <Route
-              path="/config"
-              render={() =>
-                isAuth ? <Config /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/userLogs"
-              render={() =>
-                isAuth ? <UserLogs /> : <Redirect to="/audit_dev" />
-              }
-            />
-            <Route
-              path="/report"
-              render={() =>
-                isAuth ? <Report /> : <Redirect to="/audit_dev" />
-              }
-            />
+            <Route path="/rawTransaction" component={RawTransaction} />
+            <Route path="/dashboard" component={DashBoard} />
+            <Route path="/auditDisplay" component={AuditDisplay} />
+            <Route path="/pk3Display" component={Pk3Display} />
+            <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
+            <Route path="/user" component={User} />
+            <Route path="/config" component={Config} />
+            <Route path="/userLogs" component={UserLogs} />
+            <Route path="/report" component={Report} />
             <Route
               path="/transactionMonitorV1"
-              render={() =>
-                isAuth ? <TransactionMonitorV1 /> : <Redirect to="/audit_dev" />
-              }
+              component={TransactionMonitorV1}
             />
           </Layout>
         </Switch>

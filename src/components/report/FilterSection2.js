@@ -24,11 +24,16 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#46005E",
       color: "white",
       height: 40,
-      width: 150,
+      width: 100,
       marginTop: 22,
       marginLeft: 30,
       "&:hover": {
         backgroundColor: "#6a008f",
+      },
+    },
+    input: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
       },
     },
   };
@@ -77,7 +82,13 @@ export default function FilterSection2(props) {
       <Paper style={{ height: "80px" }}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            style={{ width: 170, marginLeft: 30 }}
+            className={classes.input}
+            style={{
+              width: 170,
+              marginLeft: 30,
+              fontSize: "0.8 rem",
+              marginTop: 20,
+            }}
             disableToolbar
             views={["year", "month"]}
             variant="inlined"
@@ -94,6 +105,7 @@ export default function FilterSection2(props) {
         </MuiPickersUtilsProvider>
 
         <TextField
+          className={classes.input}
           select
           label="ด่าน"
           value={checkpoint}
