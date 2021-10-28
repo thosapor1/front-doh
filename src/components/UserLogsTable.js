@@ -10,7 +10,6 @@ import {
 import { withStyles } from "@material-ui/styles";
 import React from "react";
 import { Pagination } from "@material-ui/lab";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => {
   return {

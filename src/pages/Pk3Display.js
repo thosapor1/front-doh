@@ -16,7 +16,6 @@ import {
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { KeyboardTimePicker } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
@@ -115,7 +114,6 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
-  const history = useHistory();
   const [allTsTable, setAllTsTable] = useState("");
   const [summary, setSummary] = useState("");
   const [status_select, setStatus_select] = useState(null);
@@ -151,7 +149,7 @@ export default function AuditDisplay() {
       didOpen: () => Swal.showLoading(),
     });
     console.log(pageId);
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);
@@ -195,7 +193,7 @@ export default function AuditDisplay() {
       didOpen: () => Swal.showLoading(),
     });
     console.log(pageId);
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);

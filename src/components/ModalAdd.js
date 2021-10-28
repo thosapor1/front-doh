@@ -90,7 +90,7 @@ export default function ModalAdd(props) {
       highway_id: null,
       checkpoint_id: "0",
     });
-    setshowResult(false);
+    setShowResult(false);
   };
 
   const handleSubmit = () => {
@@ -112,7 +112,7 @@ export default function ModalAdd(props) {
       .then((res) => {
         setStatus(res.data.status);
 
-        if (res.data.status == true) {
+        if (res.data.status === true) {
           props.onClose();
           Swal.fire({
             title: "Success!",
@@ -139,7 +139,7 @@ export default function ModalAdd(props) {
       });
   };
 
-  const [showResult, setshowResult] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   const body = (
     <div className={classes.modal}>
@@ -252,20 +252,20 @@ export default function ModalAdd(props) {
             name="highway_id"
             value={highway_id}
           >
-            <MenuItem key="1" value="1" onClick={() => setshowResult(true)}>
+            <MenuItem key="1" value="1" onClick={() => setShowResult(true)}>
               ทางหลวงหมายเลข 9
             </MenuItem>
             <MenuItem
               key="2"
               value="2"
               onClick={() => {
-                setshowResult(false);
+                setShowResult(false);
               }}
             >
               SDFS
             </MenuItem>
           </TextField>
-          {showResult == 1 ? (
+          {showResult === 1 ? (
             <TextField
               select
               variant="outlined"

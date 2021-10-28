@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   makeStyles,
   MenuItem,
   Paper,
@@ -69,7 +68,6 @@ const valueMenuItem = [
 export default function FilterSection(props) {
   const { onFetchData, report } = props;
   const classes = useStyles();
-  const [state, setState] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );

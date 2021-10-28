@@ -48,7 +48,6 @@ export default function ModalEditTabHighway(props) {
     highway_name: "",
   });
 
-  const [status, setStatus] = useState();
 
   const { id, highway_name } = inputModal;
 
@@ -99,8 +98,6 @@ export default function ModalEditTabHighway(props) {
       }
     });
   };
-
-  const [showResult, setshowResult] = useState(false);
 
   useEffect(() => {
     if (props.dataForEdit) setInputModal(props.dataForEdit);

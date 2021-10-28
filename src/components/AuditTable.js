@@ -205,8 +205,8 @@ export default function AuditTable(props) {
             </TableHead>
             <TableBody>
               {!!datalist.record
-                ? datalist.record.map((row) => (
-                    <StyledTableRow key={row.transactionId}>
+                ? datalist.record.map((row,index) => (
+                    <StyledTableRow key={index}>
                       <TableCell align="center">
                         <FiberManualRecordIcon
                           fontSize="small"

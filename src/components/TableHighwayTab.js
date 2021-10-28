@@ -12,13 +12,11 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import React, { useState } from "react";
-import { Pagination } from "@material-ui/lab";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
 import Swal from "sweetalert2";
 import axios from "axios";
-import ModalEdit from "./ModalEdit";
 import ModalEditTabHighway from "./ModalEditTabHighway";
 import ModalAddTabHighway from "./ModalAddTabHighway";
 
@@ -54,8 +52,8 @@ const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
-      '&:hover':{
-        backgroundColor:'#6a008f'
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
   };
@@ -152,9 +150,8 @@ export default function TableHighwayTAb(props) {
     });
   };
 
-  
   const classes = useStyles();
-  const { dataList, page, onChange } = props;
+  const { dataList } = props;
   return (
     <Container maxWidth="xl">
       <div style={{ display: "flex", justifyContent: "right" }}>
@@ -200,7 +197,7 @@ export default function TableHighwayTAb(props) {
             {!!dataList
               ? dataList.highway_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{index+1} </TableCell>
+                    <TableCell align="center">{index + 1} </TableCell>
                     <TableCell align="center">{data.highway_name}</TableCell>
                     <TableCell align="center">
                       <IconButton

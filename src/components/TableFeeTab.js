@@ -12,13 +12,11 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import React, { useState } from "react";
-import { Pagination } from "@material-ui/lab";
 import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
 import Swal from "sweetalert2";
 import axios from "axios";
-import ModalEdit from "./ModalEdit";
 import ModalAddTabFee from "./ModalAddTabFee";
 import ModalEditTabFee from "./ModalEditTabFee";
 
@@ -54,8 +52,8 @@ const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
-      '&:hover':{
-        backgroundColor:'#6a008f'
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
   };
@@ -161,7 +159,7 @@ export default function TableFeeTab(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange } = props;
+  const { dataList } = props;
 
   return (
     <Container maxWidth="xl">
@@ -208,7 +206,7 @@ export default function TableFeeTab(props) {
             {!!dataList
               ? dataList.vehicle_list.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center">{index+1} </TableCell>
+                    <TableCell align="center">{index + 1} </TableCell>
                     <TableCell align="center">{data.vehicleClass}</TableCell>
                     <TableCell align="center">{data.name}</TableCell>
                     <TableCell align="center">{data.fee}</TableCell>

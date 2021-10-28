@@ -9,13 +9,13 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalActivity from "./ModalActivity";
 import Swal from "sweetalert2";
 import ModalReadOnly from "./ModalReadOnly";
-import format from "date-fns/format";
+// import format from "date-fns/format";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
@@ -131,12 +131,12 @@ export default function AllTsTableForActivity(props) {
       });
   };
 
-  const handleOpen = (state) => {
-    if (state === 2) {
-      setOpen(true);
-    }
-    setOpen1(true);
-  };
+  // const handleOpen = (state) => {
+  //   if (state === 2) {
+  //     setOpen(true);
+  //   }
+  //   setOpen1(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);

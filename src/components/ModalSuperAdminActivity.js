@@ -25,7 +25,6 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
@@ -554,7 +553,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -565,7 +564,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -576,7 +575,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic != 0
+                dataList.audit_pic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -587,7 +586,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -727,7 +726,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -738,7 +737,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -749,7 +748,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                dataList.audit_pic_crop !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -760,7 +759,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -871,7 +870,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -882,7 +881,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -893,7 +892,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -904,7 +903,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -1064,7 +1063,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -1075,7 +1074,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -1086,7 +1085,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -1097,7 +1096,7 @@ export default function ModalSuperAdminActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }

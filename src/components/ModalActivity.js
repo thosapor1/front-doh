@@ -22,15 +22,10 @@ import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
-import AddTwoToneIcon from "@material-ui/icons/AddTwoTone";
-import RemoveTwoToneIcon from "@material-ui/icons/RemoveTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
-});
-const apiURLv1 = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -201,29 +196,29 @@ export default function ModalActivity(props) {
     setValue4(newValue);
   };
 
-  const download = () => {
-    const header = {
-      "Content-Type": "application/pdf",
-      responseType: "blob",
-    };
-    const sendData = {
-      transactionId: dataList.transactionId,
-      date: "2021-09-29",
-    };
-    apiURLv1
-      .post("/download-file-super-audit", sendData, header)
-      .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "M20210929000000014_PK3.pdf");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-        console.log(res.data);
-        console.log(url);
-      });
-  };
+  // const download = () => {
+  //   const header = {
+  //     "Content-Type": "application/pdf",
+  //     responseType: "blob",
+  //   };
+  //   const sendData = {
+  //     transactionId: dataList.transactionId,
+  //     date: "2021-09-29",
+  //   };
+  //   apiURLv1
+  //     .post("/download-file-super-audit", sendData, header)
+  //     .then((res) => {
+  //       const url = window.URL.createObjectURL(new Blob([res.data]));
+  //       const link = document.createElement("a");
+  //       link.href = url;
+  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       link.parentNode.removeChild(link);
+  //       console.log(res.data);
+  //       console.log(url);
+  //     });
+  // };
 
   const mockPic = 0;
   const [state, setState] = useState({
@@ -233,7 +228,7 @@ export default function ModalActivity(props) {
   });
   const { audit_lp, audit_province, audit_comment } = state;
 
-  const [audit_vehicleClass, setAudit_vehicleClass] = useState("");
+  const [audit_vehicleClass, setAudit_vehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const handleChange = (event) => {
@@ -440,7 +435,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -451,7 +446,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -462,7 +457,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic != 0
+                dataList.audit_pic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -473,7 +468,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -553,7 +548,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -564,7 +559,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     Logo_doh
                   : noImage
@@ -576,7 +571,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                dataList.audit_pic_crop !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -587,7 +582,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -684,7 +679,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -695,7 +690,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -706,7 +701,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                dataList.mf_pic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -717,7 +712,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -808,7 +803,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -819,7 +814,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -830,7 +825,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -841,7 +836,7 @@ export default function ModalActivity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }

@@ -31,17 +31,10 @@ import {
   menuItemsForMember,
   menuConfigForMember,
 } from "../data/menuControl";
-import Cookies, { set } from "js-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
-import Login from "../pages/Login";
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  HashRouter,
-  Redirect,
-  BrowserRouter,
-} from "react-router-dom";
+// import Login from "../pages/Login";
+import { Redirect } from "react-router-dom";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -175,15 +168,15 @@ export default function Layout({ children }) {
     const permissionId = Cookies.get("permission_id");
     const departmentId = Cookies.get("department_id");
     const userName = Cookies.get("username");
-    const userId = Cookies.get("userId");
+    // const userId = Cookies.get("userId");
     setUserName(userName);
-    if (permissionId == 1 && departmentId == 1) {
+    if (permissionId === "1" && departmentId === "1") {
       setMenuItems(menuItemsForSuperAdmin);
       setConfigItems(menuConfigForSuperAdmin);
-    } else if (permissionId == 2 && departmentId == 1) {
+    } else if (permissionId === "2" && departmentId === "1") {
       setMenuItems(menuItemsForAdmin);
       setConfigItems(menuConfigForAdmin);
-    } else if (permissionId == 3 && departmentId == 1) {
+    } else if (permissionId === "3" && departmentId === "1") {
       setMenuItems(menuItemsForMember);
       setConfigItems(menuConfigForMember);
     } else {

@@ -3,7 +3,6 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {
   Container,
-  createMuiTheme,
   Grid,
   makeStyles,
   MenuItem,
@@ -127,7 +126,7 @@ export default function RawTransaction() {
 
   const [summary, setSummary] = useState([]);
   const [page, setPage] = useState(1);
-  const [station, setStation] = useState(0);
+  const [station, setStation] = useState("");
   const [id, setId] = useState(0);
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
@@ -268,7 +267,7 @@ export default function RawTransaction() {
             className={classes.textField}
             onChange={(event) => setStation(event.target.value)}
             name="station"
-            value={station}
+            defaultValue={station}
           >
             {stations.map((station) => (
               <MenuItem key={station.id} value={station.id}>
@@ -327,8 +326,9 @@ export default function RawTransaction() {
 
       {/* Card Section */}
       <div className={classes.cardSection}>
-        {dataCard.map((card) => (
+        {dataCard.map((card, index) => (
           <Paper
+            key={index}
             className={classes.card}
             style={{
               borderLeft:

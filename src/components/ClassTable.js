@@ -79,8 +79,8 @@ export default function ClassTable(props) {
           <TableBody>
             {!!dataList
               ? dataList.map((data, index) =>
-                  dataList.length == index + 1 ? (
-                    <TableRow
+                  dataList.length === index + 1 ? (
+                    <TableRow key={index}
                       style={{ left: 0, bottom: 0, position: "sticky" }}
                     >
                       <TableCell align="center" className={classes.header}>
@@ -100,7 +100,7 @@ export default function ClassTable(props) {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    <StyledTableRow key={data.class}>
+                    <StyledTableRow key={index}>
                       <TableCell align="center" className={classes.body}>
                         {data.class}{" "}
                       </TableCell>

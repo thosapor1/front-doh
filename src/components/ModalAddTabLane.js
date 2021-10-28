@@ -41,35 +41,6 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-const dropDrawHighway = [
-  {
-    id: 1,
-    label: "ทางหลวงหมายเลข9",
-  },
-  {
-    id: 2,
-    label: "SDFS",
-  },
-];
-const dropDrawCheckpoint = [
-  {
-    id: 1,
-    label: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    label: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    label: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    label: "ธัญบุรี2",
-  },
-];
-
 export default function ModalAddTabCheckpoint(props) {
   const classes = useStyle();
 
@@ -82,8 +53,6 @@ export default function ModalAddTabCheckpoint(props) {
   });
 
   const { highway_id, checkpoint_id, gate_name, cam_ip, cam_lane } = inputModal;
-
-  const [status, setStatus] = useState(false);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -137,8 +106,6 @@ export default function ModalAddTabCheckpoint(props) {
       }
     });
   };
-
-  const [showResult, setshowResult] = useState(false);
 
   const body = (
     <div className={classes.modal}>

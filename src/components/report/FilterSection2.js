@@ -1,13 +1,11 @@
 import {
   Button,
-  Container,
   makeStyles,
   MenuItem,
   Paper,
   TextField,
 } from "@material-ui/core";
 import {
-  DatePicker,
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
@@ -70,7 +68,6 @@ const valueMenuItem = [
 export default function FilterSection2(props) {
   const { onFetchData, report } = props;
   const classes = useStyles();
-  const [state, setState] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );

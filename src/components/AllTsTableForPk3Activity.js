@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalPk3Activity from "./ModalPk3Activity";

@@ -41,16 +41,16 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-const dropDrawHighway = [
-  {
-    id: 1,
-    label: "ทางหลวงหมายเลข9",
-  },
-  {
-    id: 2,
-    label: "SDFS",
-  },
-];
+// const dropDrawHighway = [
+//   {
+//     id: 1,
+//     label: "ทางหลวงหมายเลข9",
+//   },
+//   {
+//     id: 2,
+//     label: "SDFS",
+//   },
+// ];
 
 export default function ModalAddTabCheckpoint(props) {
   const classes = useStyle();

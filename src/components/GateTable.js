@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -83,8 +82,8 @@ export default function GateTable(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data) => (
-                  <StyledTableRow key={data.id}>
+              ? dataList.map((data,index) => (
+                  <StyledTableRow key={index}>
                     <TableCell align="center" className={classes.body}>
                       {data.checkpoint_name}
                     </TableCell>

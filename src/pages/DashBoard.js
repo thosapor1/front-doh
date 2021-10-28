@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   Divider,
   Grid,
@@ -8,7 +7,6 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
-import Cookies from "js-cookie";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -134,6 +132,10 @@ export default function DashBoard() {
     reject: 0,
     countReject: 0,
     sumAmountallClass: 0,
+    percentC1:0,
+    percentC2:0,
+    percentC3:0,
+    percentReject:0
   });
   const [dayChart, setDayChart] = useState([]);
   const [valueChart, setValueChart] = useState([]);
@@ -421,8 +423,9 @@ export default function DashBoard() {
 
           <Grid container>
             {!!cardData
-              ? cardData.map((card) => (
+              ? cardData.map((card, index) => (
                   <Grid
+                    key={index}
                     item
                     component={Paper}
                     sm={5}

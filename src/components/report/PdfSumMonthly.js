@@ -1,8 +1,5 @@
-import React from "react";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import axios from "axios";
-import { report1 } from "../../data/mockDataReport.js";
 import { image } from "../../image/logo_base64";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -14,8 +11,6 @@ pdfMake.fonts = {
     bolditalics: "THSarabun Bold Italic.ttf",
   },
 };
-
-const data = [];
 
 export default function PdfSumMonthly() {
   // console.log(report1);

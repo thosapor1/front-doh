@@ -18,7 +18,6 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import React, { useEffect, useState } from "react";
 import GateTable from "../components/GateTable";
 import ClassTable from "../components/ClassTable";
-import { useHistory } from "react-router";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
@@ -137,7 +136,7 @@ const valueStatus = [
 ];
 
 export default function AuditDisplay() {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [gateTable, setGateTable] = useState("");
   const [classTable, setClassTable] = useState("");
@@ -164,9 +163,9 @@ export default function AuditDisplay() {
   const handlePageChange = (event, value) => {
     fetchData(value);
   };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
   const dataCard = [
     {
@@ -197,7 +196,7 @@ export default function AuditDisplay() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);
@@ -257,7 +256,7 @@ export default function AuditDisplay() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);
@@ -359,8 +358,8 @@ export default function AuditDisplay() {
             className={classes.input}
             name="gate_select"
           >
-            {valueMenuItem.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
+            {valueMenuItem.map((item,index) => (
+              <MenuItem key={index} value={item.id}>
                 {item.checkpoint_name}
               </MenuItem>
             ))}
@@ -376,8 +375,8 @@ export default function AuditDisplay() {
             className={classes.input}
             name="status_select"
           >
-            {valueStatus.map((item) => (
-              <MenuItem key={item.value} value={item.id}>
+            {valueStatus.map((item,index) => (
+              <MenuItem key={index} value={item.id}>
                 {item.label}
               </MenuItem>
             ))}
@@ -452,8 +451,9 @@ export default function AuditDisplay() {
       {/* Card Section */}
       <div className={classes.cardSection}>
         {!!dataCard
-          ? dataCard.map((card) => (
+          ? dataCard.map((card, index) => (
               <Paper
+                key={index}
                 className={classes.card}
                 style={{
                   borderLeft:

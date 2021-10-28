@@ -13,7 +13,7 @@ export default function ImageSearchAudit(props) {
             style={{ height: 300 }}
             component="img"
             src={
-              imageCrop != 0 ? `data:image/png;base64, ${imageCrop}` : noImage
+              imageCrop !== 0 ? `data:image/png;base64, ${imageCrop}` : noImage
             }
           />
         </Grid>
@@ -22,7 +22,7 @@ export default function ImageSearchAudit(props) {
             style={{ height: 300 }}
             component="img"
             src={
-              imageFull != 0 ? `data:image/png;base64, ${imageFull}` : noImage
+              imageFull !== 0 ? `data:image/png;base64, ${imageFull}` : noImage
             }
           />
         </Grid>

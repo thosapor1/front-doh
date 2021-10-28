@@ -1,11 +1,10 @@
-import { Button, MenuItem, Paper, TextField } from "@material-ui/core";
+import { Button, Paper, TextField } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React from "react";
-import { useState } from "react";
 
 export default function FilterSectionSearch(props) {
   const {
@@ -50,7 +49,7 @@ export default function FilterSectionSearch(props) {
           marginTop: "20px",
           marginLeft: "10px",
           backgroundColor: `${color}`,
-          color: 'white'
+          color: "white",
         }}
         onClick={buttonOnClick}
       >

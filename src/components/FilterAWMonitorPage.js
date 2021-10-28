@@ -5,7 +5,6 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React from "react";
-import { useState } from "react";
 
 export default function FilterAWMonitorPage(props) {
   const {

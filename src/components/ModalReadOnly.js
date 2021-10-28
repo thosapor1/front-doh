@@ -449,7 +449,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -460,7 +460,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -471,7 +471,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic != 0
+                dataList.audit_pic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -482,7 +482,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -591,7 +591,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -602,7 +602,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     Logo_doh
                   : noImage
@@ -614,7 +614,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop != 0
+                dataList.audit_pic_crop !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -625,7 +625,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -718,7 +718,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -729,7 +729,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -740,7 +740,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -751,7 +751,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -870,7 +870,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -881,7 +881,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -892,7 +892,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }
@@ -903,7 +903,7 @@ export default function ModalReadOnly(props) {
             <CardMedia
               component="img"
               src={
-                mockPic != 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic}`
                   : noImage
               }

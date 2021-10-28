@@ -49,8 +49,6 @@ export default function ModalAddTabHighway(props) {
 
   const { highway_name } = inputModal;
 
-  const [status, setStatus] = useState(false);
-
   const handleChange = (event) => {
     event.preventDefault();
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
@@ -99,8 +97,6 @@ export default function ModalAddTabHighway(props) {
       }
     });
   };
-
-  const [showResult, setshowResult] = useState(false);
 
   const body = (
     <div className={classes.modal}>

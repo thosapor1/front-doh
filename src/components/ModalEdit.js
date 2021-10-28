@@ -253,7 +253,7 @@ export default function ModalEdit(props) {
               SDFS
             </MenuItem>
           </TextField>
-          {showResult == 1 ? (
+          {showResult === 1 ? (
             <TextField
               select
               variant="outlined"

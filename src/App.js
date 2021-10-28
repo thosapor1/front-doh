@@ -1,10 +1,9 @@
 import {
-  HashRouter as Router,
+  HashRouter,
   Switch,
   Route,
-  HashRouter,
-  Redirect,
-  BrowserRouter,
+  // Redirect,
+  // BrowserRouter,
 } from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
 import RawTransaction from "./pages/RawTransaction";
@@ -19,8 +18,8 @@ import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+// import { useEffect, useState } from "react";
+// import Cookies from "js-cookie";
 
 const theme = createTheme({
   typography: {
@@ -33,7 +32,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const isAuth = !!localStorage.getItem("isAuth");
+  // const isAuth = !!localStorage.getItem("isAuth");
 
   return (
     <ThemeProvider theme={theme}>

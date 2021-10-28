@@ -50,11 +50,10 @@ export default function ModalEditTabLane(props) {
     cam_lane: "",
     highway_id: "",
     checkpoint_id: "",
-    id:"",
+    id: "",
   });
 
   const {
-    highway_name,
     checkpoint_name,
     gate_name,
     cam_ip,
