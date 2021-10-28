@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#7C85BFff;",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
+    },
+    body: {
+      fontSize: "0.8rem",
     },
   };
 });
@@ -97,13 +101,21 @@ export default function ClassTable(props) {
                     </TableRow>
                   ) : (
                     <StyledTableRow key={data.class}>
-                      <TableCell align="center">{data.class} </TableCell>
-                      <TableCell align="center">{data.ts_count} </TableCell>
-                      <TableCell align="center">{data.ts_reject} </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="center" className={classes.body}>
+                        {data.class}{" "}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.ts_count}{" "}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.ts_reject}{" "}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
                         {data.ts_countState1}{" "}
                       </TableCell>
-                      <TableCell align="center">{data.sumAmount} </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.sumAmount}{" "}
+                      </TableCell>
                     </StyledTableRow>
                   )
                 )

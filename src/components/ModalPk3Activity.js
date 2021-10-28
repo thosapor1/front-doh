@@ -118,6 +118,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      [theme.breakpoints.down("md")]: {
+        marginTop: 600,
+      },
+      [theme.breakpoints.down("sm")]: {
+        marginTop: 1955,
+      },
     },
     head: {
       display: "flex",
@@ -175,12 +181,19 @@ const useStyle = makeStyles((theme) => {
     textField: {
       height: 20,
       bottom: 5,
-      width: 130,
-      "& .MuiInput-input": { fontSize: "0.9rem" },
+      width: 50,
+      "& .MuiInput-input": { fontSize: "0.8rem" },
+      float: "right",
+    },
+    tabs: {
+      height: "0.3rem",
+      color: "blue",
+      padding: "0px 10px",
     },
     tab: {
       fontSize: "0.7rem",
       minWidth: "25%",
+      color: "blue",
     },
     disableLabel: {
       "& .MuiInputLabel-root": {
@@ -192,13 +205,7 @@ const useStyle = makeStyles((theme) => {
       marginTop: 2,
     },
     disableLabel2: {
-      // "& .MuiInputLabel-root": {
-      //   color: "blue",
-      // },
-      marginLeft: 15,
-      marginRight: 20,
-      marginTop: 20,
-      width: "91%",
+      width: "100%",
     },
     input: {
       // color:'red'
@@ -477,12 +484,12 @@ export default function ModalPk3Activity(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit  block */}
-        <Grid item sm={6} md={6} lg={6} className={classes.cardItem}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value4}
               onChange={handleChangeTabs4}
@@ -493,6 +500,7 @@ export default function ModalPk3Activity(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -559,24 +567,25 @@ export default function ModalPk3Activity(props) {
               className={classes.image}
             />
           </TabPanel4>
-
-          <TextField
-            id="upload"
-            disabled
-            variant="outlined"
-            className={classes.disableLabel2}
-            label="upload file here"
-            value={fileName}
-            InputProps={{
-              endAdornment: (
-                <Tooltip title="cancel upload file" placement="top">
-                  <IconButton onClick={() => setFileName("")}>
-                    <HighlightOffIcon />{" "}
-                  </IconButton>
-                </Tooltip>
-              ),
-            }}
-          />
+          <div style={{ padding: "0px 15px", marginTop: 20 }}>
+            <TextField
+              id="upload"
+              disabled
+              variant="outlined"
+              className={classes.disableLabel2}
+              label="upload file here"
+              value={fileName}
+              InputProps={{
+                endAdornment: (
+                  <Tooltip title="cancel upload file" placement="top">
+                    <IconButton onClick={() => setFileName("")}>
+                      <HighlightOffIcon />{" "}
+                    </IconButton>
+                  </Tooltip>
+                ),
+              }}
+            />
+          </div>
           <div
             style={{
               paddingLeft: 6,
@@ -627,10 +636,9 @@ export default function ModalPk3Activity(props) {
           </div>
           <div
             style={{
-              display: "flex",
-              justifyContent: "right",
+              float: "right",
               paddingRight: 6,
-              marginTop: 90,
+              marginTop: 102,
             }}
           >
             <Button
@@ -647,23 +655,25 @@ export default function ModalPk3Activity(props) {
         </Grid>
 
         {/* CCTV Audit (Vehicle) Block */}
-        <Grid item sm={6} md={6} lg={6} className={classes.cardItem}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
               CCTV Audit (Vehicle)
             </Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value1}
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -763,9 +773,8 @@ export default function ModalPk3Activity(props) {
 
           <div
             style={{
-              paddingLeft: 10,
-              paddingRight: 10,
-              marginTop: 33,
+              padding: "0px 10px",
+              marginTop: 45,
               display: "flex",
               justifyContent: "space-between",
             }}
@@ -774,7 +783,6 @@ export default function ModalPk3Activity(props) {
               className={classes.btn}
               variant="contained"
               color="primary"
-              startIcon={<AddTwoToneIcon fontSize="small" />}
               disabled
             >
               สร้างรายการใหม่
@@ -784,7 +792,6 @@ export default function ModalPk3Activity(props) {
               className={classes.btn}
               variant="contained"
               color="secondary"
-              startIcon={<RemoveTwoToneIcon fontSize="small" />}
             >
               ลบรายการนี้
             </Button>
@@ -792,21 +799,23 @@ export default function ModalPk3Activity(props) {
         </Grid>
 
         {/* ALPR Block */}
-        <Grid item sm={6} md={6} lg={6}>
+        <Grid item sm={12} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value2}
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -833,7 +842,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -844,7 +853,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -855,7 +864,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -866,7 +875,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_pic != 0
+                mockPic != 0
                   ? `data:image/png;base64, ${dataList.mf_pic}`
                   : noImage
               }
@@ -908,22 +917,23 @@ export default function ModalPk3Activity(props) {
             label="ข้อความจากผู้ตรวจสอบ"
             value={dataList.audit_comment || ""}
             className={classes.disableLabel}
-            style={{ marginTop: 26 }}
+            style={{ marginTop: 30 }}
           />
         </Grid>
 
         {/* DVES Block */}
-        <Grid item sm={6} md={6} lg={6}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DVES</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value3}
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -998,7 +1008,10 @@ export default function ModalPk3Activity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ color: "white", fontSize: "0.75rem" }}
+                  >
                     ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
                   </TableCell>
                 </TableRow>
@@ -1056,6 +1069,7 @@ export default function ModalPk3Activity(props) {
                       size="small"
                       name="valueRef"
                       value={pk3_feeAmount}
+                      className={classes.textField}
                     />
                   </TableCell>
                 </TableRow>
@@ -1065,42 +1079,46 @@ export default function ModalPk3Activity(props) {
 
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingLeft: 20,
-              paddingRight: 20,
+              padding: "0px 10px",
+              textAlign: "center",
             }}
           >
             <TextField
               style={{
-                width: "1000%",
                 height: 20,
-                padding: "10px",
-                marginTop: 25,
+                width: "100%",
               }}
               name="pk3_comment"
               label="คำสั่งแก้ไข"
               value={pk3_comment || ""}
               onChange={handleChange}
             />
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpdateState3To6}
-                style={{ width: "6rem", margin: "0.2rem" }}
-              >
-                ยินยอม
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleUpdateState3To4}
-                style={{ width: "6rem", margin: "0.2rem" }}
-              >
-                ไม่ยินยอม
-              </Button>
-            </div>
+          </div>
+          <div style={{ marginTop: 30, padding: "0px 10px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateState3To6}
+              style={{
+                float: "right",
+                margin: "0.2rem",
+                fontSize: "0.75rem",
+              }}
+            >
+              ยินยอม
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleUpdateState3To4}
+              style={{
+                float: "right",
+                margin: "0.2rem",
+                fontSize: "0.75rem",
+              }}
+            >
+              ไม่ยินยอม
+            </Button>
           </div>
         </Grid>
       </Grid>
@@ -1119,6 +1137,7 @@ export default function ModalPk3Activity(props) {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 2,
+          overflow: "scroll",
         }}
       >
         {body}

@@ -25,10 +25,13 @@ const useStyle = makeStyles((theme) => {
       border: "2px solid #000",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      [theme.breakpoints.down("md")]: {
+        width: "30%",
+      },
     },
     modalTextField: {
       margin: theme.spacing(1, 0, 0),
-      width: 300,
+      width: "100%",
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),

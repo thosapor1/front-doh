@@ -20,20 +20,19 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
-      width: "50%",
+      width: "35%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
-      border: "2px solid #000",
+      border: "1px solid gray",
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 3),
     },
     modalTextField: {
-      margin: theme.spacing(1, 0, 0),
-      width: 300,
+      margin: theme.spacing(0.5, 0),
+      width: "100%",
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
-      // backgroundColor: "#46005E",
     },
   };
 });
@@ -75,6 +74,23 @@ export default function ModalAdd(props) {
     setInputModal({ ...inputModal, [event.target.name]: event.target.value });
 
     console.log(inputModal);
+  };
+
+  const handleCancel = () => {
+    setInputModal({
+      username: "",
+      password: "",
+      fname: "",
+      lname: "",
+      position_id: null,
+      department_id: null,
+      email: "",
+      tel: "",
+      permission_id: "",
+      highway_id: null,
+      checkpoint_id: "0",
+    });
+    setshowResult(false);
   };
 
   const handleSubmit = () => {
@@ -128,9 +144,9 @@ export default function ModalAdd(props) {
   const body = (
     <div className={classes.modal}>
       <Typography variant="h6">เพิ่มผู้ใช้งาน</Typography>
-      <Divider />
-      <Grid Container style={{ marginTop: 20, display: "flex" }}>
-        <Grid item md={6} style={{ textAlign: "center" }}>
+      <Divider style={{ marginBottom: 20 }} />
+      <Grid container justifyContent="center">
+        <Grid item sm={12} md={12} lg={12} style={{ textAlign: "center" }}>
           <TextField
             // error={username.length === 0 ? true : false}
             className={classes.modalTextField}
@@ -223,10 +239,9 @@ export default function ModalAdd(props) {
             onChange={handleChange}
             value={tel}
           />
-        </Grid>
 
-        {/* permission data */}
-        <Grid item md={6} style={{ textAlign: "center" }}>
+          {/* permission data */}
+
           <TextField
             className={classes.modalTextField}
             variant="outlined"
@@ -293,8 +308,11 @@ export default function ModalAdd(props) {
         <Button
           variant="contained"
           className={classes.btn2}
-          onClick={props.onClick}
-          color='secondary'
+          onClick={() => {
+            props.onClick();
+            handleCancel();
+          }}
+          color="secondary"
         >
           ยกเลิก
         </Button>

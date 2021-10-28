@@ -165,6 +165,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn: {
       margin: theme.spacing(1),
+      fontSize: "0.7rem",
     },
     textField: {
       height: 20,
@@ -175,29 +176,39 @@ const useStyle = makeStyles((theme) => {
     tab: {
       fontSize: "0.7rem",
       minWidth: "25%",
+      color: "blue",
     },
     disableLabel: {
       "& .MuiInputLabel-root": {
         color: "blue",
       },
-      marginLeft: 20,
-      marginRight: 20,
       width: "91%",
       marginTop: 2,
+      margin: "0px 17px",
     },
     normalBtn: {
-      width: 130,
       color: "white",
       backgroundColor: "green",
+      fontSize: "0.7rem",
       margin: theme.spacing(1),
     },
     disabledBtn: {
       color: "gray",
       backgroundColor: "lightgray",
-      marginTop: 9,
-      height: 60,
-      marginLeft: 8,
-      width: 130,
+      marginTop: 21,
+      fontSize: "0.7rem",
+    },
+    divBTN: {
+      padding: "0px 15px",
+      marginTop: 150,
+      [theme.breakpoints.only("md")]: {
+        marginTop: 132,
+      },
+    },
+    tabs: {
+      height: "0.3rem",
+      color: "blue",
+      padding: "0px 10px",
     },
   };
 });
@@ -400,7 +411,7 @@ export default function ModalReadOnly(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value4}
               onChange={handleChangeTabs4}
@@ -411,6 +422,7 @@ export default function ModalReadOnly(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -509,8 +521,10 @@ export default function ModalReadOnly(props) {
           </div>
           <div
             style={{
-              marginLeft: "7px",
-              marginTop: 258,
+              padding: "0px 9px",
+              marginTop: 267,
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             <Button
@@ -518,7 +532,6 @@ export default function ModalReadOnly(props) {
               variant="contained"
               color="secondary"
               disabled
-              style={{ width: 130, height: 60 }}
             >
               ลบรายการนี้
             </Button>
@@ -526,9 +539,6 @@ export default function ModalReadOnly(props) {
               className={classes.btn}
               variant="contained"
               disabled
-              style={{
-                width: 130,
-              }}
               onClick={() => console.log("")}
             >
               บันทึกแบบรายการพิเศษ
@@ -544,12 +554,13 @@ export default function ModalReadOnly(props) {
               CCTV Audit (Vehicle)
             </Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value1}
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -652,14 +663,7 @@ export default function ModalReadOnly(props) {
             </table>
           </TableContainer>
 
-          <div
-            style={{
-              paddingLeft: 10,
-              paddingRight: 10,
-              marginTop: 150,
-              marginLeft: -45,
-            }}
-          >
+          <div className={classes.divBTN}>
             <Button
               className={disable ? classes.disabledBtn : classes.normalBtn}
               variant="contained"
@@ -677,12 +681,13 @@ export default function ModalReadOnly(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value2}
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -828,12 +833,13 @@ export default function ModalReadOnly(props) {
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value3}
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -987,6 +993,7 @@ export default function ModalReadOnly(props) {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 2,
+          overflow: "scroll",
         }}
       >
         {body}

@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
+    },
+    body: {
+      fontSize: "0.8rem",
     },
   };
 });
@@ -81,9 +85,15 @@ export default function GateTable(props) {
             {!!dataList
               ? dataList.map((data) => (
                   <StyledTableRow key={data.id}>
-                    <TableCell align="center">{data.checkpoint_name}</TableCell>
-                    <TableCell align="center">{data.gate_name}</TableCell>
-                    <TableCell align="center">{data.ts_count}</TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.checkpoint_name}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.gate_name}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.ts_count}
+                    </TableCell>
                   </StyledTableRow>
                 ))
               : dataList}

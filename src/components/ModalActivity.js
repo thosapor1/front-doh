@@ -107,13 +107,17 @@ function a11yProps(index) {
 const useStyle = makeStyles((theme) => {
   return {
     root: {},
-    modal: {
+    bodyModal: {
+      height: "auto",
       width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      [theme.breakpoints.down("md")]: {
+        marginTop: 650,
+      },
     },
     head: {
       display: "flex",
@@ -155,14 +159,13 @@ const useStyle = makeStyles((theme) => {
       padding: "1rem",
       "& .MuiTableCell-root": { paddingTop: "0.2rem", paddingBottom: "0.2rem" },
     },
-    btn: {
-      margin: theme.spacing(1),
-    },
+    btn: { marginTop: 10 },
     textField: {
       height: 20,
       bottom: 5,
-      width: 130,
-      "& .MuiInput-input": { fontSize: "0.9rem" },
+      width: 50,
+      "& .MuiInput-input": { fontSize: "0.8rem" },
+      float: "right",
     },
     tab: {
       fontSize: "0.7rem",
@@ -170,6 +173,8 @@ const useStyle = makeStyles((theme) => {
     },
     tabs: {
       height: "0.3rem",
+      color: "blue",
+      padding: "0px 10px",
     },
   };
 });
@@ -344,7 +349,6 @@ export default function ModalActivity(props) {
   };
 
   useEffect(() => {
-    
     if (dataList) {
       setState(dataList);
       setAudit_vehicleClass(dataList.audit_vehicleClass);
@@ -355,7 +359,7 @@ export default function ModalActivity(props) {
   }, [dataList]);
 
   const body = (
-    <div className={classes.modal}>
+    <div className={classes.bodyModal}>
       <div className={classes.head}>
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
@@ -393,12 +397,12 @@ export default function ModalActivity(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value4}
               onChange={handleChangeTabs4}
@@ -409,6 +413,7 @@ export default function ModalActivity(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -476,12 +481,19 @@ export default function ModalActivity(props) {
             />
           </TabPanel4>
 
-          <div style={{ marginTop: 259 }}>
+          <div
+            style={{
+              marginTop: 236,
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "0px 15px",
+            }}
+          >
             <Button
               className={classes.btn}
               variant="contained"
               color="primary"
-              startIcon={<AddTwoToneIcon fontSize="small" />}
+              // startIcon={<AddTwoToneIcon fontSize="small" />}
             >
               สร้างรายการใหม่
             </Button>
@@ -489,7 +501,7 @@ export default function ModalActivity(props) {
               className={classes.btn}
               variant="contained"
               color="secondary"
-              startIcon={<RemoveTwoToneIcon fontSize="small" />}
+              // startIcon={<RemoveTwoToneIcon fontSize="small" />}
             >
               ลบรายการนี้
             </Button>
@@ -497,14 +509,14 @@ export default function ModalActivity(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
               CCTV Audit (Vehicle)
             </Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value1}
               onChange={handleChangeTabs1}
@@ -614,13 +626,13 @@ export default function ModalActivity(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <div>
+          <div style={{ padding: "0px 11px" }}>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "green",
                 color: "white",
-                marginTop: 82,
+                marginTop: 65,
               }}
               onClick={handleChangeState6To7}
             >
@@ -630,17 +642,18 @@ export default function ModalActivity(props) {
         </Grid>
 
         {/* ALPR Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value2}
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -753,17 +766,18 @@ export default function ModalActivity(props) {
         </Grid>
 
         {/* DVES Block */}
-        <Grid item sm={3}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DVES</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value3}
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
@@ -838,7 +852,10 @@ export default function ModalActivity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ color: "white", fontSize: "0.75rem" }}
+                  >
                     ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
                   </TableCell>
                 </TableRow>
@@ -921,7 +938,7 @@ export default function ModalActivity(props) {
             <Button
               variant="contained"
               color="primary"
-              style={{ marginTop: 25, marginLeft: 182 }}
+              style={{ marginTop: 25, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >
@@ -945,6 +962,7 @@ export default function ModalActivity(props) {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 2,
+          overflow: "scroll",
         }}
       >
         {body}

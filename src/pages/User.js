@@ -102,6 +102,7 @@ export default function User() {
   };
 
   const handleClose = () => {
+    
     setOpen(false);
     setDataForEdit(null);
   };

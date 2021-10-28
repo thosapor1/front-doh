@@ -127,8 +127,7 @@ const useStyle = makeStyles((theme) => {
     },
     cardContainer: {},
     cardItem: {
-      paddingLeft: "0.5rem",
-      paddingRight: "0.5rem",
+      padding: "0px 5px",
     },
     image: {
       height: "300px",
@@ -168,6 +167,7 @@ const useStyle = makeStyles((theme) => {
     },
     btn: {
       margin: theme.spacing(1),
+      fontSize: "0.7rem",
     },
     textField: {
       height: 20,
@@ -178,24 +178,45 @@ const useStyle = makeStyles((theme) => {
     tab: {
       fontSize: "0.7rem",
       minWidth: "25%",
+      color: "blue",
     },
     disableLabel: {
       "& .MuiInputLabel-root": {
         color: "blue",
       },
-      marginLeft: 20,
-      marginRight: 20,
       width: "91%",
       marginTop: 2,
+      margin: "0px 17px",
     },
     disableLabel2: {
       // "& .MuiInputLabel-root": {
       //   color: "blue",
       // },
-      marginLeft: 15,
-      marginRight: 20,
+      margin: "0px 0px 0px 10px",
       marginTop: 20,
       width: "91%",
+    },
+    inputBox: {
+      margin: "20px 0px 0px 12px",
+      width: "91%",
+      [theme.breakpoints.down("md")]: {
+        margin: "20px 0px 0px 18px",
+      },
+    },
+    tabs: {
+      height: "0.3rem",
+      color: "blue",
+      padding: "0px 10px",
+    },
+    containerBox: {
+      padding: "0px 5px 0px 4px",
+      // marginTop: 10,
+      display: "flex",
+      justifyContent: "space-between",
+      [theme.breakpoints.down("md")]: {
+        padding: "0px 10px",
+        marginTop: 9,
+      },
     },
   };
 });
@@ -490,12 +511,12 @@ export default function ModalSuperAdminActivity(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value4}
               onChange={handleChangeTabs4}
@@ -506,6 +527,7 @@ export default function ModalSuperAdminActivity(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -576,7 +598,7 @@ export default function ModalSuperAdminActivity(props) {
             id="upload"
             disabled
             variant="outlined"
-            className={classes.disableLabel2}
+            className={classes.inputBox}
             label="upload file here"
             value={fileName}
             InputProps={{
@@ -589,15 +611,7 @@ export default function ModalSuperAdminActivity(props) {
               ),
             }}
           />
-          <div
-            style={{
-              paddingLeft: 7,
-              paddingRight: 6,
-              // marginTop: 10,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
+          <div className={classes.containerBox}>
             <input
               // accept="image/*"
               className={classes.input}
@@ -635,15 +649,7 @@ export default function ModalSuperAdminActivity(props) {
               upload
             </Button>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingRight: 6,
-              marginTop: 20,
-              paddingLeft: 7,
-            }}
-          >
+          <div className={classes.containerBox}>
             <Button
               disabled={fileDownloadPk3}
               variant="contained"
@@ -665,14 +671,11 @@ export default function ModalSuperAdminActivity(props) {
               download from audit
             </Button>
           </div>
-          <div style={{ marginLeft: "10px", marginTop: 121 }}>
+          <div className={classes.containerBox} style={{ marginTop: 178 }}>
             <Button
               className={classes.btn}
               variant="contained"
               disabled={dataList.state === 6 ? false : true}
-              style={{
-                width: 130,
-              }}
               // onClick={handleUpdateState6To7}
             >
               จนท.ตรวจสอบรับทราบ
@@ -681,21 +684,23 @@ export default function ModalSuperAdminActivity(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={3} className={classes.cardItem}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>Audit</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value1}
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -794,18 +799,17 @@ export default function ModalSuperAdminActivity(props) {
           </TableContainer>
           <div
             style={{
-              paddingLeft: 10,
-              paddingRight: 10,
+              paddingLeft: 5,
+              paddingRight: 5,
               display: "flex",
-              justifyContent: "space-around",
-              marginTop: 150,
+              justifyContent: "space-between",
+              marginTop: 186,
             }}
           >
             <Button
               className={classes.btn}
               variant="contained"
               color="secondary"
-              style={{ width: 130 }}
             >
               ลบรายการนี้
             </Button>
@@ -813,7 +817,6 @@ export default function ModalSuperAdminActivity(props) {
               className={classes.btn}
               variant="contained"
               style={{
-                width: 130,
                 color: "white",
                 backgroundColor: "orange",
               }}
@@ -825,21 +828,23 @@ export default function ModalSuperAdminActivity(props) {
         </Grid>
 
         {/* Pk3 Block */}
-        <Grid item sm={3}>
+        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value2}
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -1015,22 +1020,24 @@ export default function ModalSuperAdminActivity(props) {
           </TableContainer>
         </Grid>
 
-        {/* Audit Block */}
-        <Grid item sm={3}>
+        {/* DEVS Block */}
+        <Grid sm={12} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
           </div>
-          <div style={{ paddingLeft: 18, paddingRight: 18 }}>
+          <div>
             <Tabs
               value={value3}
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              className={classes.tabs}
             >
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -1156,7 +1163,12 @@ export default function ModalSuperAdminActivity(props) {
               disable={dataList.state === 6 ? true : false}
               variant="contained"
               color="primary"
-              style={{ top: 17, marginTop: 10, float: "right" }}
+              style={{
+                top: 17,
+                marginTop: 10,
+                float: "right",
+                fontSize: "0.75rem",
+              }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdateState4To6}
             >
@@ -1180,6 +1192,7 @@ export default function ModalSuperAdminActivity(props) {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 2,
+          overflow: "scroll",
         }}
       >
         {body}

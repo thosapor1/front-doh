@@ -35,10 +35,19 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 20,
     },
     filterSection: {
-      display: "flex",
       padding: theme.spacing(2),
-      width: "auto",
       marginTop: 10,
+    },
+    btnSection: {
+      [theme.breakpoints.down("sm")]: {
+        margin: "0px 35%",
+      },
+    },
+    inputSection: {
+      justifyContent: "space-between",
+      [theme.breakpoints.down("sm")]: {
+        margin: "0px 5%",
+      },
     },
     cardSection: {
       display: "flex",
@@ -47,7 +56,7 @@ const useStyles = makeStyles((theme) => {
     },
     gateAndClassSection: {
       marginTop: 10,
-      height: 300,
+      // height: 300,
       padding: theme.spacing(2),
       backgroundColor: "white",
     },
@@ -55,6 +64,14 @@ const useStyles = makeStyles((theme) => {
       marginTop: 10,
       padding: theme.spacing(2),
       backgroundColor: "white",
+    },
+    gateTable: {},
+    classTable: {
+      paddingLeft: 10,
+      [theme.breakpoints.down("md")]: {
+        padding: 0,
+        marginTop: 20,
+      },
     },
     card: {
       width: "100%",
@@ -333,7 +350,7 @@ export default function AuditDisplay() {
 
       {/* Filter Section */}
       <Grid container component={Paper} className={classes.filterSection}>
-        <Grid item lg={8} md={12} sm={12}>
+        <Grid item lg={7} md={8} sm={12} className={classes.inputSection}>
           <TextField
             select
             label="ด่าน"
@@ -414,7 +431,7 @@ export default function AuditDisplay() {
             />
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item lg={4} md={12} sm={12}>
+        <Grid item lg={5} md={4} sm={12} className={classes.btnSection}>
           <Button
             variant="contained"
             className={classes.btn}
@@ -486,21 +503,21 @@ export default function AuditDisplay() {
 
       {/* Table Section */}
       <Grid container component="Paper" className={classes.gateAndClassSection}>
-        <Grid item md={5} sm={12}>
+        <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
           <GateTable dataList={gateTable} />
         </Grid>
-        <Grid item md={7} sm={12} style={{ paddingLeft: 20 }}>
+        <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
           <ClassTable dataList={classTable} />
         </Grid>
       </Grid>
-      <div className={classes.allTsTable}>
+      <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
         <AllTsTableForActivity
           dataList={allTsTable}
           page={page}
           onChange={handlePageChange}
           onFetchData={fetchData}
         />
-      </div>
+      </Grid>
     </Container>
   );
 }

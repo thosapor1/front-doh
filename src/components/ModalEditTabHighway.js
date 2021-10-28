@@ -25,10 +25,13 @@ const useStyle = makeStyles((theme) => {
       border: "2px solid #000",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      [theme.breakpoints.down("md")]: {
+        width: "30%",
+      },
     },
     modalTextField: {
       margin: theme.spacing(1, 0, 0),
-      width: 300,
+      width: "100%",
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
@@ -108,8 +111,8 @@ export default function ModalEditTabHighway(props) {
     <div className={classes.modal}>
       <Typography variant="h6">แก้ไขข้อมูลสายทาง</Typography>
       <Divider />
-      <Grid Container style={{ marginTop: 20, display: "flex" }}>
-        <Grid item md={12} style={{ textAlign: "center" }}>
+      <Grid Container style={{ marginTop: 20 }}>
+        <Grid item sm={12} md={12} lg={12} style={{ textAlign: "center" }}>
           <TextField
             className={classes.modalTextField}
             fullWidth
@@ -155,7 +158,7 @@ export default function ModalEditTabHighway(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex:2,
+          zIndex: 2,
         }}
       >
         {body}

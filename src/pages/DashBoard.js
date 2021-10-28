@@ -47,18 +47,16 @@ const useStyle = makeStyles((theme) => {
       width: "70%",
     },
     card: {
-      width: "80%",
       marginRight: "auto",
       marginLeft: "auto",
       marginTop: 10,
       paddingTop: 10,
-      paddingBottom: 10,
+      paddingBottom: 8,
       textAlign: "center",
-      height: "7vh",
       borderRadius: 10,
     },
     cardPopup: {
-      width: "70%",
+      width: "65%",
       marginRight: "auto",
       marginLeft: "auto",
       marginTop: 10,
@@ -68,6 +66,11 @@ const useStyle = makeStyles((theme) => {
       borderRadius: 10,
       display: "sticky",
       padding: 20,
+      fontSize: "0.8rem",
+      [theme.breakpoints.down("md")]: {
+        marginBottom: 10,
+        width: "45%",
+      },
     },
     btnContainer: {
       display: "flex",
@@ -102,6 +105,13 @@ const useStyle = makeStyles((theme) => {
       display: "flex",
       justifyContent: "space-between",
       marginBottom: "0.5rem",
+    },
+    orderList: {
+      backgroundColor: "#75338c",
+      marginBottom: 10,
+      [theme.breakpoints.down("md")]: {
+        margin: "0px 5%",
+      },
     },
   };
 });
@@ -399,7 +409,7 @@ export default function DashBoard() {
           lg={3}
           md={12}
           sm={12}
-          style={{ backgroundColor: "#75338c", marginBottom: 10 }}
+          className={classes.orderList}
         >
           <Typography
             variant="h6"
@@ -409,10 +419,18 @@ export default function DashBoard() {
             รายการ
           </Typography>
 
-          <div>
+          <Grid container>
             {!!cardData
               ? cardData.map((card) => (
-                  <Paper elevation={2} className={classes.card}>
+                  <Grid
+                    item
+                    component={Paper}
+                    sm={5}
+                    md={5}
+                    lg={9}
+                    elevation={2}
+                    className={classes.card}
+                  >
                     <Typography style={{ fontSize: "0.8rem" }}>
                       {card.label}
                     </Typography>
@@ -426,15 +444,15 @@ export default function DashBoard() {
                     >
                       {card.value}
                     </Typography>
-                  </Paper>
+                  </Grid>
                 ))
               : [{}]}
-          </div>
+          </Grid>
 
           <Paper
             elevation={2}
             className={classes.cardPopup}
-            style={{ visibility: visible, fontSize: "0.9rem" }}
+            style={{ visibility: visible }}
           >
             <div
               style={{

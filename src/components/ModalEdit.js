@@ -20,20 +20,19 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     modal: {
-      width: "50%",
+      width: "35%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
-      border: "2px solid #000",
+      border: "1px solid gray",
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 3),
     },
     modalTextField: {
-      margin: theme.spacing(1, 0, 0),
-      width: 300,
+      margin: theme.spacing(0.5, 0),
+      width: "100%",
     },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
-      // backgroundColor: "#46005E",
     },
   };
 });
@@ -137,9 +136,9 @@ export default function ModalEdit(props) {
   const body = (
     <div className={classes.modal}>
       <Typography variant="h6">แก้ไขข้อมูลผู้ใช้งาน</Typography>
-      <Divider />
-      <Grid Container style={{ marginTop: 20, display: "flex" }}>
-        <Grid item md={6} style={{ textAlign: "center" }}>
+      <Divider style={{ marginBottom: 20 }} />
+      <Grid container justifyContent="center">
+        <Grid item sm={12} md={12} lg={12} style={{ textAlign: "center" }}>
           <TextField
             className={classes.modalTextField}
             fullWidth
@@ -228,10 +227,9 @@ export default function ModalEdit(props) {
             onChange={handleChange}
             value={tel}
           />
-        </Grid>
 
-        {/* permission data */}
-        <Grid item md={6} style={{ textAlign: "center" }}>
+          {/* permission data */}
+
           <TextField
             className={classes.modalTextField}
             variant="outlined"
