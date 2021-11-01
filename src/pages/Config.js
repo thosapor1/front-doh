@@ -15,8 +15,12 @@ import TableGateTab from "../components/TableGateTab";
 import TableHighwayTAb from "../components/TableHighwayTab";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -90,7 +94,7 @@ export default function Config() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage1(1);
     } else {
       setPage1(pageId);
@@ -108,70 +112,72 @@ export default function Config() {
   }, []);
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Typography
-        variant="h6"
-        style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
-      >
-        ตั้งค่า : ค่าภายในระบบ
-      </Typography>
-      <div className={classes.tabs}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+        <Typography
+          variant="h6"
+          style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
         >
-          <Tab label="สายทาง" {...a11yProps(0)} className={classes.tab} />
-          <Tab label="ด่าน" {...a11yProps(1)} className={classes.tab} />
-          <Tab
-            label="ช่องเก็บค่าผ่านทาง"
-            {...a11yProps(2)}
-            className={classes.tab}
-          />
-          <Tab label="ค่าผ่านทาง" {...a11yProps(3)} className={classes.tab} />
-        </Tabs>
+          ตั้งค่า : ค่าภายในระบบ
+        </Typography>
+        <div className={classes.tabs}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="simple tabs example"
+          >
+            <Tab label="สายทาง" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="ด่าน" {...a11yProps(1)} className={classes.tab} />
+            <Tab
+              label="ช่องเก็บค่าผ่านทาง"
+              {...a11yProps(2)}
+              className={classes.tab}
+            />
+            <Tab label="ค่าผ่านทาง" {...a11yProps(3)} className={classes.tab} />
+          </Tabs>
 
-        <TabPanel value={value} index={0}>
-          <div className={classes.inTab}>
-            <TableHighwayTAb
-              dataList={allTsTable}
-              // page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-            />
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div className={classes.inTab}>
-            <TableCheckpointTab
-              dataList={allTsTable}
-              // page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-            />
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <div className={classes.inTab}>
-            <TableGateTab
-              dataList={allTsTable}
-              // page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-            />
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <div className={classes.inTab}>
-            <TableFeeTab
-              dataList={allTsTable}
-              // page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-            />
-          </div>
-        </TabPanel>
-      </div>
-    </Container>
+          <TabPanel value={value} index={0}>
+            <div className={classes.inTab}>
+              <TableHighwayTAb
+                dataList={allTsTable}
+                // page={page}
+                onChange={handlePageChange}
+                onFetchData={fetchData}
+              />
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <div className={classes.inTab}>
+              <TableCheckpointTab
+                dataList={allTsTable}
+                // page={page}
+                onChange={handlePageChange}
+                onFetchData={fetchData}
+              />
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <div className={classes.inTab}>
+              <TableGateTab
+                dataList={allTsTable}
+                // page={page}
+                onChange={handlePageChange}
+                onFetchData={fetchData}
+              />
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <div className={classes.inTab}>
+              <TableFeeTab
+                dataList={allTsTable}
+                // page={page}
+                onChange={handlePageChange}
+                onFetchData={fetchData}
+              />
+            </div>
+          </TabPanel>
+        </div>
+      </Container>
+    </>
   );
 }

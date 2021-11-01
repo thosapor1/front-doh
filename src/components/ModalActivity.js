@@ -25,7 +25,10 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -111,7 +114,7 @@ const useStyle = makeStyles((theme) => {
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.down("md")]: {
-        marginTop: 650,
+        marginTop: 700,
       },
     },
     head: {

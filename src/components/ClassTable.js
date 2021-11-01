@@ -69,9 +69,13 @@ export default function ClassTable(props) {
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
-              {headerCells.map((headerCell) => (
-                <TableCell className={classes.header} align="center">
-                  {headerCell.label}{" "}
+              {headerCells.map((headerCell, index) => (
+                <TableCell
+                  key={index}
+                  className={classes.header}
+                  align="center"
+                >
+                  {headerCell.label}
                 </TableCell>
               ))}
             </StyledTableRow>
@@ -80,7 +84,8 @@ export default function ClassTable(props) {
             {!!dataList
               ? dataList.map((data, index) =>
                   dataList.length === index + 1 ? (
-                    <TableRow key={index}
+                    <TableRow
+                      key={index}
                       style={{ left: 0, bottom: 0, position: "sticky" }}
                     >
                       <TableCell align="center" className={classes.header}>
@@ -102,19 +107,19 @@ export default function ClassTable(props) {
                   ) : (
                     <StyledTableRow key={index}>
                       <TableCell align="center" className={classes.body}>
-                        {data.class}{" "}
+                        {data.class}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_count}{" "}
+                        {data.ts_count}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_reject}{" "}
+                        {data.ts_reject}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_countState1}{" "}
+                        {data.ts_countState1}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.sumAmount}{" "}
+                        {data.sumAmount}
                       </TableCell>
                     </StyledTableRow>
                   )

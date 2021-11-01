@@ -13,7 +13,10 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -67,7 +70,6 @@ export default function ModalAdd(props) {
     checkpoint_id,
   } = inputModal;
 
-  const [status, setStatus] = useState(false);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -110,8 +112,6 @@ export default function ModalAdd(props) {
         checkpoint_id: checkpoint_id,
       })
       .then((res) => {
-        setStatus(res.data.status);
-
         if (res.data.status === true) {
           props.onClose();
           Swal.fire({

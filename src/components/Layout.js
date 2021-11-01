@@ -40,7 +40,10 @@ const drawerWidth = 220;
 const drawerColor = "#46005E";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const useStyles = makeStyles((theme) => {

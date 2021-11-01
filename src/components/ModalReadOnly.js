@@ -24,11 +24,17 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const apiURLv1 = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {

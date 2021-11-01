@@ -18,7 +18,10 @@ import ModalReadOnly from "./ModalReadOnly";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 const useStyles = makeStyles((theme) => {
   return {
@@ -164,10 +167,10 @@ export default function AllTsTableForActivity(props) {
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
-              {headerCells.map((headerCell) => (
+              {headerCells.map((headerCell,index) => (
                 <TableCell
                   align="center"
-                  key={headerCell.id}
+                  key={index}
                   className={classes.header}
                 >
                   {headerCell.label}
@@ -205,7 +208,6 @@ export default function AllTsTableForActivity(props) {
                               : "gray",
                         }}
                       />
-                      {/* {data.match_id} */}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
@@ -230,7 +232,7 @@ export default function AllTsTableForActivity(props) {
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>

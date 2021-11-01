@@ -72,7 +72,10 @@ const useStyle = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 export default function Login() {
@@ -108,7 +111,7 @@ export default function Login() {
       didOpen: () => Swal.showLoading(),
     });
 
-    apiURL.post("/auth", sendData).then((res) => {
+    apiURL.post("/auth", sendData, { timeout: 10000 }).then((res) => {
       localStorage.setItem("isAuth", true);
       console.log("res:", res.data);
       Swal.close();
@@ -126,10 +129,7 @@ export default function Login() {
         console.log("pass", res.data.status);
         setCookies();
         history.push("/rawTransaction");
-      } else if (
-        !!res.data.status &&
-        res.data.result[0].department_id === 2
-      ) {
+      } else if (!!res.data.status && res.data.result[0].department_id === 2) {
         setCookies();
         history.push("/pk3Display");
         console.log("res:", res.data);
@@ -171,7 +171,7 @@ export default function Login() {
             </Grid>
             <Grid item className={classes.rightSide} sm={12} md={6} xs={12}>
               <CardMedia
-                component="image"
+                component="img"
                 image={Logo_doh}
                 style={{
                   maxWidth: 150,
@@ -249,7 +249,10 @@ export default function Login() {
                     className={classes.btn}
                     variant="contained"
                     color="secondary"
-                    onClick={() => {setState({ username: "", password: "" });localStorage.removeItem('isAuth')}}
+                    onClick={() => {
+                      setState({ username: "", password: "" });
+                      localStorage.removeItem("isAuth");
+                    }}
                   >
                     ยกเลิก
                   </Button>

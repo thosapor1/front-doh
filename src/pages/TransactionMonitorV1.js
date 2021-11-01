@@ -23,10 +23,10 @@ import FilterSectionSearch from "../components/FilterSectionSearch";
 import ImageSearchAudit from "../components/ImageSearchAudit";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
-});
-const apiURLv3 = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel(props) {
@@ -56,21 +56,9 @@ function a11yProps(index) {
   };
 }
 
-
 const useStyles = makeStyles((theme) => {
   return {};
 });
-
-const inActiveAudit = {
-  // backgroundColor: "red",
-  cursor: "pointer",
-};
-const activeAudit = {
-  "&$active": {
-    backgroundColor: "red",
-    cursor: "pointer",
-  },
-};
 
 export default function TransactionMonitorV1() {
   const classes = useStyles;
@@ -146,19 +134,19 @@ export default function TransactionMonitorV1() {
     transactionId: "",
     imageCrop: 0,
     imageFull: 0,
-  })
+  });
   const [awSearch, setAwSearch] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     transactionId: "",
     imageCrop: 0,
     imageFull: 0,
-  })
+  });
   const [fetcSearch, setFetcSearch] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     transactionId: "",
     imageCrop: 0,
     imageFull: 0,
-  })
+  });
 
   const [pagination1, setPagination1] = useState({
     page: 1,
@@ -174,7 +162,7 @@ export default function TransactionMonitorV1() {
   });
 
   const filter = (pageId = 1, selectDate, checkpoint, gate) => {
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPagination1({ ...pagination1, page: 1 });
     } else {
       setPagination1({ ...pagination1, page: pageId });
@@ -342,330 +330,329 @@ export default function TransactionMonitorV1() {
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
       date: date,
-      audit_transactionId: transactionId
-    }
-    apiURL.post('/audit-transaction-monitor-activity', sendData)
-      .then((res) => {
-        console.log(res.data);
-        setAuditSearch({
-          ...auditSearch, imageCrop: res.data.imageCrop,
-          imageFull: res.data.imageFull
-        })
-      })
-  }
+      audit_transactionId: transactionId,
+    };
+    apiURL.post("/audit-transaction-monitor-activity", sendData).then((res) => {
+      console.log(res.data);
+      setAuditSearch({
+        ...auditSearch,
+        imageCrop: res.data.imageCrop,
+        imageFull: res.data.imageFull,
+      });
+    });
+  };
   const search2 = (selectDate, transactionId) => {
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
       date: date,
-      headerTransactionId: transactionId
-    }
-    apiURL.post('/aw-transaction-monitor-activity', sendData)
-      .then((res) => {
-        console.log(res.data);
-        setAwSearch({
-          ...awSearch, imageCrop: res.data.imageFile,
-          imageFull: res.data.imageFileCrop
-        })
-      })
-  }
+      headerTransactionId: transactionId,
+    };
+    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+      console.log(res.data);
+      setAwSearch({
+        ...awSearch,
+        imageCrop: res.data.imageFile,
+        imageFull: res.data.imageFileCrop,
+      });
+    });
+  };
   const search3 = (selectDate, transactionId) => {
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
       date: date,
-      headerTransactionId: transactionId
-    }
-    apiURL.post('/aw-transaction-monitor-activity', sendData)
-      .then((res) => {
-        console.log(res.data);
-        setAwSearch({
-          ...awSearch, imageCrop: res.data.imageFileCrop,
-          imageFull: res.data.imageFile
-        })
-      })
-  }
+      headerTransactionId: transactionId,
+    };
+    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+      console.log(res.data);
+      setAwSearch({
+        ...awSearch,
+        imageCrop: res.data.imageFileCrop,
+        imageFull: res.data.imageFile,
+      });
+    });
+  };
 
-
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
   return (
-    <Container maxWidth>
-      <Typography>transaction monitor</Typography>
+    <>
+      <Container maxWidth>
+        <Typography>transaction monitor</Typography>
 
-      <div className={classes.tabs}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-        >
-          <Tab
-            label="Monitor"
-            {...a11yProps(0)}
-            className={classes.tab}
-          />
-          <Tab
-            label="Search"
-            {...a11yProps(1)}
-            className={classes.tab}
-          />
+        <div className={classes.tabs}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="simple tabs example"
+          >
+            <Tab label="Monitor" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="Search" {...a11yProps(1)} className={classes.tab} />
+          </Tabs>
 
-        </Tabs>
+          <TabPanel value={value} index={0}>
+            <Grid
+              container
+              spacing={2}
+              component={Paper}
+              style={{ marginTop: 10 }}
+            >
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  audit sensor
+                </Typography>
+                <FilterSectionMonitorPage
+                  dateValue={dataAudit.date}
+                  dateOnChange={(date) => {
+                    setDataAudit({
+                      ...dataAudit,
+                      date: date,
+                    });
+                    console.log("dateChange :", dataAudit.date);
+                  }}
+                  checkpointValue={dataAudit.checkpointValue}
+                  checkpointList={dataAudit.checkpointList}
+                  checkpointOnChange={(e) => {
+                    setDataAudit({
+                      ...dataAudit,
+                      checkpointValue: e.target.value,
+                    });
+                  }}
+                  gateValue={dataAudit.gateValue}
+                  gateList={dataAudit.gateList}
+                  gateOnChange={(e) => {
+                    setDataAudit({ ...dataAudit, gateValue: e.target.value });
+                  }}
+                  buttonOnClick={() => {
+                    filter(
+                      pagination1.page,
+                      dataAudit.date,
+                      dataAudit.checkpointValue,
+                      dataAudit.gateValue
+                    );
+                  }}
+                  color={"red"}
+                />
+                <ImageSectionMonitorPage
+                  imageCrop={dataAudit.imageCrop}
+                  imageFull={dataAudit.imageFull}
+                />
+                <TableSectionMonitorPage
+                  header={dataAudit.tableHeaderData}
+                  body={dataAudit.tableBodyData}
+                  tableOnClick={getImage1}
+                  countPage={pagination1.countPage}
+                  page={pagination1.page}
+                  pageOnChange={pageOnChange1}
+                  // style={?inActiveAudit:activeAudit}
+                  color={"red"}
+                />
+              </Grid>
 
-        <TabPanel value={value} index={0}>
-          <Grid container spacing={2} component={Paper} style={{ marginTop: 10 }}>
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                audit sensor
-              </Typography>
-              <FilterSectionMonitorPage
-                dateValue={dataAudit.date}
-                dateOnChange={(date) => {
-                  setDataAudit({
-                    ...dataAudit,
-                    date: date,
-                  });
-                  console.log("dateChange :", dataAudit.date);
-                }}
-                checkpointValue={dataAudit.checkpointValue}
-                checkpointList={dataAudit.checkpointList}
-                checkpointOnChange={(e) => {
-                  setDataAudit({ ...dataAudit, checkpointValue: e.target.value });
-                }}
-                gateValue={dataAudit.gateValue}
-                gateList={dataAudit.gateList}
-                gateOnChange={(e) => {
-                  setDataAudit({ ...dataAudit, gateValue: e.target.value });
-                }}
-                buttonOnClick={() => {
-                  filter(
-                    pagination1.page,
-                    dataAudit.date,
-                    dataAudit.checkpointValue,
-                    dataAudit.gateValue
-                  );
-                }}
-                color={"red"}
-              />
-              <ImageSectionMonitorPage
-                imageCrop={dataAudit.imageCrop}
-                imageFull={dataAudit.imageFull}
-              />
-              <TableSectionMonitorPage
-                header={dataAudit.tableHeaderData}
-                body={dataAudit.tableBodyData}
-                tableOnClick={getImage1}
-                countPage={pagination1.countPage}
-                page={pagination1.page}
-                pageOnChange={pageOnChange1}
-                // style={?inActiveAudit:activeAudit}
-                color={"red"}
-              />
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  transaction (AW)
+                </Typography>
+                <FilterAWMonitorPage
+                  dateValue={dataAW.date}
+                  dateOnChange={(date) => {
+                    setDataAW({
+                      ...dataAW,
+                      date: date,
+                    });
+                    console.log("dateChange :", dataAW.date);
+                  }}
+                  checkpointValue={dataAW.checkpointValue}
+                  checkpointList={dataAW.checkpointList}
+                  checkpointOnChange={(e) => {
+                    setDataAW({ ...dataAW, checkpointValue: e.target.value });
+                  }}
+                  gateValue={dataAW.gateValue}
+                  gateList={dataAW.gateList}
+                  gateOnChange={(e) => {
+                    setDataAW({ ...dataAW, gateValue: e.target.value });
+                  }}
+                  buttonOnClick={() => {
+                    filter2(
+                      pagination2.page,
+                      dataAW.date,
+                      dataAW.checkpointValue,
+                      dataAW.gateValue
+                    );
+                  }}
+                  color={"green"}
+                />
+                <ImageAWMonitorPage
+                  imageCrop={dataAW.imageCrop}
+                  imageFull={dataAW.imageFull}
+                />
+                <TableAWMonitorPage
+                  header={dataAW.tableHeaderData}
+                  body={dataAW.tableBodyData}
+                  tableOnClick={(item) => {
+                    getImage2(item);
+                  }}
+                  countPage={pagination2.countPage}
+                  page={pagination2.page}
+                  pageOnChange={pageOnChange2}
+                  color={"green"}
+                />
+              </Grid>
+
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  lane (FETC)
+                </Typography>
+                <FilterSectionMonitorPage
+                  dateValue={dataFetc.date}
+                  dateOnChange={(date) => {
+                    setDataFETC({
+                      ...dataFetc,
+                      date: date,
+                    });
+                    console.log("dateChange :", dataFetc.date);
+                  }}
+                  checkpointValue={dataFetc.checkpointValue}
+                  checkpointList={dataFetc.checkpointList}
+                  checkpointOnChange={(e) => {
+                    setDataFETC({
+                      ...dataFetc,
+                      checkpointValue: e.target.value,
+                    });
+                  }}
+                  gateValue={dataFetc.gateValue}
+                  gateList={dataFetc.gateList}
+                  gateOnChange={(e) => {
+                    setDataFETC({ ...dataFetc, gateValue: e.target.value });
+                  }}
+                  buttonOnClick={() => {
+                    filter3(
+                      pagination3.page,
+                      dataFetc.date,
+                      dataFetc.checkpointValue,
+                      dataFetc.gateValue
+                    );
+                  }}
+                  color={"blue"}
+                />
+                <ImageSectionMonitorPage
+                  imageCrop={dataFetc.imageCrop}
+                  imageFull={dataFetc.imageFull}
+                />
+                <TableSectionMonitorPage
+                  header={dataFetc.tableHeaderData}
+                  body={dataFetc.tableBodyData}
+                  tableOnClick={() => {
+                    alert("click on table");
+                  }}
+                  countPage={pagination3.countPage}
+                  page={pagination3.page}
+                  pageOnChange={pageOnChange3}
+                  color={"blue"}
+                />
+              </Grid>
             </Grid>
+          </TabPanel>
 
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                transaction (AW)
-              </Typography>
-              <FilterAWMonitorPage
-                dateValue={dataAW.date}
-                dateOnChange={(date) => {
-                  setDataAW({
-                    ...dataAW,
-                    date: date,
-                  });
-                  console.log("dateChange :", dataAW.date);
-                }}
-                checkpointValue={dataAW.checkpointValue}
-                checkpointList={dataAW.checkpointList}
-                checkpointOnChange={(e) => {
-                  setDataAW({ ...dataAW, checkpointValue: e.target.value });
-                }}
-                gateValue={dataAW.gateValue}
-                gateList={dataAW.gateList}
-                gateOnChange={(e) => {
-                  setDataAW({ ...dataAW, gateValue: e.target.value });
-                }}
-                buttonOnClick={() => {
-                  filter2(
-                    pagination2.page,
-                    dataAW.date,
-                    dataAW.checkpointValue,
-                    dataAW.gateValue
-                  );
-                }}
-                color={"green"}
-              />
-              <ImageAWMonitorPage
-                imageCrop={dataAW.imageCrop}
-                imageFull={dataAW.imageFull}
-              />
-              <TableAWMonitorPage
-                header={dataAW.tableHeaderData}
-                body={dataAW.tableBodyData}
-                tableOnClick={(item) => {
-                  getImage2(item);
-                }}
-                countPage={pagination2.countPage}
-                page={pagination2.page}
-                pageOnChange={pageOnChange2}
-                color={"green"}
-              />
+          {/* Search Tab */}
+          <TabPanel value={value} index={1}>
+            <Grid
+              container
+              spacing={2}
+              component={Paper}
+              style={{ marginTop: 10 }}
+            >
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  audit sensor
+                </Typography>
+                <FilterSectionSearch
+                  dateValue={auditSearch.date}
+                  dateOnChange={(date) => {
+                    setAuditSearch({
+                      ...auditSearch,
+                      date: date,
+                    });
+                    console.log("dateChange :", auditSearch.date);
+                  }}
+                  transactionValue={auditSearch.transactionId}
+                  transactionOnChange={(e) => {
+                    setAuditSearch({
+                      ...auditSearch,
+                      transactionId: e.target.value,
+                    });
+                  }}
+                  buttonOnClick={() => {
+                    search(auditSearch.date, auditSearch.transactionId);
+                  }}
+                  color={"red"}
+                />
+                <ImageSearchAudit
+                  imageCrop={auditSearch.imageCrop}
+                  imageFull={auditSearch.imageFull}
+                />
+              </Grid>
+
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  transaction (AW)
+                </Typography>
+                <FilterSectionSearch
+                  dateValue={awSearch.date}
+                  dateOnChange={(date) => {
+                    setAwSearch({
+                      ...awSearch,
+                      date: date,
+                    });
+                    console.log("dateChange :", awSearch.date);
+                  }}
+                  transactionValue={awSearch.transactionId}
+                  transactionOnChange={(e) => {
+                    setAwSearch({ ...awSearch, transactionId: e.target.value });
+                  }}
+                  buttonOnClick={() => {
+                    search2(awSearch.date, awSearch.transactionId);
+                  }}
+                  color={"green"}
+                />
+                <ImageAWMonitorPage
+                  imageCrop={awSearch.imageCrop}
+                  imageFull={awSearch.imageFull}
+                />
+              </Grid>
+
+              <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  lane (FETC)
+                </Typography>
+                <FilterSectionSearch
+                  dateValue={fetcSearch.date}
+                  dateOnChange={(date) => {
+                    setFetcSearch({
+                      ...fetcSearch,
+                      date: date,
+                    });
+                    console.log("dateChange :", fetcSearch.date);
+                  }}
+                  transactionValue={fetcSearch.transactionId}
+                  transactionOnChange={(e) => {
+                    setAwSearch({
+                      ...fetcSearch,
+                      transactionId: e.target.value,
+                    });
+                  }}
+                  buttonOnClick={() => {
+                    search3(fetcSearch.date, fetcSearch.transactionId);
+                  }}
+                  color={"blue"}
+                />
+                <ImageSectionMonitorPage
+                  imageCrop={dataFetc.imageCrop}
+                  imageFull={dataFetc.imageFull}
+                />
+              </Grid>
             </Grid>
-
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                lane (FETC)
-              </Typography>
-              <FilterSectionMonitorPage
-                dateValue={dataFetc.date}
-                dateOnChange={(date) => {
-                  setDataFETC({
-                    ...dataFetc,
-                    date: date,
-                  });
-                  console.log("dateChange :", dataFetc.date);
-                }}
-                checkpointValue={dataFetc.checkpointValue}
-                checkpointList={dataFetc.checkpointList}
-                checkpointOnChange={(e) => {
-                  setDataFETC({ ...dataFetc, checkpointValue: e.target.value });
-                }}
-                gateValue={dataFetc.gateValue}
-                gateList={dataFetc.gateList}
-                gateOnChange={(e) => {
-                  setDataFETC({ ...dataFetc, gateValue: e.target.value });
-                }}
-                buttonOnClick={() => {
-                  filter3(
-                    pagination3.page,
-                    dataFetc.date,
-                    dataFetc.checkpointValue,
-                    dataFetc.gateValue
-                  );
-                }}
-                color={"blue"}
-              />
-              <ImageSectionMonitorPage
-                imageCrop={dataFetc.imageCrop}
-                imageFull={dataFetc.imageFull}
-              />
-              <TableSectionMonitorPage
-                header={dataFetc.tableHeaderData}
-                body={dataFetc.tableBodyData}
-                tableOnClick={() => {
-                  alert("click on table");
-                }}
-                countPage={pagination3.countPage}
-                page={pagination3.page}
-                pageOnChange={pageOnChange3}
-                color={"blue"}
-              />
-            </Grid>
-          </Grid>
-        </TabPanel>
-
-
-        {/* Search Tab */}
-        <TabPanel value={value} index={1}>
-          <Grid container spacing={2} component={Paper} style={{ marginTop: 10 }}>
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                audit sensor
-              </Typography>
-              <FilterSectionSearch
-                dateValue={auditSearch.date}
-                dateOnChange={(date) => {
-                  setAuditSearch({
-                    ...auditSearch,
-                    date: date,
-                  });
-                  console.log("dateChange :", auditSearch.date);
-                }}
-                transactionValue={auditSearch.transactionId}
-                transactionOnChange={(e) => {
-                  setAuditSearch({ ...auditSearch, transactionId: e.target.value });
-                }}
-
-                buttonOnClick={() => {
-                  search(
-                    auditSearch.date,
-                    auditSearch.transactionId
-                  );
-                }}
-                color={"red"}
-              />
-              <ImageSearchAudit
-                imageCrop={auditSearch.imageCrop}
-                imageFull={auditSearch.imageFull}
-              />
-            </Grid>
-
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                transaction (AW)
-              </Typography>
-              <FilterSectionSearch
-                dateValue={awSearch.date}
-                dateOnChange={(date) => {
-                  setAwSearch({
-                    ...awSearch,
-                    date: date,
-                  });
-                  console.log("dateChange :", awSearch.date);
-                }}
-                transactionValue={awSearch.transactionId}
-                transactionOnChange={(e) => {
-                  setAwSearch({ ...awSearch, transactionId: e.target.value });
-                }}
-
-                buttonOnClick={() => {
-                  search2(
-                    awSearch.date,
-                    awSearch.transactionId
-                  );
-                }}
-                color={"green"}
-              />
-              <ImageAWMonitorPage
-                imageCrop={awSearch.imageCrop}
-                imageFull={awSearch.imageFull}
-              />
-
-            </Grid>
-
-            <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
-              <Typography variant="h6" align="center">
-                lane (FETC)
-              </Typography>
-              <FilterSectionSearch
-                dateValue={fetcSearch.date}
-                dateOnChange={(date) => {
-                  setFetcSearch({
-                    ...fetcSearch,
-                    date: date,
-                  });
-                  console.log("dateChange :", fetcSearch.date);
-                }}
-                transactionValue={fetcSearch.transactionId}
-                transactionOnChange={(e) => {
-                  setAwSearch({ ...fetcSearch, transactionId: e.target.value });
-                }}
-
-                buttonOnClick={() => {
-                  search3(
-                    fetcSearch.date,
-                    fetcSearch.transactionId
-                  );
-                }}
-                color={"blue"}
-              />
-              <ImageSectionMonitorPage
-                imageCrop={dataFetc.imageCrop}
-                imageFull={dataFetc.imageFull}
-              />
-
-            </Grid>
-          </Grid>
-        </TabPanel>
-      </div>
-    </Container>
+          </TabPanel>
+        </div>
+      </Container>
+    </>
   );
 }

@@ -24,7 +24,10 @@ import AllTsTableForActivity from "../components/AllTsTableForActivity";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -142,7 +145,7 @@ export default function AuditDisplay() {
   const [classTable, setClassTable] = useState("");
   const [allTsTable, setAllTsTable] = useState([]);
   const [summary, setSummary] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(0);
+  const [checkpoint, setCheckpoint] = useState("");
   const [status_select, setStatus_select] = useState(0);
   const [status, setStatus] = useState(0);
   const [valueMenuItem, setValueMenuItem] = useState([]);
@@ -342,182 +345,188 @@ export default function AuditDisplay() {
 
   const classes = useStyles();
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-        ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
-      </Typography>
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+        <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+        </Typography>
 
-      {/* Filter Section */}
-      <Grid container component={Paper} className={classes.filterSection}>
-        <Grid item lg={7} md={8} sm={12} className={classes.inputSection}>
-          <TextField
-            select
-            label="ด่าน"
-            value={checkpoint}
-            onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
-            name="gate_select"
-          >
-            {valueMenuItem.map((item,index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <TextField
-            select
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              changeSubState(e.target.value);
-            }}
-            className={classes.input}
-            name="status_select"
-          >
-            {valueStatus.map((item,index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.label}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              style={{ marginTop: 12 }}
+        {/* Filter Section */}
+        <Grid container component={Paper} className={classes.filterSection}>
+          <Grid item lg={7} md={8} sm={12} className={classes.inputSection}>
+            <TextField
+              select
+              label="ด่าน"
+              value={checkpoint}
+              onChange={(e) => setCheckpoint(e.target.value)}
               className={classes.input}
-              disableToolbar
-              variant="inlined"
-              format="dd/MM/yyyy"
-              margin="normal"
-              id="date-picker-inline"
-              label="วันที่เข้าด่าน"
-              value={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
+              name="gate_select"
+            >
+              {valueMenuItem.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.checkpoint_name}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              select
+              label="สถานะ"
+              value={status_select}
+              onChange={(e) => {
+                changeSubState(e.target.value);
               }}
-            />
-          </MuiPickersUtilsProvider>
-
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              style={{ marginTop: 12 }}
-              ampm={false}
-              variant="inline"
-              label="เวลาเริ่มต้น"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeStart}
-              onChange={setSelectedTimeStart}
               className={classes.input}
-            />
-          </MuiPickersUtilsProvider>
+              name="status_select"
+            >
+              {valueStatus.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.label}
+                </MenuItem>
+              ))}
+            </TextField>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              style={{ marginTop: 12 }}
-              ampm={false}
-              variant="inline"
-              label="เวลาสิ้นสุด"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeEnd}
-              onChange={setSelectedTimeEnd}
-              className={classes.input}
-            />
-          </MuiPickersUtilsProvider>
-        </Grid>
-        <Grid item lg={5} md={4} sm={12} className={classes.btnSection}>
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
-            ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
-            refresh
-          </Button>
-        </Grid>
-      </Grid>
-
-      {/* Card Section */}
-      <div className={classes.cardSection}>
-        {!!dataCard
-          ? dataCard.map((card, index) => (
-              <Paper
-                key={index}
-                className={classes.card}
-                style={{
-                  borderLeft:
-                    card.status === "ts_total"
-                      ? "3px solid gray"
-                      : card.status === "ts_normal"
-                      ? "3px solid gray"
-                      : card.status === "ts_not_normal"
-                      ? "3px solid orange"
-                      : "3px solid green",
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                style={{ marginTop: 12 }}
+                className={classes.input}
+                disableToolbar
+                variant="inlined"
+                format="dd/MM/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="วันที่เข้าด่าน"
+                value={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
                 }}
-              >
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
-                >
-                  <Grid item sm={12} md={6} lg={6}>
-                    <Typography
-                      style={{
-                        fontSize: "0.9rem",
-                        color:
-                          card.status === "ts_total"
-                            ? "gray"
-                            : card.status === "ts_normal"
-                            ? "gray"
-                            : card.status === "ts_not_normal"
-                            ? "orange"
-                            : "green",
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "0.9rem" }}>
-                      {card.value}{" "}
-                      {card.status === "revenue" ? "บาท" : "รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Paper>
-            ))
-          : []}
-      </div>
+              />
+            </MuiPickersUtilsProvider>
 
-      {/* Table Section */}
-      <Grid container component="Paper" className={classes.gateAndClassSection}>
-        <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
-          <GateTable dataList={gateTable} />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardTimePicker
+                style={{ marginTop: 12 }}
+                ampm={false}
+                variant="inline"
+                label="เวลาเริ่มต้น"
+                openTo="hours"
+                views={["hours", "minutes", "seconds"]}
+                format="HH:mm:ss"
+                value={selectedTimeStart}
+                onChange={setSelectedTimeStart}
+                className={classes.input}
+              />
+            </MuiPickersUtilsProvider>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardTimePicker
+                style={{ marginTop: 12 }}
+                ampm={false}
+                variant="inline"
+                label="เวลาสิ้นสุด"
+                openTo="hours"
+                views={["hours", "minutes", "seconds"]}
+                format="HH:mm:ss"
+                value={selectedTimeEnd}
+                onChange={setSelectedTimeEnd}
+                className={classes.input}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item lg={5} md={4} sm={12} className={classes.btnSection}>
+            <Button
+              variant="contained"
+              className={classes.btn}
+              onClick={() => fetchData(1)}
+            >
+              ดูข้อมูล
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.btn2}
+              onClick={() => refresh(1)}
+            >
+              refresh
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
-          <ClassTable dataList={classTable} />
+
+        {/* Card Section */}
+        <div className={classes.cardSection}>
+          {!!dataCard
+            ? dataCard.map((card, index) => (
+                <Paper
+                  key={index}
+                  className={classes.card}
+                  style={{
+                    borderLeft:
+                      card.status === "ts_total"
+                        ? "3px solid gray"
+                        : card.status === "ts_normal"
+                        ? "3px solid gray"
+                        : card.status === "ts_not_normal"
+                        ? "3px solid orange"
+                        : "3px solid green",
+                  }}
+                >
+                  <Grid
+                    container
+                    justifyContent="space-around"
+                    alignItems="center"
+                  >
+                    <Grid item sm={12} md={6} lg={6}>
+                      <Typography
+                        style={{
+                          fontSize: "0.9rem",
+                          color:
+                            card.status === "ts_total"
+                              ? "gray"
+                              : card.status === "ts_normal"
+                              ? "gray"
+                              : card.status === "ts_not_normal"
+                              ? "orange"
+                              : "green",
+                        }}
+                      >
+                        {card.label}
+                      </Typography>
+                      <Typography style={{ fontSize: "0.9rem" }}>
+                        {card.value}
+                        {card.status === "revenue" ? "บาท" : "รายการ"}
+                      </Typography>
+                    </Grid>
+                    <Grid>
+                      <DescriptionTwoToneIcon />
+                    </Grid>
+                  </Grid>
+                </Paper>
+              ))
+            : []}
+        </div>
+
+        {/* Table Section */}
+        <Grid
+          container
+          component={Paper}
+          className={classes.gateAndClassSection}
+        >
+          <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
+            <GateTable dataList={gateTable} />
+          </Grid>
+          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
+            <ClassTable dataList={classTable} />
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-        <AllTsTableForActivity
-          dataList={allTsTable}
-          page={page}
-          onChange={handlePageChange}
-          onFetchData={fetchData}
-        />
-      </Grid>
-    </Container>
+        <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
+          <AllTsTableForActivity
+            dataList={allTsTable}
+            page={page}
+            onChange={handlePageChange}
+            onFetchData={fetchData}
+          />
+        </Grid>
+      </Container>
+    </>
   );
 }

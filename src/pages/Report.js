@@ -1,14 +1,13 @@
 import {
   Box,
   Container,
-  Grid,
   makeStyles,
   Paper,
   Tab,
   Tabs,
   Typography,
 } from "@material-ui/core";
-import axios from "axios";
+
 import React, { useEffect, useState } from "react";
 import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
@@ -27,10 +26,6 @@ import BlockTrafficReport from "../components/report/BlockTrafficReport";
 import PdfSumMonthly from "../components/report/PdfSumMonthly";
 import PdfRemain from "../components/report/PdfRemain";
 import PdfTraffic from "../components/report/PdfTraffic";
-
-const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
-});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -145,184 +140,186 @@ export default function Report() {
   }, []);
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Typography
-        variant="h6"
-        style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
-      >
-        ตรวจสอบ (DOH) : รายงาน
-      </Typography>
-      <div className={classes.tabs}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+        <Typography
+          variant="h6"
+          style={{ marginBottom: "1rem", fontSize: "0.9rem" }}
         >
-          <Tab
-            label="รายงานประจำวัน"
-            {...a11yProps(0)}
-            className={classes.tab}
-          />
-          <Tab
-            label="รายงานใบนำฝาก"
-            {...a11yProps(1)}
-            className={classes.tab}
-          />
-          <Tab
-            label="รายงานสรุปยอดคงค้าง"
-            {...a11yProps(2)}
-            className={classes.tab}
-          />
-          <Tab
-            label="รายงานสรุปจราจร"
-            {...a11yProps(3)}
-            className={classes.tab}
-          />
-        </Tabs>
+          ตรวจสอบ (DOH) : รายงาน
+        </Typography>
+        <div className={classes.tabs}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="simple tabs example"
+          >
+            <Tab
+              label="รายงานประจำวัน"
+              {...a11yProps(0)}
+              className={classes.tab}
+            />
+            <Tab
+              label="รายงานใบนำฝาก"
+              {...a11yProps(1)}
+              className={classes.tab}
+            />
+            <Tab
+              label="รายงานสรุปยอดคงค้าง"
+              {...a11yProps(2)}
+              className={classes.tab}
+            />
+            <Tab
+              label="รายงานสรุปจราจร"
+              {...a11yProps(3)}
+              className={classes.tab}
+            />
+          </Tabs>
 
-        <TabPanel value={value} index={0}>
-          <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection onFetchData={fetchData} report={PdfDaily} />
-            <Paper style={{ marginTop: 20 }}>
-              <Typography
-                style={{
-                  paddingTop: 20,
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                ทับช้าง1
-              </Typography>
-              <Typography
-                style={{
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
-              </Typography>
+          <TabPanel value={value} index={0}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection onFetchData={fetchData} report={PdfDaily} />
+              <Paper style={{ marginTop: 20 }}>
+                <Typography
+                  style={{
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  ทับช้าง1
+                </Typography>
+                <Typography
+                  style={{
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
+                </Typography>
 
-              <div style={{ display: "flex", marginTop: 20 }}>
-                <div>
-                  <TableReportDaily dataList={allTsTable} />
+                <div style={{ display: "flex", marginTop: 20 }}>
+                  <div>
+                    <TableReportDaily dataList={allTsTable} />
+                  </div>
+                  <div>
+                    <BlockDailyReport />
+                  </div>
                 </div>
-                <div>
-                  <BlockDailyReport />
+
+                <TableReportDaily2 dataList={allTsTable2} />
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={1}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection2 onFetchData={fetchData} report={PdfSumMonthly} />
+              <Paper style={{ marginTop: 20 }}>
+                <Typography
+                  style={{
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  ทับช้าง1
+                </Typography>
+                <Typography
+                  style={{
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+                </Typography>
+
+                <BlockSumMonthlyReport />
+
+                <TableReportSumMonthly dataList={allTsTable3} />
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={2}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection2 onFetchData={fetchData} report={PdfRemain} />
+              <Paper style={{ marginTop: 20 }}>
+                <Typography
+                  style={{
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  ทับช้าง1
+                </Typography>
+                <Typography
+                  style={{
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+                </Typography>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 20,
+                  }}
+                >
+                  <div>
+                    <BlockRemainReport />
+                  </div>
+                  <div>
+                    <TableReportDaily dataList={allTsTable} />
+                  </div>
                 </div>
-              </div>
 
-              <TableReportDaily2 dataList={allTsTable2} />
-            </Paper>
-          </Container>
-        </TabPanel>
+                <TableReportRemainMonthly dataList={allTsTable3} />
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
+              <Paper style={{ marginTop: 20 }}>
+                <Typography
+                  style={{
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  ทับช้าง1
+                </Typography>
+                <Typography
+                  style={{
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+                </Typography>
 
-        <TabPanel value={value} index={1}>
-          <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfSumMonthly} />
-            <Paper style={{ marginTop: 20 }}>
-              <Typography
-                style={{
-                  paddingTop: 20,
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                ทับช้าง1
-              </Typography>
-              <Typography
-                style={{
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-              </Typography>
+                <BlockTrafficReport />
 
-              <BlockSumMonthlyReport />
-
-              <TableReportSumMonthly dataList={allTsTable3} />
-            </Paper>
-          </Container>
-        </TabPanel>
-
-        <TabPanel value={value} index={2}>
-          <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfRemain} />
-            <Paper style={{ marginTop: 20 }}>
-              <Typography
-                style={{
-                  paddingTop: 20,
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                ทับช้าง1
-              </Typography>
-              <Typography
-                style={{
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-              </Typography>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 20,
-                }}
-              >
-                <div>
-                  <BlockRemainReport />
-                </div>
-                <div>
-                  <TableReportDaily dataList={allTsTable} />
-                </div>
-              </div>
-
-              <TableReportRemainMonthly dataList={allTsTable3} />
-            </Paper>
-          </Container>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Container maxWidth="xl" className={classes.inTab}>
-            <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
-            <Paper style={{ marginTop: 20 }}>
-              <Typography
-                style={{
-                  paddingTop: 20,
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                ทับช้าง1
-              </Typography>
-              <Typography
-                style={{
-                  paddingLeft: 20,
-                  fontWeight: 600,
-                  fontFamily: "sarabun",
-                }}
-              >
-                เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-              </Typography>
-
-              <BlockTrafficReport />
-
-              <TableReportTrafficMonthly dataList={allTsTable3} />
-            </Paper>
-          </Container>
-        </TabPanel>
-      </div>
-    </Container>
+                <TableReportTrafficMonthly dataList={allTsTable3} />
+              </Paper>
+            </Container>
+          </TabPanel>
+        </div>
+      </Container>
+    </>
   );
 }

@@ -73,8 +73,12 @@ export default function GateTable(props) {
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
-              {headCells.map((headCell) => (
-                <TableCell className={classes.header} align="center">
+              {headCells.map((headCell, index) => (
+                <TableCell
+                  key={index}
+                  className={classes.header}
+                  align="center"
+                >
                   {headCell.label}
                 </TableCell>
               ))}
@@ -82,7 +86,7 @@ export default function GateTable(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.map((data,index) => (
+              ? dataList.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell align="center" className={classes.body}>
                       {data.checkpoint_name}
@@ -95,7 +99,7 @@ export default function GateTable(props) {
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>

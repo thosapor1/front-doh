@@ -22,7 +22,10 @@ import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -169,7 +172,7 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
     apiURL.post("/pk3display", sendData).then((res) => {
-      Swal.close()
+      Swal.close();
       console.log(
         "res: ",
         res.data,

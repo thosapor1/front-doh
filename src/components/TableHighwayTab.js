@@ -21,8 +21,12 @@ import ModalEditTabHighway from "./ModalEditTabHighway";
 import ModalAddTabHighway from "./ModalAddTabHighway";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+
 
 const useStyles = makeStyles((theme) => {
   return {

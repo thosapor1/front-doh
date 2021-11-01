@@ -24,9 +24,11 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V3}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
-
 const useStyle = makeStyles((theme) => {
   return {
     "@global": {
@@ -169,16 +171,16 @@ export default function RawTransaction() {
   const handleStatusChange = (event) => {
     setId(event.target.value);
     setStatus(event.target.value);
-    if (event.target.value == 3) {
+    if (event.target.value === 3) {
       setStatus(2);
       setSubState(2);
-    } else if (event.target.value == 2) {
+    } else if (event.target.value === 2) {
       setStatus(2);
       setSubState(1);
-    } else if (event.target.value == 1) {
+    } else if (event.target.value === 1) {
       setStatus(1);
       setSubState(1);
-    } else if (event.target.value == 0) {
+    } else if (event.target.value === 0) {
       setStatus(0);
       setSubState(0);
     }
@@ -195,7 +197,7 @@ export default function RawTransaction() {
       didOpen: () => Swal.showLoading(),
     });
 
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);

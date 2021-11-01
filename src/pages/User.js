@@ -82,7 +82,10 @@ const useStyles = makeStyles((theme) => {
 });
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V2}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 export default function User() {
@@ -102,7 +105,6 @@ export default function User() {
   };
 
   const handleClose = () => {
-    
     setOpen(false);
     setDataForEdit(null);
   };
@@ -207,113 +209,117 @@ export default function User() {
   // Body Modal
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-        ตั้งค่า : ผู้ใช้งาน
-      </Typography>
-      <Paper className={classes.paper}>
-        <div style={{ textAlign: "right" }}>
-          <Button
-            className={classes.btn}
-            startIcon={<AddTwoToneIcon />}
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-          >
-            เพิ่มผู้ใช้งาน
-          </Button>
-        </div>
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+        <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+          ตั้งค่า : ผู้ใช้งาน
+        </Typography>
+        <Paper className={classes.paper}>
+          <div style={{ textAlign: "right" }}>
+            <Button
+              className={classes.btn}
+              startIcon={<AddTwoToneIcon />}
+              variant="contained"
+              color="primary"
+              onClick={handleOpen}
+            >
+              เพิ่มผู้ใช้งาน
+            </Button>
+          </div>
 
-        {/* Table */}
-        <TableContainer component={Paper}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              {tableHeader.map((header) => (
-                <TableCell
-                  key={header.id}
-                  align="center"
-                  className={classes.header}
-                >
-                  {header.label}
-                </TableCell>
-              ))}
-            </TableHead>
-            <TableBody>
-              {!!state.user_list
-                ? state.user_list.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell align="center">{item.id} </TableCell>
-                      <TableCell align="center">{item.username} </TableCell>
-                      <TableCell align="center">{item.fname} </TableCell>
-                      <TableCell align="center">{item.lname} </TableCell>
-                      <TableCell align="center">{item.position} </TableCell>
-                      <TableCell align="center">{item.department} </TableCell>
-                      <TableCell align="center">
-                        <Tooltip title="edit">
-                          <IconButton
-                            onClick={() => {
-                              handleOpenModalEdit();
-                              handlegetDataForEdit(item);
-                            }}
+          {/* Table */}
+          <TableContainer component={Paper}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {tableHeader.map((header) => (
+                    <TableCell
+                      key={header.id}
+                      align="center"
+                      className={classes.header}
+                    >
+                      {header.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!!state.user_list
+                  ? state.user_list.map((item, index) => (
+                      <TableRow key={item.id}>
+                        <TableCell align="center">{item.id} </TableCell>
+                        <TableCell align="center">{item.username} </TableCell>
+                        <TableCell align="center">{item.fname} </TableCell>
+                        <TableCell align="center">{item.lname} </TableCell>
+                        <TableCell align="center">{item.position} </TableCell>
+                        <TableCell align="center">{item.department} </TableCell>
+                        <TableCell align="center">
+                          <Tooltip title="edit">
+                            <IconButton
+                              onClick={() => {
+                                handleOpenModalEdit();
+                                handlegetDataForEdit(item);
+                              }}
+                            >
+                              <EditTwoToneIcon color="primary" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="delete">
+                            <IconButton
+                              onClick={() => handleDelete(item)}
+                              color="secondary"
+                            >
+                              <DeleteForeverTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell align="center">
+                          {item.status === 1 ? (
+                            <Switch
+                              checked={true}
+                              onChange={(e) => handleChangeSwitch(e, index)}
+                              name={`switch${index}`}
+                              color="primary"
+                            />
+                          ) : (
+                            <Switch
+                              checked={false}
+                              onChange={(e) => handleChangeSwitch(e, index)}
+                              name={`switch${index}`}
+                              color="secondary"
+                            />
+                          )}
+                          <Typography
+                            className={
+                              item.status === 1
+                                ? classes.active
+                                : classes.inactive
+                            }
                           >
-                            <EditTwoToneIcon color="primary" />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="delete">
-                          <IconButton
-                            onClick={() => handleDelete(item)}
-                            color="secondary"
-                          >
-                            <DeleteForeverTwoToneIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align="center">
-                        {item.status === 1 ? (
-                          <Switch
-                            checked={true}
-                            onChange={(e) => handleChangeSwitch(e, index)}
-                            name={`switch${index}`}
-                            color="primary"
-                          />
-                        ) : (
-                          <Switch
-                            checked={false}
-                            onChange={(e) => handleChangeSwitch(e, index)}
-                            name={`switch${index}`}
-                            color="secondary"
-                          />
-                        )}
-                        <Typography
-                          className={
-                            item.status === 1
-                              ? classes.active
-                              : classes.inactive
-                          }
-                        >
-                          {item.status === 1 ? "active" : "inactive"}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : state.user_list}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+                            {item.status === 1 ? "active" : "inactive"}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : state.user_list}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
 
-      <ModalAdd
-        open={open}
-        onClose={() => handleClose()}
-        onClick={() => handleClose()}
-      />
+        <ModalAdd
+          open={open}
+          onClose={() => handleClose()}
+          onClick={() => handleClose()}
+        />
 
-      <ModalEdit
-        dataForEdit={dataForEdit}
-        open={openModalEdit}
-        onClose={() => handleCloseModalEdit()}
-        onClick={() => handleCloseModalEdit()}
-      />
-    </Container>
+        <ModalEdit
+          dataForEdit={dataForEdit}
+          open={openModalEdit}
+          onClose={() => handleCloseModalEdit()}
+          onClick={() => handleCloseModalEdit()}
+        />
+      </Container>
+    </>
   );
 }

@@ -13,8 +13,12 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL_V1}`,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+
 
 const useStyle = makeStyles((theme) => {
   return {
