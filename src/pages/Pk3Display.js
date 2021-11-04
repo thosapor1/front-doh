@@ -235,7 +235,7 @@ export default function AuditDisplay() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
   return (

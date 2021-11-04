@@ -165,9 +165,10 @@ export default function TableFeeTab(props) {
   const { dataList } = props;
 
   return (
-    <Container maxWidth="xl">
-      <div style={{ display: "flex", justifyContent: "right" }}>
-        {/* <Pagination
+    <>
+      <Container maxWidth="xl">
+        <div style={{ display: "flex", justifyContent: "right" }}>
+          {/* <Pagination
           count={dataList.totalPages}
           color="primary"
           page={page}
@@ -180,76 +181,77 @@ export default function TableFeeTab(props) {
           }}
         /> */}
 
-        <Button
-          className={classes.btn}
-          startIcon={<AddTwoToneIcon />}
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          เพิ่มประเภทรถ
-        </Button>
-      </div>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader>
-          <TableHead>
-            <StyledTableRow>
-              {headerCells.map((headerCell) => (
-                <TableCell
-                  align="center"
-                  key={headerCell.id}
-                  className={classes.header}
-                >
-                  {headerCell.label}
-                </TableCell>
-              ))}
-            </StyledTableRow>
-          </TableHead>
-          <TableBody>
-            {!!dataList
-              ? dataList.vehicle_list.map((data, index) => (
-                  <StyledTableRow key={index}>
-                    <TableCell align="center">{index + 1} </TableCell>
-                    <TableCell align="center">{data.vehicleClass}</TableCell>
-                    <TableCell align="center">{data.name}</TableCell>
-                    <TableCell align="center">{data.fee}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() => {
-                          handleOpenModalEdit();
-                          handleGetDataForEdit(data);
-                        }}
-                      >
-                        <EditTwoToneIcon color="primary" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleDelete(data)}
-                        color="secondary"
-                      >
-                        <DeleteForeverTwoToneIcon />
-                      </IconButton>
-                    </TableCell>
-                  </StyledTableRow>
-                ))
-              : dataList}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          <Button
+            className={classes.btn}
+            startIcon={<AddTwoToneIcon />}
+            variant="contained"
+            color="primary"
+            onClick={handleOpen}
+          >
+            เพิ่มประเภทรถ
+          </Button>
+        </div>
+        <TableContainer className={classes.container}>
+          <Table stickyHeader>
+            <TableHead>
+              <StyledTableRow>
+                {headerCells.map((headerCell) => (
+                  <TableCell
+                    align="center"
+                    key={headerCell.id}
+                    className={classes.header}
+                  >
+                    {headerCell.label}
+                  </TableCell>
+                ))}
+              </StyledTableRow>
+            </TableHead>
+            <TableBody>
+              {!!dataList
+                ? dataList.vehicle_list.map((data, index) => (
+                    <StyledTableRow key={index}>
+                      <TableCell align="center">{index + 1} </TableCell>
+                      <TableCell align="center">{data.vehicleClass}</TableCell>
+                      <TableCell align="center">{data.name}</TableCell>
+                      <TableCell align="center">{data.fee}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={() => {
+                            handleOpenModalEdit();
+                            handleGetDataForEdit(data);
+                          }}
+                        >
+                          <EditTwoToneIcon color="primary" />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDelete(data)}
+                          color="secondary"
+                        >
+                          <DeleteForeverTwoToneIcon />
+                        </IconButton>
+                      </TableCell>
+                    </StyledTableRow>
+                  ))
+                : dataList}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <ModalAddTabFee
-        open={open}
-        onClose={() => handleClose()}
-        onClick={() => handleClose()}
-        onFetchData={props.onFetchData}
-      />
+        <ModalAddTabFee
+          open={open}
+          onClose={() => handleClose()}
+          onClick={() => handleClose()}
+          onFetchData={props.onFetchData}
+        />
 
-      <ModalEditTabFee
-        dataForEdit={dataForEdit}
-        open={openModalEdit}
-        onClose={() => handleCloseModalEdit()}
-        onClick={() => handleCloseModalEdit()}
-        onFetchData={props.onFetchData}
-      />
-    </Container>
+        <ModalEditTabFee
+          dataForEdit={dataForEdit}
+          open={openModalEdit}
+          onClose={() => handleCloseModalEdit()}
+          onClick={() => handleCloseModalEdit()}
+          onFetchData={props.onFetchData}
+        />
+      </Container>
+    </>
   );
 }

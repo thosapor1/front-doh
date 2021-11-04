@@ -866,7 +866,7 @@ export default function ModalActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="audit_lp"
-                      value={audit_lp}
+                      value={audit_lp || ""}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -878,7 +878,7 @@ export default function ModalActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="audit_province"
-                      value={audit_province}
+                      value={audit_province || ""}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -891,7 +891,7 @@ export default function ModalActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="audit_vehicleClass"
-                      value={audit_vehicleClass}
+                      value={audit_vehicleClass || ""}
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicelClass
@@ -913,7 +913,7 @@ export default function ModalActivity(props) {
                       className={classes.textField}
                       size="small"
                       name="valueRef"
-                      value={audit_feeAmount}
+                      value={audit_feeAmount || ""}
                     />
                   </TableCell>
                 </TableRow>

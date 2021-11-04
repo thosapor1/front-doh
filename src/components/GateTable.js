@@ -88,15 +88,9 @@ export default function GateTable(props) {
             {!!dataList
               ? dataList.map((data, index) => (
                   <StyledTableRow key={index}>
-                    <TableCell align="center" className={classes.body}>
-                      {data.checkpoint_name}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.gate_name}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.ts_count}
-                    </TableCell>
+                    <TableCell align="center" className={classes.body}>{data.checkpoint_name}</TableCell>
+                    <TableCell align="center" className={classes.body}>{data.gate_name}</TableCell>
+                    <TableCell align="center" className={classes.body}>{data.ts_count}</TableCell>
                   </StyledTableRow>
                 ))
               : []}

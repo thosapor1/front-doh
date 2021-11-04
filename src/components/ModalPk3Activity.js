@@ -441,7 +441,7 @@ export default function ModalPk3Activity(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      console.log("MyState", state, "dataList", dataList);
+      // console.log("MyState", state, "dataList", dataList);
     }
     if (dataList.pk3_upload_file === 1) {
       setFileDownload(false);

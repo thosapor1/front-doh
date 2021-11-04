@@ -354,7 +354,7 @@ export default function ModalReadOnly(props) {
     setFileDownloadAudit(true);
     if (dataList) {
       setState(dataList);
-      console.log("MyState", state, "dataList", dataList.state);
+      // console.log("MyState", state, "dataList", dataList.state);
       setSuper_audit_vehicleClass(dataList.super_audit_vehicleClass);
       setSuper_audit_feeAmount(dataList.super_audit_feeAmount);
     }
@@ -920,7 +920,10 @@ export default function ModalReadOnly(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ color: "white", fontSize: "0.75rem" }}
+                  >
                     ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
                   </TableCell>
                 </TableRow>

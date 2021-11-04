@@ -48,12 +48,12 @@ export default function ModalAdd(props) {
     password: "",
     fname: "",
     lname: "",
-    position_id: null,
-    department_id: null,
+    position_id: "",
+    department_id: "",
     email: "",
     tel: "",
     permission_id: "",
-    highway_id: null,
+    highway_id: "",
     checkpoint_id: "0",
   });
 
@@ -84,12 +84,12 @@ export default function ModalAdd(props) {
       password: "",
       fname: "",
       lname: "",
-      position_id: null,
-      department_id: null,
+      position_id: "",
+      department_id: "",
       email: "",
       tel: "",
       permission_id: "",
-      highway_id: null,
+      highway_id: "",
       checkpoint_id: "0",
     });
     setShowResult(false);

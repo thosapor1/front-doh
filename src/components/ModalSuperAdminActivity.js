@@ -503,7 +503,8 @@ export default function ModalSuperAdminActivity(props) {
             transaction: {dataList.transactionId}{" "}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway} / {dataList.checkpoint} / {dataList.gate}
+            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
+            {dataList.gate_name}
           </Typography>
         </div>
         <div>
@@ -971,7 +972,7 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_lp"
-                      value={super_audit_lp}
+                      value={super_audit_lp || ""}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -983,7 +984,7 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_province"
-                      value={super_audit_province}
+                      value={super_audit_province || ""}
                       onChange={handleChange}
                     />
                   </TableCell>
@@ -996,7 +997,7 @@ export default function ModalSuperAdminActivity(props) {
                       size="small"
                       className={classes.textField}
                       name="super_audit_vehicleClass"
-                      value={super_audit_vehicleClass}
+                      value={super_audit_vehicleClass || ""}
                       onChange={handleOptionChange}
                     >
                       {!!dataList.dropdown_audit_vehicle
@@ -1016,7 +1017,7 @@ export default function ModalSuperAdminActivity(props) {
                       id="valueRef"
                       size="small"
                       name="valueRef"
-                      value={super_audit_feeAmount}
+                      value={super_audit_feeAmount || ""}
                     />
                   </TableCell>
                 </TableRow>
@@ -1026,7 +1027,7 @@ export default function ModalSuperAdminActivity(props) {
         </Grid>
 
         {/* DEVS Block */}
-        <Grid sm={12} md={6} lg={3}>
+        <Grid item sm={12} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DEVS</Typography>
@@ -1113,7 +1114,10 @@ export default function ModalSuperAdminActivity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ color: "white", fontSize: "0.75rem" }}
+                  >
                     ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
                   </TableCell>
                 </TableRow>
@@ -1157,7 +1161,7 @@ export default function ModalSuperAdminActivity(props) {
             }}
           >
             <TextField
-              disable={dataList.state === 6 ? true : false}
+              disable={dataList.state === 6 ? true : undefined}
               style={{ width: "100%", height: 20, padding: "10px" }}
               name="super_audit_comment"
               label="คำสั่งแก้ไข"
@@ -1165,7 +1169,7 @@ export default function ModalSuperAdminActivity(props) {
               onChange={handleChange}
             />
             <Button
-              disable={dataList.state === 6 ? true : false}
+              disable={dataList.state === 6 ? true : undefined}
               variant="contained"
               color="primary"
               style={{

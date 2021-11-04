@@ -21,6 +21,7 @@ import ImageAWMonitorPage from "../components/ImageAWMonitorPage";
 import FilterAWMonitorPage from "../components/FilterAWMonitorPage";
 import FilterSectionSearch from "../components/FilterSectionSearch";
 import ImageSearchAudit from "../components/ImageSearchAudit";
+import MatchTable from "../components/MatchTable";
 
 const apiURL = axios.create({
   baseURL:
@@ -90,7 +91,7 @@ export default function TransactionMonitorV1() {
       { id: 1, checkpoint_name: "ด่านทับช้าง 1" },
       { id: 2, checkpoint_name: "ด่านทับช้าง 2" },
       { id: 3, checkpoint_name: "ด่านธัญบุรี 1" },
-      { id: 4, checkpoint_name: "ด่านธัญบุรี 1" },
+      { id: 4, checkpoint_name: "ด่านธัญบุรี 2" },
     ],
     checkpointValue: "ด่านทับช้าง 1",
     imageCrop: 0,
@@ -148,6 +149,25 @@ export default function TransactionMonitorV1() {
     imageFull: 0,
   });
 
+  const [matchTab, setMatchTab] = useState({
+    date: new Date().setDate(new Date().getDate() - 1),
+    checkpointList: [],
+    checkpointValue: 0,
+    auditImageCrop: 0,
+    auditImageFull: 0,
+    awImageCrop: 0,
+    awImageFull: 0,
+    tableHeaderData: [
+      { id: "0", label: "No." },
+      { id: "1", label: "transactionId" },
+      { id: "2", label: "timestamp" },
+    ],
+    tableBodyData: [],
+    gateValue: 0,
+    gateList: [],
+    allTsTable: [],
+  });
+
   const [pagination1, setPagination1] = useState({
     page: 1,
     countPage: 1,
@@ -157,6 +177,10 @@ export default function TransactionMonitorV1() {
     countPage: 1,
   });
   const [pagination3, setPagination3] = useState({
+    page: 1,
+    countPage: 1,
+  });
+  const [paginationMatchTab, setPaginationMatchTab] = useState({
     page: 1,
     countPage: 1,
   });
@@ -255,6 +279,36 @@ export default function TransactionMonitorV1() {
     // });
   };
 
+  const filterMatchTab = (pageId = 1, selectDate, checkpoint, gate) => {
+    if (pageId === 1) {
+      setPaginationMatchTab({ ...paginationMatchTab, page: 1 });
+    } else {
+      setPaginationMatchTab({ ...paginationMatchTab, page: pageId });
+    }
+
+    const date = format(selectDate, "yyyy-MM-dd");
+    const sendData = {
+      page: pageId,
+      date: date,
+      checkpoint_id: checkpoint,
+      gate_id: gate,
+    };
+    console.log(`sendData:${JSON.stringify(sendData)}`);
+
+    apiURL.post("/match-data-monitor", sendData).then((res) => {
+      setMatchTab({
+        ...matchTab,
+        checkpointList: res.data.dropdown_Checkpoint,
+        gateList: res.data.dropdown_Gate,
+        tableBodyData: res.data,
+      });
+      setPaginationMatchTab({
+        countPage: res.data.currentCount,
+        page: res.data.currentPage,
+      });
+    });
+  };
+
   const pageOnChange1 = (e, value) => {
     const sendData = {
       value: value,
@@ -285,6 +339,17 @@ export default function TransactionMonitorV1() {
     filter3(value, dataFetc.date, dataFetc.checkpointValue, dataFetc.gateValue);
 
     console.log(`${pagination3.page}`);
+  };
+  const pageOnChangeMatchTab = (e, value) => {
+    setPaginationMatchTab({ page: value });
+    filterMatchTab(
+      value,
+      matchTab.date,
+      matchTab.checkpointValue,
+      matchTab.gateValue
+    );
+
+    console.log(`${paginationMatchTab.page}`);
   };
 
   const getImage1 = (item) => {
@@ -322,6 +387,30 @@ export default function TransactionMonitorV1() {
         ...dataAW,
         imageCrop: res.data.imageFile,
         imageFull: res.data.imageFileCrop,
+      });
+    });
+  };
+
+  const MatchTabGetImage = (
+    audit_transactionId,
+    pk3_transactionId_header,
+    date,
+    page
+  ) => {
+    const sendData = {
+      page: 1,
+      date: date,
+      audit_transactionId: audit_transactionId,
+      pk3_transactionId_header: pk3_transactionId_header,
+    };
+    console.log(audit_transactionId, pk3_transactionId_header, date, page);
+    apiURL.post("/match-data-monitor-activity", sendData).then((res) => {
+      setMatchTab({
+        ...matchTab,
+        auditImageCrop: res.data.imageCrop,
+        auditImageFull: res.data.imageFull,
+        awImageCrop: res.data.awImageCrop,
+        awImageFull: res.data.awImageFull,
       });
     });
   };
@@ -386,6 +475,7 @@ export default function TransactionMonitorV1() {
           >
             <Tab label="Monitor" {...a11yProps(0)} className={classes.tab} />
             <Tab label="Search" {...a11yProps(1)} className={classes.tab} />
+            <Tab label="Match" {...a11yProps(2)} className={classes.tab} />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -649,6 +739,111 @@ export default function TransactionMonitorV1() {
                   imageFull={dataFetc.imageFull}
                 />
               </Grid>
+            </Grid>
+          </TabPanel>
+
+          {/* Match Tab */}
+          <TabPanel value={value} index={2}>
+            <Grid
+              container
+              spacing={2}
+              component={Paper}
+              style={{ marginTop: 10 }}
+            >
+              <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                <FilterSectionMonitorPage
+                  dateValue={matchTab.date}
+                  dateOnChange={(date) => {
+                    setMatchTab({
+                      ...matchTab,
+                      date: date,
+                    });
+                    console.log("dateChange :", matchTab.date);
+                  }}
+                  checkpointValue={matchTab.checkpointValue}
+                  checkpointList={matchTab.checkpointList}
+                  checkpointOnChange={(e) => {
+                    setMatchTab({
+                      ...matchTab,
+                      checkpointValue: e.target.value,
+                    });
+                  }}
+                  gateValue={matchTab.gateValue}
+                  gateList={matchTab.gateList}
+                  gateOnChange={(e) => {
+                    setMatchTab({ ...matchTab, gateValue: e.target.value });
+                  }}
+                  buttonOnClick={() => {
+                    filterMatchTab(
+                      paginationMatchTab.page,
+                      matchTab.date,
+                      matchTab.checkpointValue,
+                      matchTab.gateValue
+                    );
+                  }}
+                  color={"blue"}
+                />
+              </Grid>
+              <Grid item xl={6} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  audit sensor
+                </Typography>
+
+                <ImageSearchAudit
+                  imageCrop={matchTab.auditImageCrop}
+                  imageFull={matchTab.auditImageFull}
+                />
+              </Grid>
+
+              <Grid item xl={6} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  transaction (AW)
+                </Typography>
+                <ImageAWMonitorPage
+                  imageCrop={matchTab.awImageCrop}
+                  imageFull={matchTab.awImageFull}
+                />
+              </Grid>
+              <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                <MatchTable
+                  dataList={matchTab.tableBodyData}
+                  page={paginationMatchTab.page}
+                  onChange={pageOnChangeMatchTab}
+                  onClickRow={MatchTabGetImage}
+                  // onFetchData={fetchData}
+                />
+              </Grid>
+
+              {/* <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+                <Typography variant="h6" align="center">
+                  lane (FETC)
+                </Typography>
+                <FilterSectionSearch
+                  dateValue={fetcSearch.date}
+                  dateOnChange={(date) => {
+                    setFetcSearch({
+                      ...fetcSearch,
+                      date: date,
+                    });
+                    console.log("dateChange :", fetcSearch.date);
+                  }}
+                  transactionValue={fetcSearch.transactionId}
+                  transactionOnChange={(e) => {
+                    setAwSearch({
+                      ...fetcSearch,
+                      transactionId: e.target.value,
+                    });
+                  }}
+                  buttonOnClick={() => {
+                    search3(fetcSearch.date, fetcSearch.transactionId);
+                  }}
+                  color={"blue"}
+                />
+                <ImageSectionMonitorPage
+                  imageCrop={dataFetc.imageCrop}
+                  imageFull={dataFetc.imageFull}
+                />
+              </Grid> */}
             </Grid>
           </TabPanel>
         </div>

@@ -21,7 +21,6 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -86,6 +85,7 @@ export default function Config() {
 
   const handlePageChange = (event, value) => {
     fetchData(value);
+    console.log(page)
   };
 
   const fetchData = (pageId = 1) => {

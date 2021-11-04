@@ -82,15 +82,8 @@ const useStyle = makeStyles((theme) => {
       marginLeft: "auto",
     },
     calendar: {
-      "& .fc-daygrid-day-frame": {
-        borderRadius: 10,
-      },
-      "& .fc-scrollgrid-sync-inner": {
-        borderRadius: 10,
-      },
-      "& h2 .fc-toolbar-title": {
-        fontSize: 12,
-        color: "red",
+      "& .fc": {
+        fontFamily: "Prompt",
       },
     },
     progress: {
@@ -135,15 +128,15 @@ export default function DashBoard() {
     reject: 0,
     countReject: 0,
     sumAmountallClass: 0,
-    percentC1:0,
-    percentC2:0,
-    percentC3:0,
-    percentReject:0
+    percentC1: 0,
+    percentC2: 0,
+    percentC3: 0,
+    percentReject: 0,
   });
   const [dayChart, setDayChart] = useState([]);
   const [valueChart, setValueChart] = useState([]);
   const [eventCalendar, setEventCalendar] = useState({});
-  const [cardData, setcardData] = useState([{}]);
+  const [cardData, setCardData] = useState([{}]);
   const [monthChart, setMonthChart] = useState("");
   const [dateCalendar, setDateCalendar] = useState(new Date());
   const [visible, setVisible] = useState("hidden");
@@ -217,7 +210,7 @@ export default function DashBoard() {
       },
     ];
 
-    setcardData(data);
+    setCardData(data);
     console.log(cardData);
   };
 
@@ -226,6 +219,7 @@ export default function DashBoard() {
       dataInMonth.map((data) => {
         if (!!data.date) dateArray.push(data.date.slice(-2));
         valueArray.push(data.ts_count_all);
+        return console.log('success')
       });
     }
     setDayChart(dateArray);
@@ -266,6 +260,7 @@ export default function DashBoard() {
           backgroundColor: "rgb(200,200,200)",
         };
         event.push(temp);
+        return console.log('success')
       });
     }
     setEventCalendar(event);
@@ -292,7 +287,7 @@ export default function DashBoard() {
   useEffect(() => {
     fetchData();
     setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const calendarRef = React.createRef();
 

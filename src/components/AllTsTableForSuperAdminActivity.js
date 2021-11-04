@@ -89,7 +89,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AllTsTableForSuperAdminActivity(props) {
   const [open, setOpen] = useState(false);
-  const [dataForActivity, SetDataForActivity] = useState({});
+  const [dataForActivity, SetDataForActivity] = useState([]);
 
   const fetchData = (ts, timestamp) => {
     Swal.fire({
@@ -122,6 +122,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
   };
 
   const handleClose = () => {
+    
     setOpen(false);
   };
 
@@ -129,7 +130,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
   const { dataList, page, onChange } = props;
 
   return (
-    <div>
+    <>
       <Pagination
         count={dataList.totalPages}
         color="primary"
@@ -159,9 +160,9 @@ export default function AllTsTableForSuperAdminActivity(props) {
           </TableHead>
           <TableBody>
             {!!dataList
-              ? dataList.ts_table.map((data) => (
+              ? dataList.ts_table.map((data, index) => (
                   <StyledTableRow
-                    key={data.transactionId}
+                    key={index}
                     onClick={() => {
                       fetchData(data.transactionId, data.timestamp);
                       handleOpen();
@@ -207,7 +208,7 @@ export default function AllTsTableForSuperAdminActivity(props) {
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>
@@ -218,6 +219,6 @@ export default function AllTsTableForSuperAdminActivity(props) {
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />
-    </div>
+    </>
   );
 }

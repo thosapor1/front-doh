@@ -157,6 +157,7 @@ export default function TableHighwayTAb(props) {
   const classes = useStyles();
   const { dataList } = props;
   return (
+    <>
     <Container maxWidth="xl">
       <div style={{ display: "flex", justifyContent: "right" }}>
         {/* <Pagination
@@ -241,5 +242,6 @@ export default function TableHighwayTAb(props) {
         onFetchData={props.onFetchData}
       />
     </Container>
+    </>
   );
 }

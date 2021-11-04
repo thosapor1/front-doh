@@ -1,6 +1,4 @@
-import {
-  makeStyles,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles((theme) => {
@@ -45,39 +43,43 @@ export default function TableReportDaily(props) {
   const { dataList } = props;
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <table className={classes.table}>
-        <tr>
-          <th
-            className={classes.th}
-            rowSpan="2"
-            style={{ borderBottom: "1px solid black" }}
-          >
-            ประเภทรถ
-          </th>
-          <th className={classes.th}>จำนวนรถทั้งหมด</th>
-          <th className={classes.th}>จำนวนรถที่ผิดพลาด</th>
-          <th className={classes.th}>รถยกเว้น</th>
-          <th className={classes.th}>รถที่คงค้าง</th>
-        </tr>
-        <tr>
-          <th className={classes.th2}>(คัน)</th>
-          <th className={classes.th2}>(คัน)</th>
-          <th className={classes.th2}>(คัน)</th>
-          <th className={classes.th2}>(คัน)</th>
-        </tr>
-        {!!dataList
-          ? dataList.map((item) => (
-              <tr key={item.id}>
-                <td className={classes.td} style={{height:20}}>{item.label} </td>
-                <td className={classes.td}>{item.sumCar}</td>
-                <td className={classes.td}>{item.miss}</td>
-                <td className={classes.td}>{item.except}</td>
-                <td className={classes.td}>{item.remain}</td>
-              </tr>
-            ))
-          : dataList}
-      </table>
-    </div>
+    <>
+      <div className={classes.root}>
+        <table className={classes.table}>
+          <tr>
+            <th
+              className={classes.th}
+              rowSpan="2"
+              style={{ borderBottom: "1px solid black" }}
+            >
+              ประเภทรถ
+            </th>
+            <th className={classes.th}>จำนวนรถทั้งหมด</th>
+            <th className={classes.th}>จำนวนรถที่ผิดพลาด</th>
+            <th className={classes.th}>รถยกเว้น</th>
+            <th className={classes.th}>รถที่คงค้าง</th>
+          </tr>
+          <tr>
+            <th className={classes.th2}>(คัน)</th>
+            <th className={classes.th2}>(คัน)</th>
+            <th className={classes.th2}>(คัน)</th>
+            <th className={classes.th2}>(คัน)</th>
+          </tr>
+          {!!dataList
+            ? dataList.map((item, index) => (
+                <tr key={index}>
+                  <td className={classes.td} style={{ height: 20 }}>
+                    {item.label}
+                  </td>
+                  <td className={classes.td}>{item.sumCar}</td>
+                  <td className={classes.td}>{item.miss}</td>
+                  <td className={classes.td}>{item.except}</td>
+                  <td className={classes.td}>{item.remain}</td>
+                </tr>
+              ))
+            : dataList}
+        </table>
+      </div>
+    </>
   );
 }

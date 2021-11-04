@@ -68,8 +68,8 @@ export default function UserLogs() {
 
   const [dropDrawUser, setDropDrawUser] = useState([]);
   const [dropDrawEvent, setDropDrawEvent] = useState([]);
-  const [username, setUserName] = useState("0");
-  const [event, setEvent] = useState("0");
+  const [username, setUserName] = useState("");
+  const [event, setEvent] = useState("");
   const [selectedDateStart, setSelectedDateStart] = useState(new Date());
   const [selectedDateEnd, setSelectedDateEnd] = useState(new Date());
 
@@ -86,7 +86,7 @@ export default function UserLogs() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId == 1) {
+    if (pageId === 1) {
       setPage(1);
     } else {
       setPage(pageId);
@@ -97,12 +97,8 @@ export default function UserLogs() {
 
     const sendData = {
       page: pageId,
-      //   user_id: "0",
-      //   eventSelect: "0",
       user_id: username,
       eventSelect: event,
-      //   startDate: "2021-09-01",
-      //   endDate: "2021-10-01",
       startDate: startDate,
       endDate: endDate,
     };
@@ -119,7 +115,7 @@ export default function UserLogs() {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Container maxWidth="xl" className={classes.root}>
       <Typography
@@ -135,11 +131,11 @@ export default function UserLogs() {
           value={username}
           onChange={(e) => setUserName(e.target.value)}
           style={{ width: 180, marginTop: 12 }}
-          name="gate_select"
+          name="username"
         >
           {!!dropDrawUser
-            ? dropDrawUser.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
+            ? dropDrawUser.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
                   {item.username}
                 </MenuItem>
               ))
@@ -155,8 +151,8 @@ export default function UserLogs() {
           name="status_select"
         >
           {!!dropDrawEvent
-            ? dropDrawEvent.map((item) => (
-                <MenuItem key={item.value} value={item.id}>
+            ? dropDrawEvent.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
                   {item.events_name}
                 </MenuItem>
               ))

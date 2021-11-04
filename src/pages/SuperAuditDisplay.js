@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForSuperAdminActivity from "../components/AllTsTableForSuperAdminActivity";
-import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
@@ -249,7 +248,7 @@ export default function AuditDisplay() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
   return (

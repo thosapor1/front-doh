@@ -235,147 +235,153 @@ export default function RawTransaction() {
   useEffect(() => {
     fetchData();
     // console.log('hello test')
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-        ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ
-      </Typography>
-      {/* Search Block */}
-      <Grid container component={Paper} className={classes.filterSection}>
-        <Grid item className={classes.containedSelect} xl={8} lg={8} md={8}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
+    <>
+      <Container maxWidth="xl" className={classes.root}>
+        <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
+          ตรวจสอบ (DOH) : รายการฐานข้อมูลรถ
+        </Typography>
+        {/* Search Block */}
+        <Grid container component={Paper} className={classes.filterSection}>
+          <Grid item className={classes.containedSelect} xl={8} lg={8} md={8}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                className={classes.textField}
+                style={{ fontSize: "0.8rem", marginTop: 12 }}
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                // minDate={selectedDate}
+                id="date"
+                label="วันที่เข้าด่าน"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
+            <TextField
+              select
+              label="ด่าน"
               className={classes.textField}
-              style={{ fontSize: "0.8rem", marginTop: 12 }}
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              // minDate={selectedDate}
-              id="date"
-              label="วันที่เข้าด่าน"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
+              onChange={(event) => setStation(event.target.value)}
+              name="station"
+              value={station}
+            >
+              {stations.map((station) => (
+                <MenuItem key={station.id} value={station.id}>
+                  {station.checkpoint_name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              name="status"
+              select
+              label="สถานะ"
+              className={classes.textField}
+              value={id}
+              onChange={(event) => {
+                handleStatusChange(event);
               }}
-            />
-          </MuiPickersUtilsProvider>
-          <TextField
-            select
-            label="ด่าน"
-            className={classes.textField}
-            onChange={(event) => setStation(event.target.value)}
-            name="station"
-            defaultValue={station}
-          >
-            {stations.map((station) => (
-              <MenuItem key={station.id} value={station.id}>
-                {station.checkpoint_name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            name="status"
-            select
-            label="สถานะ"
-            className={classes.textField}
-            value={id}
-            onChange={(event) => {
-              handleStatusChange(event);
-            }}
-          >
-            {statusValue.map((item) => (
-              <MenuItem key={item.label} value={item.id}>
-                {item.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            >
+              {statusValue.map((item) => (
+                <MenuItem key={item.label} value={item.id}>
+                  {item.label}
+                </MenuItem>
+              ))}
+            </TextField>
 
-          <Button
-            className={classes.btn}
-            color="primary"
-            variant="contained"
-            style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
-            startIcon={<FilterListIcon />}
-            onClick={() => {
-              fetchData(1);
-            }}
-          >
-            กรองข้อมูล
-          </Button>
+            <Button
+              className={classes.btn}
+              color="primary"
+              variant="contained"
+              style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
+              startIcon={<FilterListIcon />}
+              onClick={() => {
+                fetchData(1);
+              }}
+            >
+              กรองข้อมูล
+            </Button>
+          </Grid>
+          <Grid item xl={4} lg={4} md={4} className={classes.searchButton}>
+            <TextField
+              id="search"
+              label="ค้นหา"
+              autoComplete="off"
+              style={{ width: 120, marginTop: 8 }}
+            ></TextField>
+            <Button
+              className={classes.btn}
+              color="primary"
+              variant="contained"
+              style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
+              startIcon={<SearchTwoToneIcon />}
+            >
+              ค้นหา
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xl={4} lg={4} md={4} className={classes.searchButton}>
-          <TextField
-            id="search"
-            label="ค้นหา"
-            autoComplete="off"
-            style={{ width: 120, marginTop: 8 }}
-          ></TextField>
-          <Button
-            className={classes.btn}
-            color="primary"
-            variant="contained"
-            style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
-            startIcon={<SearchTwoToneIcon />}
-          >
-            ค้นหา
-          </Button>
-        </Grid>
-      </Grid>
 
-      {/* Card Section */}
-      <div className={classes.cardSection}>
-        {dataCard.map((card, index) => (
-          <Paper
-            key={index}
-            className={classes.card}
-            style={{
-              borderLeft:
-                card.status === "total"
-                  ? "3px solid gray"
-                  : card.status === "normal"
-                  ? "3px solid green"
-                  : card.status === "unMatch"
-                  ? "3px solid orange"
-                  : "3px solid red",
-            }}
-          >
-            <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item>
-                <Typography
-                  style={{
-                    color:
-                      card.status === "total"
-                        ? "gray"
-                        : card.status === "normal"
-                        ? "green"
-                        : card.status === "unMatch"
-                        ? "orange"
-                        : "red",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {card.label}
-                </Typography>
-                <Typography style={{ fontSize: "0.9rem" }}>
-                  {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
-                </Typography>
+        {/* Card Section */}
+        <div className={classes.cardSection}>
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "unMatch"
+                    ? "3px solid orange"
+                    : "3px solid red",
+              }}
+            >
+              <Grid container justifyContent="space-around" alignItems="center">
+                <Grid item>
+                  <Typography
+                    style={{
+                      color:
+                        card.status === "total"
+                          ? "gray"
+                          : card.status === "normal"
+                          ? "green"
+                          : card.status === "unMatch"
+                          ? "orange"
+                          : "red",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {card.label}
+                  </Typography>
+                  <Typography style={{ fontSize: "0.9rem" }}>
+                    {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
+                  </Typography>
+                </Grid>
+                <Grid>
+                  <DescriptionTwoToneIcon />
+                </Grid>
               </Grid>
-              <Grid>
-                <DescriptionTwoToneIcon />
-              </Grid>
-            </Grid>
-          </Paper>
-        ))}
-      </div>
+            </Paper>
+          ))}
+        </div>
 
-      {/* Table Blcok */}
-      <Paper style={{ marginTop: 10, padding: "0px 10px" }}>
-        <AuditTable datalist={state} page={page} onChange={handlePageChange} />
-      </Paper>
-    </Container>
+        {/* Table Blcok */}
+        <Paper style={{ marginTop: 10, padding: "0px 10px" }}>
+          <AuditTable
+            datalist={state}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </Paper>
+      </Container>
+    </>
   );
 }

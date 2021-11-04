@@ -186,7 +186,7 @@ export default function Layout({ children }) {
       setMenuItems(menuItemsForPk3);
       setConfigItems(menuConfigForPk3);
     }
-    console.log("menu", menuItems, permissionId, departmentId);
+    // console.log("menu", menuItems, permissionId, departmentId);
   }, []);
 
   return (

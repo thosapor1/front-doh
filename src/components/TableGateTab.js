@@ -173,9 +173,10 @@ export default function TableGateTab(props) {
   const { dataList } = props;
 
   return (
-    <Container maxWidth="xl">
-      <div style={{ display: "flex", justifyContent: "right" }}>
-        {/* <Pagination
+    <>
+      <Container maxWidth="xl">
+        <div style={{ display: "flex", justifyContent: "right" }}>
+          {/* <Pagination
           count={dataList.totalPages}
           color="primary"
           page={page}
@@ -188,84 +189,87 @@ export default function TableGateTab(props) {
           }}
         /> */}
 
-        <Button
-          className={classes.btn}
-          startIcon={<AddTwoToneIcon />}
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          เพิ่มช่องเก็บค่าผ่านทาง
-        </Button>
-      </div>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader>
-          <TableHead>
-            <StyledTableRow>
-              {headerCells.map((headerCell) => (
-                <TableCell
-                  align="center"
-                  key={headerCell.id}
-                  className={classes.header}
-                >
-                  {headerCell.label}
-                </TableCell>
-              ))}
-            </StyledTableRow>
-          </TableHead>
-          <TableBody>
-            {!!dataList
-              ? dataList.gate_list
-                  .filter((data) => data.id > 0)
-                  .map((data, index) => (
-                    <StyledTableRow key={index}>
-                      <TableCell align="center">{data.id} </TableCell>
-                      <TableCell align="center">{data.highway_name}</TableCell>
-                      <TableCell align="center">
-                        {data.checkpoint_name}
-                      </TableCell>
-                      <TableCell align="center">{data.gate_name}</TableCell>
-                      <TableCell align="center">{data.cam_ip}</TableCell>
-                      <TableCell align="center">{data.cam_lane}</TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          onClick={() => {
-                            handleOpenModalEdit();
-                            handleGetDataForEdit(data);
-                          }}
-                        >
-                          <EditTwoToneIcon color="primary" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => handleDelete(data)}
-                          color="secondary"
-                        >
-                          <DeleteForeverTwoToneIcon />
-                        </IconButton>
-                      </TableCell>
-                    </StyledTableRow>
-                  ))
-              : dataList}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          <Button
+            className={classes.btn}
+            startIcon={<AddTwoToneIcon />}
+            variant="contained"
+            color="primary"
+            onClick={handleOpen}
+          >
+            เพิ่มช่องเก็บค่าผ่านทาง
+          </Button>
+        </div>
+        <TableContainer className={classes.container}>
+          <Table stickyHeader>
+            <TableHead>
+              <StyledTableRow>
+                {headerCells.map((headerCell) => (
+                  <TableCell
+                    align="center"
+                    key={headerCell.id}
+                    className={classes.header}
+                  >
+                    {headerCell.label}
+                  </TableCell>
+                ))}
+              </StyledTableRow>
+            </TableHead>
+            <TableBody>
+              {!!dataList
+                ? dataList.gate_list
+                    .filter((data) => data.id > 0)
+                    .map((data, index) => (
+                      <StyledTableRow key={index}>
+                        <TableCell align="center">{data.id} </TableCell>
+                        <TableCell align="center">
+                          {data.highway_name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {data.checkpoint_name}
+                        </TableCell>
+                        <TableCell align="center">{data.gate_name}</TableCell>
+                        <TableCell align="center">{data.cam_ip}</TableCell>
+                        <TableCell align="center">{data.cam_lane}</TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={() => {
+                              handleOpenModalEdit();
+                              handleGetDataForEdit(data);
+                            }}
+                          >
+                            <EditTwoToneIcon color="primary" />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleDelete(data)}
+                            color="secondary"
+                          >
+                            <DeleteForeverTwoToneIcon />
+                          </IconButton>
+                        </TableCell>
+                      </StyledTableRow>
+                    ))
+                : dataList}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <ModalAddTabLane
-        open={open}
-        onClose={() => handleClose()}
-        onClick={() => handleClose()}
-        onFetchData={props.onFetchData}
-        dataList={props.dataList}
-      />
+        <ModalAddTabLane
+          open={open}
+          onClose={() => handleClose()}
+          onClick={() => handleClose()}
+          onFetchData={props.onFetchData}
+          dataList={props.dataList}
+        />
 
-      <ModalEditTabLane
-        dataForEdit={dataForEdit}
-        open={openModalEdit}
-        onClose={() => handleCloseModalEdit()}
-        onClick={() => handleCloseModalEdit()}
-        onFetchData={props.onFetchData}
-        dataList={props.dataList}
-      />
-    </Container>
+        <ModalEditTabLane
+          dataForEdit={dataForEdit}
+          open={openModalEdit}
+          onClose={() => handleCloseModalEdit()}
+          onClick={() => handleCloseModalEdit()}
+          onFetchData={props.onFetchData}
+          dataList={props.dataList}
+        />
+      </Container>
+    </>
   );
 }

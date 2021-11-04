@@ -8,54 +8,70 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import React from "react";
+import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
+import axios from "axios";
+import Swal from "sweetalert2";
+// import format from "date-fns/format";
 
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
+});
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "72vh",
+      maxHeight: 600,
     },
     header: {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
     },
-    // tableRow: {
-    //   "&:hover": {
-    //     backgroundColor: "#e8eaf6 !important",
-    //   },
-    // },
-    // tableCell: {
-    //   cursor: "pointer",
-    // },
+    tableRow: {
+      "&:hover": {
+        backgroundColor: "#e8eaf6 !important",
+      },
+      pagination: {
+        "$ .MuiPagination-root": {
+          position: "fixed",
+        },
+      },
+    },
+    tableCell: {
+      cursor: "pointer",
+      fontSize: "0.75rem",
+    },
   };
 });
 
 const headerCells = [
   {
-    id: "userName",
-    label: "userName",
+    id: "No",
+    label: "No",
   },
   {
-    id: "event",
-    label: "event",
+    id: "match_id",
+    label: "match id",
   },
   {
     id: "transaction_id",
-    label: "transaction_id",
+    label: "transaction id",
   },
   {
-    id: "from_State",
-    label: "จาก State",
+    id: "awTimeStamp",
+    label: "awTimeStamp",
   },
   {
-    id: "to_State",
-    label: "มา State",
+    id: "audit_id",
+    label: "audit id",
   },
   {
-    id: "timestamp",
-    label: "timestamp",
+    id: "auditTimeStamp",
+    label: "auditTimeStamp",
   },
 ];
 
@@ -67,9 +83,19 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function UserLogsTAble(props) {
+export default function MatchTable(props) {
+  const getImage = (
+    audit_transactionId,
+    pk3_transactionId_header,
+    timestamp,
+    page
+  ) => {
+    let date = timestamp.split(" ").shift();
+    onClickRow(audit_transactionId, pk3_transactionId_header, date, page);
+  };
+
   const classes = useStyles();
-  const { dataList, page } = props;
+  const { dataList, page, onChange, onClickRow } = props;
 
   return (
     <div>
@@ -77,9 +103,12 @@ export default function UserLogsTAble(props) {
         count={dataList.totalPages}
         color="primary"
         page={page}
+        onChange={onChange}
         style={{
           display: "inline",
           margin: "2rem",
+          position: "static",
+          top: 0,
         }}
       />
       <TableContainer className={classes.container}>
@@ -98,30 +127,41 @@ export default function UserLogsTAble(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.log_record
-              ? dataList.log_record.map((data, index) => (
-                  <StyledTableRow key={index} className={classes.tableRow}>
+            {!!dataList.results
+              ? dataList.results.map((data) => (
+                  <StyledTableRow
+                    key={data.transactionId}
+                    onClick={() => {
+                      getImage(
+                        data.audit_transactionId,
+                        data.pk3_transactionId_header,
+                        data.timestamp,
+                        page
+                      );
+                    }}
+                    className={classes.tableRow}
+                  >
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.username}
+                      {data.no}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.events_name}
+                      {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId === "0" ? "-" : data.transactionId}
+                      {data.pk3_transactionId_header}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.stateBefore === 0 ? "-" : data.stateBefore}
+                      {data.cameras_cameraTimestamp}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.stateAfter === 0 ? "-" : data.stateAfter}
+                      {data.audit_transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.timestamp}
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList.log_record}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>

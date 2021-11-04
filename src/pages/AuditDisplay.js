@@ -141,8 +141,8 @@ const valueStatus = [
 export default function AuditDisplay() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [gateTable, setGateTable] = useState("");
-  const [classTable, setClassTable] = useState("");
+  const [gateTable, setGateTable] = useState([]);
+  const [classTable, setClassTable] = useState([]);
   const [allTsTable, setAllTsTable] = useState([]);
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState("");
@@ -341,7 +341,7 @@ export default function AuditDisplay() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
   return (
