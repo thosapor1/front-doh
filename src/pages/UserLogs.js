@@ -1,6 +1,7 @@
 import {
   Button,
   Container,
+  Grid,
   makeStyles,
   MenuItem,
   Paper,
@@ -44,20 +45,30 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 20,
     },
     filterSection: {
-      display: "flex",
       padding: theme.spacing(2),
-      width: "auto",
       marginTop: 10,
+      justifyContent: "center",
+      alignItems: "center",
     },
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      width: 150,
-      height: 40,
-      marginTop: 19,
-      marginLeft: 30,
+      margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "#6a008f",
+      },
+    },
+    input: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
       },
     },
   };
@@ -124,13 +135,19 @@ export default function UserLogs() {
       >
         ตั้งค่า : รายงานความเคลื่อนไหวผู้ใช้งาน
       </Typography>
-      <Paper className={classes.filterSection}>
+      <Grid
+        container
+        component={Paper}
+        maxWidth="xl"
+        className={classes.filterSection}
+      >
         <TextField
           select
+          variant="outlined"
+          className={classes.input}
           label="username"
           value={username}
           onChange={(e) => setUserName(e.target.value)}
-          style={{ width: 180, marginTop: 12 }}
           name="username"
         >
           {!!dropDrawUser
@@ -144,10 +161,11 @@ export default function UserLogs() {
 
         <TextField
           select
+          variant="outlined"
+          className={classes.input}
           label="สถานะ"
           value={event}
           onChange={(e) => setEvent(e.target.value)}
-          style={{ width: 180, marginTop: 12, marginLeft: 30 }}
           name="status_select"
         >
           {!!dropDrawEvent
@@ -161,9 +179,10 @@ export default function UserLogs() {
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            style={{ width: 170, marginLeft: 30 }}
+            className={classes.input}
             disableToolbar
             variant="inlined"
+            inputVariant="outlined"
             format="dd/MM/yyyy"
             margin="normal"
             id="startDate"
@@ -178,9 +197,10 @@ export default function UserLogs() {
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            style={{ width: 170, marginLeft: 30 }}
+            className={classes.input}
             disableToolbar
             variant="inlined"
+            inputVariant="outlined"
             format="dd/MM/yyyy"
             margin="normal"
             id="endDate"
@@ -202,7 +222,7 @@ export default function UserLogs() {
         >
           ดูข้อมูล
         </Button>
-      </Paper>
+      </Grid>
 
       <Paper style={{ marginTop: "1rem" }}>
         <UserLogsTAble

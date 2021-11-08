@@ -394,16 +394,23 @@ export default function TransactionMonitorV1() {
   const MatchTabGetImage = (
     audit_transactionId,
     pk3_transactionId_header,
-    date,
     page
   ) => {
+    const date = format(matchTab.date, "yyyy-MM-dd");
+    setMatchTab({
+      ...matchTab,
+      auditImageCrop: 0,
+      auditImageFull: 0,
+      awImageCrop: 0,
+      awImageFull: 0,
+    });
     const sendData = {
       page: 1,
       date: date,
       audit_transactionId: audit_transactionId,
       pk3_transactionId_header: pk3_transactionId_header,
     };
-    console.log(audit_transactionId, pk3_transactionId_header, date, page);
+    console.log(audit_transactionId, pk3_transactionId_header, page);
     apiURL.post("/match-data-monitor-activity", sendData).then((res) => {
       setMatchTab({
         ...matchTab,

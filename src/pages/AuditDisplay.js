@@ -39,17 +39,8 @@ const useStyles = makeStyles((theme) => {
     filterSection: {
       padding: theme.spacing(2),
       marginTop: 10,
-    },
-    btnSection: {
-      [theme.breakpoints.down("sm")]: {
-        margin: "0px 35%",
-      },
-    },
-    inputSection: {
-      justifyContent: "space-between",
-      [theme.breakpoints.down("sm")]: {
-        margin: "0px 5%",
-      },
+      justifyContent: "center",
+      alignItems: "center",
     },
     cardSection: {
       display: "flex",
@@ -58,7 +49,6 @@ const useStyles = makeStyles((theme) => {
     },
     gateAndClassSection: {
       marginTop: 10,
-      // height: 300,
       padding: theme.spacing(2),
       backgroundColor: "white",
     },
@@ -85,9 +75,7 @@ const useStyles = makeStyles((theme) => {
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      height: 40,
       margin: theme.spacing(1),
-      marginTop: 15,
       "&:hover": {
         backgroundColor: "#6a008f",
       },
@@ -95,8 +83,6 @@ const useStyles = makeStyles((theme) => {
     btn2: {
       backgroundColor: "green",
       color: "white",
-      height: 40,
-      marginTop: 15,
       margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "darkgreen",
@@ -106,10 +92,13 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
       },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
       width: 150,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 120,
+        width: 150,
       },
     },
   };
@@ -353,103 +342,102 @@ export default function AuditDisplay() {
 
         {/* Filter Section */}
         <Grid container component={Paper} className={classes.filterSection}>
-          <Grid item lg={7} md={8} sm={12} className={classes.inputSection}>
-            <TextField
-              select
-              label="ด่าน"
-              value={checkpoint}
-              onChange={(e) => setCheckpoint(e.target.value)}
-              className={classes.input}
-              name="gate_select"
-            >
-              {valueMenuItem.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.checkpoint_name}
-                </MenuItem>
-              ))}
-            </TextField>
+          <TextField
+            select
+            variant="outlined"
+            label="ด่าน"
+            value={checkpoint}
+            onChange={(e) => setCheckpoint(e.target.value)}
+            className={classes.input}
+            name="gate_select"
+          >
+            {valueMenuItem.map((item, index) => (
+              <MenuItem key={index} value={item.id}>
+                {item.checkpoint_name}
+              </MenuItem>
+            ))}
+          </TextField>
 
-            <TextField
-              select
-              label="สถานะ"
-              value={status_select}
-              onChange={(e) => {
-                changeSubState(e.target.value);
+          <TextField
+            select
+            variant="outlined"
+            label="สถานะ"
+            value={status_select}
+            onChange={(e) => {
+              changeSubState(e.target.value);
+            }}
+            className={classes.input}
+            name="status_select"
+          >
+            {valueStatus.map((item, index) => (
+              <MenuItem key={index} value={item.id}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              className={classes.input}
+              disableToolbar
+              variant="inlined"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="วันที่เข้าด่าน"
+              value={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
               }}
+            />
+          </MuiPickersUtilsProvider>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardTimePicker
+              inputVariant="outlined"
+              ampm={false}
+              variant="inline"
+              label="เวลาเริ่มต้น"
+              openTo="hours"
+              views={["hours", "minutes", "seconds"]}
+              format="HH:mm:ss"
+              value={selectedTimeStart}
+              onChange={setSelectedTimeStart}
               className={classes.input}
-              name="status_select"
-            >
-              {valueStatus.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </TextField>
+            />
+          </MuiPickersUtilsProvider>
 
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                style={{ marginTop: 12 }}
-                className={classes.input}
-                disableToolbar
-                variant="inlined"
-                format="dd/MM/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="วันที่เข้าด่าน"
-                value={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardTimePicker
+              inputVariant="outlined"
+              ampm={false}
+              variant="inline"
+              label="เวลาสิ้นสุด"
+              openTo="hours"
+              views={["hours", "minutes", "seconds"]}
+              format="HH:mm:ss"
+              value={selectedTimeEnd}
+              onChange={setSelectedTimeEnd}
+              className={classes.input}
+            />
+          </MuiPickersUtilsProvider>
 
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardTimePicker
-                style={{ marginTop: 12 }}
-                ampm={false}
-                variant="inline"
-                label="เวลาเริ่มต้น"
-                openTo="hours"
-                views={["hours", "minutes", "seconds"]}
-                format="HH:mm:ss"
-                value={selectedTimeStart}
-                onChange={setSelectedTimeStart}
-                className={classes.input}
-              />
-            </MuiPickersUtilsProvider>
-
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardTimePicker
-                style={{ marginTop: 12 }}
-                ampm={false}
-                variant="inline"
-                label="เวลาสิ้นสุด"
-                openTo="hours"
-                views={["hours", "minutes", "seconds"]}
-                format="HH:mm:ss"
-                value={selectedTimeEnd}
-                onChange={setSelectedTimeEnd}
-                className={classes.input}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid item lg={5} md={4} sm={12} className={classes.btnSection}>
-            <Button
-              variant="contained"
-              className={classes.btn}
-              onClick={() => fetchData(1)}
-            >
-              ดูข้อมูล
-            </Button>
-            <Button
-              variant="contained"
-              className={classes.btn2}
-              onClick={() => refresh(1)}
-            >
-              refresh
-            </Button>
-          </Grid>
+          <Button
+            variant="contained"
+            className={classes.btn}
+            onClick={() => fetchData(1)}
+          >
+            ดูข้อมูล
+          </Button>
+          <Button
+            variant="contained"
+            className={classes.btn2}
+            onClick={() => refresh(1)}
+          >
+            refresh
+          </Button>
         </Grid>
 
         {/* Card Section */}

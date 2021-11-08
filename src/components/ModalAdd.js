@@ -34,6 +34,11 @@ const useStyle = makeStyles((theme) => {
       margin: theme.spacing(0.5, 0),
       width: "100%",
     },
+    modalTextFieldHide: {
+      margin: theme.spacing(0.5, 0),
+      width: "100%",
+      display: "none",
+    },
     btn2: {
       margin: theme.spacing(1, 1, 0, 0),
     },
@@ -69,7 +74,6 @@ export default function ModalAdd(props) {
     highway_id,
     checkpoint_id,
   } = inputModal;
-
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -265,34 +269,37 @@ export default function ModalAdd(props) {
               SDFS
             </MenuItem>
           </TextField>
-          {showResult === 1 ? (
-            <TextField
-              select
-              variant="outlined"
-              className={classes.modalTextField}
-              size="small"
-              label="ด่าน"
-              name="checkpoint_id"
-              value={checkpoint_id}
-              onChange={handleChange}
-            >
-              <MenuItem key="0" value="0">
-                ทุกด่าน
-              </MenuItem>
-              <MenuItem key="1" value="1">
-                ทับช้าง1
-              </MenuItem>
-              <MenuItem key="2" value="2">
-                ทับช้าง2
-              </MenuItem>
-              <MenuItem key="3" value="3">
-                ธัญบุรี1
-              </MenuItem>
-              <MenuItem key="4" value="4">
-                ธัญบุรี2
-              </MenuItem>
-            </TextField>
-          ) : null}
+
+          <TextField
+            select
+            variant="outlined"
+            className={
+              showResult === 1
+                ? classes.modalTextField
+                : classes.modalTextFieldHide
+            }
+            size="small"
+            label="ด่าน"
+            name="checkpoint_id"
+            value={checkpoint_id}
+            onChange={handleChange}
+          >
+            <MenuItem key="0" value="0">
+              ทุกด่าน
+            </MenuItem>
+            <MenuItem key="1" value="1">
+              ทับช้าง1
+            </MenuItem>
+            <MenuItem key="2" value="2">
+              ทับช้าง2
+            </MenuItem>
+            <MenuItem key="3" value="3">
+              ธัญบุรี1
+            </MenuItem>
+            <MenuItem key="4" value="4">
+              ธัญบุรี2
+            </MenuItem>
+          </TextField>
         </Grid>
       </Grid>
       <Divider style={{ marginTop: 25 }} />

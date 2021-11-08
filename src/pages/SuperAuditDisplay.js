@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 20,
     },
     filterSection: {
-      display: "flex",
       padding: theme.spacing(2),
-      width: "auto",
       marginTop: 10,
+      justifyContent: "center",
+      alignItems: "center",
     },
     cardSection: {
       display: "flex",
@@ -76,11 +76,7 @@ const useStyles = makeStyles((theme) => {
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      height: 40,
-      width: 150,
-      marginTop: 22,
-      marginLeft: 30,
-      fontSize: "0.8rem",
+      margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "#6a008f",
       },
@@ -88,11 +84,7 @@ const useStyles = makeStyles((theme) => {
     btn2: {
       backgroundColor: "green",
       color: "white",
-      height: 40,
-      width: 150,
-      fontSize: "0.8rem",
-      marginTop: 23,
-      marginLeft: 30,
+      margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "darkgreen",
       },
@@ -101,9 +93,14 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
       },
-      width: 120,
-      marginTop: 14,
-      marginLeft: 30,
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
     },
   };
 });
@@ -259,8 +256,14 @@ export default function AuditDisplay() {
         </Typography>
 
         {/* Filter Section */}
-        <Paper className={classes.filterSection}>
+        <Grid
+          container
+          component={Paper}
+          maxWidth="xl"
+          className={classes.filterSection}
+        >
           <TextField
+            variant="outlined"
             className={classes.input}
             select
             label="ด่าน"
@@ -276,6 +279,7 @@ export default function AuditDisplay() {
           </TextField>
 
           <TextField
+            variant="outlined"
             className={classes.input}
             select
             label="สถานะ"
@@ -293,8 +297,8 @@ export default function AuditDisplay() {
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              inputVariant="outlined"
               className={classes.input}
-              style={{ width: 170, marginLeft: 30, marginTop: 18 }}
               disableToolbar
               variant="inlined"
               format="dd/MM/yyyy"
@@ -311,6 +315,7 @@ export default function AuditDisplay() {
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
+              inputVariant="outlined"
               className={classes.input}
               ampm={false}
               variant="inline"
@@ -320,16 +325,12 @@ export default function AuditDisplay() {
               format="HH:mm:ss"
               value={selectedTimeStart}
               onChange={setSelectedTimeStart}
-              style={{
-                width: 170,
-                marginLeft: 30,
-                marginTop: 18,
-              }}
             />
           </MuiPickersUtilsProvider>
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
+              inputVariant="outlined"
               className={classes.input}
               ampm={false}
               variant="inline"
@@ -339,11 +340,6 @@ export default function AuditDisplay() {
               format="HH:mm:ss"
               value={selectedTimeEnd}
               onChange={setSelectedTimeEnd}
-              style={{
-                width: 170,
-                marginLeft: 30,
-                marginTop: 18,
-              }}
             />
           </MuiPickersUtilsProvider>
 
@@ -362,7 +358,7 @@ export default function AuditDisplay() {
           >
             refresh
           </Button>
-        </Paper>
+        </Grid>
 
         {/* Card Section */}
         <div className={classes.cardSection}>

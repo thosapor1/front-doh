@@ -90,8 +90,7 @@ export default function MatchTable(props) {
     timestamp,
     page
   ) => {
-    let date = timestamp.split(" ").shift();
-    onClickRow(audit_transactionId, pk3_transactionId_header, date, page);
+    onClickRow(audit_transactionId, pk3_transactionId_header, page);
   };
 
   const classes = useStyles();
@@ -135,7 +134,6 @@ export default function MatchTable(props) {
                       getImage(
                         data.audit_transactionId,
                         data.pk3_transactionId_header,
-                        data.timestamp,
                         page
                       );
                     }}

@@ -51,36 +51,23 @@ const useStyle = makeStyles((theme) => {
       display: "flex",
       marginTop: 20,
     },
-    containedSelect: {
-      display: "flex",
-    },
-    containedPaper: {
-      display: "flex",
-      justifyContent: "space-between",
-      marginTop: 20,
-    },
-    containedTable: {
-      marginTop: 20,
-    },
-    select: {},
-    paper: {
-      width: 290,
-      height: 90,
-      display: "flex",
-    },
+    containedSelect: {},
     btn: {
-      width: 150,
-      height: 40,
+      // width: 120,
       backgroundColor: "#46005E",
       "&:hover": {
         backgroundColor: "#6a008f",
       },
+      marginTop: 15,
     },
     textField: {
-      width: 120,
+      width: 150,
       margin: theme.spacing(1),
       "& .MuiInputBase-input ": {
         fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
       },
     },
     card: {
@@ -249,9 +236,10 @@ export default function RawTransaction() {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 className={classes.textField}
-                style={{ fontSize: "0.8rem", marginTop: 12 }}
+                style={{ fontSize: "0.8rem" }}
                 disableToolbar
                 variant="inline"
+                inputVariant="outlined"
                 format="dd/MM/yyyy"
                 margin="normal"
                 // minDate={selectedDate}
@@ -266,6 +254,7 @@ export default function RawTransaction() {
             </MuiPickersUtilsProvider>
             <TextField
               select
+              variant="outlined"
               label="ด่าน"
               className={classes.textField}
               onChange={(event) => setStation(event.target.value)}
@@ -281,6 +270,7 @@ export default function RawTransaction() {
             <TextField
               name="status"
               select
+              variant="outlined"
               label="สถานะ"
               className={classes.textField}
               value={id}
@@ -299,7 +289,6 @@ export default function RawTransaction() {
               className={classes.btn}
               color="primary"
               variant="contained"
-              style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
               startIcon={<FilterListIcon />}
               onClick={() => {
                 fetchData(1);
@@ -310,16 +299,16 @@ export default function RawTransaction() {
           </Grid>
           <Grid item xl={4} lg={4} md={4} className={classes.searchButton}>
             <TextField
+              className={classes.textField}
+              variant="outlined"
               id="search"
               label="ค้นหา"
               autoComplete="off"
-              style={{ width: 120, marginTop: 8 }}
             ></TextField>
             <Button
               className={classes.btn}
               color="primary"
               variant="contained"
-              style={{ marginTop: 15, marginLeft: 20, fontSize: "0.8rem" }}
               startIcon={<SearchTwoToneIcon />}
             >
               ค้นหา
@@ -356,12 +345,12 @@ export default function RawTransaction() {
                           : card.status === "unMatch"
                           ? "orange"
                           : "red",
-                      fontSize: "0.9rem",
+                      fontSize: "0.8rem",
                     }}
                   >
                     {card.label}
                   </Typography>
-                  <Typography style={{ fontSize: "0.9rem" }}>
+                  <Typography style={{ fontSize: "0.8rem" }}>
                     {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
                   </Typography>
                 </Grid>

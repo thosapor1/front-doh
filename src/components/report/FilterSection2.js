@@ -1,5 +1,6 @@
 import {
   Button,
+  Grid,
   makeStyles,
   MenuItem,
   Paper,
@@ -15,16 +16,16 @@ import DateFnsUtils from "@date-io/date-fns";
 const useStyles = makeStyles((theme) => {
   return {
     root: {},
-    textField: {
-      width: 150,
+    filterSection: {
+      padding: theme.spacing(2),
+      marginTop: 10,
+      justifyContent: "center",
+      alignItems: "center",
     },
     btn: {
       backgroundColor: "#46005E",
       color: "white",
-      height: 40,
-      width: 100,
-      marginTop: 22,
-      marginLeft: 30,
+      margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "#6a008f",
       },
@@ -32,6 +33,14 @@ const useStyles = makeStyles((theme) => {
     input: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
       },
     },
   };
@@ -75,17 +84,17 @@ export default function FilterSection2(props) {
 
   useEffect(() => {}, []);
   return (
-    <div>
-      <Paper style={{ height: "80px" }}>
+    <>
+      <Grid
+        container
+        component={Paper}
+        maxWidth="xl"
+        className={classes.filterSection}
+      >
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
+            inputVariant="outlined"
             className={classes.input}
-            style={{
-              width: 170,
-              marginLeft: 30,
-              fontSize: "0.8 rem",
-              marginTop: 20,
-            }}
             disableToolbar
             views={["year", "month"]}
             variant="inlined"
@@ -102,12 +111,12 @@ export default function FilterSection2(props) {
         </MuiPickersUtilsProvider>
 
         <TextField
+          variant="outlined"
           className={classes.input}
           select
           label="ด่าน"
           value={checkpoint}
           onChange={(e) => setCheckpoint(e.target.value)}
-          style={{ width: 170, marginTop: 16, marginLeft: 30 }}
           name="gate_select"
         >
           {valueMenuItem.map((item) => (
@@ -136,7 +145,7 @@ export default function FilterSection2(props) {
         >
           pdf
         </Button>
-      </Paper>
-    </div>
+      </Grid>
+    </>
   );
 }
