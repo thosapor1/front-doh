@@ -4,15 +4,20 @@ export const menuItemsForSuperAdmin = [
     icon: "assessment",
     path: "/dashboard",
   },
-  {
-    text: "รายการฐานข้อมูลรถ",
-    icon: "cloud_queue",
-    path: "/rawTransaction",
-  },
+  // {
+  //   text: "รายการฐานข้อมูลรถ",
+  //   icon: "cloud_queue",
+  //   path: "/rawTransaction",
+  // },
   {
     text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay",
+  },
+  {
+    text: "รายได้รายวัน2",
+    icon: "poll",
+    path: "/auditDisplay2",
   },
   {
     text: "super audit display",
@@ -65,15 +70,20 @@ export const menuItemsForAdmin = [
     icon: "assessment",
     path: "/dashboard",
   },
-  {
-    text: "รายการฐานข้อมูลรถ",
-    icon: "cloud_queue",
-    path: "/rawTransaction",
-  },
+  // {
+  //   text: "รายการฐานข้อมูลรถ",
+  //   icon: "cloud_queue",
+  //   path: "/rawTransaction",
+  // },
   {
     text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay",
+  },
+  {
+    text: "รายได้รายวัน2",
+    icon: "poll",
+    path: "/auditDisplay2",
   },
   {
     text: "รายได้คงค้าง",
@@ -116,15 +126,20 @@ export const menuItemsForMember = [
     icon: "assessment",
     path: "/dashboard",
   },
-  {
-    text: "รายการฐานข้อมูลรถ",
-    icon: "cloud_queue",
-    path: "/rawTransaction",
-  },
+  // {
+  //   text: "รายการฐานข้อมูลรถ",
+  //   icon: "cloud_queue",
+  //   path: "/rawTransaction",
+  // },
   {
     text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay",
+  },
+  {
+    text: "รายได้รายวัน2",
+    icon: "poll",
+    path: "/auditDisplay2",
   },
   {
     text: "รายได้คงค้าง",

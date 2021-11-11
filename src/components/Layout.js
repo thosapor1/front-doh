@@ -260,7 +260,7 @@ export default function Layout({ children }) {
                   />
                 </ListItem>
               ))
-            : menuItems}
+            : []}
         </List>
         <Divider variant="middle" className={classes.hr2} />
         <List>

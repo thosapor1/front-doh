@@ -18,6 +18,7 @@ import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
+import AuditDisplay2 from './pages/AuditDisplay2'
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="/rawTransaction" component={RawTransaction} />
             <Route path="/dashboard" component={DashBoard} />
             <Route path="/auditDisplay" component={AuditDisplay} />
+            <Route path="/auditDisplay2" component={AuditDisplay2} />
             <Route path="/pk3Display" component={Pk3Display} />
             <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
             <Route path="/user" component={User} />
