@@ -667,21 +667,20 @@ export default function ModalReadOnly2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>transaction_id</TableCell>
-                  <TableCell>
+                  <TableCell colSpan={2}>
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
                     {!!resultDisplay.mf_lane_plateNo1
                       ? resultDisplay.mf_lane_plateNo1
                       : "-"}
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
                 {/* <TableRow>
                   <TableCell>จัดหวัด</TableCell>
                   <TableCell>-</TableCell>
@@ -698,7 +697,7 @@ export default function ModalReadOnly2(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table}>
+            <table className={classes.table} style={{ marginTop: 30 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -826,8 +825,7 @@ export default function ModalReadOnly2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>transaction_id</TableCell>
-                  <TableCell>
+                  <TableCell colSpan={2}>
                     {!!resultDisplay.refTransactionId
                       ? resultDisplay.refTransactionId
                       : "-"}
