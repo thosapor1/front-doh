@@ -23,8 +23,8 @@ import TableAuditDisplay from "../components/TableAuditDisplay2";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -140,6 +140,29 @@ const carType = [
   },
 ];
 
+const valueMenuItem = [
+  {
+    id:0,
+    checkpoint_name:'ทุกด่าน'
+  },
+  {
+    id:1,
+    checkpoint_name:'ทับช้าง1'
+  },
+  {
+    id:2,
+    checkpoint_name:'ทับช้าง2'
+  },
+  {
+    id:3,
+    checkpoint_name:'ธัญบุรี1'
+  },
+  {
+    id:4,
+    checkpoint_name:'ธัญบุรี2'
+  },
+];
+
 export default function AuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -147,7 +170,6 @@ export default function AuditDisplay2() {
   const [checkpoint, setCheckpoint] = useState("");
   const [status_select, setStatus_select] = useState(0);
   const [status, setStatus] = useState(0);
-  const [valueMenuItem, setValueMenuItem] = useState([]);
   const [subState, setSubState] = useState(0);
   const [selectLane, setSelectLane] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
@@ -191,11 +213,13 @@ export default function AuditDisplay2() {
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
-      datetime: date,
+      date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      transactionStatus: status,
+      state: status,
       sub_state: subState,
+      gate_id: selectLane,
+      vehicleClass: selectCarType,
     };
     console.log(sendData);
 
@@ -220,9 +244,6 @@ export default function AuditDisplay2() {
       );
 
       setAllTsTable(res.data.status !== false ? res.data : []);
-      setValueMenuItem(
-        res.data.status !== false ? res.data.dropdown_Checkpoint : []
-      );
       setCardData(res.data.status !== false ? res.data.summary : []);
     });
   };
@@ -257,7 +278,7 @@ export default function AuditDisplay2() {
       datetime: date,
       startTime: timeStart,
       endTime: timeEnd,
-      transactionStatus: "0",
+      state: "0",
       sub_state: subState,
     };
     console.log(sendData);

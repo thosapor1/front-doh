@@ -89,8 +89,6 @@ export default function TableAuditDisplay(props) {
     });
 
     let date = timeStamp.split(" ").shift();
-    date = date.split("/");
-    date = `${date[2]}-${date[1]}-${date[0]}`;
 
     const sendData = {
       transactionId: ts,
@@ -195,15 +193,15 @@ export default function TableAuditDisplay(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.ts_table
-              ? dataList.ts_table.map((data) => (
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
                       fetchData(
                         data.transactionId,
                         data.state,
-                        data.cameras_cameraTimestamp
+                        data.match_timestamp
                       );
                     }}
                     className={classes.tableRow}
@@ -233,8 +231,8 @@ export default function TableAuditDisplay(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.cameras_cameraTimestamp
-                        ? data.cameras_cameraTimestamp.split(" ").pop()
+                      {!!data.match_timestamp
+                        ? data.match_timestamp.split(" ").pop()
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
@@ -254,7 +252,7 @@ export default function TableAuditDisplay(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.mf_lane_vehicleClass
-                        ? `C${data.mf_lane_vehicleClass}`
+                        ? `C${data.vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
