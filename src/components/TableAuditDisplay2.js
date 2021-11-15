@@ -231,7 +231,7 @@ export default function TableAuditDisplay(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp
+                      {!!data.match_timestamp 
                         ? data.match_timestamp.split(" ").pop()
                         : "-"}
                     </TableCell>
@@ -246,12 +246,12 @@ export default function TableAuditDisplay(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.mf_lane_vehicleClass
+                      {data.mf_lane_vehicleClass 
                         ? `C${data.mf_lane_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.mf_lane_vehicleClass
+                      {!!data.vehicleClass
                         ? `C${data.vehicleClass}`
                         : "-"}
                     </TableCell>
