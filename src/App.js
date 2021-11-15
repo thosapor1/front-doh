@@ -19,6 +19,7 @@ import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
 import AuditDisplay2 from './pages/AuditDisplay2'
+import DashBoard2 from "./pages/DashBoard2";
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
 
@@ -44,6 +45,7 @@ function App() {
           <Layout>
             <Route path="/rawTransaction" component={RawTransaction} />
             <Route path="/dashboard" component={DashBoard} />
+            <Route path="/dashboard2" component={DashBoard2} />
             <Route path="/auditDisplay" component={AuditDisplay} />
             <Route path="/auditDisplay2" component={AuditDisplay2} />
             <Route path="/pk3Display" component={Pk3Display} />
