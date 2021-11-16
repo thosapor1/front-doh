@@ -8,11 +8,8 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import React, { useState } from "react";
-import { Pagination } from "@material-ui/lab";
 import axios from "axios";
-import ModalSuperAdminActivity from "./ModalSuperAdminActivity";
 import Swal from "sweetalert2";
 
 const apiURL = axios.create({
@@ -24,7 +21,7 @@ const apiURL = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: 600,
+      maxHeight: 860,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -69,7 +66,6 @@ const headerCells = [
     id: "remark",
     label: "หมายเหตุ",
   },
-  
 ];
 
 const StyledTableRow = withStyles((theme) => ({
@@ -81,7 +77,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function TableDashBoard2(props) {
-//   const [open, setOpen] = useState(false);
+  //   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState([]);
 
   const fetchData = (ts, timestamp) => {
@@ -110,16 +106,16 @@ export default function TableDashBoard2(props) {
       });
   };
 
-//   const handleOpen = async () => {
-//     await setOpen(true);
-//   };
+  //   const handleOpen = async () => {
+  //     await setOpen(true);
+  //   };
 
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
+  //   const handleClose = () => {
+  //     setOpen(false);
+  //   };
 
   const classes = useStyles();
-  const { dataList,  onChange } = props;
+  const { dataList, onChange } = props;
 
   return (
     <>
@@ -139,43 +135,17 @@ export default function TableDashBoard2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList
-              ? dataList.map((data, index) => (
-                  <StyledTableRow
-                    key={index}
-                    onClick={() => {
-                      fetchData(data.transactionId, data.timestamp);
-                    //   handleOpen();
-                    }}
-                    className={classes.tableRow}
-                  >
+            {!!dataList.month
+              ? dataList.month.map((data, index) => (
+                  <StyledTableRow key={index} className={classes.tableRow}>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        fontSize="small"
-                        style={{
-                          color:
-                            data.state === 2
-                              ? "orange"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "yellow"
-                              : "black",
-                        }}
-                      />
-                      {/* {data.match_id} */}
+                      {!!data.date ? data.date : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
+                      {!!data.count_vehicle ? data.count_vehicle : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.timestamp.split(" ").pop()}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.class}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.fee}
+                      {!!data.income ? data.income : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
