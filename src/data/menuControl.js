@@ -25,6 +25,11 @@ export const menuItemsForSuperAdmin = [
     path: "/superAuditDisplay",
   },
   {
+    text: "super audit display 2",
+    icon: "remove_red_eye",
+    path: "/superAuditDisplay2",
+  },
+  {
     text: "รายได้คงค้าง",
     icon: "poll",
     path: "/2",
@@ -38,7 +43,7 @@ export const menuItemsForSuperAdmin = [
     text: "transactionMonitor",
     icon: "file_present",
     path: "/transactionMonitorV1",
-  }
+  },
 ];
 
 export const menuConfigForSuperAdmin = [
