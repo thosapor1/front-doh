@@ -4,11 +4,11 @@ export const menuItemsForSuperAdmin = [
     icon: "assessment",
     path: "/dashboard",
   },
-  // {
-  //   text: "รายการฐานข้อมูลรถ",
-  //   icon: "cloud_queue",
-  //   path: "/rawTransaction",
-  // },
+  {
+    text: "รายได้รายเดือน",
+    icon: "assessment",
+    path: "/dashboard2",
+  },
   {
     text: "รายได้รายวัน",
     icon: "poll",
