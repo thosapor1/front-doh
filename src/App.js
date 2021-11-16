@@ -19,10 +19,8 @@ import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
 
-import AuditDisplay2 from './pages/AuditDisplay2'
-import DashBoard2 from "./pages/DashBoard2";
-
 import AuditDisplay2 from "./pages/AuditDisplay2";
+import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 
 // import { useEffect, useState } from "react";
