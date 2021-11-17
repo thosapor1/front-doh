@@ -97,69 +97,13 @@ const valueStatus = [
   },
   {
     id: 1,
-    value: 1,
-    label: "ปกติ",
+    value: 4,
+    label: "รอ super audit ตรวจสอบ",
   },
   {
     id: 2,
-    value: 2,
-    label: "ข้อมูลไม่ตรงกัน",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ข้อมูลสูญหาย",
-  },
-];
-
-const lane = [
-  { lane: "รวม" },
-  { lane: 1 },
-  { lane: 2 },
-  { lane: 3 },
-  { lane: 4 },
-  { lane: 5 },
-  { lane: 6 },
-];
-
-const carType = [
-  {
-    label: "รวม",
-  },
-  {
-    label: "C1",
-  },
-  {
-    label: "C2",
-  },
-  {
-    label: "C3",
-  },
-  {
-    label: "ไม่ระบุ",
-  },
-];
-
-const valueMenuItem = [
-  {
-    id: 0,
-    checkpoint_name: "ทุกด่าน",
-  },
-  {
-    id: 1,
-    checkpoint_name: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    checkpoint_name: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    checkpoint_name: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    checkpoint_name: "ธัญบุรี2",
+    value: 5,
+    label: "รอพิจารณา",
   },
 ];
 
@@ -174,6 +118,7 @@ export default function SuperAuditDisplay2() {
   const [selectLane, setSelectLane] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -193,6 +138,12 @@ export default function SuperAuditDisplay2() {
   // const handleOpen = () => {
   //   setOpen(true);
   // };
+  const getCheckpoint = (e) => {
+    apiURL.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
 
   const fetchData = (pageId = 1) => {
     Swal.fire({
@@ -210,10 +161,14 @@ export default function SuperAuditDisplay2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
+    console.log(checkpoint);
+    console.log(selectLane);
+    console.log(selectCarType);
+    console.log(status_select);
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
-      date: date,
+      date: date,+
       startTime: timeStart,
       endTime: timeEnd,
       state: status,
@@ -281,7 +236,6 @@ export default function SuperAuditDisplay2() {
       state: "0",
       sub_state: subState,
     };
-    console.log(sendData);
 
     apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
       Swal.close();
@@ -332,7 +286,8 @@ export default function SuperAuditDisplay2() {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getCheckpoint();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -354,11 +309,13 @@ export default function SuperAuditDisplay2() {
             className={classes.input}
             name="gate_select"
           >
-            {valueMenuItem.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -370,11 +327,13 @@ export default function SuperAuditDisplay2() {
             className={classes.input}
             name="lane"
           >
-            {lane.map((item, index) => (
-              <MenuItem key={index} value={item.lane}>
-                {item.lane}
-              </MenuItem>
-            ))}
+            {!!dropdown.gate
+              ? dropdown.gate.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -386,11 +345,13 @@ export default function SuperAuditDisplay2() {
             className={classes.input}
             name="carType"
           >
-            {carType.map((item, index) => (
-              <MenuItem key={index} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.vehicle
+              ? dropdown.vehicle.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.class}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -399,13 +360,13 @@ export default function SuperAuditDisplay2() {
             label="สถานะ"
             value={status_select}
             onChange={(e) => {
-              changeSubState(e.target.value);
+              setStatus_select(e.target.value);
             }}
             className={classes.input}
             name="status_select"
           >
             {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
+              <MenuItem key={index} value={item.value}>
                 {item.label}
               </MenuItem>
             ))}

@@ -12,70 +12,61 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
-import ModalPk3Activity from "./ModalPk3Activity";
 import Swal from "sweetalert2";
+import ModalReadOnly2 from "./ModalReadOnly2";
+import ModalActivity2 from "./ModalActivity2";
+// import format from "date-fns/format";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
-      : `${process.env.REACT_APP_BASE_URL_V3}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 const useStyles = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     container: {
-      maxHeight: 600,
+      maxHeight: 590,
     },
     header: {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
     },
     tableRow: {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
       },
     },
+    pagination: {
+      "& .MuiPaginationItem-root": {
+        fontSize: ".0.75rem",
+      },
+      marginBottom: "1rem",
+      position: "static",
+      top: 0,
+    },
     tableCell: {
       cursor: "pointer",
+      fontSize: "0.75rem",
+      padding: "6px",
     },
   };
 });
-
-const headerCells = [
-  {
-    id: "status",
-    label: "สถานะ",
-  },
-  {
-    id: "transaction",
-    label: "transaction",
-  },
-  {
-    id: "timeArrive",
-    label: "เวลาเข้าด่าน",
-  },
-  {
-    id: "typeCarAudit",
-    label: "ประเภทรถ(ระบบตรวจสอบ)",
-  },
-  {
-    id: "feeAudit",
-    label: "ค่าผ่านทาง(ระบบตรวจสอบ)",
-  },
-  {
-    id: "typeCarPK3",
-    label: "ประเภทรถ(PK3)",
-  },
-  {
-    id: "feePK3",
-    label: "ค่าผ่านทาง(PK3)",
-  },
-  {
-    id: "carDetail",
-    label: "รายละเอียดรถ",
-  },
-];
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -85,23 +76,34 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function AllTsTableForPk3Activity(props) {
+export default function TableAuditDisplay(props) {
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = async (ts, timestamp) => {
+  const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
+    let date = timeStamp.split(" ").shift();
+
     const sendData = {
       transactionId: ts,
-      timestamp: timestamp,
+      date: date,
     };
+    let endpoint = "";
+    if (State === 2) {
+      endpoint = "/display-activity2";
+      setOpen(true);
+    } else {
+      endpoint = "/display-activity2";
+      setOpen1(true);
+    }
     apiURL
-      .post("/pk3display-activity", sendData)
+      .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);
@@ -116,12 +118,16 @@ export default function AllTsTableForPk3Activity(props) {
       });
   };
 
-  const handleOpen = async () => {
-    await setOpen(true);
-  };
+  // const handleOpen = (state) => {
+  //   if (state === 2) {
+  //     setOpen(true);
+  //   }
+  //   setOpen1(true);
+  // };
 
-  const handleClose = async () => {
-    await setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setOpen1(false);
   };
 
   const classes = useStyles();
@@ -134,36 +140,83 @@ export default function AllTsTableForPk3Activity(props) {
         color="primary"
         page={page}
         onChange={onChange}
-        style={{
-          display: "inline",
-          margin: "2rem",
-          position: "sticky",
-          top: 0,
-        }}
+        className={classes.pagination}
       />
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table>
           <TableHead>
             <StyledTableRow>
-              {headerCells.map((headerCell) => (
-                <TableCell
-                  align="center"
-                  key={headerCell.id}
-                  className={classes.header}
-                >
-                  {headerCell.label}
-                </TableCell>
-              ))}
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                สถานะ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                transaction
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                เวลาเข้าด่าน
+              </TableCell>
+              <TableCell colSpan={4} align="center" className={classes.header}>
+                ประเภทรถ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ประเภท TS
+              </TableCell>
+              <TableCell colSpan={3} align="center" className={classes.header}>
+                ตรวจสอบ
+              </TableCell>
+              <TableCell
+                colSpan={2}
+                align="center"
+                className={classes.header}
+                style={{ backgroundColor: "orange" }}
+              >
+                จัดเก็บ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                หมายเหตุ
+              </TableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <TableCell align="center" className={classes.header}>
+                จริง
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                AD
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ML
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                MF
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าผ่านทาง
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าปรับ
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ราคารวม
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                เรียกเก็บ
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ชำระ
+              </TableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList
-              ? dataList.ts_table.map((data) => (
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, data.timestamp);
-                      handleOpen();
+                      fetchData(
+                        data.transactionId,
+                        data.state,
+                        data.match_timestamp
+                      );
                     }}
                     className={classes.tableRow}
                   >
@@ -173,27 +226,60 @@ export default function AllTsTableForPk3Activity(props) {
                         style={{
                           color:
                             data.state === 2
-                              ? "orange"
+                              ? "#FF2400"
                               : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "#990000"
-                              : "black",
+                              ? "yellow"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "pink"
+                              : data.state === 7
+                              ? "green"
+                              : "gray",
                         }}
                       />
-                      {/* {data.match_id} */}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.timestamp}
+                      {!!data.match_timestamp
+                        ? data.match_timestamp.split(" ").pop()
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.class}
+                      {!!data.match_real_vehicleClass
+                        ? `C${data.match_real_vehicleClass}`
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.fee}
+                      {!!data.audit_check_vehicleClass
+                        ? `C${data.audit_check_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.mf_lane_vehicleClass
+                        ? `C${data.mf_lane_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_transaction_type
+                        ? `C${data.match_transaction_type}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_total_cost ? data.match_total_cost : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
@@ -206,14 +292,20 @@ export default function AllTsTableForPk3Activity(props) {
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>
 
-      <ModalPk3Activity
+      <ModalActivity2
         dataList={dataForActivity}
         open={open}
+        onClick={handleClose}
+        onFetchData={props.onFetchData}
+      />
+      <ModalReadOnly2
+        dataList={dataForActivity}
+        open={open1}
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />
