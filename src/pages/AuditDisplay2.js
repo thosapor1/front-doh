@@ -26,6 +26,12 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
       : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
+const apiURLv1 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -142,24 +148,24 @@ const carType = [
 
 const valueMenuItem = [
   {
-    id:0,
-    checkpoint_name:'ทุกด่าน'
+    id: 0,
+    checkpoint_name: "ทุกด่าน",
   },
   {
-    id:1,
-    checkpoint_name:'ทับช้าง1'
+    id: 1,
+    checkpoint_name: "ทับช้าง1",
   },
   {
-    id:2,
-    checkpoint_name:'ทับช้าง2'
+    id: 2,
+    checkpoint_name: "ทับช้าง2",
   },
   {
-    id:3,
-    checkpoint_name:'ธัญบุรี1'
+    id: 3,
+    checkpoint_name: "ธัญบุรี1",
   },
   {
-    id:4,
-    checkpoint_name:'ธัญบุรี2'
+    id: 4,
+    checkpoint_name: "ธัญบุรี2",
   },
 ];
 
@@ -168,12 +174,13 @@ export default function AuditDisplay2() {
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState(0);
+  const [status_select, setStatus_select] = useState("");
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
-  const [selectLane, setSelectLane] = useState("");
+  const [selectGate, setSelectGate] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -194,6 +201,13 @@ export default function AuditDisplay2() {
   //   setOpen(true);
   // };
 
+  const getDropdown = () => {
+    apiURLv1.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
+
   const fetchData = (pageId = 1) => {
     Swal.fire({
       title: "Loading",
@@ -213,13 +227,12 @@ export default function AuditDisplay2() {
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
+      gate_id: selectGate,
+      state: status_select,
+      vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: status,
-      sub_state: subState,
-      gate_id: selectLane,
-      vehicleClass: selectCarType,
     };
     console.log(sendData);
 
@@ -332,7 +345,8 @@ export default function AuditDisplay2() {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -354,27 +368,31 @@ export default function AuditDisplay2() {
             className={classes.input}
             name="gate_select"
           >
-            {valueMenuItem.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
             select
             variant="outlined"
             label="ช่อง"
-            value={selectLane}
-            onChange={(e) => setSelectLane(e.target.value)}
+            value={selectGate}
+            onChange={(e) => setSelectGate(e.target.value)}
             className={classes.input}
-            name="lane"
+            name="gate"
           >
-            {lane.map((item, index) => (
-              <MenuItem key={index} value={item.lane}>
-                {item.lane}
-              </MenuItem>
-            ))}
+            {!!dropdown.gate
+              ? dropdown.gate.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -386,11 +404,13 @@ export default function AuditDisplay2() {
             className={classes.input}
             name="carType"
           >
-            {carType.map((item, index) => (
-              <MenuItem key={index} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.vehicle
+              ? dropdown.vehicle.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.class}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -399,16 +419,18 @@ export default function AuditDisplay2() {
             label="สถานะ"
             value={status_select}
             onChange={(e) => {
-              changeSubState(e.target.value);
+              setStatus_select(e.target.value);
             }}
             className={classes.input}
             name="status_select"
           >
-            {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.state
+              ? dropdown.state.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -505,6 +527,8 @@ export default function AuditDisplay2() {
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
+              dropdown={dropdown}
+              checkDate={selectedDate}
             />
           </Grid>
         </Grid>

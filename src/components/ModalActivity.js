@@ -19,7 +19,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/logo_doh.png";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
@@ -179,7 +179,7 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalActivity(props) {
   const classes = useStyle();
-  const { dataList } = props;
+  const { dataList, dropdown } = props;
 
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);

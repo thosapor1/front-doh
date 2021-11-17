@@ -174,6 +174,7 @@ export default function SuperAuditDisplay2() {
   const [selectLane, setSelectLane] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -192,7 +193,14 @@ export default function SuperAuditDisplay2() {
   };
   // const handleOpen = () => {
   //   setOpen(true);
-  // };
+  // };  
+
+  const getDropdown = () => {
+    apiURL.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
 
   const fetchData = (pageId = 1) => {
     Swal.fire({
@@ -332,7 +340,8 @@ export default function SuperAuditDisplay2() {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getDropdown()
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -476,7 +485,7 @@ export default function SuperAuditDisplay2() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection}>
+        <Grid container spacing={1} className={classes.cardSection} >
           <Grid item>
             <Paper className={classes.card}>
               <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
@@ -505,6 +514,7 @@ export default function SuperAuditDisplay2() {
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
+              dropdown={dropdown}
             />
           </Grid>
         </Grid>
