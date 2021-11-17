@@ -1,39 +1,39 @@
 export const menuItemsForSuperAdmin = [
-  {
-    text: "ตรวจสอบรายได้พึงได้รายวัน",
-    icon: "assessment",
-    path: "/dashboard",
-  },
+  // {
+  //   text: "ตรวจสอบรายได้พึงได้รายวัน",
+  //   icon: "assessment",
+  //   path: "/dashboard",
+  // },
   {
     text: "รายได้รายเดือน",
     icon: "assessment",
     path: "/dashboard2",
   },
+  // {
+  //   text: "รายได้รายวัน",
+  //   icon: "poll",
+  //   path: "/auditDisplay",
+  // },
   {
     text: "รายได้รายวัน",
     icon: "poll",
-    path: "/auditDisplay",
-  },
-  {
-    text: "รายได้รายวัน2",
-    icon: "poll",
     path: "/auditDisplay2",
   },
+  // {
+  //   text: "super audit display",
+  //   icon: "remove_red_eye",
+  //   path: "/superAuditDisplay",
+  // },
   {
-    text: "super audit display",
-    icon: "remove_red_eye",
-    path: "/superAuditDisplay",
-  },
-  {
-    text: "super audit display 2",
+    text: "super audit",
     icon: "remove_red_eye",
     path: "/superAuditDisplay2",
   },
-  {
-    text: "รายได้คงค้าง",
-    icon: "poll",
-    path: "/2",
-  },
+  // {
+  //   text: "รายได้คงค้าง",
+  //   icon: "poll",
+  //   path: "/2",
+  // },
   {
     text: "รายงาน",
     icon: "file_present",
@@ -70,31 +70,31 @@ export const menuConfigForSuperAdmin = [
 ];
 
 export const menuItemsForAdmin = [
-  {
-    text: "ตรวจสอบรายได้พึงได้รายวัน",
-    icon: "assessment",
-    path: "/dashboard",
-  },
+  // {
+  //   text: "ตรวจสอบรายได้พึงได้รายวัน",
+  //   icon: "assessment",
+  //   path: "/dashboard",
+  // },
   // {
   //   text: "รายการฐานข้อมูลรถ",
   //   icon: "cloud_queue",
   //   path: "/rawTransaction",
   // },
-  {
-    text: "รายได้รายวัน",
-    icon: "poll",
-    path: "/auditDisplay",
-  },
+  // {
+  //   text: "รายได้รายวัน",
+  //   icon: "poll",
+  //   path: "/auditDisplay",
+  // },
   {
     text: "รายได้รายวัน2",
     icon: "poll",
     path: "/auditDisplay2",
   },
-  {
-    text: "รายได้คงค้าง",
-    icon: "poll",
-    path: "/2",
-  },
+  // {
+  //   text: "รายได้คงค้าง",
+  //   icon: "poll",
+  //   path: "/2",
+  // },
   {
     text: "รายงาน",
     icon: "file_present",
@@ -126,31 +126,31 @@ export const menuConfigForAdmin = [
 ];
 
 export const menuItemsForMember = [
-  {
-    text: "ตรวจสอบรายได้พึงได้รายวัน",
-    icon: "assessment",
-    path: "/dashboard",
-  },
+  // {
+  //   text: "ตรวจสอบรายได้พึงได้รายวัน",
+  //   icon: "assessment",
+  //   path: "/dashboard",
+  // },
   // {
   //   text: "รายการฐานข้อมูลรถ",
   //   icon: "cloud_queue",
   //   path: "/rawTransaction",
   // },
-  {
-    text: "รายได้รายวัน",
-    icon: "poll",
-    path: "/auditDisplay",
-  },
+  // {
+  //   text: "รายได้รายวัน",
+  //   icon: "poll",
+  //   path: "/auditDisplay",
+  // },
   {
     text: "รายได้รายวัน2",
     icon: "poll",
     path: "/auditDisplay2",
   },
-  {
-    text: "รายได้คงค้าง",
-    icon: "poll",
-    path: "/2",
-  },
+  // {
+  //   text: "รายได้คงค้าง",
+  //   icon: "poll",
+  //   path: "/2",
+  // },
   {
     text: "รายงาน",
     icon: "file_present",

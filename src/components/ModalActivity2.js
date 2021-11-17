@@ -19,7 +19,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
+import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
@@ -107,7 +107,7 @@ const useStyle = makeStyles((theme) => {
     root: {},
     bodyModal: {
       height: "auto",
-      width: "70%",
+      width: "90%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
@@ -419,7 +419,160 @@ export default function ModalActivity2(props) {
       </div>
       <Grid container className={classes.cardContainer}>
         {/* CCTV Audit block */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value4}
+              onChange={handleChangeTabs4}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value4} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginBottom: 58 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบตรวจสอบรายได้ (AD : เข็ค)
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* <TableRow>
+                  <TableCell>กว้าง</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ยาว</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow> */}
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_check_vehicleClass
+                      ? resultDisplay.audit_check_vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ค่าปรับ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ระยะ 1</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t1
+                      ? resultDisplay.match_fine_t1
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 2</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t2
+                      ? resultDisplay.match_fine_t2
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 3</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t3
+                      ? resultDisplay.match_fine_t3
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+        </Grid>
+        {/* CCTV Audit block */}
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
@@ -573,7 +726,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* Audit Block */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
@@ -734,7 +887,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* ALPR Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
@@ -871,7 +1024,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* DVES Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>DVES</Typography>
