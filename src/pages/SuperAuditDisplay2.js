@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay from "../components/TableAuditDisplay2";
+import TableAuditDisplay from "../components/TableSuperdisplay2";
 
 const apiURL = axios.create({
   baseURL:
@@ -340,7 +340,7 @@ export default function SuperAuditDisplay2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          super audit display 2
+          super audit display
         </Typography>
 
         {/* Filter Section */}
