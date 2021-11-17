@@ -164,7 +164,12 @@ export default function TableAuditDisplay(props) {
               <TableCell colSpan={3} align="center" className={classes.header}>
                 ตรวจสอบ
               </TableCell>
-              <TableCell colSpan={2} align="center" className={classes.header}>
+              <TableCell
+                colSpan={2}
+                align="center"
+                className={classes.header}
+                style={{ backgroundColor: "orange" }}
+              >
                 จัดเก็บ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
