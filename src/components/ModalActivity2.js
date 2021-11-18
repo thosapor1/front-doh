@@ -420,8 +420,8 @@ export default function ModalActivity2(props) {
             transaction: {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].transactionId : ""}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.resultsDisplay[0].match_checkpoint} /
-            ช่อง{dataList.resultsDisplay[0].match_gate}
+            {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].match_checkpoint : ""} /
+            ช่อง{!!dataList.resultsDisplay ? dataList.resultsDisplay[0].match_gate : ""}
           </Typography>
         </div>
         <div>
