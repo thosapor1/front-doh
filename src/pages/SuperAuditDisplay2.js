@@ -168,7 +168,7 @@ export default function SuperAuditDisplay2() {
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
-      date: date,+
+      date: date,
       startTime: timeStart,
       endTime: timeEnd,
       state: status,
