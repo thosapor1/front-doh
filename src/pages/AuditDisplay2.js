@@ -370,10 +370,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.checkpoint
               ? dropdown.checkpoint.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.checkpoint_name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.checkpoint_name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -388,10 +388,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.gate
               ? dropdown.gate.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -406,10 +406,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.vehicle
               ? dropdown.vehicle.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.class}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.class}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -426,10 +426,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.state
               ? dropdown.state.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -509,7 +509,7 @@ export default function AuditDisplay2() {
           </Grid>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายได้ประมาณการ : - </Typography>
+              <Typography>รายได้ประมาณการ : {cardData.revenue} </Typography>
               <Typography>ชำระแล้ว : - </Typography>
               <Typography>ค้างชำระ : - </Typography>
             </Paper>
