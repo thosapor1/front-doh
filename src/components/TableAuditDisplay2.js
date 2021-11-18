@@ -1,4 +1,5 @@
 import {
+  Box,
   makeStyles,
   Table,
   TableBody,
@@ -6,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -38,7 +40,9 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: 590,
+      maxHeight: '50vh',
+      overflow: 'auto',
+
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -73,6 +77,7 @@ const StyledTableRow = withStyles((theme) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
+    marginTop: 10,
   },
 }))(TableRow);
 
@@ -131,19 +136,22 @@ export default function TableAuditDisplay(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown , checkDate} = props;
+  const { dataList, page, onChange, dropdown, checkDate } = props;
 
   return (
     <div>
-      <Pagination
-        count={dataList.totalPages}
-        color="primary"
-        page={page}
-        onChange={onChange}
-        className={classes.pagination}
-      />
+      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination
+          count={dataList.totalPages}
+          color="primary"
+          page={page}
+          onChange={onChange}
+          className={classes.pagination}
+        />
+        <Box style={{ paddingTop: 10 }}> <FiberManualRecordIcon style={{ color: 'red', fontSize: '0.8rem' }} /><Typography style={{ display: 'inline' }}>ประเภทไม่ตรง</Typography> </Box>
+      </Box>
       <TableContainer className={classes.container}>
-        <Table>
+        <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -209,91 +217,91 @@ export default function TableAuditDisplay(props) {
           <TableBody>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay.map((data) => (
-                  <StyledTableRow
-                    key={data.transactionId}
-                    onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
-                    }}
-                    className={classes.tableRow}
-                  >
-                    <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        fontSize="small"
-                        style={{
-                          color:
-                            data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
+                <StyledTableRow
+                  key={data.transactionId}
+                  onClick={() => {
+                    fetchData(
+                      data.transactionId,
+                      data.state,
+                      data.match_timestamp
+                    );
+                  }}
+                  className={classes.tableRow}
+                >
+                  <TableCell align="center" className={classes.tableCell}>
+                    <FiberManualRecordIcon
+                      fontSize="small"
+                      style={{
+                        color:
+                          data.state === 2
+                            ? "#FF2400"
+                            : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "yellow"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "pink"
-                              : data.state === 7
-                              ? "green"
-                              : data.state === 8
-                              ? "#FF2400"
-                              : "gray",
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp
-                        ? data.match_timestamp.split(" ").pop()
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_vehicleClass
-                        ? `C${data.match_real_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.mf_lane_vehicleClass
-                        ? `C${data.mf_lane_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_transaction_type
-                        ? data.match_transaction_type_name
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_total_cost ? data.match_total_cost : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+                                ? "yellow"
+                                : data.state === 5
+                                  ? "black"
+                                  : data.state === 6
+                                    ? "pink"
+                                    : data.state === 7
+                                      ? "green"
+                                      : data.state === 8
+                                        ? "#FF2400"
+                                        : "gray",
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {data.transactionId}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_timestamp
+                      ? data.match_timestamp.split(" ").pop()
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_real_vehicleClass
+                      ? `C${data.match_real_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.audit_check_vehicleClass
+                      ? `C${data.audit_check_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {data.mf_lane_vehicleClass
+                      ? `C${data.mf_lane_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_transaction_type
+                      ? data.match_transaction_type_name
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_real_fee ? data.match_real_fee : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.fine ? data.fine : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_total_cost ? data.match_total_cost : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                </StyledTableRow>
+              ))
               : []}
           </TableBody>
         </Table>

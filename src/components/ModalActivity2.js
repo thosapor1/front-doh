@@ -201,6 +201,11 @@ const useStyle = makeStyles((theme) => {
       fontSize: "0.75rem",
       color: "white",
     },
+    checkType: {
+      "& .MuiTableRow-root": {
+        backgroundColor: 'red'
+      }
+    }
   };
 });
 
@@ -526,7 +531,7 @@ export default function ModalActivity2(props) {
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
-                    ระบบตรวจสอบรายได้ (AD : เข็ค)
+                    ระบบตรวจสอบรายได้ (AD : เช็ค)
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -854,6 +859,14 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.vehicleClass
+                      ? resultDisplay.vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
                     {!!resultDisplay.cameras_plateNo1
@@ -869,14 +882,6 @@ export default function ModalActivity2(props) {
                       : dataList.mf_lp_province}
                   </TableCell>
                 </TableRow> */}
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.vehicleClass
-                      ? resultDisplay.vehicleClass
-                      : "-"}
-                  </TableCell>
-                </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
