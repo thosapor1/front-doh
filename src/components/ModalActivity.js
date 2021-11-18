@@ -19,7 +19,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
@@ -364,18 +363,18 @@ export default function ModalActivity(props) {
             {dataList.state === 1
               ? "ข้อมูลปกติ (state 1)"
               : dataList.state === 2
-              ? "ข้อมูลรอตรวจสอบ (state 2)"
-              : dataList.state === 3
-              ? "อยู่ระหว่างการตรวจสอบ (state 3)"
-              : dataList.state === 4
-              ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
-              : dataList.state === 5
-              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
-              : dataList.state === 6
-              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
-              : dataList.state === 7
-              ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
-              : "ไม่มีสถานะ"}
+                ? "ข้อมูลรอตรวจสอบ (state 2)"
+                : dataList.state === 3
+                  ? "อยู่ระหว่างการตรวจสอบ (state 3)"
+                  : dataList.state === 4
+                    ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
+                    : dataList.state === 5
+                      ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
+                      : dataList.state === 6
+                        ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
+                        : dataList.state === 7
+                          ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
+                          : "ไม่มีสถานะ"}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
             transaction: {dataList.transactionId}{" "}
@@ -491,7 +490,7 @@ export default function ModalActivity(props) {
               className={classes.btn}
               variant="contained"
               color="primary"
-              // startIcon={<AddTwoToneIcon fontSize="small" />}
+            // startIcon={<AddTwoToneIcon fontSize="small" />}
             >
               สร้างรายการใหม่
             </Button>
@@ -499,7 +498,7 @@ export default function ModalActivity(props) {
               className={classes.btn}
               variant="contained"
               color="secondary"
-              // startIcon={<RemoveTwoToneIcon fontSize="small" />}
+            // startIcon={<RemoveTwoToneIcon fontSize="small" />}
             >
               ลบรายการนี้
             </Button>
@@ -563,8 +562,7 @@ export default function ModalActivity(props) {
               component="img"
               src={
                 mockPic !== 0
-                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
               className={classes.image}
@@ -896,12 +894,12 @@ export default function ModalActivity(props) {
                     >
                       {!!dataList.dropdown_audit_vehicelClass
                         ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem key={index} value={index}>
-                                {item.class}
-                              </MenuItem>
-                            )
+                          (item, index) => (
+                            <MenuItem key={index} value={index}>
+                              {item.class}
+                            </MenuItem>
                           )
+                        )
                         : []}
                     </TextField>
                   </TableCell>
