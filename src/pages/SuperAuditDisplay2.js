@@ -114,8 +114,8 @@ export default function SuperAuditDisplay2() {
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("");
   const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [subState, setSubState] = useState(0);
+  // const [status, setStatus] = useState(0);
+  // const [subState, setSubState] = useState(0);
   const [selectGate, setSelectGate] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
@@ -233,7 +233,6 @@ export default function SuperAuditDisplay2() {
       startTime: timeStart,
       endTime: timeEnd,
       state: "0",
-      sub_state: subState,
     };
 
     apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
@@ -415,7 +414,7 @@ export default function SuperAuditDisplay2() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection} >
+        <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
               <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
