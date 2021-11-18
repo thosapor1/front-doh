@@ -115,7 +115,7 @@ export default function SuperAuditDisplay2() {
   const [status_select, setStatus_select] = useState(0);
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
-  const [selectLane, setSelectLane] = useState("");
+  const [selectGate, setSelectGate] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
@@ -161,20 +161,19 @@ export default function SuperAuditDisplay2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    console.log(checkpoint);
-    console.log(selectLane);
-    console.log(selectCarType);
-    console.log(status_select);
+    // console.log(checkpoint);
+    // console.log(selectGate);
+    // console.log(selectCarType);
+    // console.log(status_select);
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
+      gate_id: selectGate,
+      state: status_select,
+      vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: status,
-      sub_state: subState,
-      gate_id: selectLane,
-      vehicleClass: selectCarType,
     };
     console.log(sendData);
 
@@ -264,27 +263,6 @@ export default function SuperAuditDisplay2() {
     });
   };
 
-  const changeSubState = (e) => {
-    console.log(e);
-    if (e === 0) {
-      setStatus_select(0);
-      setStatus(0);
-      setSubState(0);
-    } else if (e === 1) {
-      setStatus_select(1);
-      setStatus(1);
-      setSubState(1);
-    } else if (e === 2) {
-      setStatus_select(2);
-      setStatus(2);
-      setSubState(1);
-    } else if (e === 3) {
-      setStatus_select(3);
-      setStatus(2);
-      setSubState(2);
-    }
-  };
-
   useEffect(() => {
     // fetchData();
     getCheckpoint();
@@ -322,10 +300,10 @@ export default function SuperAuditDisplay2() {
             select
             variant="outlined"
             label="ช่อง"
-            value={selectLane}
-            onChange={(e) => setSelectLane(e.target.value)}
+            value={selectGate}
+            onChange={(e) => setSelectGate(e.target.value)}
             className={classes.input}
-            name="lane"
+            name="gate"
           >
             {!!dropdown.gate
               ? dropdown.gate.map((item, index) => (
