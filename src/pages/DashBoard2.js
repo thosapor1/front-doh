@@ -23,8 +23,8 @@ import DateFnsUtils from "@date-io/date-fns";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -46,18 +46,16 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: "#f9f9f9",
       paddingTop: 20,
     },
-    containerChartAndCalendar: {
-      height: "100%",
-      width: "70%",
-    },
+
     card: {
-      marginRight: "auto",
-      marginLeft: "auto",
       marginTop: 10,
       paddingTop: 10,
       paddingBottom: 8,
       textAlign: "center",
       borderRadius: 10,
+      [theme.breakpoints.only["md"]]: {
+        padding: 100,
+      },
     },
     cardPopup: {
       width: "65%",
@@ -74,6 +72,11 @@ const useStyle = makeStyles((theme) => {
       [theme.breakpoints.down("md")]: {
         marginBottom: 10,
         width: "45%",
+      },
+    },
+    cardContainer: {
+      [theme.breakpoints.down("md")]: {
+        justifyContent: "space-evenly",
       },
     },
     btnContainer: {
@@ -106,15 +109,15 @@ const useStyle = makeStyles((theme) => {
     orderList: {
       backgroundColor: "#75338c",
       marginBottom: 10,
-      [theme.breakpoints.down("md")]: {
-        margin: "0px 5%",
-      },
+      [theme.breakpoints.down("md")]: {},
     },
     filterSection: {
       padding: theme.spacing(1),
-      marginRight: "auto",
-      marginLeft: "auto",
+      paddingLeft: "35%",
       marginBottom: 10,
+      [theme.breakpoints.only("sm")]: {
+        paddingLeft: "27%",
+      },
     },
     btn: {
       backgroundColor: "#46005E",
@@ -257,11 +260,14 @@ export default function DashBoard2() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    apiURL.post("/dashboard-month", { dateTime: month }).then((res) => {
+    month = format(selectedDate, "yyyy-MM");
+    const sendData = { date: month };
+    apiURL.post("/dashboard-month", sendData).then((res) => {
       Swal.close();
       const allData = res.data;
       const dataInMonth = res.data.month;
-      console.log(dataInMonth);
+      console.log("dataInMonth", dataInMonth);
+      setDataTable(allData);
       getChartData(dataInMonth);
       getPopUpData(allData);
     });
@@ -269,16 +275,16 @@ export default function DashBoard2() {
   };
 
   useEffect(() => {
-    // fetchData();
+    fetchData();
     setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container maxWidth="xl" className={classes.root}>
       <Grid container spacing={1}>
-        <Grid item lg={12} md={12} sm={12} style={{ marginBottom: 10 }}>
+        <Grid item lg={12} md={12} sm={12}>
           <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-            ข้อมูลประจำเดือน{monthChart}{" "}
+            ข้อมูลประจำเดือน{monthChart}
           </Typography>
         </Grid>
         <Grid item lg={10} md={12} sm={12}>
@@ -306,7 +312,9 @@ export default function DashBoard2() {
                 }}
               />
             </MuiPickersUtilsProvider>
-            <Button className={classes.btn}>ดูข้อมูล</Button>
+            <Button className={classes.btn} onClick={() => fetchData()}>
+              ดูข้อมูล
+            </Button>
           </Grid>
           <Grid
             component={Paper}
@@ -338,7 +346,11 @@ export default function DashBoard2() {
             รายการ
           </Typography>
 
-          <Grid container>
+          <Grid
+            container
+            justifyContent="center"
+            className={classes.cardContainer}
+          >
             {!!cardData
               ? cardData.map((card, index) => (
                   <Grid
@@ -347,11 +359,10 @@ export default function DashBoard2() {
                     component={Paper}
                     sm={5}
                     md={5}
-                    lg={9}
-                    elevation={2}
+                    lg={10}
                     className={classes.card}
                   >
-                    <Typography style={{ fontSize: "0.8rem" }}>
+                    <Typography style={{ fontSize: "0.75rem" }}>
                       {card.label}
                     </Typography>
                     <Divider
@@ -359,7 +370,7 @@ export default function DashBoard2() {
                       style={{ marginTop: 10, marginBottom: 10 }}
                     />
                     <Typography
-                      style={{ color: card.color, fontSize: "0.8rem" }}
+                      style={{ color: card.color, fontSize: "0.75rem" }}
                       variant="subtitle2"
                     >
                       {card.value}

@@ -100,7 +100,7 @@ export default function TableAuditDisplay(props) {
       setOpen(true);
     } else {
       endpoint = "/display-activity2";
-      setOpen1(true);
+      setOpen(true);
     }
     apiURL
       .post(endpoint, sendData)
@@ -131,7 +131,7 @@ export default function TableAuditDisplay(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange } = props;
+  const { dataList, page, onChange, dropdown , checkDate} = props;
 
   return (
     <div>
@@ -161,17 +161,16 @@ export default function TableAuditDisplay(props) {
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 ประเภท TS
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ค่าผ่านทาง
+              <TableCell colSpan={3} align="center" className={classes.header}>
+                ตรวจสอบ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ค่าปรับ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ราคารวม
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ชำระแล้ว
+              <TableCell
+                colSpan={2}
+                align="center"
+                className={classes.header}
+                style={{ backgroundColor: "orange" }}
+              >
+                จัดเก็บ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
@@ -189,6 +188,21 @@ export default function TableAuditDisplay(props) {
               </TableCell>
               <TableCell align="center" className={classes.header}>
                 MF
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ค่าผ่านทาง
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ค่าปรับ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                รวม
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                เรียกเก็บ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ชำระ
               </TableCell>
             </StyledTableRow>
           </TableHead>
@@ -223,6 +237,8 @@ export default function TableAuditDisplay(props) {
                               ? "pink"
                               : data.state === 7
                               ? "green"
+                              : data.state === 8
+                              ? "#FF2400"
                               : "gray",
                         }}
                       />
@@ -231,7 +247,7 @@ export default function TableAuditDisplay(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp 
+                      {!!data.match_timestamp
                         ? data.match_timestamp.split(" ").pop()
                         : "-"}
                     </TableCell>
@@ -246,28 +262,29 @@ export default function TableAuditDisplay(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.mf_lane_vehicleClass 
+                      {data.mf_lane_vehicleClass
                         ? `C${data.mf_lane_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.vehicleClass
-                        ? `C${data.vehicleClass}`
-                        : "-"}
+                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_transaction_type
-                        ? `C${data.match_transaction_type}`
+                        ? data.match_transaction_type_name
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                      {!!data.fine ? data.fine : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_total_cost ? data.match_total_cost : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
@@ -287,6 +304,8 @@ export default function TableAuditDisplay(props) {
         open={open}
         onClick={handleClose}
         onFetchData={props.onFetchData}
+        dropdown={dropdown}
+        checkDate={checkDate}
       />
       <ModalReadOnly2
         dataList={dataForActivity}

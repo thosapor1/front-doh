@@ -137,7 +137,6 @@ export default function SuperAuditDisplay2() {
   };
   // const handleOpen = () => {
   //   setOpen(true);
-  // };
   const getCheckpoint = (e) => {
     apiURL.post("/dropdown").then((res) => {
       console.log(res.data);
@@ -415,7 +414,7 @@ export default function SuperAuditDisplay2() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection}>
+        <Grid container spacing={1} className={classes.cardSection} >
           <Grid item>
             <Paper className={classes.card}>
               <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
@@ -444,6 +443,7 @@ export default function SuperAuditDisplay2() {
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
+              dropdown={dropdown}
             />
           </Grid>
         </Grid>

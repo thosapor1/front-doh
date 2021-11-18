@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => {
     },
     root: {
       display: "flex",
+      zIndex: 3,
     },
     ListItemText: {
       color: "white",

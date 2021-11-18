@@ -19,16 +19,22 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
       : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
+const apiURLv1 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -94,6 +100,21 @@ function TabPanel4(props) {
     </div>
   );
 }
+function TabPanel5(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`taps3-${index}`}
+      aria-labelledby={`taps3-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
 
 function a11yProps(index) {
   return {
@@ -106,15 +127,18 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     bodyModal: {
-      height: "auto",
+      // height: "auto",
+      // wrap: "nowrap",
       width: "70%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      flexGrow: 1,
+      // marginTop: "10%",
       [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+        marginTop: "170%",
       },
     },
     head: {
@@ -125,17 +149,23 @@ const useStyle = makeStyles((theme) => {
       display: "flex",
       margin: "10px 0px",
     },
-    cardContainer: {},
+    cardContainer: {
+      [theme.breakpoints.up("md")]: {
+        direction: "row",
+        wrap: "nowrap",
+      },
+    },
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
     },
     image: {
-      height: "300px",
-      width: "90%",
+      height: 300,
+      maxWidth: "90%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
+      backgroundSize: "contain",
     },
     tableHead1: {
       backgroundColor: "#7C85BFff",
@@ -197,12 +227,13 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalActivity2(props) {
   const classes = useStyle();
-  const { dataList } = props;
+  const { dataList, dropdown, checkDate } = props;
 
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);
   const [value3, setValue3] = React.useState(2);
   const [value4, setValue4] = React.useState(2);
+  // const [value5, setValue5] = React.useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -216,6 +247,9 @@ export default function ModalActivity2(props) {
   const handleChangeTabs4 = (event, newValue) => {
     setValue4(newValue);
   };
+  // const handleChangeTabs5 = (event, newValue) => {
+  //   setValue5(newValue);
+  // };
 
   // const download = () => {
   //   const header = {
@@ -243,45 +277,50 @@ export default function ModalActivity2(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({
-    audit_lp: "",
-    audit_province: "",
-    audit_comment: "",
     tsType: "",
   });
-  const { audit_lp, audit_province, audit_comment, tsType } = state;
+  const { tsType } = state;
 
-  const [audit_vehicleClass, setAudit_vehicleClass] = useState(0);
-  const [audit_feeAmount, setAudit_feeAmount] = useState("");
+  const [vehicleClass, setVehicleClass] = useState(0);
+  const [audit_feeAmount, setAudit_feeAmount] = useState(0);
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
+  const [checkDropdown, setCheckDropdown] = useState(false);
+
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
   const handleOptionChange = (event) => {
     const index = event.target.value;
-    setAudit_vehicleClass(index);
-    setAudit_vehicleClass_id(dataList.dropdown_audit_vehicelClass[index].id);
-    setAudit_feeAmount(dataList.dropdown_audit_feeAmount[index].fee);
+    setVehicleClass(index);
+    setAudit_vehicleClass_id(dropdown.vehicle[index].id);
+    setAudit_feeAmount(dropdown.vehicle[index].fee);
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-      super_audit_vehicleClass: ${audit_vehicleClass}
+      super_audit_vehicleClass: ${vehicleClass}
       event.target.value: ${index}`
     );
   };
 
   const handleUpdate = () => {
+    let endPointURL = "";
+    if (tsType === 2 || tsType === 3) {
+      endPointURL = "/changeState3";
+    } else {
+      endPointURL = "/changeState1";
+    }
+
+    const date = format(checkDate, "yyyy-MM-dd");
     const sendData = {
+      date: date,
       user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      audit_lp: audit_lp,
-      audit_province: audit_province,
-      // audit_vehicleClass: audit_vehicleClass,
-      audit_feeAmount: audit_feeAmount,
-      audit_comment: audit_comment,
-      audit_vehicleClass_id: audit_vehicleClass_id,
-      timestamp: dataList.timestamp,
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
+      fee: audit_feeAmount || "0",
+      status: tsType,
     };
 
     Swal.fire({
@@ -295,7 +334,7 @@ export default function ModalActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURL.post("/changeState2to3", sendData).then((res) => {
+          apiURLv1.post(endPointURL, sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -367,10 +406,9 @@ export default function ModalActivity2(props) {
   };
 
   useEffect(() => {
-    
     if (dataList) {
       setState(dataList);
-      setAudit_vehicleClass(dataList.audit_vehicleClass);
+      setVehicleClass(dataList.audit_vehicleClass);
       setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
@@ -378,6 +416,7 @@ export default function ModalActivity2(props) {
       );
       console.log("dataList", dataList);
     }
+    // setCheckDropdown(true);
   }, [dataList]);
 
   const body = (
@@ -418,11 +457,127 @@ export default function ModalActivity2(props) {
         </div>
       </div>
       <Grid container className={classes.cardContainer}>
-        {/* CCTV Audit block */}
+        {/* Audit block */}
+        {/* <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>Audit</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value5}
+              onChange={handleChangeTabs5}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel5 value={value5} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel5>
+          <TabPanel5 value={value5} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel5>
+          <TabPanel5 value={value5} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel5>
+          <TabPanel5 value={value5} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel5>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginBottom: 58 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบตรวจสอบรายได้ (AD : เข็ค)
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>กว้าง</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ยาว</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_check_vehicleClass
+                      ? resultDisplay.audit_check_vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+        </Grid> */}
+
+        {/* ML(Vehicle) block */}
         <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
+            <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
           </div>
           <div>
             <Tabs
@@ -484,8 +639,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -503,37 +658,7 @@ export default function ModalActivity2(props) {
             />
           </TabPanel4>
 
-          <TableContainer>
-            <table className={classes.table} style={{ marginBottom: 58 }}>
-              <TableHead>
-                <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    ระบบตรวจสอบรายได้ (AD : เข็ค)
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* <TableRow>
-                  <TableCell>กว้าง</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ยาว</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow> */}
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.audit_check_vehicleClass
-                      ? resultDisplay.audit_check_vehicleClass
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-
-          <TableContainer>
+          <TableContainer style={{ marginTop: 152 }}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -572,13 +697,11 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* Audit Block */}
+        {/* ML (LP) Block */}
         <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>
-              CCTV Audit (Vehicle)
-            </Typography>
+            <Typography style={{ marginLeft: 10 }}>ML (LP)</Typography>
           </div>
           <div>
             <Tabs
@@ -629,8 +752,7 @@ export default function ModalActivity2(props) {
               component="img"
               src={
                 mockPic !== 0
-                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
               className={classes.image}
@@ -640,8 +762,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                dataList.mf_lane_picCrop !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
                   : noImage
               }
               className={classes.image}
@@ -733,11 +855,13 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* ALPR Block */}
+        {/* MF (Vehicle : HQ) Block */}
         <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
+            <Typography style={{ marginLeft: 10 }}>
+              MF (Vehicle : HQ)
+            </Typography>
           </div>
           <div>
             <Tabs
@@ -799,7 +923,7 @@ export default function ModalActivity2(props) {
               component="img"
               src={
                 dataList.imageFileCrop !== 0
-                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                  ? `data:image/png;base64, ${dataList.imageFile}`
                   : noImage
               }
               className={classes.image}
@@ -870,11 +994,11 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* DVES Block */}
+        {/* MF (LP : HQ) Block */}
         <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>DVES</Typography>
+            <Typography style={{ marginLeft: 10 }}>MF (LP : HQ)</Typography>
           </div>
           <div>
             <Tabs
@@ -935,8 +1059,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                dataList.imageFileCrop !== 0
+                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
                   : noImage
               }
               className={classes.image}
@@ -975,14 +1099,17 @@ export default function ModalActivity2(props) {
                       value={tsType}
                       onChange={handleChange}
                     >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem key={index} value={index}>
-                                {item.class}
-                              </MenuItem>
+                      {!!dropdown.ts_status
+                        ? dropdown.ts_status
+                            .filter(
+                              (item) =>
+                                item.id === 2 || item.id === 3 || item.id === 5
                             )
-                          )
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -991,37 +1118,30 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
+                      disabled={tsType === 2 || tsType === 3 ? false : true}
                       variant="outlined"
                       select
                       size="small"
                       className={classes.textField2}
-                      name="audit_vehicleClass"
-                      value={audit_vehicleClass}
+                      name="vehicleClass"
+                      value={vehicleClass}
                       onChange={handleOptionChange}
                     >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem key={index} value={index}>
+                      {!!dropdown.vehicle
+                        ? dropdown.vehicle
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
                                 {item.class}
                               </MenuItem>
-                            )
-                          )
+                            ))
                         : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      variant="outlined"
-                      className={classes.textField2}
-                      size="small"
-                      name="valueRef"
-                      value={audit_feeAmount || ""}
-                    />
-                  </TableCell>
+                  <TableCell>{audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1033,6 +1153,7 @@ export default function ModalActivity2(props) {
             }}
           >
             <Button
+              disable={checkDropdown}
               variant="contained"
               color="primary"
               style={{ marginTop: 96, float: "right" }}
