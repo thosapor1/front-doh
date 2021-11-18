@@ -140,8 +140,8 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "300px",
-      width: "90%",
+      height: "140px",
+      width: "100%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
@@ -252,12 +252,9 @@ export default function ModalActivity2(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({
-    audit_lp: "",
-    audit_province: "",
-    audit_comment: "",
     tsType: "",
   });
-  const { audit_lp, audit_province, audit_comment, tsType } = state;
+  const { tsType } = state;
 
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
@@ -423,8 +420,8 @@ export default function ModalActivity2(props) {
             transaction: {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].transactionId : ""}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway_name} / {dataList.checkpoint_name} /
-            {dataList.gate_name}
+            {dataList.resultsDisplay[0].match_checkpoint} /
+            ช่อง{dataList.resultsDisplay[0].match_gate}
           </Typography>
         </div>
         <div>
@@ -435,7 +432,7 @@ export default function ModalActivity2(props) {
           />
         </div>
       </div>
-      <Grid container className={classes.cardContainer}>
+      <Grid container className={classes.cardContainer} spacing={1}>
 
         {/* ML (Vehicle)  block */}
         <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
