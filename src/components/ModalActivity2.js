@@ -14,6 +14,8 @@ import {
   Tabs,
   TextField,
   Typography,
+  Box,
+  Paper,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -401,27 +403,27 @@ export default function ModalActivity2(props) {
       <div className={classes.head}>
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
-            {dataList.state === 1
-              ? "ข้อมูลปกติ (state 1)"
-              : dataList.state === 2
-                ? "ข้อมูลรอตรวจสอบ (state 2)"
-                : dataList.state === 3
-                  ? "อยู่ระหว่างการตรวจสอบ (state 3)"
-                  : dataList.state === 4
-                    ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
-                    : dataList.state === 5
-                      ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
-                      : dataList.state === 6
-                        ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
-                        : dataList.state === 7
+            {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].state === 1
+              ? "ปกติรอเก็บเงิน (state 1)"
+              : dataList.resultsDisplay[0].state === 2
+                ? "ประเภทไม่ตรง (state 2)"
+                : dataList.resultsDisplay[0].state === 3
+                  ? "รอจัดเก็บตรวจสอบ (state 3)"
+                  : dataList.resultsDisplay[0].state === 4
+                    ? "รอ super audit ตรวจสอบ (state 4)"
+                    : dataList.resultsDisplay[0].state === 5
+                      ? "รอพิจารณาพิเศษ (state 5)"
+                      : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ (state 6)"
+                        : dataList.resultsDisplay[0].state === 7
                           ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
-                          : "ไม่มีสถานะ"}
+                          : dataList.resultsDisplay[0].state === 8 ? "MF สูญหาย" : "ไม่มีสถานะ" : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction: {dataList.transactionId}{" "}
+            transaction: {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].transactionId : ""}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
+            {dataList.highway_name} / {dataList.checkpoint_name} /
             {dataList.gate_name}
           </Typography>
         </div>
@@ -476,15 +478,17 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <Box style={{ height: 214 }}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </Box>
           </TabPanel4>
           <TabPanel4 value={value4} index={1}>
             <CardMedia
@@ -812,6 +816,7 @@ export default function ModalActivity2(props) {
             />
           </TabPanel2>
           <TabPanel2 value={value2} index={2}>
+
             <CardMedia
               component="img"
               src={
@@ -821,6 +826,7 @@ export default function ModalActivity2(props) {
               }
               className={classes.image}
             />
+
           </TabPanel2>
           <TabPanel2 value={value2} index={3}>
             <CardMedia
