@@ -101,13 +101,13 @@ export default function SuperAuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("");
+  const [checkpoint, setCheckpoint] = useState("0");
   const [status_select, setStatus_select] = useState(3);
   // const [status, setStatus] = useState(0);
   // const [subState, setSubState] = useState(0);
-  const [selectGate, setSelectGate] = useState("");
-  const [selectCarType, setSelectCarType] = useState("");
-  const [cardData, setCardData] = useState("");
+  const [selectGate, setSelectGate] = useState("0");
+  const [selectCarType, setSelectCarType] = useState("0");
+  const [cardData, setCardData] = useState("0");
   const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
