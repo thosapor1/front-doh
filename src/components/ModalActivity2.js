@@ -201,6 +201,11 @@ const useStyle = makeStyles((theme) => {
       fontSize: "0.75rem",
       color: "white",
     },
+    checkType: {
+      "& .MuiTableRow-root": {
+        backgroundColor: 'red'
+      }
+    }
   };
 });
 
@@ -307,6 +312,7 @@ export default function ModalActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -502,8 +508,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_lane_picCrop !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -513,7 +519,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
+                !!mockPic
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -526,7 +532,7 @@ export default function ModalActivity2(props) {
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
-                    ระบบตรวจสอบรายได้ (AD : เข็ค)
+                    ระบบตรวจสอบรายได้ (AD : เช็ค)
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -658,8 +664,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_lane_picCrop !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
+                !!dataList.mf_lane_picCrop ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
                   : noImage
               }
               className={classes.image}
@@ -817,7 +822,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.imageFile !== 0
+                !!dataList.imageFile
                   ? `data:image/png;base64, ${dataList.imageFile}`
                   : noImage
               }
@@ -854,6 +859,14 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.vehicleClass
+                      ? resultDisplay.vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
                     {!!resultDisplay.cameras_plateNo1
@@ -869,14 +882,6 @@ export default function ModalActivity2(props) {
                       : dataList.mf_lp_province}
                   </TableCell>
                 </TableRow> */}
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.vehicleClass
-                      ? resultDisplay.vehicleClass
-                      : "-"}
-                  </TableCell>
-                </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -955,7 +960,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.imageFileCrop !== 0
+                !!dataList.imageFileCrop
                   ? `data:image/png;base64, ${dataList.imageFileCrop}`
                   : noImage
               }
@@ -1034,7 +1039,7 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
+                  <TableCell style={{ width: 20 }}>
                     {audit_feeAmount}
                   </TableCell>
                 </TableRow>

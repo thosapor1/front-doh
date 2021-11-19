@@ -1,4 +1,5 @@
 import {
+  Box,
   makeStyles,
   Table,
   TableBody,
@@ -6,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -23,7 +25,50 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const useStyles = makeStyles((theme) => {
+
+const detailStatus = [
+  {
+    state: 1,
+    color: 'gray',
+    label: 'ปกติรอเก็บเงิน'
+  },
+  {
+    state: 2,
+    color: '#FF2400',
+    label: 'ประเภทไม่ตรง'
+  },
+  {
+    state: 3,
+    color: 'blue',
+    label: 'รอจัดเก็บตรวจสอบ'
+  },
+  {
+    state: 4,
+    color: 'yellow',
+    label: 'รอ super audit ตรวจสอบ'
+  },
+  {
+    state: 5,
+    color: 'black',
+    label: 'รอพิจารณาพิเศษ'
+  },
+  {
+    state: 6,
+    color: 'pink',
+    label: 'ปกติรอเก็บเงิน'
+  },
+  {
+    state: 7,
+    color: 'green',
+    label: 'ปกติชำระแล้ว'
+  },
+  {
+    state: 8,
+    color: '#FF2400',
+    label: 'MF สูญหาย'
+  }
+]
+const useStyles = makeStyles((theme, props) => {
   return {
     "@global": {
       "*::-webkit-scrollbar": {
@@ -38,7 +83,11 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: 590,
+      maxHeight: '55vh',
+      overflow: 'auto',
+      [theme.breakpoints.down('lg')]: {
+        maxHeight: '42vh'
+      }
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -47,24 +96,50 @@ const useStyles = makeStyles((theme) => {
       fontSize: "0.8rem",
       padding: "6px",
     },
+    header2: {
+      backgroundColor: "#7C85BFff",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 38,
+      // zIndex: 10,
+    },
     tableRow: {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
       },
     },
     pagination: {
-      "& .MuiPaginationItem-root": {
-        fontSize: ".0.75rem",
+      '& .MuiPaginationItem-root': {
+        height: 25,
+        minWidth: 25,
+        fontSize: '0.8rem',
+        [theme.breakpoints.down('lg')]: {
+          fontSize: '0.7rem'
+        },
       },
-      marginBottom: "1rem",
-      position: "static",
-      top: 0,
+      marginBottom: 10,
+
     },
     tableCell: {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
     },
+    detailStatus: {
+      display: 'inline',
+      fontSize: '0.8rem',
+      [theme.breakpoints.down('lg')]: {
+        fontSize: '0.7rem'
+      },
+    },
+    dot: {
+      fontSize: '0.8rem',
+
+    },
+
   };
 });
 
@@ -131,19 +206,28 @@ export default function TableAuditDisplay(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown , checkDate} = props;
+  const { dataList, page, onChange, dropdown, checkDate } = props;
 
   return (
     <div>
-      <Pagination
-        count={dataList.totalPages}
-        color="primary"
-        page={page}
-        onChange={onChange}
-        className={classes.pagination}
-      />
+      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination
+          count={dataList.totalPages}
+          color="primary"
+          page={page}
+          onChange={onChange}
+          className={classes.pagination}
+        />
+        <Box style={{ display: 'flex', paddingTop: 2 }}>
+          {detailStatus.map((item) =>
+            <Box style={{ paddingLeft: 10 }}>
+              <FiberManualRecordIcon className={classes.dot} style={{ color: item.color }} />
+              <Typography className={classes.detailStatus} >{item.label}</Typography> </Box>
+          )}
+        </Box>
+      </Box>
       <TableContainer className={classes.container}>
-        <Table>
+        <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -177,31 +261,31 @@ export default function TableAuditDisplay(props) {
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2} >
                 จริง
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 AD
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 ML
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 MF
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าผ่านทาง
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าปรับ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 รวม
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 เรียกเก็บ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ชำระ
               </TableCell>
             </StyledTableRow>
@@ -209,91 +293,91 @@ export default function TableAuditDisplay(props) {
           <TableBody>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay.map((data) => (
-                  <StyledTableRow
-                    key={data.transactionId}
-                    onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
-                    }}
-                    className={classes.tableRow}
-                  >
-                    <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        fontSize="small"
-                        style={{
-                          color:
-                            data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
+                <StyledTableRow
+                  key={data.transactionId}
+                  onClick={() => {
+                    fetchData(
+                      data.transactionId,
+                      data.state,
+                      data.match_timestamp
+                    );
+                  }}
+                  className={classes.tableRow}
+                >
+                  <TableCell align="center" className={classes.tableCell}>
+                    <FiberManualRecordIcon
+                      style={{
+                        fontSize: "0.8rem",
+                        color:
+                          data.state === 2
+                            ? "#FF2400"
+                            : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "yellow"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "pink"
-                              : data.state === 7
-                              ? "green"
-                              : data.state === 8
-                              ? "#FF2400"
-                              : "gray",
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp
-                        ? data.match_timestamp.split(" ").pop()
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_vehicleClass
-                        ? `C${data.match_real_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.mf_lane_vehicleClass
-                        ? `C${data.mf_lane_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_transaction_type
-                        ? data.match_transaction_type_name
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_total_cost ? data.match_total_cost : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+                                ? "yellow"
+                                : data.state === 5
+                                  ? "black"
+                                  : data.state === 6
+                                    ? "pink"
+                                    : data.state === 7
+                                      ? "green"
+                                      : data.state === 8
+                                        ? "#FF2400"
+                                        : "gray",
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {data.transactionId}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_timestamp
+                      ? data.match_timestamp.split(" ").pop()
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_real_vehicleClass
+                      ? `C${data.match_real_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.audit_check_vehicleClass
+                      ? `C${data.audit_check_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {data.mf_lane_vehicleClass
+                      ? `C${data.mf_lane_vehicleClass}`
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_transaction_type
+                      ? data.match_transaction_type_name
+                      : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_real_fee ? data.match_real_fee : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.fine ? data.fine : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.match_total_cost ? data.match_total_cost : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                </StyledTableRow>
+              ))
               : []}
           </TableBody>
         </Table>
@@ -313,6 +397,6 @@ export default function TableAuditDisplay(props) {
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />
-    </div>
+    </div >
   );
 }

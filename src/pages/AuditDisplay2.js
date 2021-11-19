@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 100,
+      height: 80,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -92,6 +92,9 @@ const useStyles = makeStyles((theme) => {
         width: 150,
       },
     },
+    typography: {
+      fontSize: '0.8rem',
+    }
   };
 });
 
@@ -501,17 +504,17 @@ export default function AuditDisplay2() {
         <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
-              <Typography>ตรงกัน : {cardData.ts_normal} </Typography>
-              <Typography>ไม่ตรงกัน : {cardData.ts_not_normal} </Typography>
-              <Typography>สูญหาย : {cardData.ts_miss} </Typography>
+              <Typography className={classes.typography}>รายการทั้งหมด : {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ตรงกัน : {!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ไม่ตรงกัน : {!!cardData.ts_not_normal ? cardData.ts_not_normal.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>สูญหาย : {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""} </Typography>
             </Paper>
           </Grid>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายได้ประมาณการ : {cardData.revenue} </Typography>
-              <Typography>ชำระแล้ว : - </Typography>
-              <Typography>ค้างชำระ : - </Typography>
+              <Typography className={classes.typography}>รายได้ประมาณการ : {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ชำระแล้ว : - </Typography>
+              <Typography className={classes.typography}>ค้างชำระ : - </Typography>
             </Paper>
           </Grid>
         </Grid>

@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => {
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
+      zIndex: 1,
     },
     drawerPaper: {
       width: drawerWidth,
@@ -244,23 +245,23 @@ export default function Layout({ children }) {
         <List>
           {!!menuItems
             ? menuItems.map((item) => (
-                <ListItem
-                  key={item.text}
-                  className={
-                    location.pathname === item.path
-                      ? classes.active
-                      : classes.ListItemText
-                  }
-                  button
-                  onClick={() => history.push(item.path)}
-                >
-                  <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
-                  <ListItemText
-                    primary={item.text}
-                    classes={{ primary: classes.listItemText }}
-                  />
-                </ListItem>
-              ))
+              <ListItem
+                key={item.text}
+                className={
+                  location.pathname === item.path
+                    ? classes.active
+                    : classes.ListItemText
+                }
+                button
+                onClick={() => history.push(item.path)}
+              >
+                <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+                <ListItemText
+                  primary={item.text}
+                  classes={{ primary: classes.listItemText }}
+                />
+              </ListItem>
+            ))
             : []}
         </List>
         <Divider variant="middle" className={classes.hr2} />
