@@ -229,10 +229,10 @@ export default function AuditDisplay2() {
 
     const sendData = {
       page: pageId,
-      checkpoint_id: checkpoint,
-      gate_id: selectGate,
-      state: status_select,
-      vehicleClass: selectCarType,
+      checkpoint_id: checkpoint || 0,
+      gate_id: selectGate || 0,
+      state: status_select || 0,
+      vehicleClass: selectCarType || 0,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
@@ -350,6 +350,11 @@ export default function AuditDisplay2() {
   useEffect(() => {
     // fetchData();
     getDropdown();
+    setCheckpoint(0)
+    setSelectGate(0)
+    setSelectCarType(0)
+    setStatus_select(0)
+
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
