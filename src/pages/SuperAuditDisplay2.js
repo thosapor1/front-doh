@@ -18,8 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay from "../components/TableSuperdisplay2";
-import TableSuperdisplay from "../components/TableSuperdisplay2";
+import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 
 const apiURL = axios.create({
   baseURL:
@@ -112,12 +111,12 @@ export default function SuperAuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [subState, setSubState] = useState(0);
-  const [selectGate, setSelectGate] = useState("");
-  const [selectCarType, setSelectCarType] = useState("");
+  const [checkpoint, setCheckpoint] = useState("0");
+  const [status_select, setStatus_select] = useState("0");
+  // const [status, setStatus] = useState(0);
+  // const [subState, setSubState] = useState(0);
+  const [selectGate, setSelectGate] = useState("0");
+  const [selectCarType, setSelectCarType] = useState("0");
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
@@ -233,7 +232,6 @@ export default function SuperAuditDisplay2() {
       startTime: timeStart,
       endTime: timeEnd,
       state: "0",
-      sub_state: subState,
     };
 
     apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
@@ -415,7 +413,7 @@ export default function SuperAuditDisplay2() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection} >
+        <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
               <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
@@ -439,7 +437,7 @@ export default function SuperAuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableSuperdisplay
+            <TableAuditDisplay2
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}

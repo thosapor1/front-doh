@@ -76,10 +76,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay(props) {
+export default function AllTsTableForPk3Activity(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const { dropdown, checkDate } = props;
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -100,7 +101,7 @@ export default function TableAuditDisplay(props) {
       setOpen(true);
     } else {
       endpoint = "/display-activity2";
-      setOpen1(true);
+      setOpen(true);
     }
     apiURL
       .post(endpoint, sendData)
@@ -117,13 +118,6 @@ export default function TableAuditDisplay(props) {
         });
       });
   };
-
-  // const handleOpen = (state) => {
-  //   if (state === 2) {
-  //     setOpen(true);
-  //   }
-  //   setOpen1(true);
-  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -276,7 +270,7 @@ export default function TableAuditDisplay(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_total_cost ? data.match_total_cost : "-"}
@@ -302,6 +296,8 @@ export default function TableAuditDisplay(props) {
         open={open}
         onClick={handleClose}
         onFetchData={props.onFetchData}
+        dropdown={dropdown}
+        checkDate={checkDate}
       />
       <ModalReadOnly2
         dataList={dataForActivity}
