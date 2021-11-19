@@ -312,6 +312,7 @@ export default function ModalActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
+      zIndex:1300,
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -507,8 +508,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_lane_picCrop !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -518,7 +519,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
+                !!mockPic
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -663,8 +664,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_lane_picCrop !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
+                !!dataList.mf_lane_picCrop ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
                   : noImage
               }
               className={classes.image}
@@ -822,7 +822,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.imageFile !== 0
+                !!dataList.imageFile
                   ? `data:image/png;base64, ${dataList.imageFile}`
                   : noImage
               }
@@ -960,7 +960,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                dataList.imageFileCrop !== 0
+                !!dataList.imageFileCrop
                   ? `data:image/png;base64, ${dataList.imageFileCrop}`
                   : noImage
               }

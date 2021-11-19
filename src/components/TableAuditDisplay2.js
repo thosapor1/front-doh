@@ -25,7 +25,50 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const useStyles = makeStyles((theme) => {
+
+const detailStatus = [
+  {
+    state: 1,
+    color: 'gray',
+    label: 'ปกติรอเก็บเงิน'
+  },
+  {
+    state: 2,
+    color: '#FF2400',
+    label: 'ประเภทไม่ตรง'
+  },
+  {
+    state: 3,
+    color: 'blue',
+    label: 'รอจัดเก็บตรวจสอบ'
+  },
+  {
+    state: 4,
+    color: 'yellow',
+    label: 'รอ super audit ตรวจสอบ'
+  },
+  {
+    state: 5,
+    color: 'black',
+    label: 'รอพิจารณาพิเศษ'
+  },
+  {
+    state: 6,
+    color: 'pink',
+    label: 'ปกติรอเก็บเงิน'
+  },
+  {
+    state: 7,
+    color: 'green',
+    label: 'ปกติชำระแล้ว'
+  },
+  {
+    state: 8,
+    color: '#FF2400',
+    label: 'MF สูญหาย'
+  }
+]
+const useStyles = makeStyles((theme, props) => {
   return {
     "@global": {
       "*::-webkit-scrollbar": {
@@ -40,9 +83,11 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: '50vh',
+      maxHeight: '55vh',
       overflow: 'auto',
-
+      [theme.breakpoints.down('lg')]: {
+        maxHeight: '40vh'
+      }
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -57,18 +102,30 @@ const useStyles = makeStyles((theme) => {
       },
     },
     pagination: {
-      "& .MuiPaginationItem-root": {
-        fontSize: ".0.75rem",
+      '& .MuiPaginationItem-root': {
+        height: 25,
+        minWidth: 25,
+        fontSize: '0.8rem',
       },
       marginBottom: "1rem",
-      position: "static",
-      top: 0,
+
     },
     tableCell: {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
     },
+    detailStatus: {
+      display: 'inline',
+      [theme.breakpoints.down('lg')]: {
+        fontSize: '0.7rem'
+      }
+    },
+    dot: {
+      fontSize: '0.8rem',
+
+    },
+
   };
 });
 
@@ -148,7 +205,13 @@ export default function TableAuditDisplay(props) {
           onChange={onChange}
           className={classes.pagination}
         />
-        <Box style={{ paddingTop: 10 }}> <FiberManualRecordIcon style={{ color: 'red', fontSize: '0.8rem' }} /><Typography style={{ display: 'inline' }}>ประเภทไม่ตรง</Typography> </Box>
+        <Box style={{ display: 'flex' }}>
+          {detailStatus.map((item) =>
+            <Box style={{ paddingTop: 10, paddingLeft: 10 }}>
+              <FiberManualRecordIcon className={classes.dot} style={{ color: item.color }} />
+              <Typography className={classes.detailStatus} >{item.label}</Typography> </Box>
+          )}
+        </Box>
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -321,6 +384,6 @@ export default function TableAuditDisplay(props) {
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />
-    </div>
+    </div >
   );
 }
