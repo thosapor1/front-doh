@@ -350,6 +350,11 @@ export default function AuditDisplay2() {
   useEffect(() => {
     // fetchData();
     getDropdown();
+    setCheckpoint(0)
+    setSelectGate(0)
+    setSelectCarType(0)
+    setStatus_select(0)
+
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
