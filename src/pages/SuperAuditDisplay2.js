@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableSuperdisplay from "../components/TableSuperdisplay2";
+import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 
 const apiURL = axios.create({
   baseURL:
@@ -437,7 +437,7 @@ export default function SuperAuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableSuperdisplay
+            <TableAuditDisplay2
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
