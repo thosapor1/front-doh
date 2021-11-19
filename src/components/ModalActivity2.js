@@ -312,7 +312,7 @@ export default function ModalActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex:1300,
+      zIndex: 1300,
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -1039,7 +1039,7 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
+                  <TableCell style={{ width: 20 }}>
                     {audit_feeAmount}
                   </TableCell>
                 </TableRow>

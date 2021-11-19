@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme, props) => {
       maxHeight: '55vh',
       overflow: 'auto',
       [theme.breakpoints.down('lg')]: {
-        maxHeight: '40vh'
+        maxHeight: '42vh'
       }
     },
     header: {
@@ -95,6 +95,16 @@ const useStyles = makeStyles((theme, props) => {
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
+    },
+    header2: {
+      backgroundColor: "#7C85BFff",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 38,
+      // zIndex: 10,
     },
     tableRow: {
       "&:hover": {
@@ -106,8 +116,11 @@ const useStyles = makeStyles((theme, props) => {
         height: 25,
         minWidth: 25,
         fontSize: '0.8rem',
+        [theme.breakpoints.down('lg')]: {
+          fontSize: '0.7rem'
+        },
       },
-      marginBottom: "1rem",
+      marginBottom: 10,
 
     },
     tableCell: {
@@ -117,9 +130,10 @@ const useStyles = makeStyles((theme, props) => {
     },
     detailStatus: {
       display: 'inline',
+      fontSize: '0.8rem',
       [theme.breakpoints.down('lg')]: {
         fontSize: '0.7rem'
-      }
+      },
     },
     dot: {
       fontSize: '0.8rem',
@@ -134,7 +148,6 @@ const StyledTableRow = withStyles((theme) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    marginTop: 10,
   },
 }))(TableRow);
 
@@ -205,9 +218,9 @@ export default function TableAuditDisplay(props) {
           onChange={onChange}
           className={classes.pagination}
         />
-        <Box style={{ display: 'flex' }}>
+        <Box style={{ display: 'flex', paddingTop: 2 }}>
           {detailStatus.map((item) =>
-            <Box style={{ paddingTop: 10, paddingLeft: 10 }}>
+            <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon className={classes.dot} style={{ color: item.color }} />
               <Typography className={classes.detailStatus} >{item.label}</Typography> </Box>
           )}
@@ -248,31 +261,31 @@ export default function TableAuditDisplay(props) {
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2} >
                 จริง
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 AD
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 ML
               </TableCell>
-              <TableCell align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header2}>
                 MF
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าผ่านทาง
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าปรับ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 รวม
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 เรียกเก็บ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ชำระ
               </TableCell>
             </StyledTableRow>
@@ -293,8 +306,8 @@ export default function TableAuditDisplay(props) {
                 >
                   <TableCell align="center" className={classes.tableCell}>
                     <FiberManualRecordIcon
-                      fontSize="small"
                       style={{
+                        fontSize: "0.8rem",
                         color:
                           data.state === 2
                             ? "#FF2400"
