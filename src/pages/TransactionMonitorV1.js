@@ -65,6 +65,7 @@ export default function TransactionMonitorV1() {
   const classes = useStyles;
 
   const [value, setValue] = useState(0);
+  const [dropdown, setDropdown] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -72,61 +73,52 @@ export default function TransactionMonitorV1() {
   const [dataAudit, setDataAudit] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     checkpointList: [],
-    checkpointValue: 0,
+    checkpointValue: "0",
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
       { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
-      { id: "2", label: "timestamp" },
+      { id: "2", label: "เวลาเข้าด่าน" },
+      { id: "3", label: "เวลามาถึงด่าน" },
     ],
     tableBodyData: [],
-    gateValue: 0,
+    gateValue: "0",
     gateList: [],
   });
 
   const [dataAW, setDataAW] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
-    checkpointList: [
-      { id: 1, checkpoint_name: "ด่านทับช้าง 1" },
-      { id: 2, checkpoint_name: "ด่านทับช้าง 2" },
-      { id: 3, checkpoint_name: "ด่านธัญบุรี 1" },
-      { id: 4, checkpoint_name: "ด่านธัญบุรี 2" },
-    ],
-    checkpointValue: "ด่านทับช้าง 1",
+    checkpointList: [],
+    checkpointValue: "0",
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
       { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
       { id: "2", label: "refTransactionId" },
-      { id: "3", label: "timestamp" },
+      { id: "3", label: "เวลาเข้าด่าน" },
+      { id: "4", label: "เวลามาถึง" },
     ],
     tableBodyData: [],
-    gateValue: 0,
-    gateList: [
-      { id: 0, gate_name: "ทุกด่าน" },
-      { id: 1, gate_name: "1" },
-      { id: 2, gate_name: "2" },
-      { id: 3, gate_name: "3" },
-      { id: 4, gate_name: "4" },
-      { id: 5, gate_name: "5" },
-      { id: 6, gate_name: "6" },
-    ],
+    gateValue: "0",
+    gateList: [],
   });
 
   const [dataFetc, setDataFETC] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     checkpointList: [],
-    checkpointValue: "ทุกด่าน",
+    checkpointValue: "0",
     imageCrop: 0,
     imageFull: 0,
     tableHeaderData: [
+      { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
-      { id: "2", label: "timestamp" },
+      { id: "2", label: "เวลาเข้าด่าน" },
+      { id: "3", label: "เวลามาถึง" },
     ],
     tableBodyData: [],
-    gateValue: 1,
+    gateValue: "0",
     gateList: [],
   });
 
@@ -185,6 +177,13 @@ export default function TransactionMonitorV1() {
     countPage: 1,
   });
 
+  const getDropdown = () => {
+    apiURL.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
+
   const filter = (pageId = 1, selectDate, checkpoint, gate) => {
     if (pageId === 1) {
       setPagination1({ ...pagination1, page: 1 });
@@ -226,12 +225,12 @@ export default function TransactionMonitorV1() {
     const sendData = {
       page: pageId,
       date: date,
-      checkpoint_id: checkpoint,
+      checkpoint_id: checkpoint.toString(),
       gate_id: gate,
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/aw-transaction-monitor", sendData).then((res) => {
+    apiURL.post("/hq-transaction-monitor", sendData).then((res) => {
       setDataAW({
         ...dataAW,
         checkpointList: dataAW.checkpointList,
@@ -381,7 +380,7 @@ export default function TransactionMonitorV1() {
       date: date2,
     };
     console.log("sendData:", sendData);
-    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setDataAW({
         ...dataAW,
@@ -443,7 +442,7 @@ export default function TransactionMonitorV1() {
       date: date,
       headerTransactionId: transactionId,
     };
-    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setAwSearch({
         ...awSearch,
@@ -458,7 +457,7 @@ export default function TransactionMonitorV1() {
       date: date,
       headerTransactionId: transactionId,
     };
-    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setAwSearch({
         ...awSearch,
@@ -468,7 +467,9 @@ export default function TransactionMonitorV1() {
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getDropdown()
+  }, []);
   return (
     <>
       <Container maxWidth>
@@ -506,7 +507,7 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", dataAudit.date);
                   }}
                   checkpointValue={dataAudit.checkpointValue}
-                  checkpointList={dataAudit.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setDataAudit({
                       ...dataAudit,
@@ -514,7 +515,7 @@ export default function TransactionMonitorV1() {
                     });
                   }}
                   gateValue={dataAudit.gateValue}
-                  gateList={dataAudit.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setDataAudit({ ...dataAudit, gateValue: e.target.value });
                   }}
@@ -558,12 +559,12 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", dataAW.date);
                   }}
                   checkpointValue={dataAW.checkpointValue}
-                  checkpointList={dataAW.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setDataAW({ ...dataAW, checkpointValue: e.target.value });
                   }}
                   gateValue={dataAW.gateValue}
-                  gateList={dataAW.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setDataAW({ ...dataAW, gateValue: e.target.value });
                   }}
@@ -608,7 +609,7 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", dataFetc.date);
                   }}
                   checkpointValue={dataFetc.checkpointValue}
-                  checkpointList={dataFetc.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setDataFETC({
                       ...dataFetc,
@@ -616,7 +617,7 @@ export default function TransactionMonitorV1() {
                     });
                   }}
                   gateValue={dataFetc.gateValue}
-                  gateList={dataFetc.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setDataFETC({ ...dataFetc, gateValue: e.target.value });
                   }}
@@ -817,7 +818,7 @@ export default function TransactionMonitorV1() {
                   page={paginationMatchTab.page}
                   onChange={pageOnChangeMatchTab}
                   onClickRow={MatchTabGetImage}
-                  // onFetchData={fetchData}
+                // onFetchData={fetchData}
                 />
               </Grid>
 
