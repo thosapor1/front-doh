@@ -137,27 +137,27 @@ export default function TableDashBoard2(props) {
           <TableBody>
             {!!dataList.month
               ? dataList.month.map((data, index) => (
-                  <StyledTableRow key={index} className={classes.tableRow}>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.date ? data.date : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.count_vehicle ? data.count_vehicle : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.income ? data.income : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+                <StyledTableRow key={index} className={classes.tableRow}>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.date ? data.date : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.count_vehicle ? data.count_vehicle.toLocaleString() : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    {!!data.income ? data.income.toLocaleString() : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
+                  </TableCell>
+                </StyledTableRow>
+              ))
               : []}
           </TableBody>
         </Table>

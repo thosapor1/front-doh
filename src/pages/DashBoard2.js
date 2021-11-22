@@ -292,7 +292,6 @@ export default function DashBoard2() {
             item
             component={Paper}
             className={classes.filterSection}
-            justifyContent="center"
           >
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -353,30 +352,30 @@ export default function DashBoard2() {
           >
             {!!cardData
               ? cardData.map((card, index) => (
-                  <Grid
-                    key={index}
-                    item
-                    component={Paper}
-                    sm={5}
-                    md={5}
-                    lg={10}
-                    className={classes.card}
+                <Grid
+                  key={index}
+                  item
+                  component={Paper}
+                  sm={5}
+                  md={5}
+                  lg={10}
+                  className={classes.card}
+                >
+                  <Typography style={{ fontSize: "0.75rem" }}>
+                    {card.label}
+                  </Typography>
+                  <Divider
+                    variant="middle"
+                    style={{ marginTop: 10, marginBottom: 10 }}
+                  />
+                  <Typography
+                    style={{ color: card.color, fontSize: "0.75rem" }}
+                    variant="subtitle2"
                   >
-                    <Typography style={{ fontSize: "0.75rem" }}>
-                      {card.label}
-                    </Typography>
-                    <Divider
-                      variant="middle"
-                      style={{ marginTop: 10, marginBottom: 10 }}
-                    />
-                    <Typography
-                      style={{ color: card.color, fontSize: "0.75rem" }}
-                      variant="subtitle2"
-                    >
-                      {card.value}
-                    </Typography>
-                  </Grid>
-                ))
+                    {card.value}
+                  </Typography>
+                </Grid>
+              ))
               : [{}]}
           </Grid>
 
@@ -468,7 +467,7 @@ export default function DashBoard2() {
               />
             </div>
           </Paper>
-          <div>{}</div>
+          <div>{ }</div>
 
           {/* <div className={classes.btnContainer}>
             <Button variant="contained" color="primary" size="small">

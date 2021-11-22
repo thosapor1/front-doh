@@ -14,6 +14,8 @@ import {
   Tabs,
   TextField,
   Typography,
+  Box,
+  Paper,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -23,12 +25,19 @@ import Logo_doh from "../image/logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
       : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
+const apiURLv1 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 function TabPanel1(props) {
@@ -131,8 +140,8 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "300px",
-      width: "90%",
+      height: "140px",
+      width: "100%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
@@ -192,12 +201,17 @@ const useStyle = makeStyles((theme) => {
       fontSize: "0.75rem",
       color: "white",
     },
+    checkType: {
+      "& .MuiTableRow-root": {
+        backgroundColor: 'red'
+      }
+    }
   };
 });
 
 export default function ModalActivity2(props) {
   const classes = useStyle();
-  const { dataList } = props;
+  const { dataList, dropdown, checkDate } = props;
 
   const [value1, setValue1] = React.useState(2);
   const [value2, setValue2] = React.useState(2);
@@ -243,45 +257,51 @@ export default function ModalActivity2(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({
-    audit_lp: "",
-    audit_province: "",
-    audit_comment: "",
     tsType: "",
   });
-  const { audit_lp, audit_province, audit_comment, tsType } = state;
+  const { tsType } = state;
 
-  const [audit_vehicleClass, setAudit_vehicleClass] = useState(0);
+  const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+
   };
 
   const handleOptionChange = (event) => {
     const index = event.target.value;
-    setAudit_vehicleClass(index);
-    setAudit_vehicleClass_id(dataList.dropdown_audit_vehicelClass[index].id);
-    setAudit_feeAmount(dataList.dropdown_audit_feeAmount[index].fee);
+    setVehicleClass(index);
+    setAudit_vehicleClass_id(dropdown.vehicle[index].id);
+    setAudit_feeAmount(dropdown.vehicle[index].fee);
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-      super_audit_vehicleClass: ${audit_vehicleClass}
+      super_audit_vehicleClass: ${vehicleClass}
       event.target.value: ${index}`
     );
   };
 
   const handleUpdate = () => {
+
+    let endPointURL = "";
+    if (tsType === 2 || tsType === 3) {
+      endPointURL = "/changeState3";
+    } else {
+      endPointURL = "/changeState1";
+    }
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
     const sendData = {
+      date: date,
       user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      audit_lp: audit_lp,
-      audit_province: audit_province,
-      // audit_vehicleClass: audit_vehicleClass,
-      audit_feeAmount: audit_feeAmount,
-      audit_comment: audit_comment,
-      audit_vehicleClass_id: audit_vehicleClass_id,
-      timestamp: dataList.timestamp,
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
+      fee: audit_feeAmount || "0",
+      status: tsType,
     };
 
     Swal.fire({
@@ -292,10 +312,11 @@ export default function ModalActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURL.post("/changeState2to3", sendData).then((res) => {
+          apiURLv1.post(endPointURL, sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -367,10 +388,10 @@ export default function ModalActivity2(props) {
   };
 
   useEffect(() => {
-    
+
     if (dataList) {
       setState(dataList);
-      setAudit_vehicleClass(dataList.audit_vehicleClass);
+      setVehicleClass(dataList.vehicleClass);
       setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
@@ -385,28 +406,28 @@ export default function ModalActivity2(props) {
       <div className={classes.head}>
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
-            {dataList.state === 1
-              ? "ข้อมูลปกติ (state 1)"
-              : dataList.state === 2
-              ? "ข้อมูลรอตรวจสอบ (state 2)"
-              : dataList.state === 3
-              ? "อยู่ระหว่างการตรวจสอบ (state 3)"
-              : dataList.state === 4
-              ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
-              : dataList.state === 5
-              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
-              : dataList.state === 6
-              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
-              : dataList.state === 7
-              ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
-              : "ไม่มีสถานะ"}
+            {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].state === 1
+              ? "ปกติรอเก็บเงิน (state 1)"
+              : dataList.resultsDisplay[0].state === 2
+                ? "ประเภทไม่ตรง (state 2)"
+                : dataList.resultsDisplay[0].state === 3
+                  ? "รอจัดเก็บตรวจสอบ (state 3)"
+                  : dataList.resultsDisplay[0].state === 4
+                    ? "รอ super audit ตรวจสอบ (state 4)"
+                    : dataList.resultsDisplay[0].state === 5
+                      ? "รอพิจารณาพิเศษ (state 5)"
+                      : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ (state 6)"
+                        : dataList.resultsDisplay[0].state === 7
+                          ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
+                          : dataList.resultsDisplay[0].state === 8 ? "MF สูญหาย" : "ไม่มีสถานะ" : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction: {dataList.transactionId}{" "}
+            transaction: {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].transactionId : ""}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
-            {dataList.gate_name}
+            {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].match_checkpoint : ""} /
+            {!!dataList.resultsDisplay ? dataList.resultsDisplay[0].match_gate : ""}
           </Typography>
         </div>
         <div>
@@ -417,12 +438,13 @@ export default function ModalActivity2(props) {
           />
         </div>
       </div>
-      <Grid container className={classes.cardContainer}>
-        {/* CCTV Audit block */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
+      <Grid container columns={5} spacing={1}>
+
+        {/* ML (Vehicle)  block */}
+        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
+            <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
           </div>
           <div>
             <Tabs
@@ -459,22 +481,24 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <Box style={{ height: 214 }}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </Box>
           </TabPanel4>
           <TabPanel4 value={value4} index={1}>
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -484,8 +508,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -495,7 +519,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
+                !!mockPic
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -508,7 +532,161 @@ export default function ModalActivity2(props) {
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
-                    ระบบตรวจสอบรายได้ (AD : เข็ค)
+                    ระบบตรวจสอบรายได้ (AD : เช็ค)
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* <TableRow>
+                  <TableCell>กว้าง</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ยาว</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow> */}
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_check_vehicleClass
+                      ? resultDisplay.audit_check_vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ค่าปรับ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ระยะ 1</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t1
+                      ? resultDisplay.match_fine_t1
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 2</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t2
+                      ? resultDisplay.match_fine_t2
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 3</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t3
+                      ? resultDisplay.match_fine_t3
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+        </Grid>
+        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value4}
+              onChange={handleChangeTabs4}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value4} index={0}>
+            <Box style={{ height: 214 }}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </Box>
+          </TabPanel4>
+          <TabPanel4 value={value4} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value4} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                !!mockPic
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginBottom: 58 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบตรวจสอบรายได้ (AD : เช็ค)
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -572,12 +750,12 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* Audit Block */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
+        {/* ML (LP) Block */}
+        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
-              CCTV Audit (Vehicle)
+              ML (LP)
             </Typography>
           </div>
           <div>
@@ -630,7 +808,7 @@ export default function ModalActivity2(props) {
               src={
                 mockPic !== 0
                   ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                  Logo_doh
                   : noImage
               }
               className={classes.image}
@@ -640,8 +818,7 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                !!dataList.mf_lane_picCrop ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
                   : noImage
               }
               className={classes.image}
@@ -733,11 +910,11 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* ALPR Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        {/* MF (Vehicle : HQ)  Block */}
+        <Grid item sm={6} md={6} lg={1}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
+            <Typography style={{ marginLeft: 10 }}>MF (Vehicle : HQ) </Typography>
           </div>
           <div>
             <Tabs
@@ -795,15 +972,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel2>
           <TabPanel2 value={value2} index={2}>
+
             <CardMedia
               component="img"
               src={
-                dataList.imageFileCrop !== 0
-                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                !!dataList.imageFile
+                  ? `data:image/png;base64, ${dataList.imageFile}`
                   : noImage
               }
               className={classes.image}
             />
+
           </TabPanel2>
           <TabPanel2 value={value2} index={3}>
             <CardMedia
@@ -834,10 +1013,10 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
+                  <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    {!!resultDisplay.cameras_plateNo1
-                      ? resultDisplay.cameras_plateNo1
+                    {!!resultDisplay.vehicleClass
+                      ? resultDisplay.vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -850,18 +1029,18 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow> */}
                 <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.vehicleClass
-                      ? resultDisplay.vehicleClass
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
                     {!!resultDisplay.billing_fee
                       ? resultDisplay.billing_fee
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ทะเบียน</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -870,11 +1049,11 @@ export default function ModalActivity2(props) {
           </TableContainer>
         </Grid>
 
-        {/* DVES Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        {/* MF (LP : HQ) Block */}
+        <Grid item sm={6} md={6} lg={1}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>DVES</Typography>
+            <Typography style={{ marginLeft: 10 }}>MF (LP : HQ)</Typography>
           </div>
           <div>
             <Tabs
@@ -935,8 +1114,8 @@ export default function ModalActivity2(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                !!dataList.imageFileCrop
+                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
                   : noImage
               }
               className={classes.image}
@@ -975,14 +1154,14 @@ export default function ModalActivity2(props) {
                       value={tsType}
                       onChange={handleChange}
                     >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem key={index} value={index}>
-                                {item.class}
-                              </MenuItem>
-                            )
+                      {!!dropdown.ts_status
+                        ? dropdown.ts_status.filter(item => item.id === 2 || item.id === 3 || item.id === 5).map(
+                          (item, index) => (
+                            <MenuItem key={index} value={item.id}>
+                              {item.name}
+                            </MenuItem>
                           )
+                        )
                         : []}
                     </TextField>
                   </TableCell>
@@ -991,36 +1170,31 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
+                      disabled={tsType === 2 || tsType === 3 ? false : true}
                       variant="outlined"
                       select
                       size="small"
                       className={classes.textField2}
-                      name="audit_vehicleClass"
-                      value={audit_vehicleClass}
+                      name="vehicleClass"
+                      value={vehicleClass}
                       onChange={handleOptionChange}
                     >
-                      {!!dataList.dropdown_audit_vehicelClass
-                        ? dataList.dropdown_audit_vehicelClass.map(
-                            (item, index) => (
-                              <MenuItem key={index} value={index}>
-                                {item.class}
-                              </MenuItem>
-                            )
+                      {!!dropdown.vehicle
+                        ? dropdown.vehicle.filter(item => item.id !== 0).map(
+                          (item, index) => (
+                            <MenuItem key={index} value={item.id}>
+                              {item.class}
+                            </MenuItem>
                           )
+                        )
                         : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      variant="outlined"
-                      className={classes.textField2}
-                      size="small"
-                      name="valueRef"
-                      value={audit_feeAmount || ""}
-                    />
+                  <TableCell style={{ width: 20 }}>
+                    {audit_feeAmount}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -1058,7 +1232,7 @@ export default function ModalActivity2(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: 2,
+          zIndex: 3,
           overflow: "scroll",
         }}
       >
