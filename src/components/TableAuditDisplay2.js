@@ -29,7 +29,7 @@ const apiURL = axios.create({
 const detailStatus = [
   {
     state: 1,
-    color: 'gray',
+    color: 'lightgray',
     label: 'ปกติรอเก็บเงิน'
   },
   {
@@ -44,7 +44,7 @@ const detailStatus = [
   },
   {
     state: 4,
-    color: 'yellow',
+    color: 'orange',
     label: 'รอ super audit ตรวจสอบ'
   },
   {
@@ -307,14 +307,14 @@ export default function TableAuditDisplay(props) {
                   <TableCell align="center" className={classes.tableCell}>
                     <FiberManualRecordIcon
                       style={{
-                        fontSize: "0.8rem",
+                        // fontSize: "0.8rem",
                         color:
                           data.state === 2
                             ? "#FF2400"
                             : data.state === 3
                               ? "blue"
                               : data.state === 4
-                                ? "yellow"
+                                ? "orange"
                                 : data.state === 5
                                   ? "black"
                                   : data.state === 6
@@ -323,7 +323,7 @@ export default function TableAuditDisplay(props) {
                                       ? "green"
                                       : data.state === 8
                                         ? "#FF2400"
-                                        : "gray",
+                                        : "lightgray",
                       }}
                     />
                   </TableCell>
