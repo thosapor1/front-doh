@@ -1,4 +1,5 @@
 import {
+  Box,
   makeStyles,
   Paper,
   Table,
@@ -54,9 +55,22 @@ export default function TableBillingMonitorPage(props) {
   const getItemData = (item) => {
     tableOnClick(item);
   };
+  const dataTest = 1200;
   return (
     <Paper style={{ marginTop: 10 }}>
-      <Pagination count={countPage} page={page} onChange={pageOnChange} />
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          paddingTop: 10,
+        }}
+      >
+        <Pagination count={countPage} page={page} onChange={pageOnChange} />
+        <h5 style={{ marginTop: 10, paddingRight: 20 }}>
+          จำนวน Billing รวม : {dataTest}
+        </h5>
+      </Box>
+
       <TableContainer style={{ maxHeight: 520 }}>
         <Table stickyHeader style={{ marginTop: 10, maxHeight: 200 }}>
           <TableHead>
