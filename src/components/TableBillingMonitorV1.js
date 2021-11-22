@@ -50,11 +50,8 @@ const StyledTableRow = withStyles((theme) => ({
 export default function TableBillingMonitorPage(props) {
   const classes = useStyles();
   const [rowID, setRowID] = useState("");
-  const { header, body, tableOnClick, countPage, page, pageOnChange, color } =
-    props;
-  const getItemData = (item) => {
-    tableOnClick(item);
-  };
+  const { header, body, countPage, page, pageOnChange, color } = props;
+
   const dataTest = 1200;
   return (
     <Paper style={{ marginTop: 10 }}>
@@ -96,7 +93,6 @@ export default function TableBillingMonitorPage(props) {
               ? body.map((item, index) => (
                   <StyledTableRow
                     onClick={() => {
-                      getItemData(item);
                       setRowID(index);
                     }}
                     key={index}
