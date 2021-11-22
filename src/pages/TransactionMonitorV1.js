@@ -22,6 +22,7 @@ import FilterAWMonitorPage from "../components/FilterAWMonitorPage";
 import FilterSectionSearch from "../components/FilterSectionSearch";
 import ImageSearchAudit from "../components/ImageSearchAudit";
 import MatchTable from "../components/MatchTable";
+import TableBillingMonitorPage from "../components/TableBillingMonitorV1";
 
 const apiURL = axios.create({
   baseURL:
@@ -88,6 +89,7 @@ export default function TransactionMonitorV1() {
   const [dataAW, setDataAW] = useState({
     date: new Date().setDate(new Date().getDate() - 1),
     checkpointList: [
+      { id: 0, checkpoint_name: "ทุกด่าน" },
       { id: 1, checkpoint_name: "ด่านทับช้าง 1" },
       { id: 2, checkpoint_name: "ด่านทับช้าง 2" },
       { id: 3, checkpoint_name: "ด่านธัญบุรี 1" },
@@ -102,10 +104,11 @@ export default function TransactionMonitorV1() {
       { id: "2", label: "refTransactionId" },
       { id: "3", label: "timestamp" },
     ],
+
     tableBodyData: [],
     gateValue: 0,
     gateList: [
-      { id: 0, gate_name: "ทุกด่าน" },
+      { id: 0, gate_name: "ทุกช่อง" },
       { id: 1, gate_name: "1" },
       { id: 2, gate_name: "2" },
       { id: 3, gate_name: "3" },
@@ -127,6 +130,26 @@ export default function TransactionMonitorV1() {
     ],
     tableBodyData: [],
     gateValue: 1,
+    gateList: [],
+  });
+
+  const [dataBilling, setDataBilling] = useState({
+    date: new Date().setDate(new Date().getDate() - 1),
+    checkpointList: [],
+    checkpointValue: 0,
+    tableHeaderBilling: [
+      { id: "0", label: "No." },
+      { id: "1", label: "transactionId" },
+      { id: "2", label: "refTransactionId" },
+      { id: "3", label: "เวลาเข้าด่าน" },
+      { id: "4", label: "ค่าผ่านทาง" },
+      { id: "5", label: "ค่าปรับ" },
+      { id: "6", label: "ค้างจ่าย" },
+      { id: "7", label: "รวม" },
+      { id: "8", label: "เวลามาถึง" },
+    ],
+    tableBodyData: [],
+    gateValue: 0,
     gateList: [],
   });
 
@@ -181,6 +204,10 @@ export default function TransactionMonitorV1() {
     countPage: 1,
   });
   const [paginationMatchTab, setPaginationMatchTab] = useState({
+    page: 1,
+    countPage: 1,
+  });
+  const [paginationBilling, setPaginationBilling] = useState({
     page: 1,
     countPage: 1,
   });
@@ -309,6 +336,36 @@ export default function TransactionMonitorV1() {
     });
   };
 
+  const filterBilling = (pageId = 1, selectDate, checkpoint, gate) => {
+    if (pageId === 1) {
+      setPaginationBilling({ ...paginationBilling, page: 1 });
+    } else {
+      setPaginationBilling({ ...paginationBilling, page: pageId });
+    }
+
+    const date = format(selectDate, "yyyy-MM-dd");
+    const sendData = {
+      page: pageId,
+      date: date,
+      checkpoint_id: checkpoint,
+      gate_id: gate,
+    };
+    console.log(`sendData:${JSON.stringify(sendData)}`);
+
+    // apiURL.post("/aw-transaction-monitor", sendData).then((res) => {
+    //   setDataAW({
+    //     ...dataAW,
+    //     checkpointList: dataAW.checkpointList,
+    //     gateList: dataAW.gateList,
+    //     tableBodyData: res.data.results,
+    //   });
+    //   setPagination2({
+    //     countPage: res.data.totalPages,
+    //     page: res.data.currentPage,
+    //   });
+    // });
+  };
+
   const pageOnChange1 = (e, value) => {
     const sendData = {
       value: value,
@@ -350,6 +407,18 @@ export default function TransactionMonitorV1() {
     );
 
     console.log(`${paginationMatchTab.page}`);
+  };
+
+  const pageOnChangeBilling = (e, value) => {
+    setPaginationBilling({ page: value });
+    filterBilling(
+      value,
+      dataBilling.date,
+      dataBilling.checkpointValue,
+      dataBilling.gateValue
+    );
+
+    console.log(`${paginationBilling.page}`);
   };
 
   const getImage1 = (item) => {
@@ -483,6 +552,11 @@ export default function TransactionMonitorV1() {
             <Tab label="Monitor" {...a11yProps(0)} className={classes.tab} />
             <Tab label="Search" {...a11yProps(1)} className={classes.tab} />
             <Tab label="Match" {...a11yProps(2)} className={classes.tab} />
+            <Tab
+              label="Billing Monitor"
+              {...a11yProps(3)}
+              className={classes.tab}
+            />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -820,37 +894,69 @@ export default function TransactionMonitorV1() {
                   // onFetchData={fetchData}
                 />
               </Grid>
+            </Grid>
+          </TabPanel>
 
-              {/* <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
+          {/* Billing Monitor */}
+          <TabPanel value={value} index={3}>
+            <Grid
+              container
+              spacing={3}
+              component={Paper}
+              style={{ marginTop: 10 }}
+            >
+              <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  lane (FETC)
+                  Billing Monitor
                 </Typography>
-                <FilterSectionSearch
-                  dateValue={fetcSearch.date}
+                <FilterAWMonitorPage
+                  dateValue={dataBilling.date}
                   dateOnChange={(date) => {
-                    setFetcSearch({
-                      ...fetcSearch,
+                    setDataBilling({
+                      ...dataBilling,
                       date: date,
                     });
-                    console.log("dateChange :", fetcSearch.date);
+                    console.log("dateChange :", dataBilling.date);
                   }}
-                  transactionValue={fetcSearch.transactionId}
-                  transactionOnChange={(e) => {
-                    setAwSearch({
-                      ...fetcSearch,
-                      transactionId: e.target.value,
+                  checkpointValue={dataBilling.checkpointValue}
+                  checkpointList={dataBilling.checkpointList}
+                  checkpointOnChange={(e) => {
+                    setDataBilling({
+                      ...dataBilling,
+                      checkpointValue: e.target.value,
+                    });
+                  }}
+                  gateValue={dataBilling.gateValue}
+                  gateList={dataBilling.gateList}
+                  gateOnChange={(e) => {
+                    setDataBilling({
+                      ...dataBilling,
+                      gateValue: e.target.value,
                     });
                   }}
                   buttonOnClick={() => {
-                    search3(fetcSearch.date, fetcSearch.transactionId);
+                    filterBilling(
+                      pageOnChangeBilling.page,
+                      dataBilling.date,
+                      dataBilling.checkpointValue,
+                      dataBilling.gateValue
+                    );
                   }}
-                  color={"blue"}
+                  color={"#46005E"}
                 />
-                <ImageSectionMonitorPage
-                  imageCrop={dataFetc.imageCrop}
-                  imageFull={dataFetc.imageFull}
+
+                <TableBillingMonitorPage
+                  header={dataBilling.tableHeaderBilling}
+                  body={dataBilling.tableBodyData}
+                  tableOnClick={(item) => {
+                    getImage2(item);
+                  }}
+                  countPage={pageOnChangeBilling.countPage}
+                  page={pageOnChangeBilling.page}
+                  pageOnChange={pageOnChangeBilling}
+                  color={"#46005E"}
                 />
-              </Grid> */}
+              </Grid>
             </Grid>
           </TabPanel>
         </div>
