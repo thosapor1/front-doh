@@ -85,10 +85,11 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "#9A0049",
-      zIndex: theme.zIndex.drawer + 1,
+      zIndex: 2,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
+
     },
     avatar: {
       marginLeft: 30,

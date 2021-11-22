@@ -19,6 +19,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay from "../components/TableAuditDisplay2";
+import { Translate } from "@material-ui/icons";
 
 const apiURL = axios.create({
   baseURL:
@@ -86,6 +87,30 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
+      "& .MuiInputBase-root": {
+        height: 40
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: '0.8rem',
+      },
       width: 150,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
@@ -94,83 +119,9 @@ const useStyles = makeStyles((theme) => {
     },
     typography: {
       fontSize: '0.8rem',
-    }
+    },
   };
 });
-
-const valueStatus = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกสถานะ",
-  },
-  {
-    id: 1,
-    value: 1,
-    label: "ปกติ",
-  },
-  {
-    id: 2,
-    value: 2,
-    label: "ข้อมูลไม่ตรงกัน",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ข้อมูลสูญหาย",
-  },
-];
-
-const lane = [
-  { lane: "รวม" },
-  { lane: 1 },
-  { lane: 2 },
-  { lane: 3 },
-  { lane: 4 },
-  { lane: 5 },
-  { lane: 6 },
-];
-
-const carType = [
-  {
-    label: "รวม",
-  },
-  {
-    label: "C1",
-  },
-  {
-    label: "C2",
-  },
-  {
-    label: "C3",
-  },
-  {
-    label: "ไม่ระบุ",
-  },
-];
-
-const valueMenuItem = [
-  {
-    id: 0,
-    checkpoint_name: "ทุกด่าน",
-  },
-  {
-    id: 1,
-    checkpoint_name: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    checkpoint_name: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    checkpoint_name: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    checkpoint_name: "ธัญบุรี2",
-  },
-];
 
 export default function AuditDisplay2() {
   // const [open, setOpen] = useState(false);
@@ -326,34 +277,30 @@ export default function AuditDisplay2() {
     });
   };
 
-  const changeSubState = (e) => {
-    console.log(e);
-    if (e === 0) {
-      setStatus_select(0);
-      setStatus(0);
-      setSubState(0);
-    } else if (e === 1) {
-      setStatus_select(1);
-      setStatus(1);
-      setSubState(1);
-    } else if (e === 2) {
-      setStatus_select(2);
-      setStatus(2);
-      setSubState(1);
-    } else if (e === 3) {
-      setStatus_select(3);
-      setStatus(2);
-      setSubState(2);
-    }
-  };
+  // const changeSubState = (e) => {
+  //   console.log(e);
+  //   if (e === 0) {
+  //     setStatus_select(0);
+  //     setStatus(0);
+  //     setSubState(0);
+  //   } else if (e === 1) {
+  //     setStatus_select(1);
+  //     setStatus(1);
+  //     setSubState(1);
+  //   } else if (e === 2) {
+  //     setStatus_select(2);
+  //     setStatus(2);
+  //     setSubState(1);
+  //   } else if (e === 3) {
+  //     setStatus_select(3);
+  //     setStatus(2);
+  //     setSubState(2);
+  //   }
+  // };
 
   useEffect(() => {
     // fetchData();
     getDropdown();
-    setCheckpoint(0)
-    setSelectGate(0)
-    setSelectCarType(0)
-    setStatus_select(0)
 
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -373,7 +320,7 @@ export default function AuditDisplay2() {
             label="ด่าน"
             value={checkpoint}
             onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate_select"
           >
             {!!dropdown.checkpoint
@@ -391,7 +338,7 @@ export default function AuditDisplay2() {
             label="ช่อง"
             value={selectGate}
             onChange={(e) => setSelectGate(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate"
           >
             {!!dropdown.gate
@@ -409,7 +356,7 @@ export default function AuditDisplay2() {
             label="ประเภทรถ"
             value={selectCarType}
             onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="carType"
           >
             {!!dropdown.vehicle
@@ -429,7 +376,7 @@ export default function AuditDisplay2() {
             onChange={(e) => {
               setStatus_select(e.target.value);
             }}
-            className={classes.input}
+            className={classes.input1}
             name="status_select"
           >
             {!!dropdown.state
