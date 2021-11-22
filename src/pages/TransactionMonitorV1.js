@@ -948,9 +948,6 @@ export default function TransactionMonitorV1() {
                 <TableBillingMonitorPage
                   header={dataBilling.tableHeaderBilling}
                   body={dataBilling.tableBodyData}
-                  tableOnClick={(item) => {
-                    getImage2(item);
-                  }}
                   countPage={pageOnChangeBilling.countPage}
                   page={pageOnChangeBilling.page}
                   pageOnChange={pageOnChangeBilling}
