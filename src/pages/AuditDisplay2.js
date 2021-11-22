@@ -19,12 +19,19 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay from "../components/TableAuditDisplay2";
+import { Translate } from "@material-ui/icons";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
       : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
+const apiURLv1 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -55,7 +62,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 100,
+      height: 80,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -80,100 +87,54 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
+      "& .MuiInputBase-root": {
+        height: 40
+      },
       width: 150,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
         width: 150,
       },
     },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: '0.8rem',
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
+    typography: {
+      fontSize: '0.8rem',
+    },
   };
 });
-
-const valueStatus = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกสถานะ",
-  },
-  {
-    id: 1,
-    value: 1,
-    label: "ปกติ",
-  },
-  {
-    id: 2,
-    value: 2,
-    label: "ข้อมูลไม่ตรงกัน",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ข้อมูลสูญหาย",
-  },
-];
-
-const lane = [
-  { lane: "รวม" },
-  { lane: 1 },
-  { lane: 2 },
-  { lane: 3 },
-  { lane: 4 },
-  { lane: 5 },
-  { lane: 6 },
-];
-
-const carType = [
-  {
-    label: "รวม",
-  },
-  {
-    label: "C1",
-  },
-  {
-    label: "C2",
-  },
-  {
-    label: "C3",
-  },
-  {
-    label: "ไม่ระบุ",
-  },
-];
-
-const valueMenuItem = [
-  {
-    id:0,
-    checkpoint_name:'ทุกด่าน'
-  },
-  {
-    id:1,
-    checkpoint_name:'ทับช้าง1'
-  },
-  {
-    id:2,
-    checkpoint_name:'ทับช้าง2'
-  },
-  {
-    id:3,
-    checkpoint_name:'ธัญบุรี1'
-  },
-  {
-    id:4,
-    checkpoint_name:'ธัญบุรี2'
-  },
-];
 
 export default function AuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState(0);
+  const [status_select, setStatus_select] = useState("");
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
-  const [selectLane, setSelectLane] = useState("");
+  const [selectGate, setSelectGate] = useState("");
   const [selectCarType, setSelectCarType] = useState("");
   const [cardData, setCardData] = useState("");
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -194,6 +155,13 @@ export default function AuditDisplay2() {
   //   setOpen(true);
   // };
 
+  const getDropdown = () => {
+    apiURLv1.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
+
   const fetchData = (pageId = 1) => {
     Swal.fire({
       title: "Loading",
@@ -212,14 +180,13 @@ export default function AuditDisplay2() {
 
     const sendData = {
       page: pageId,
-      checkpoint_id: checkpoint,
+      checkpoint_id: checkpoint || 0,
+      gate_id: selectGate || 0,
+      state: status_select || 0,
+      vehicleClass: selectCarType || 0,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: status,
-      sub_state: subState,
-      gate_id: selectLane,
-      vehicleClass: selectCarType,
     };
     console.log(sendData);
 
@@ -310,29 +277,31 @@ export default function AuditDisplay2() {
     });
   };
 
-  const changeSubState = (e) => {
-    console.log(e);
-    if (e === 0) {
-      setStatus_select(0);
-      setStatus(0);
-      setSubState(0);
-    } else if (e === 1) {
-      setStatus_select(1);
-      setStatus(1);
-      setSubState(1);
-    } else if (e === 2) {
-      setStatus_select(2);
-      setStatus(2);
-      setSubState(1);
-    } else if (e === 3) {
-      setStatus_select(3);
-      setStatus(2);
-      setSubState(2);
-    }
-  };
+  // const changeSubState = (e) => {
+  //   console.log(e);
+  //   if (e === 0) {
+  //     setStatus_select(0);
+  //     setStatus(0);
+  //     setSubState(0);
+  //   } else if (e === 1) {
+  //     setStatus_select(1);
+  //     setStatus(1);
+  //     setSubState(1);
+  //   } else if (e === 2) {
+  //     setStatus_select(2);
+  //     setStatus(2);
+  //     setSubState(1);
+  //   } else if (e === 3) {
+  //     setStatus_select(3);
+  //     setStatus(2);
+  //     setSubState(2);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getDropdown();
+
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -351,30 +320,34 @@ export default function AuditDisplay2() {
             label="ด่าน"
             value={checkpoint}
             onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate_select"
           >
-            {valueMenuItem.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.checkpoint_name}
+                </MenuItem>
+              ))
+              : []}
           </TextField>
 
           <TextField
             select
             variant="outlined"
             label="ช่อง"
-            value={selectLane}
-            onChange={(e) => setSelectLane(e.target.value)}
-            className={classes.input}
-            name="lane"
+            value={selectGate}
+            onChange={(e) => setSelectGate(e.target.value)}
+            className={classes.input1}
+            name="gate"
           >
-            {lane.map((item, index) => (
-              <MenuItem key={index} value={item.lane}>
-                {item.lane}
-              </MenuItem>
-            ))}
+            {!!dropdown.gate
+              ? dropdown.gate.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
+              : []}
           </TextField>
 
           <TextField
@@ -383,14 +356,16 @@ export default function AuditDisplay2() {
             label="ประเภทรถ"
             value={selectCarType}
             onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="carType"
           >
-            {carType.map((item, index) => (
-              <MenuItem key={index} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.vehicle
+              ? dropdown.vehicle.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.class}
+                </MenuItem>
+              ))
+              : []}
           </TextField>
 
           <TextField
@@ -399,16 +374,18 @@ export default function AuditDisplay2() {
             label="สถานะ"
             value={status_select}
             onChange={(e) => {
-              changeSubState(e.target.value);
+              setStatus_select(e.target.value);
             }}
-            className={classes.input}
+            className={classes.input1}
             name="status_select"
           >
-            {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.state
+              ? dropdown.state.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
+              : []}
           </TextField>
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -479,17 +456,17 @@ export default function AuditDisplay2() {
         <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
-              <Typography>ตรงกัน : {cardData.ts_normal} </Typography>
-              <Typography>ไม่ตรงกัน : {cardData.ts_not_normal} </Typography>
-              <Typography>สูญหาย : {cardData.ts_miss} </Typography>
+              <Typography className={classes.typography}>รายการทั้งหมด : {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ตรงกัน : {!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ไม่ตรงกัน : {!!cardData.ts_not_normal ? cardData.ts_not_normal.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>สูญหาย : {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""} </Typography>
             </Paper>
           </Grid>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายได้ประมาณการ : - </Typography>
-              <Typography>ชำระแล้ว : - </Typography>
-              <Typography>ค้างชำระ : - </Typography>
+              <Typography className={classes.typography}>รายได้ประมาณการ : {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>ชำระแล้ว : - </Typography>
+              <Typography className={classes.typography}>ค้างชำระ : - </Typography>
             </Paper>
           </Grid>
         </Grid>
@@ -505,6 +482,8 @@ export default function AuditDisplay2() {
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
+              dropdown={dropdown}
+              checkDate={selectedDate}
             />
           </Grid>
         </Grid>

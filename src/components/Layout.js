@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => {
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
+      zIndex: 1,
     },
     drawerPaper: {
       width: drawerWidth,
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => {
     },
     root: {
       display: "flex",
+      zIndex: 3,
     },
     ListItemText: {
       color: "white",
@@ -83,10 +85,11 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "#9A0049",
-      zIndex: theme.zIndex.drawer + 1,
+      zIndex: 2,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
+
     },
     avatar: {
       marginLeft: 30,
@@ -243,23 +246,23 @@ export default function Layout({ children }) {
         <List>
           {!!menuItems
             ? menuItems.map((item) => (
-                <ListItem
-                  key={item.text}
-                  className={
-                    location.pathname === item.path
-                      ? classes.active
-                      : classes.ListItemText
-                  }
-                  button
-                  onClick={() => history.push(item.path)}
-                >
-                  <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
-                  <ListItemText
-                    primary={item.text}
-                    classes={{ primary: classes.listItemText }}
-                  />
-                </ListItem>
-              ))
+              <ListItem
+                key={item.text}
+                className={
+                  location.pathname === item.path
+                    ? classes.active
+                    : classes.ListItemText
+                }
+                button
+                onClick={() => history.push(item.path)}
+              >
+                <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+                <ListItemText
+                  primary={item.text}
+                  classes={{ primary: classes.listItemText }}
+                />
+              </ListItem>
+            ))
             : []}
         </List>
         <Divider variant="middle" className={classes.hr2} />

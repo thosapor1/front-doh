@@ -1,5 +1,4 @@
 import {
-  Box,
   makeStyles,
   Table,
   TableBody,
@@ -7,7 +6,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -25,50 +23,7 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-
-const detailStatus = [
-  {
-    state: 1,
-    color: "gray",
-    label: "ปกติรอเก็บเงิน",
-  },
-  {
-    state: 2,
-    color: "#FF2400",
-    label: "ประเภทไม่ตรง",
-  },
-  {
-    state: 3,
-    color: "blue",
-    label: "รอจัดเก็บตรวจสอบ",
-  },
-  {
-    state: 4,
-    color: "yellow",
-    label: "รอ super audit ตรวจสอบ",
-  },
-  {
-    state: 5,
-    color: "black",
-    label: "รอพิจารณาพิเศษ",
-  },
-  {
-    state: 6,
-    color: "pink",
-    label: "ปกติรอเก็บเงิน",
-  },
-  {
-    state: 7,
-    color: "green",
-    label: "ปกติชำระแล้ว",
-  },
-  {
-    state: 8,
-    color: "#FF2400",
-    label: "MF สูญหาย",
-  },
-];
-const useStyles = makeStyles((theme, props) => {
+const useStyles = makeStyles((theme) => {
   return {
     "@global": {
       "*::-webkit-scrollbar": {
@@ -83,11 +38,7 @@ const useStyles = makeStyles((theme, props) => {
       },
     },
     container: {
-      maxHeight: "55vh",
-      overflow: "auto",
-      [theme.breakpoints.down("lg")]: {
-        maxHeight: "42vh",
-      },
+      maxHeight: 590,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -96,16 +47,6 @@ const useStyles = makeStyles((theme, props) => {
       fontSize: "0.8rem",
       padding: "6px",
     },
-    header2: {
-      backgroundColor: "#7C85BFff",
-      border: "1px solid white",
-      color: "white",
-      fontSize: "0.8rem",
-      padding: "6px",
-      position: "sticky",
-      top: 38,
-      // zIndex: 10,
-    },
     tableRow: {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
@@ -113,29 +54,16 @@ const useStyles = makeStyles((theme, props) => {
     },
     pagination: {
       "& .MuiPaginationItem-root": {
-        height: 25,
-        minWidth: 25,
-        fontSize: "0.8rem",
-        [theme.breakpoints.down("lg")]: {
-          fontSize: "0.7rem",
-        },
+        fontSize: ".0.75rem",
       },
-      marginBottom: 10,
+      marginBottom: "1rem",
+      position: "static",
+      top: 0,
     },
     tableCell: {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
-    },
-    detailStatus: {
-      display: "inline",
-      fontSize: "0.8rem",
-      [theme.breakpoints.down("lg")]: {
-        fontSize: "0.7rem",
-      },
-    },
-    dot: {
-      fontSize: "0.8rem",
     },
   };
 });
@@ -148,10 +76,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function AllTsTableForPk3Activity(props) {
+export default function TableSuperdisplay(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const { dropdown, checkDate } = props;
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -203,34 +132,19 @@ export default function AllTsTableForPk3Activity(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate } = props;
+  const { dataList, page, onChange } = props;
 
   return (
     <div>
-      <Box style={{ display: "flex", justifyContent: "space-between" }}>
-        <Pagination
-          count={dataList.totalPages}
-          color="primary"
-          page={page}
-          onChange={onChange}
-          className={classes.pagination}
-        />
-        <Box style={{ display: "flex", paddingTop: 2 }}>
-          {detailStatus.map((item) => (
-            <Box style={{ paddingLeft: 10 }}>
-              <FiberManualRecordIcon
-                className={classes.dot}
-                style={{ color: item.color }}
-              />
-              <Typography className={classes.detailStatus}>
-                {item.label}
-              </Typography>{" "}
-            </Box>
-          ))}
-        </Box>
-      </Box>
+      <Pagination
+        count={dataList.totalPages}
+        color="primary"
+        page={page}
+        onChange={onChange}
+        className={classes.pagination}
+      />
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table>
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -264,31 +178,31 @@ export default function AllTsTableForPk3Activity(props) {
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
-              <TableCell align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 จริง
               </TableCell>
-              <TableCell align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 AD
               </TableCell>
-              <TableCell align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 ML
               </TableCell>
-              <TableCell align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 MF
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 ค่าผ่านทาง
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 ค่าปรับ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                รวม
+              <TableCell align="center" className={classes.header}>
+                ราคารวม
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 เรียกเก็บ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
+              <TableCell align="center" className={classes.header}>
                 ชำระ
               </TableCell>
             </StyledTableRow>
@@ -309,8 +223,8 @@ export default function AllTsTableForPk3Activity(props) {
                   >
                     <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
+                        fontSize="small"
                         style={{
-                          fontSize: "0.8rem",
                           color:
                             data.state === 2
                               ? "#FF2400"
@@ -324,8 +238,6 @@ export default function AllTsTableForPk3Activity(props) {
                               ? "pink"
                               : data.state === 7
                               ? "green"
-                              : data.state === 8
-                              ? "#FF2400"
                               : "gray",
                         }}
                       />
@@ -358,14 +270,14 @@ export default function AllTsTableForPk3Activity(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_transaction_type
-                        ? data.match_transaction_type_name
+                        ? `C${data.match_transaction_type}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_total_cost ? data.match_total_cost : "-"}

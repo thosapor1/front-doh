@@ -128,7 +128,7 @@ export default function Login() {
       if (!!res.data.status && res.data.result[0].department_id === 1) {
         console.log("pass", res.data.status);
         setCookies();
-        history.push("/rawTransaction");
+        history.push("/dashboard2");
       } else if (!!res.data.status && res.data.result[0].department_id === 2) {
         setCookies();
         history.push("/pk3Display");

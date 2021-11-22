@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay from "../components/TableAuditDisplay2";
+import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 
 const apiURL = axios.create({
   baseURL:
@@ -97,69 +97,13 @@ const valueStatus = [
   },
   {
     id: 1,
-    value: 1,
-    label: "ปกติ",
+    value: 4,
+    label: "รอ super audit ตรวจสอบ",
   },
   {
     id: 2,
-    value: 2,
-    label: "ข้อมูลไม่ตรงกัน",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ข้อมูลสูญหาย",
-  },
-];
-
-const lane = [
-  { lane: "รวม" },
-  { lane: 1 },
-  { lane: 2 },
-  { lane: 3 },
-  { lane: 4 },
-  { lane: 5 },
-  { lane: 6 },
-];
-
-const carType = [
-  {
-    label: "รวม",
-  },
-  {
-    label: "C1",
-  },
-  {
-    label: "C2",
-  },
-  {
-    label: "C3",
-  },
-  {
-    label: "ไม่ระบุ",
-  },
-];
-
-const valueMenuItem = [
-  {
-    id: 0,
-    checkpoint_name: "ทุกด่าน",
-  },
-  {
-    id: 1,
-    checkpoint_name: "ทับช้าง1",
-  },
-  {
-    id: 2,
-    checkpoint_name: "ทับช้าง2",
-  },
-  {
-    id: 3,
-    checkpoint_name: "ธัญบุรี1",
-  },
-  {
-    id: 4,
-    checkpoint_name: "ธัญบุรี2",
+    value: 5,
+    label: "รอพิจารณา",
   },
 ];
 
@@ -167,13 +111,14 @@ export default function SuperAuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [subState, setSubState] = useState(0);
-  const [selectLane, setSelectLane] = useState("");
-  const [selectCarType, setSelectCarType] = useState("");
+  const [checkpoint, setCheckpoint] = useState("0");
+  const [status_select, setStatus_select] = useState("0");
+  // const [status, setStatus] = useState(0);
+  // const [subState, setSubState] = useState(0);
+  const [selectGate, setSelectGate] = useState("0");
+  const [selectCarType, setSelectCarType] = useState("0");
   const [cardData, setCardData] = useState("");
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -192,7 +137,12 @@ export default function SuperAuditDisplay2() {
   };
   // const handleOpen = () => {
   //   setOpen(true);
-  // };
+  const getCheckpoint = (e) => {
+    apiURL.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
 
   const fetchData = (pageId = 1) => {
     Swal.fire({
@@ -210,16 +160,19 @@ export default function SuperAuditDisplay2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
+    // console.log(checkpoint);
+    // console.log(selectGate);
+    // console.log(selectCarType);
+    // console.log(status_select);
     const sendData = {
       page: pageId,
       checkpoint_id: checkpoint,
+      gate_id: selectGate,
+      state: status_select,
+      vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: status,
-      sub_state: subState,
-      gate_id: selectLane,
-      vehicleClass: selectCarType,
     };
     console.log(sendData);
 
@@ -279,9 +232,7 @@ export default function SuperAuditDisplay2() {
       startTime: timeStart,
       endTime: timeEnd,
       state: "0",
-      sub_state: subState,
     };
-    console.log(sendData);
 
     apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
       Swal.close();
@@ -310,29 +261,9 @@ export default function SuperAuditDisplay2() {
     });
   };
 
-  const changeSubState = (e) => {
-    console.log(e);
-    if (e === 0) {
-      setStatus_select(0);
-      setStatus(0);
-      setSubState(0);
-    } else if (e === 1) {
-      setStatus_select(1);
-      setStatus(1);
-      setSubState(1);
-    } else if (e === 2) {
-      setStatus_select(2);
-      setStatus(2);
-      setSubState(1);
-    } else if (e === 3) {
-      setStatus_select(3);
-      setStatus(2);
-      setSubState(2);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getCheckpoint();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -340,7 +271,7 @@ export default function SuperAuditDisplay2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          super audit display 2
+          super audit display
         </Typography>
 
         {/* Filter Section */}
@@ -354,27 +285,31 @@ export default function SuperAuditDisplay2() {
             className={classes.input}
             name="gate_select"
           >
-            {valueMenuItem.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
             select
             variant="outlined"
             label="ช่อง"
-            value={selectLane}
-            onChange={(e) => setSelectLane(e.target.value)}
+            value={selectGate}
+            onChange={(e) => setSelectGate(e.target.value)}
             className={classes.input}
-            name="lane"
+            name="gate"
           >
-            {lane.map((item, index) => (
-              <MenuItem key={index} value={item.lane}>
-                {item.lane}
-              </MenuItem>
-            ))}
+            {!!dropdown.gate
+              ? dropdown.gate.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -386,11 +321,13 @@ export default function SuperAuditDisplay2() {
             className={classes.input}
             name="carType"
           >
-            {carType.map((item, index) => (
-              <MenuItem key={index} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!dropdown.vehicle
+              ? dropdown.vehicle.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.class}
+                  </MenuItem>
+                ))
+              : []}
           </TextField>
 
           <TextField
@@ -399,13 +336,13 @@ export default function SuperAuditDisplay2() {
             label="สถานะ"
             value={status_select}
             onChange={(e) => {
-              changeSubState(e.target.value);
+              setStatus_select(e.target.value);
             }}
             className={classes.input}
             name="status_select"
           >
             {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
+              <MenuItem key={index} value={item.value}>
                 {item.label}
               </MenuItem>
             ))}
@@ -500,11 +437,13 @@ export default function SuperAuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableAuditDisplay
+            <TableAuditDisplay2
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
+              dropdown={dropdown}
+              checkDate={selectedDate}
             />
           </Grid>
         </Grid>
