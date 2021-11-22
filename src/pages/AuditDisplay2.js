@@ -107,7 +107,8 @@ const useStyles = makeStyles((theme) => {
         height: 40
       },
       "& .MuiInputLabel-outlined": {
-        transform: 'translate(14px, 11px)',
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
         fontSize: '0.8rem',
       },
       width: 150,
@@ -119,19 +120,6 @@ const useStyles = makeStyles((theme) => {
     typography: {
       fontSize: '0.8rem',
     },
-    input1: {
-      "& .MuiInputBase-input": {
-        fontSize: "0.8rem",
-      },
-      "& .MuiSelect-selectMenu": {
-        height: 15,
-      },
-      width: 150,
-      margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 150,
-      },
-    }
   };
 });
 
