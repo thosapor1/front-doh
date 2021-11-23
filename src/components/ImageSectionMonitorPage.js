@@ -21,7 +21,7 @@ export default function ImageSectionMonitorPage(props) {
             }}
             component="img"
             src={
-              imageCrop !== 0 ? `data:image/png;base64, ${imageCrop}` : noImage
+              !!imageCrop ? `data:image/png;base64, ${imageCrop}` : noImage
             }
           />
         </Grid>
@@ -36,7 +36,7 @@ export default function ImageSectionMonitorPage(props) {
             }}
             component="img"
             src={
-              imageFull !== 0 ? `data:image/png;base64, ${imageFull}` : noImage
+              !!imageFull ? `data:image/png;base64, ${imageFull}` : noImage
             }
           />
         </Grid>

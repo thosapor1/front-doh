@@ -459,6 +459,24 @@ export default function TransactionMonitorV1() {
       });
     });
   };
+  const getImage3 = (item) => {
+    console.log(item.cameras_cameraTimestamp);
+
+
+    const sendData = {
+      tranId: item.tranId,
+      date: format(dataFetc.date, 'yyyy-MM-dd'),
+    };
+    console.log("sendData:", sendData);
+    apiURL.post("/lane-transaction-monitor-activity", sendData).then((res) => {
+      console.log(res.data);
+      setDataFETC({
+        ...dataFetc,
+        imageCrop: res.data.imageFile,
+        imageFull: res.data.imageFileCrop,
+      });
+    });
+  };
 
   const MatchTabGetImage = (
     audit_transactionId,
@@ -713,8 +731,8 @@ export default function TransactionMonitorV1() {
                 <TableFETC
                   header={dataFetc.tableHeaderData}
                   body={dataFetc.tableBodyData}
-                  tableOnClick={() => {
-                    alert("click on table");
+                  tableOnClick={(item) => {
+                    getImage3(item);
                   }}
                   countPage={pagination3.countPage}
                   page={pagination3.page}
