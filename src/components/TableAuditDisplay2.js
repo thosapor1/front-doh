@@ -137,9 +137,14 @@ const useStyles = makeStyles((theme, props) => {
     },
     dot: {
       fontSize: '0.8rem',
-
     },
-
+    box: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      [theme.breakpoints.down('lg')]: {
+        display: 'block'
+      }
+    }
   };
 });
 
@@ -210,7 +215,7 @@ export default function TableAuditDisplay(props) {
 
   return (
     <div>
-      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box className={classes.box}>
         <Pagination
           count={dataList.totalPages}
           color="primary"
