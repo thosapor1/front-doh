@@ -23,6 +23,7 @@ import FilterSectionSearch from "../components/FilterSectionSearch";
 import ImageSearchAudit from "../components/ImageSearchAudit";
 import MatchTable from "../components/MatchTable";
 import TableBillingMonitorPage from "../components/TableBillingMonitorV1";
+import TableFETC from "../components/TableFETC";
 
 const apiURL = axios.create({
   baseURL:
@@ -286,36 +287,34 @@ export default function TransactionMonitorV1() {
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    // apiURL.post("/audit-transaction-monitor-activity", sendData).then((res) => {
-    //   setDataAW({
-    //     ...dataAW,
-    //     checkpointList: res.data.dropdown_Checkpoint,
-    //     gateList: res.data.dropdown_Gate,
-    //   });
+    apiURL.post("/lane-transaction-monitor", sendData).then((res) => {
+      setDataFETC({
+        ...dataFetc,
+        checkpointList: res.data.dropdown_Checkpoint,
+        gateList: res.data.dropdown_Gate,
+        tableBodyData: res.data,
+      });
 
-    //   setPagination2({
-    //     countPage: res.data.totalPages,
-    //     page: res.data.currentPage,
-    //   });
-
-    //   setDataAW({ ...dataAW, tableBodyData: mockData });
-    //   setPagination2({ ...pagination2, countPage: res.data.countPage });
-    // });
+      setPagination3({
+        countPage: res.data.totalPages,
+        page: res.data.currentPage,
+      });
+    });
   };
 
   const filterMatchTab = (pageId = 1, selectDate, checkpoint, gate) => {
     if (pageId === 1) {
-      setPaginationMatchTab({ ...paginationMatchTab, page: 1 });
+      setPaginationMatchTab({ ...paginationMatchTab, page: "1" });
     } else {
       setPaginationMatchTab({ ...paginationMatchTab, page: pageId });
     }
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       date: date,
-      checkpoint_id: checkpoint,
-      gate_id: gate,
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
@@ -711,7 +710,7 @@ export default function TransactionMonitorV1() {
                   imageCrop={dataFetc.imageCrop}
                   imageFull={dataFetc.imageFull}
                 />
-                <TableSectionMonitorPage
+                <TableFETC
                   header={dataFetc.tableHeaderData}
                   body={dataFetc.tableBodyData}
                   tableOnClick={() => {
@@ -767,7 +766,7 @@ export default function TransactionMonitorV1() {
 
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  transaction (AW)
+                  transaction
                 </Typography>
                 <FilterSectionSearch
                   dateValue={awSearch.date}
@@ -894,7 +893,7 @@ export default function TransactionMonitorV1() {
                   page={paginationMatchTab.page}
                   onChange={pageOnChangeMatchTab}
                   onClickRow={MatchTabGetImage}
-                  // onFetchData={fetchData}
+                // onFetchData={fetchData}
                 />
               </Grid>
             </Grid>

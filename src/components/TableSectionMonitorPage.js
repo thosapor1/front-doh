@@ -61,7 +61,7 @@ export default function TableSectionMonitorPage(props) {
     <Paper style={{ marginTop: 10 }}>
       {/* <Box style={{ display: 'flex', justifyContent: 'space-between' }}> */}
       <Pagination count={countPage} page={page} onChange={pageOnChange} />
-      <Typography style={{ paddingLeft: 20 }}>จำนวน transaction : {!!body.totalPages ? body.totalPages * 100 : 0}</Typography>
+      <Typography style={{ paddingLeft: 20 }}>จำนวน transaction : {!!body.totalPage ? body.totalPage * 100 : 0}</Typography>
       {/* </Box> */}
       <TableContainer style={{ maxHeight: 520 }}>
         <Table stickyHeader style={{ marginTop: 10, maxHeight: 200 }}>
