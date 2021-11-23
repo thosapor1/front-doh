@@ -39,11 +39,11 @@ export const menuItemsForSuperAdmin = [
     icon: "file_present",
     path: "/report",
   },
-  // {
-  //   text: "transactionMonitor",
-  //   icon: "file_present",
-  //   path: "/transactionMonitorV1",
-  // },
+  {
+    text: "transactionMonitor",
+    icon: "file_present",
+    path: "/transactionMonitorV1",
+  },
 ];
 
 export const menuConfigForSuperAdmin = [

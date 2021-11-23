@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay from "../components/TableAuditDisplay2";
 import { Translate } from "@material-ui/icons";
+import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 
 const apiURL = axios.create({
   baseURL:
@@ -477,7 +478,7 @@ export default function AuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableAuditDisplay
+            <TableAuditDisplay2
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
