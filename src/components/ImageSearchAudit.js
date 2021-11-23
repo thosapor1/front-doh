@@ -10,7 +10,13 @@ export default function ImageSearchAudit(props) {
       <Grid container spacing={1}>
         <Grid item xl={6} lg={6} md={6}>
           <CardMedia
-            // style={{ height: 300 }}
+            style={{
+              height: "140px",
+              width: "100%",
+              border: "1px solid lightgray",
+              marginRight: "auto",
+              marginLeft: "auto",
+            }}
             component="img"
             src={
               imageCrop !== 0 ? `data:image/png;base64, ${imageCrop}` : noImage
@@ -19,7 +25,13 @@ export default function ImageSearchAudit(props) {
         </Grid>
         <Grid item xl={6} lg={6} md={6}>
           <CardMedia
-            // style={{ height: 300 }}
+            style={{
+              height: "140px",
+              width: "100%",
+              border: "1px solid lightgray",
+              marginRight: "auto",
+              marginLeft: "auto",
+            }}
             component="img"
             src={
               imageFull !== 0 ? `data:image/png;base64, ${imageFull}` : noImage
