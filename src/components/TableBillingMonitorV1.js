@@ -51,7 +51,7 @@ export default function TableBillingMonitorPage(props) {
   const classes = useStyles();
   const [rowID, setRowID] = useState("");
   const { header, body, countPage, page, pageOnChange, color } = props;
-
+  console.log(countPage, page);
   return (
     <Paper style={{ marginTop: 10 }}>
       <Box
@@ -63,7 +63,7 @@ export default function TableBillingMonitorPage(props) {
       >
         <Pagination count={countPage} page={page} onChange={pageOnChange} />
         <h5 style={{ marginTop: 10, paddingRight: 20 }}>
-          จำนวน Billing รวม : {body.billingCount}
+          จำนวน Billing รวม : {body.data_count}
         </h5>
       </Box>
 
