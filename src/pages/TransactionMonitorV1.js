@@ -230,7 +230,7 @@ export default function TransactionMonitorV1() {
         ...dataAudit,
         checkpointList: res.data.dropdown_Checkpoint,
         gateList: res.data.dropdown_Gate,
-        tableBodyData: res.data.results,
+        tableBodyData: res.data,
       });
       setPagination1({
         countPage: res.data.totalPages,
@@ -260,7 +260,7 @@ export default function TransactionMonitorV1() {
         ...dataAW,
         checkpointList: dataAW.checkpointList,
         gateList: dataAW.gateList,
-        tableBodyData: res.data.resultsDisplay,
+        tableBodyData: res.data,
       });
       setPagination2({
         countPage: res.data.totalPages,

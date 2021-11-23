@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { withStyles } from "@material-ui/styles";
@@ -57,45 +58,46 @@ export default function TableAWMonitorPage(props) {
   return (
     <Paper style={{ marginTop: 10 }}>
       <Pagination count={countPage} page={page} onChange={pageOnChange} />
+      <Typography style={{ paddingLeft: 20 }}>จำนวน transaction : {!!body.totalCount ? body.totalCount : 0}</Typography>
       <TableContainer style={{ maxHeight: 520 }}>
         <Table stickyHeader style={{ marginTop: 10, maxHeight: 200 }}>
           <TableHead>
             <TableRow>
               {!!header
                 ? header.map((header) => (
-                    <TableCell
-                      key={header.id}
-                      style={{
-                        backgroundColor: `${color}`,
-                        color: "white",
-                        border: "1px solid white",
-                      }}
-                    >
-                      {header.label}
-                    </TableCell>
-                  ))
+                  <TableCell
+                    key={header.id}
+                    style={{
+                      backgroundColor: `${color}`,
+                      color: "white",
+                      border: "1px solid white",
+                    }}
+                  >
+                    {header.label}
+                  </TableCell>
+                ))
                 : []}
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!body
-              ? body.map((item, index) => (
-                  <StyledTableRow
-                    onClick={() => {
-                      getItemData(item);
-                      setRowID(index);
-                    }}
-                    key={index}
-                    selected={rowID === index}
-                    className={classes.selected}
-                  >
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.headerTransactionId}</TableCell>
-                    <TableCell>{item.refTransactionId}</TableCell>
-                    <TableCell>{item.cameras_cameraTimestamp.split(" ").pop()}</TableCell>
-                    <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
-                  </StyledTableRow>
-                ))
+            {!!body.resultsDisplay
+              ? body.resultsDisplay.map((item, index) => (
+                <StyledTableRow
+                  onClick={() => {
+                    getItemData(item);
+                    setRowID(index);
+                  }}
+                  key={index}
+                  selected={rowID === index}
+                  className={classes.selected}
+                >
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{item.headerTransactionId}</TableCell>
+                  <TableCell>{item.refTransactionId}</TableCell>
+                  <TableCell>{item.cameras_cameraTimestamp.split(" ").pop()}</TableCell>
+                  <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
+                </StyledTableRow>
+              ))
               : []}
           </TableBody>
         </Table>
