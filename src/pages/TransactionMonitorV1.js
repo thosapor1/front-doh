@@ -140,13 +140,12 @@ export default function TransactionMonitorV1() {
     tableHeaderBilling: [
       { id: "0", label: "No." },
       { id: "1", label: "transactionId" },
-      { id: "2", label: "refTransactionId" },
-      { id: "3", label: "เวลาเข้าด่าน" },
-      { id: "4", label: "ค่าผ่านทาง" },
-      { id: "5", label: "ค่าปรับ" },
-      { id: "6", label: "ค้างจ่าย" },
-      { id: "7", label: "รวม" },
-      { id: "8", label: "เวลามาถึง" },
+      { id: "2", label: "เวลาเข้าด่าน" },
+      { id: "3", label: "ค่าผ่านทาง" },
+      { id: "4", label: "ค่าปรับ" },
+      { id: "5", label: "ค้างจ่าย" },
+      { id: "6", label: "รวม" },
+      { id: "7", label: "เวลามาถึง" },
     ],
     tableBodyData: [],
     gateValue: 0,
@@ -345,25 +344,26 @@ export default function TransactionMonitorV1() {
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       date: date,
-      checkpoint_id: checkpoint,
-      gate_id: gate,
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    // apiURL.post("/aw-transaction-monitor", sendData).then((res) => {
-    //   setDataAW({
-    //     ...dataAW,
-    //     checkpointList: dataAW.checkpointList,
-    //     gateList: dataAW.gateList,
-    //     tableBodyData: res.data.results,
-    //   });
-    //   setPagination2({
-    //     countPage: res.data.totalPages,
-    //     page: res.data.currentPage,
-    //   });
-    // });
+    apiURL.post("/billing-monitor", sendData).then((res) => {
+      console.log(res.data);
+      setDataBilling({
+        ...dataBilling,
+        checkpointList: dataBilling.checkpointList,
+        gateList: dataBilling.gateList,
+        tableBodyData: res.data,
+      });
+      setPaginationBilling({
+        countPage: res.data.totalPages,
+        page: res.data.currentPage,
+      });
+    });
   };
 
   const pageOnChange1 = (e, value) => {

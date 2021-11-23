@@ -52,7 +52,6 @@ export default function TableBillingMonitorPage(props) {
   const [rowID, setRowID] = useState("");
   const { header, body, countPage, page, pageOnChange, color } = props;
 
-  const dataTest = 1200;
   return (
     <Paper style={{ marginTop: 10 }}>
       <Box
@@ -64,7 +63,7 @@ export default function TableBillingMonitorPage(props) {
       >
         <Pagination count={countPage} page={page} onChange={pageOnChange} />
         <h5 style={{ marginTop: 10, paddingRight: 20 }}>
-          จำนวน Billing รวม : {dataTest}
+          จำนวน Billing รวม : {body.billingCount}
         </h5>
       </Box>
 
@@ -89,8 +88,8 @@ export default function TableBillingMonitorPage(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!body
-              ? body.map((item, index) => (
+            {!!body.data
+              ? body.data.map((item, index) => (
                   <StyledTableRow
                     onClick={() => {
                       setRowID(index);
@@ -101,13 +100,14 @@ export default function TableBillingMonitorPage(props) {
                   >
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.headerTransactionId}</TableCell>
-                    <TableCell>{item.refTransactionId}</TableCell>
-                    <TableCell>{item.cameras_cameraTimestamp}</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>-</TableCell>
+                    <TableCell>
+                      {item.invoiceDetails_transactionDate.substring(11)}
+                    </TableCell>
+                    <TableCell>{item.feeAmount}</TableCell>
+                    <TableCell>{item.fineAmount}</TableCell>
+                    <TableCell>{item.collectionAmount}</TableCell>
+                    <TableCell>{item.totalAmount}</TableCell>
+                    <TableCell>{item.timestamp.substring(11)}</TableCell>
                   </StyledTableRow>
                 ))
               : []}
