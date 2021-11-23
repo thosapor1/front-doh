@@ -235,7 +235,7 @@ export default function TransactionMonitorV1() {
         ...dataAW,
         checkpointList: dataAW.checkpointList,
         gateList: dataAW.gateList,
-        tableBodyData: res.data.results,
+        tableBodyData: res.data.resultsDisplay,
       });
       setPagination2({
         countPage: res.data.totalPages,
@@ -380,7 +380,7 @@ export default function TransactionMonitorV1() {
       date: date2,
     };
     console.log("sendData:", sendData);
-    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setDataAW({
         ...dataAW,
@@ -547,7 +547,7 @@ export default function TransactionMonitorV1() {
 
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  transaction (AW)
+                  transaction
                 </Typography>
                 <FilterAWMonitorPage
                   dateValue={dataAW.date}
@@ -769,7 +769,7 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", matchTab.date);
                   }}
                   checkpointValue={matchTab.checkpointValue}
-                  checkpointList={matchTab.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setMatchTab({
                       ...matchTab,
@@ -777,7 +777,7 @@ export default function TransactionMonitorV1() {
                     });
                   }}
                   gateValue={matchTab.gateValue}
-                  gateList={matchTab.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setMatchTab({ ...matchTab, gateValue: e.target.value });
                   }}
