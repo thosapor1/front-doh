@@ -1,4 +1,5 @@
 import {
+  Box,
   makeStyles,
   Paper,
   Table,
@@ -7,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { withStyles } from "@material-ui/styles";
@@ -57,44 +59,48 @@ export default function TableSectionMonitorPage(props) {
   };
   return (
     <Paper style={{ marginTop: 10 }}>
+      {/* <Box style={{ display: 'flex', justifyContent: 'space-between' }}> */}
       <Pagination count={countPage} page={page} onChange={pageOnChange} />
+      <Typography style={{ paddingLeft: 20 }}>จำนวน transaction : {!!body.totalPages ? body.totalPages * 100 : 0}</Typography>
+      {/* </Box> */}
       <TableContainer style={{ maxHeight: 520 }}>
         <Table stickyHeader style={{ marginTop: 10, maxHeight: 200 }}>
           <TableHead>
             <TableRow>
               {!!header
                 ? header.map((header) => (
-                    <TableCell
-                      key={header.id}
-                      style={{
-                        backgroundColor: `${color}`,
-                        color: "white",
-                        border: "1px solid white",
-                      }}
-                    >
-                      {header.label}
-                    </TableCell>
-                  ))
+                  <TableCell
+                    key={header.id}
+                    style={{
+                      backgroundColor: `${color}`,
+                      color: "white",
+                      border: "1px solid white",
+                    }}
+                  >
+                    {header.label}
+                  </TableCell>
+                ))
                 : []}
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!body
-              ? body.map((item, index) => (
-                  <StyledTableRow
-                    onClick={() => {
-                      getItemData(item);
-                      setRowID(index);
-                    }}
-                    key={index}
-                    selected={rowID === index}
-                    className={classes.selected}
-                  >
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.audit_transactionId}</TableCell>
-                    <TableCell>{item.timestamp}</TableCell>
-                  </StyledTableRow>
-                ))
+            {!!body.results
+              ? body.results.map((item, index) => (
+                <StyledTableRow
+                  onClick={() => {
+                    getItemData(item);
+                    setRowID(index);
+                  }}
+                  key={index}
+                  selected={rowID === index}
+                  className={classes.selected}
+                >
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{item.audit_transactionId}</TableCell>
+                  <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
+                  <TableCell>-</TableCell>
+                </StyledTableRow>
+              ))
               : []}
           </TableBody>
         </Table>

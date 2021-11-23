@@ -49,7 +49,7 @@ export default function FilterAWMonitorPage(props) {
       >
         {!!checkpointList
           ? checkpointList.map((item) => (
-              <MenuItem key={item.id} value={item.checkpoint_name}>
+              <MenuItem key={item.id} value={item.id}>
                 {item.checkpoint_name}
               </MenuItem>
             ))
@@ -67,7 +67,7 @@ export default function FilterAWMonitorPage(props) {
         {!!gateList
           ? gateList.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.gate_name}
+                {item.name}
               </MenuItem>
             ))
           : []}

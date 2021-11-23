@@ -162,14 +162,14 @@ export default function AuditDisplay2() {
     });
   };
 
-  const fetchData = (pageId = 1) => {
+  const fetchData = (pageId = "1") => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId === 1) {
-      setPage(1);
+    if (pageId === "1") {
+      setPage("1");
     } else {
       setPage(pageId);
     }
@@ -179,11 +179,11 @@ export default function AuditDisplay2() {
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
     const sendData = {
-      page: pageId,
-      checkpoint_id: checkpoint || 0,
-      gate_id: selectGate || 0,
-      state: status_select || 0,
-      vehicleClass: selectCarType || 0,
+      page: pageId.toString(),
+      checkpoint_id: checkpoint.toString() || "0",
+      gate_id: selectGate.toString() || "0",
+      state: status_select.toString() || "0",
+      vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
