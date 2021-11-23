@@ -166,7 +166,7 @@ export default function SuperAuditDisplay2() {
     };
     console.log(sendData);
 
-    apiURL.post("/display-superaudit2", sendData).then((res) => {
+    apiURL.post("/display-pk3", sendData).then((res) => {
       Swal.close();
       setAllTsTable({
         summary: {
