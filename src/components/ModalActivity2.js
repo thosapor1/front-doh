@@ -441,7 +441,7 @@ export default function ModalActivity2(props) {
       <Grid container columns={5} spacing={1}>
 
         {/* ML (Vehicle)  block */}
-        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
+        {/* <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
@@ -536,7 +536,7 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody> */}
                 {/* <TableRow>
                   <TableCell>กว้าง</TableCell>
                   <TableCell>-</TableCell>
@@ -545,7 +545,7 @@ export default function ModalActivity2(props) {
                   <TableCell>ยาว</TableCell>
                   <TableCell>-</TableCell>
                 </TableRow> */}
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_check_vehicleClass
@@ -555,9 +555,9 @@ export default function ModalActivity2(props) {
                 </TableRow>
               </TableBody>
             </table>
-          </TableContainer>
+          </TableContainer> */}
 
-          <TableContainer>
+          {/* <TableContainer>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -594,8 +594,8 @@ export default function ModalActivity2(props) {
               </TableBody>
             </table>
           </TableContainer>
-        </Grid>
-        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
+        </Grid> */}
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
@@ -751,7 +751,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* ML (LP) Block */}
-        <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
@@ -911,7 +911,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* MF (Vehicle : HQ)  Block */}
-        <Grid item sm={6} md={6} lg={1}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>MF (Vehicle : HQ) </Typography>
@@ -1050,7 +1050,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* MF (LP : HQ) Block */}
-        <Grid item sm={6} md={6} lg={1}>
+        <Grid item sm={6} md={6} lg={3}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>MF (LP : HQ)</Typography>
