@@ -334,6 +334,7 @@ export default function TransactionMonitorV1() {
   };
 
   const filterBilling = (pageId = 1, selectDate, checkpoint, gate) => {
+    console.log(pageId);
     if (pageId === 1) {
       setPaginationBilling({ ...paginationBilling, page: 1 });
     } else {
@@ -350,7 +351,8 @@ export default function TransactionMonitorV1() {
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
     apiURL.post("/billing-monitor", sendData).then((res) => {
-      console.log(res.data);
+      console.log(res.data.total_page);
+      console.log(res.data.currentPage);
       setDataBilling({
         ...dataBilling,
         checkpointList: dataBilling.checkpointList,
@@ -358,8 +360,8 @@ export default function TransactionMonitorV1() {
         tableBodyData: res.data,
       });
       setPaginationBilling({
-        countPage: res.data.totalPages,
-        page: res.data.currentPage,
+        countPage: res.data.total_page,
+        page: parseInt(res.data.currentPage),
       });
     });
   };
@@ -408,6 +410,7 @@ export default function TransactionMonitorV1() {
   };
 
   const pageOnChangeBilling = (e, value) => {
+    console.log(value);
     setPaginationBilling({ page: value });
     filterBilling(
       value,
@@ -536,7 +539,7 @@ export default function TransactionMonitorV1() {
   };
 
   useEffect(() => {
-    getDropdown()
+    getDropdown();
   }, []);
   return (
     <>
@@ -891,7 +894,7 @@ export default function TransactionMonitorV1() {
                   page={paginationMatchTab.page}
                   onChange={pageOnChangeMatchTab}
                   onClickRow={MatchTabGetImage}
-                // onFetchData={fetchData}
+                  // onFetchData={fetchData}
                 />
               </Grid>
             </Grid>
@@ -919,7 +922,7 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", dataBilling.date);
                   }}
                   checkpointValue={dataBilling.checkpointValue}
-                  checkpointList={dataBilling.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setDataBilling({
                       ...dataBilling,
@@ -927,7 +930,7 @@ export default function TransactionMonitorV1() {
                     });
                   }}
                   gateValue={dataBilling.gateValue}
-                  gateList={dataBilling.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setDataBilling({
                       ...dataBilling,
@@ -936,7 +939,7 @@ export default function TransactionMonitorV1() {
                   }}
                   buttonOnClick={() => {
                     filterBilling(
-                      pageOnChangeBilling.page,
+                      paginationBilling.page,
                       dataBilling.date,
                       dataBilling.checkpointValue,
                       dataBilling.gateValue
