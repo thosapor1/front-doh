@@ -948,8 +948,8 @@ export default function TransactionMonitorV1() {
                 <TableBillingMonitorPage
                   header={dataBilling.tableHeaderBilling}
                   body={dataBilling.tableBodyData}
-                  countPage={pageOnChangeBilling.countPage}
-                  page={pageOnChangeBilling.page}
+                  countPage={paginationBilling.countPage}
+                  page={paginationBilling.page}
                   pageOnChange={pageOnChangeBilling}
                   color={"#46005E"}
                 />
