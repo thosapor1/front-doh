@@ -93,6 +93,7 @@ export default function TableSectionMonitorPage(props) {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.audit_transactionId}</TableCell>
                     <TableCell>{item.timestamp}</TableCell>
+                    <TableCell>-</TableCell>
                   </StyledTableRow>
                 ))
               : []}

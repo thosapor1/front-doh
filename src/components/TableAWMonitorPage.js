@@ -92,7 +92,8 @@ export default function TableAWMonitorPage(props) {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.headerTransactionId}</TableCell>
                     <TableCell>{item.refTransactionId}</TableCell>
-                    <TableCell>{item.cameras_cameraTimestamp}</TableCell>
+                    <TableCell>{item.cameras_cameraTimestamp.split(" ").pop()}</TableCell>
+                    <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
                   </StyledTableRow>
                 ))
               : []}

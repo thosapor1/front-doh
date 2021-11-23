@@ -67,7 +67,7 @@ export default function FilterSectionMonitorPage(props) {
         {!!gateList
           ? gateList.map((item) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.gate_name}
+                {item.name}
               </MenuItem>
             ))
           : []}
