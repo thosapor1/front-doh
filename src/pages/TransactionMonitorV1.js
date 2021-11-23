@@ -539,7 +539,7 @@ export default function TransactionMonitorV1() {
   };
 
   useEffect(() => {
-    getDropdown()
+    getDropdown();
   }, []);
   return (
     <>
@@ -894,7 +894,7 @@ export default function TransactionMonitorV1() {
                   page={paginationMatchTab.page}
                   onChange={pageOnChangeMatchTab}
                   onClickRow={MatchTabGetImage}
-                // onFetchData={fetchData}
+                  // onFetchData={fetchData}
                 />
               </Grid>
             </Grid>
@@ -922,7 +922,7 @@ export default function TransactionMonitorV1() {
                     console.log("dateChange :", dataBilling.date);
                   }}
                   checkpointValue={dataBilling.checkpointValue}
-                  checkpointList={dataBilling.checkpointList}
+                  checkpointList={dropdown.checkpoint}
                   checkpointOnChange={(e) => {
                     setDataBilling({
                       ...dataBilling,
@@ -930,7 +930,7 @@ export default function TransactionMonitorV1() {
                     });
                   }}
                   gateValue={dataBilling.gateValue}
-                  gateList={dataBilling.gateList}
+                  gateList={dropdown.gate}
                   gateOnChange={(e) => {
                     setDataBilling({
                       ...dataBilling,
