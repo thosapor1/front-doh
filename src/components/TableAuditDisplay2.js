@@ -55,7 +55,7 @@ const detailStatus = [
   {
     state: 6,
     color: 'pink',
-    label: 'ปกติรอเก็บเงิน'
+    label: 'รอตรวจสอบรับทราบ'
   },
   {
     state: 7,
