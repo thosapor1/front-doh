@@ -20,7 +20,7 @@ import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import { useHistory, useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
-import s_logo_doh from "../image/S_logo_doh.png";
+import s_logo_doh from "../image/s_logo_doh.png";
 import {
   menuItemsForAdmin,
   menuConfigForAdmin,
@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
-
     },
     avatar: {
       marginLeft: 30,
@@ -246,23 +245,23 @@ export default function Layout({ children }) {
         <List>
           {!!menuItems
             ? menuItems.map((item) => (
-              <ListItem
-                key={item.text}
-                className={
-                  location.pathname === item.path
-                    ? classes.active
-                    : classes.ListItemText
-                }
-                button
-                onClick={() => history.push(item.path)}
-              >
-                <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
-                <ListItemText
-                  primary={item.text}
-                  classes={{ primary: classes.listItemText }}
-                />
-              </ListItem>
-            ))
+                <ListItem
+                  key={item.text}
+                  className={
+                    location.pathname === item.path
+                      ? classes.active
+                      : classes.ListItemText
+                  }
+                  button
+                  onClick={() => history.push(item.path)}
+                >
+                  <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+                  <ListItemText
+                    primary={item.text}
+                    classes={{ primary: classes.listItemText }}
+                  />
+                </ListItem>
+              ))
             : []}
         </List>
         <Divider variant="middle" className={classes.hr2} />
