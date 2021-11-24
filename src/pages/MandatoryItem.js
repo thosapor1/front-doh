@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
+import TableMandatoryItem from "../components/TableMandatoryItem";
 
 const apiURL = axios.create({
   baseURL:
@@ -97,7 +97,7 @@ const valueStatus = [
   },
 ];
 
-export default function SuperAuditDisplay2() {
+export default function MandatoryItem() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
@@ -261,7 +261,7 @@ export default function SuperAuditDisplay2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          รายการรอตรวจสอบ
+          รายการบังคับ
         </Typography>
 
         {/* Filter Section */}
@@ -427,7 +427,7 @@ export default function SuperAuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <AllTsTableForPk3Activity
+            <TableMandatoryItem
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}

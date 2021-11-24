@@ -22,6 +22,8 @@ import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
 import AuditDisplay2 from "./pages/AuditDisplay2";
 import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
+import DataVolume from "./pages/DataVolume";
+import MandatoryItem from "./pages/MandatoryItem";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -58,6 +60,8 @@ function App() {
             <Route path="/config" component={Config} />
             <Route path="/userLogs" component={UserLogs} />
             <Route path="/report" component={Report} />
+            <Route path="/dataVolume" component={DataVolume} />
+            <Route path="/mandatoryItem" component={MandatoryItem} />
             <Route
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}
