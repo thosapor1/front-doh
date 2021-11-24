@@ -55,7 +55,7 @@ const detailStatus = [
   {
     state: 6,
     color: 'pink',
-    label: 'ปกติรอเก็บเงิน'
+    label: 'รอตรวจสอบรับทราบ'
   },
   {
     state: 7,
@@ -137,9 +137,14 @@ const useStyles = makeStyles((theme, props) => {
     },
     dot: {
       fontSize: '0.8rem',
-
     },
-
+    box: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      [theme.breakpoints.down('lg')]: {
+        display: 'block'
+      }
+    }
   };
 });
 
@@ -151,7 +156,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay(props) {
+export default function TableAuditDisplay2(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
@@ -210,7 +215,7 @@ export default function TableAuditDisplay(props) {
 
   return (
     <div>
-      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box className={classes.box}>
         <Pagination
           count={dataList.totalPages}
           color="primary"

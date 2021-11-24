@@ -61,7 +61,9 @@ export default function TableSectionMonitorPage(props) {
     <Paper style={{ marginTop: 10 }}>
       {/* <Box style={{ display: 'flex', justifyContent: 'space-between' }}> */}
       <Pagination count={countPage} page={page} onChange={pageOnChange} />
-      <Typography style={{ paddingLeft: 20 }}>จำนวน transaction : {!!body.totalPages ? body.totalPages * 100 : 0}</Typography>
+      <Typography style={{ paddingLeft: 20 }}>
+        จำนวน transaction : {!!body.totalCount ? body.totalCount : 0}
+      </Typography>
       {/* </Box> */}
       <TableContainer style={{ maxHeight: 520 }}>
         <Table stickyHeader style={{ marginTop: 10, maxHeight: 200 }}>
@@ -69,38 +71,39 @@ export default function TableSectionMonitorPage(props) {
             <TableRow>
               {!!header
                 ? header.map((header) => (
-                  <TableCell
-                    key={header.id}
-                    style={{
-                      backgroundColor: `${color}`,
-                      color: "white",
-                      border: "1px solid white",
-                    }}
-                  >
-                    {header.label}
-                  </TableCell>
-                ))
+                    <TableCell
+                      key={header.id}
+                      style={{
+                        backgroundColor: `${color}`,
+                        color: "white",
+                        border: "1px solid white",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      {header.label}
+                    </TableCell>
+                  ))
                 : []}
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!body.results
-              ? body.results.map((item, index) => (
-                <StyledTableRow
-                  onClick={() => {
-                    getItemData(item);
-                    setRowID(index);
-                  }}
-                  key={index}
-                  selected={rowID === index}
-                  className={classes.selected}
-                >
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{item.audit_transactionId}</TableCell>
-                  <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
-                  <TableCell>-</TableCell>
-                </StyledTableRow>
-              ))
+            {!!body.resultsDisplay
+              ? body.resultsDisplay.map((item, index) => (
+                  <StyledTableRow
+                    onClick={() => {
+                      getItemData(item);
+                      setRowID(index);
+                    }}
+                    key={index}
+                    selected={rowID === index}
+                    className={classes.selected}
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{item.audit_transactionId}</TableCell>
+                    <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
+                    <TableCell>-</TableCell>
+                  </StyledTableRow>
+                ))
               : []}
           </TableBody>
         </Table>

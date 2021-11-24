@@ -23,6 +23,7 @@ import FilterSectionSearch from "../components/FilterSectionSearch";
 import ImageSearchAudit from "../components/ImageSearchAudit";
 import MatchTable from "../components/MatchTable";
 import TableBillingMonitorPage from "../components/TableBillingMonitorV1";
+import TableFETC from "../components/TableFETC";
 
 const apiURL = axios.create({
   baseURL:
@@ -220,8 +221,8 @@ export default function TransactionMonitorV1() {
     const sendData = {
       page: pageId,
       date: date,
-      checkpoint_id: checkpoint,
-      gate_id: gate,
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
@@ -251,7 +252,7 @@ export default function TransactionMonitorV1() {
       page: pageId,
       date: date,
       checkpoint_id: checkpoint.toString(),
-      gate_id: gate,
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
@@ -281,26 +282,24 @@ export default function TransactionMonitorV1() {
     const sendData = {
       page: pageId,
       date: date,
-      checkpoint_id: checkpoint,
-      gate_id: gate,
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    // apiURL.post("/audit-transaction-monitor-activity", sendData).then((res) => {
-    //   setDataAW({
-    //     ...dataAW,
-    //     checkpointList: res.data.dropdown_Checkpoint,
-    //     gateList: res.data.dropdown_Gate,
-    //   });
+    apiURL.post("/lane-transaction-monitor", sendData).then((res) => {
+      setDataFETC({
+        ...dataFetc,
+        checkpointList: res.data.dropdown_Checkpoint,
+        gateList: res.data.dropdown_Gate,
+        tableBodyData: res.data,
+      });
 
-    //   setPagination2({
-    //     countPage: res.data.totalPages,
-    //     page: res.data.currentPage,
-    //   });
-
-    //   setDataAW({ ...dataAW, tableBodyData: mockData });
-    //   setPagination2({ ...pagination2, countPage: res.data.countPage });
-    // });
+      setPagination3({
+        countPage: res.data.totalPages,
+        page: res.data.currentPage,
+      });
+    });
   };
 
   const filterMatchTab = (pageId = 1, selectDate, checkpoint, gate) => {
@@ -312,10 +311,10 @@ export default function TransactionMonitorV1() {
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       date: date,
-      checkpoint_id: checkpoint,
-      gate_id: gate,
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
@@ -423,9 +422,6 @@ export default function TransactionMonitorV1() {
   };
 
   const getImage1 = (item) => {
-    console.log(item.audit_transactionId);
-    console.log(item.timestamp);
-
     const date = item.timestamp.split(" ").shift();
     const sendData = {
       audit_transactionId: item.audit_transactionId,
@@ -442,8 +438,6 @@ export default function TransactionMonitorV1() {
     });
   };
   const getImage2 = (item) => {
-    console.log(item.cameras_cameraTimestamp);
-
     const date = item.cameras_cameraTimestamp.split(" ").shift().split("/");
     const date2 = `${date[2]}-${date[1]}-${date[0]}`;
     const sendData = {
@@ -455,8 +449,23 @@ export default function TransactionMonitorV1() {
       console.log(res.data);
       setDataAW({
         ...dataAW,
-        imageCrop: res.data.imageFile,
-        imageFull: res.data.imageFileCrop,
+        imageCrop: res.data.imageFileCrop,
+        imageFull: res.data.imageFile,
+      });
+    });
+  };
+  const getImage3 = (item) => {
+    const sendData = {
+      tranId: item.tranId,
+      date: format(dataFetc.date, "yyyy-MM-dd"),
+    };
+    console.log("sendData:", sendData);
+    apiURL.post("/lane-transaction-monitor-activity", sendData).then((res) => {
+      console.log(res.data);
+      setDataFETC({
+        ...dataFetc,
+        imageCrop: res.data.mf_lane_picFull,
+        imageFull: res.data.mf_lane_picCrop,
       });
     });
   };
@@ -711,11 +720,11 @@ export default function TransactionMonitorV1() {
                   imageCrop={dataFetc.imageCrop}
                   imageFull={dataFetc.imageFull}
                 />
-                <TableSectionMonitorPage
+                <TableFETC
                   header={dataFetc.tableHeaderData}
                   body={dataFetc.tableBodyData}
-                  tableOnClick={() => {
-                    alert("click on table");
+                  tableOnClick={(item) => {
+                    getImage3(item);
                   }}
                   countPage={pagination3.countPage}
                   page={pagination3.page}
@@ -767,7 +776,7 @@ export default function TransactionMonitorV1() {
 
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  transaction (AW)
+                  transaction
                 </Typography>
                 <FilterSectionSearch
                   dateValue={awSearch.date}
