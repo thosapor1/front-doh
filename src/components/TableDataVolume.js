@@ -138,7 +138,7 @@ export default function TableDataVolume(props) {
                       {!!data.date ? data.date : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.ts_count ? data.ts_count : "-"}
+                      {!!data.ts_count ? data.ts_count.toLocaleString() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.firstTimeStampLane
@@ -149,7 +149,7 @@ export default function TableDataVolume(props) {
                       {!!data.lastTimeStampLane ? data.lastTimeStampLane : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.hq_count ? data.hq_count : "-"}
+                      {!!data.hq_count ? data.hq_count.toLocaleString() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.firstTimeStampHQ ? data.firstTimeStampHQ : "-"}
