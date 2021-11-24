@@ -128,12 +128,12 @@ export default function AuditDisplay2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState("");
+  const [checkpoint, setCheckpoint] = useState(0);
+  const [status_select, setStatus_select] = useState(0);
   const [status, setStatus] = useState(0);
   const [subState, setSubState] = useState(0);
-  const [selectGate, setSelectGate] = useState("");
-  const [selectCarType, setSelectCarType] = useState("");
+  const [selectGate, setSelectGate] = useState(0);
+  const [selectCarType, setSelectCarType] = useState(0);
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
