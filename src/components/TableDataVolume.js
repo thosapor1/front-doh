@@ -70,6 +70,16 @@ const headerCells = [
     id: "last_Time_HQ",
     label: "lastTimeStampHQ",
   },
+
+  {
+    id: "confirm_TS",
+    label: "ยืนยันจำนวน TS",
+  },
+
+  {
+    id: "confirm_time",
+    label: "เวลาที่ยืนยัน",
+  },
 ];
 
 const StyledTableRow = withStyles((theme) => ({
@@ -83,32 +93,6 @@ const StyledTableRow = withStyles((theme) => ({
 export default function TableDataVolume(props) {
   //   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState([]);
-
-  //   const fetchData = (ts, timestamp) => {
-  //     Swal.fire({
-  //       title: "Loading",
-  //       allowOutsideClick: false,
-  //       didOpen: () => Swal.showLoading(),
-  //     });
-  //     const sendData = {
-  //       transactionId: ts,
-  //       timestamp: timestamp,
-  //     };
-  //     apiURL
-  //       .post("/pk3display-activity", sendData)
-  //       .then((res) => {
-  //         Swal.close();
-  //         SetDataForActivity(res.data);
-  //         console.log("res2:", res.data);
-  //       })
-  //       .catch((error) => {
-  //         // handleClose();
-  //         Swal.fire({
-  //           icon: "error",
-  //           text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-  //         });
-  //       });
-  //   };
 
   const classes = useStyles();
   const { dataList, onChange } = props;
@@ -156,6 +140,12 @@ export default function TableDataVolume(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.lastTimeStampHQ ? data.lastTimeStampHQ : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
                     </TableCell>
                   </StyledTableRow>
                 ))
