@@ -210,19 +210,26 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
+    smallText: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
   };
 });
 
-export default function ModalActivity2(props) {
+export default function ModalSuperActivity2(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
-  const [value1, setValue1] = React.useState(2);
-  const [value2, setValue2] = React.useState(2);
-  const [value3, setValue3] = React.useState(2);
-  const [value4, setValue4] = React.useState(2);
-  const [value5, setValue5] = React.useState(2);
-  const [value6, setValue6] = React.useState(2);
+  const [value1, setValue1] = useState(2);
+  const [value2, setValue2] = useState(2);
+  const [value3, setValue3] = useState(2);
+  const [value4, setValue4] = useState(2);
+  const [value5, setValue5] = useState(2);
+  const [value6, setValue6] = useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -269,10 +276,10 @@ export default function ModalActivity2(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({
-    tsType: "",
     operation: "",
+    commentSuper: "",
   });
-  const { tsType, operation } = state;
+  const { commentSuper, operation } = state;
 
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
@@ -290,18 +297,15 @@ export default function ModalActivity2(props) {
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-      super_audit_vehicleClass: ${vehicleClass}
-      event.target.value: ${index}`
+        super_audit_vehicleClass: ${vehicleClass}
+        event.target.value: ${index}`
     );
   };
 
   const handleUpdate = () => {
     let endPointURL = "";
-    if (tsType === 2 || tsType === 3) {
-      endPointURL = "/changeState3";
-    } else {
-      endPointURL = "/changeState1";
-    }
+
+    endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
 
@@ -312,7 +316,11 @@ export default function ModalActivity2(props) {
       state: dataList.resultsDisplay[0].state,
       vehicleClass: vehicleClass || "0",
       fee: audit_feeAmount || "0",
-      status: tsType,
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: state.operation,
+      pk3_comment: "",
+      super_audit_comment: commentSuper,
+      ts_duplication: "",
     };
 
     Swal.fire({
@@ -875,17 +883,17 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.mf_lane_plateNo1
-                      ? resultDisplay.mf_lane_plateNo1
-                      : "-"}
-                  </TableCell>
-                </TableRow> */}
+                    <TableCell>ทะเบียน</TableCell>
+                    <TableCell>
+                      {!!resultDisplay.mf_lane_plateNo1
+                        ? resultDisplay.mf_lane_plateNo1
+                        : "-"}
+                    </TableCell>
+                  </TableRow> */}
                 {/* <TableRow>
-                  <TableCell>จัดหวัด</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow> */}
+                    <TableCell>จัดหวัด</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
@@ -1043,13 +1051,13 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    {dataList.mf_lp_province === null
-                      ? "-"
-                      : dataList.mf_lp_province}
-                  </TableCell>
-                </TableRow> */}
+                    <TableCell>จังหวัด</TableCell>
+                    <TableCell>
+                      {dataList.mf_lp_province === null
+                        ? "-"
+                        : dataList.mf_lp_province}
+                    </TableCell>
+                  </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -1094,7 +1102,16 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentSuper"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={state.commentSuper}
+                    />
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1206,12 +1223,22 @@ export default function ModalActivity2(props) {
                       value={operation}
                       onChange={handleChange}
                     >
-                      {!!dropdown.ts_status
-                        ? dropdown.ts_status
+                      {!!dataList.resultsDisplay &&
+                      dataList.resultsDisplay[0].state === 4
+                        ? dropdown.operation_key
                             .filter(
                               (item) =>
-                                item.id === 2 || item.id === 3 || item.id === 5
+                                item.id === 1 || item.id === 2 || item.id === 5
                             )
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 5
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 1 || item.id === 2)
                             .map((item, index) => (
                               <MenuItem key={index} value={item.id}>
                                 {item.name}
