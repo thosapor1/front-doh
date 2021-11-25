@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => {
         height: 15,
       },
       "& .MuiInputBase-root": {
-        height: 40
+        height: 40,
       },
       width: 150,
       margin: theme.spacing(1),
@@ -105,12 +105,12 @@ const useStyles = makeStyles((theme) => {
         height: 15,
       },
       "& .MuiInputBase-root": {
-        height: 40
+        height: 40,
       },
       "& .MuiInputLabel-outlined": {
         // transform: 'translate(14px, 14px) scale(1)',
         // paddingBottom: 20,
-        fontSize: '0.8rem',
+        fontSize: "0.8rem",
       },
       width: 150,
       margin: theme.spacing(1),
@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     typography: {
-      fontSize: '0.8rem',
+      fontSize: "0.8rem",
     },
   };
 });
@@ -136,6 +136,7 @@ export default function AuditDisplay2() {
   const [selectCarType, setSelectCarType] = useState(0);
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
+  const [tsType, setTsType] = useState(0)
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -302,7 +303,6 @@ export default function AuditDisplay2() {
   useEffect(() => {
     // fetchData();
     getDropdown();
-
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -326,10 +326,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.checkpoint
               ? dropdown.checkpoint.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.checkpoint_name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -344,10 +344,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.gate
               ? dropdown.gate.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -362,10 +362,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.vehicle
               ? dropdown.vehicle.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.class}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.class}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -382,10 +382,30 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.state
               ? dropdown.state.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+
+          <TextField
+            select
+            variant="outlined"
+            label="ประเภทTS"
+            value={tsType}
+            onChange={(e) => {
+              setTsType(e.target.value);
+            }}
+            className={classes.input1}
+            name="tsType"
+          >
+            {!!dropdown.state
+              ? dropdown.state.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -457,17 +477,40 @@ export default function AuditDisplay2() {
         <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography className={classes.typography}>รายการทั้งหมด : {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""} </Typography>
-              <Typography className={classes.typography}>ตรงกัน : {!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : ""} </Typography>
-              <Typography className={classes.typography}>ไม่ตรงกัน : {!!cardData.ts_not_normal ? cardData.ts_not_normal.toLocaleString() : ""} </Typography>
-              <Typography className={classes.typography}>สูญหาย : {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""} </Typography>
+              <Typography className={classes.typography}>
+                รายการทั้งหมด :{" "}
+                {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""}{" "}
+              </Typography>
+              <Typography className={classes.typography}>
+                ตรงกัน :{" "}
+                {!!cardData.ts_normal
+                  ? cardData.ts_normal.toLocaleString()
+                  : ""}{" "}
+              </Typography>
+              <Typography className={classes.typography}>
+                ไม่ตรงกัน :{" "}
+                {!!cardData.ts_not_normal
+                  ? cardData.ts_not_normal.toLocaleString()
+                  : ""}{" "}
+              </Typography>
+              <Typography className={classes.typography}>
+                สูญหาย :{" "}
+                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""}{" "}
+              </Typography>
             </Paper>
           </Grid>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography className={classes.typography}>รายได้ประมาณการ : {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""} </Typography>
-              <Typography className={classes.typography}>ชำระแล้ว : - </Typography>
-              <Typography className={classes.typography}>ค้างชำระ : - </Typography>
+              <Typography className={classes.typography}>
+                รายได้ประมาณการ :{" "}
+                {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""}{" "}
+              </Typography>
+              <Typography className={classes.typography}>
+                ชำระแล้ว : -{" "}
+              </Typography>
+              <Typography className={classes.typography}>
+                ค้างชำระ : -{" "}
+              </Typography>
             </Paper>
           </Grid>
         </Grid>
