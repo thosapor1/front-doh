@@ -10,8 +10,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import P_login from "../image/p_login.jpg";
-import Logo_doh from "../image/logo_doh.png";
+import P_login from "../image/P_login.jpg";
+import Logo_doh from "../image/Logo_doh.png";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
