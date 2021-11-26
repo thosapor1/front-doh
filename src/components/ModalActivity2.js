@@ -14,8 +14,6 @@ import {
   Tabs,
   TextField,
   Typography,
-  Box,
-  Paper,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -26,6 +24,7 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 const apiURL = axios.create({
   baseURL:
@@ -122,8 +121,11 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+      [theme.breakpoints.only("md")]: {
+        marginTop: "90%",
+      },
+      [theme.breakpoints.only("sm")]: {
+        marginTop: "120%",
       },
     },
     head: {
@@ -140,11 +142,15 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "140px",
-      width: "100%",
+      height: "150px",
+      Width: "100%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
+      objectFit: "cover",
+      [theme.breakpoints.down("md")]: {
+        height: "250px",
+      },
     },
     tableHead1: {
       backgroundColor: "#7C85BFff",
@@ -243,29 +249,29 @@ export default function ModalActivity2(props) {
     setValue6(newValue);
   };
 
-  // const download = () => {
-  //   const header = {
-  //     "Content-Type": "application/pdf",
-  //     responseType: "blob",
-  //   };
-  //   const sendData = {
-  //     transactionId: dataList.transactionId,
-  //     date: "2021-09-29",
-  //   };
-  //   apiURLv1
-  //     .post("/download-file-super-audit", sendData, header)
-  //     .then((res) => {
-  //       const url = window.URL.createObjectURL(new Blob([res.data]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.parentNode.removeChild(link);
-  //       console.log(res.data);
-  //       console.log(url);
-  //     });
-  // };
+  const download = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1
+      .post("/download-file-pk3", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "M20210929000000014_PK3.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
+  };
 
   const mockPic = 0;
   const [state, setState] = useState({
@@ -274,8 +280,7 @@ export default function ModalActivity2(props) {
   });
   const { tsType, operation } = state;
 
-  const [dropdownToggle, setDropdownToggle] = useState(true);
-  const [vehicleClass, setVehicleClass] = useState(0);
+  const [vehicleClass, setVehicleClass] = useState("");
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
@@ -297,13 +302,6 @@ export default function ModalActivity2(props) {
   };
 
   const handleUpdate = () => {
-    let endPointURL = "";
-    if (tsType === 2 || tsType === 3) {
-      endPointURL = "/changeState3";
-    } else {
-      endPointURL = "/changeState1";
-    }
-
     const date = format(checkDate, "yyyy-MM-dd");
 
     const sendData = {
@@ -313,7 +311,10 @@ export default function ModalActivity2(props) {
       state: dataList.resultsDisplay[0].state,
       vehicleClass: vehicleClass || "0",
       fee: audit_feeAmount || "0",
-      status: tsType,
+      operation: operation,
+      pk3_comment: "",
+      super_audit_comment: "",
+      ts_duplication: "",
     };
 
     Swal.fire({
@@ -328,7 +329,7 @@ export default function ModalActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post(endPointURL, sendData).then((res) => {
+          apiURLv1.post("/operation", sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -1043,7 +1044,13 @@ export default function ModalActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
-                  <TableCell>{resultDisplay.pk3_upload_file}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_upload_file ? (
+                      <Link onClick={download}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
@@ -1051,11 +1058,19 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>{resultDisplay.pk3_comment}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_comment
+                      ? resultDisplay.pk3_comment
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>{resultDisplay.super_audit_comment}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.super_audit_comment
+                      ? resultDisplay.super_audit_comment
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1272,9 +1287,28 @@ export default function ModalActivity2(props) {
             }}
           >
             <Button
+              disabled={
+                !!dataList.resultsDisplay &&
+                dataList.resultsDisplay[0].state === 1 &&
+                tsType !== "" &&
+                operation !== ""
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    (dataList.resultsDisplay[0].state === 3 ||
+                      dataList.resultsDisplay[0].state === 4 ||
+                      dataList.resultsDisplay[0].state === 5)
+                  ? true
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 6
+                  ? true
+                  : true
+              }
               variant="contained"
               color="primary"
-              style={{ marginTop: 96, float: "right" }}
+              style={{ marginTop: 17, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >

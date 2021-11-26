@@ -187,6 +187,7 @@ export default function AuditDisplay2() {
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
+      status: tsType.toString(),
     };
     console.log(sendData);
 
