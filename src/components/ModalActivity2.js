@@ -14,8 +14,6 @@ import {
   Tabs,
   TextField,
   Typography,
-  Box,
-  Paper,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -26,6 +24,9 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import HelpOutlineTwoToneIcon from '@material-ui/icons/HelpOutlineTwoTone';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURL = axios.create({
   baseURL:
@@ -116,14 +117,17 @@ const useStyle = makeStyles((theme) => {
     root: {},
     bodyModal: {
       height: "auto",
-      width: "70%",
+      width: "90%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+      [theme.breakpoints.only("md")]: {
+        marginTop: "90%",
+      },
+      [theme.breakpoints.only("sm")]: {
+        marginTop: "120%",
       },
     },
     head: {
@@ -140,11 +144,15 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "140px",
-      width: "100%",
+      height: "150px",
+      Width: "100%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
+      objectFit: "cover",
+      [theme.breakpoints.down("md")]: {
+        height: "250px",
+      },
     },
     tableHead1: {
       backgroundColor: "#7C85BFff",
@@ -163,9 +171,13 @@ const useStyle = makeStyles((theme) => {
     },
     table: {
       width: "100%",
-      padding: "1rem",
+      paddingTop: "1rem",
 
-      "& .MuiTableCell-root": { paddingTop: "0.2rem", paddingBottom: "0.2rem" },
+      "& .MuiTableCell-root": {
+        paddingTop: "0.2rem",
+        paddingBottom: "0.2rem",
+        fontSize: "0.8rem",
+      },
     },
     btn: { marginTop: 10 },
     textField: {
@@ -213,10 +225,14 @@ export default function ModalActivity2(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
-  const [value1, setValue1] = React.useState(2);
-  const [value2, setValue2] = React.useState(2);
-  const [value3, setValue3] = React.useState(2);
-  const [value4, setValue4] = React.useState(2);
+  const [value1, setValue1] = useState(2);
+  const [value2, setValue2] = useState(2);
+  const [value3, setValue3] = useState(2);
+  const [value4, setValue4] = useState(2);
+  const [value5, setValue5] = useState(2);
+  const [value6, setValue6] = useState(2);
+
+  const [disable, setDisable] = useState(true);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -230,38 +246,43 @@ export default function ModalActivity2(props) {
   const handleChangeTabs4 = (event, newValue) => {
     setValue4(newValue);
   };
+  const handleChangeTabs5 = (event, newValue) => {
+    setValue5(newValue);
+  };
+  const handleChangeTabs6 = (event, newValue) => {
+    setValue6(newValue);
+  };
 
-  // const download = () => {
-  //   const header = {
-  //     "Content-Type": "application/pdf",
-  //     responseType: "blob",
-  //   };
-  //   const sendData = {
-  //     transactionId: dataList.transactionId,
-  //     date: "2021-09-29",
-  //   };
-  //   apiURLv1
-  //     .post("/download-file-super-audit", sendData, header)
-  //     .then((res) => {
-  //       const url = window.URL.createObjectURL(new Blob([res.data]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.parentNode.removeChild(link);
-  //       console.log(res.data);
-  //       console.log(url);
-  //     });
-  // };
+  const download = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
 
   const mockPic = 0;
   const [state, setState] = useState({
     tsType: "",
+    operation: "",
   });
-  const { tsType } = state;
+  const { tsType, operation } = state;
 
-  const [vehicleClass, setVehicleClass] = useState(0);
+  const [vehicleClass, setVehicleClass] = useState("");
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
@@ -283,23 +304,19 @@ export default function ModalActivity2(props) {
   };
 
   const handleUpdate = () => {
-    let endPointURL = "";
-    if (tsType === 2 || tsType === 3) {
-      endPointURL = "/changeState3";
-    } else {
-      endPointURL = "/changeState1";
-    }
-
     const date = format(checkDate, "yyyy-MM-dd");
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: vehicleClass.toString() || "0",
       fee: audit_feeAmount || "0",
-      status: tsType,
+      operation: operation.toString(),
+      pk3_comment: "",
+      super_audit_comment: "",
+      ts_duplication: "",
     };
 
     Swal.fire({
@@ -314,51 +331,7 @@ export default function ModalActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post(endPointURL, sendData).then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        }
-      })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData());
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
-  const handleChangeState6To7 = () => {
-    const sendData = {
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      timestamp: dataList.timestamp,
-    };
-
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL.post("/changeState2to7", sendData).then((res) => {
+          apiURLv1.post("/operation", sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -396,7 +369,36 @@ export default function ModalActivity2(props) {
       );
       console.log("dataList", dataList);
     }
+
+    // if(dataList.state === 1){
+    //   setState({...state, operation:[]})
+    // }
   }, [dataList]);
+
+  const disableItem = () => {
+    if (!!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1) {
+      setDisable(false);
+    } else if (
+      !!dataList.resultsDisplay &&
+      dataList.resultsDisplay[0].state === 2
+    ) {
+      setDisable(false);
+    } else if (
+      !!dataList.resultsDisplay &&
+      (dataList.resultsDisplay[0].state === 3 ||
+        dataList.resultsDisplay[0].state === 4 ||
+        dataList.resultsDisplay[0].state === 5)
+    ) {
+      setDisable(true);
+    } else if (
+      !!dataList.resultsDisplay &&
+      dataList.resultsDisplay[0].state === 6
+    ) {
+      setDisable(true);
+    } else {
+      setDisable(true);
+    }
+  };
 
   const body = (
     <div className={classes.bodyModal}>
@@ -405,21 +407,17 @@ export default function ModalActivity2(props) {
           <Typography variant="h6" style={{ color: "#c80000" }}>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].state === 1
-                ? "ปกติรอเก็บเงิน (state 1)"
+                ? "ปกติ"
                 : dataList.resultsDisplay[0].state === 2
-                ? "ประเภทไม่ตรง (state 2)"
+                ? "ผิดปกติ"
                 : dataList.resultsDisplay[0].state === 3
-                ? "รอจัดเก็บตรวจสอบ (state 3)"
+                ? "รอ pk3 ตรวจสอบ"
                 : dataList.resultsDisplay[0].state === 4
-                ? "รอ super audit ตรวจสอบ (state 4)"
+                ? "รอ super audit ตรวจสอบ"
                 : dataList.resultsDisplay[0].state === 5
-                ? "รอพิจารณาพิเศษ (state 5)"
+                ? "รอ พิจารณาพิเศษ"
                 : dataList.resultsDisplay[0].state === 6
-                ? "รอตรวจสอบรับทราบ (state 6)"
-                : dataList.resultsDisplay[0].state === 7
-                ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
-                : dataList.resultsDisplay[0].state === 8
-                ? "MF สูญหาย"
+                ? "รอตรวจสอบรับทราบ"
                 : "ไม่มีสถานะ"
               : ""}
           </Typography>
@@ -447,9 +445,179 @@ export default function ModalActivity2(props) {
           />
         </div>
       </div>
-      <Grid container columns={5} spacing={1}>
-        {/* ML (Vehicle)  block */}
-        {/* <Grid item sm={6} md={6} lg={1} className={classes.cardItem}>
+      <Grid container spacing={1}>
+        {/* AD vehicle section */}
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>AD (Vehicle)</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value5}
+              onChange={handleChangeTabs5}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value5} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                !!mockPic
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>AD (overview)</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value6}
+              onChange={handleChangeTabs6}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value6} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                !!mockPic
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
@@ -489,17 +657,15 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
-            <Box style={{ height: 214 }}>
-              <CardMedia
-                component="img"
-                src={
-                  mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    : noImage
-                }
-                className={classes.image}
-              />
-            </Box>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
           </TabPanel4>
           <TabPanel4 value={value4} index={1}>
             <CardMedia
@@ -544,169 +710,7 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody> */}
-        {/* <TableRow>
-                  <TableCell>กว้าง</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ยาว</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow> */}
-        {/* <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.audit_check_vehicleClass
-                      ? resultDisplay.audit_check_vehicleClass
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer> */}
-
-        {/* <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    ค่าปรับ
-                  </TableCell>
-                </TableRow>
-              </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>ระยะ 1</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.match_fine_t1
-                      ? resultDisplay.match_fine_t1
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ระยะ 2</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.match_fine_t2
-                      ? resultDisplay.match_fine_t2
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ระยะ 3</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.match_fine_t3
-                      ? resultDisplay.match_fine_t3
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-        </Grid> */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
-          <div className={classes.headCard}>
-            <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
-          </div>
-          <div>
-            <Tabs
-              value={value4}
-              onChange={handleChangeTabs4}
-              aria-label="simple tabs example"
-              indicatorColor="primary"
-              className={classes.tabs}
-            >
-              <Tab
-                label="ก่อน 2 คัน"
-                {...a11yProps(0)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="ก่อน 1 คัน"
-                {...a11yProps(1)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="คันที่ตรวจ"
-                {...a11yProps(2)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-              <Tab
-                label="วิดีโอ"
-                {...a11yProps(3)}
-                style={{ minWidth: "15%" }}
-                className={classes.tab}
-              />
-            </Tabs>
-          </div>
-          <TabPanel4 value={value4} index={0}>
-            <Box style={{ height: 214 }}>
-              <CardMedia
-                component="img"
-                src={
-                  mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    : noImage
-                }
-                className={classes.image}
-              />
-            </Box>
-          </TabPanel4>
-          <TabPanel4 value={value4} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.mf_lane_picFull !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-          <TabPanel4 value={value4} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.mf_lane_picFull
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-          <TabPanel4 value={value4} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                !!mockPic
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </TabPanel4>
-
-          <TableContainer>
-            <table className={classes.table} style={{ marginBottom: 58 }}>
-              <TableHead>
-                <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    ระบบตรวจสอบรายได้ (AD : เช็ค)
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* <TableRow>
-                  <TableCell>กว้าง</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ยาว</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
@@ -720,7 +724,7 @@ export default function ModalActivity2(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table}>
+            <table className={classes.table} style={{ marginTop: 26 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -759,7 +763,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* ML (LP) Block */}
-        <Grid item sm={6} md={6} lg={3} className={classes.cardItem}>
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>ML (LP)</Typography>
@@ -883,7 +887,7 @@ export default function ModalActivity2(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 30 }}>
+            <table className={classes.table} style={{ marginTop: 57 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -893,7 +897,12 @@ export default function ModalActivity2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ชำระรวม (ค่าธรรมเนียม + ค่าปรับ)</TableCell>
+                  <TableCell>
+                    ชำระรวม
+                    <Tooltip title="ค่าธรรมเนียม + ค่าปรับ">
+                      <HelpOutlineTwoToneIcon style={{ fontSize: "0.8rem" }} />
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>
                     {!!resultDisplay.match_total_cost
                       ? resultDisplay.match_total_cost
@@ -918,7 +927,7 @@ export default function ModalActivity2(props) {
         </Grid>
 
         {/* MF (Vehicle : HQ)  Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
@@ -1054,10 +1063,54 @@ export default function ModalActivity2(props) {
               </TableBody>
             </table>
           </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginTop: 3 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>File จากจัดเก็บ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_upload_file ? (
+                      <Link onClick={download}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นจัดเก็บ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_comment
+                      ? resultDisplay.pk3_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็น super audit</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.super_audit_comment
+                      ? resultDisplay.super_audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
         {/* MF (LP : HQ) Block */}
-        <Grid item sm={6} md={6} lg={3}>
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>MF (LP : HQ)</Typography>
@@ -1150,23 +1203,55 @@ export default function ModalActivity2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ประเภท TS</TableCell>
+                  <TableCell>การดำเนินการ</TableCell>
                   <TableCell>
                     <TextField
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
+                          ? true
+                          : false
+                      }
                       select
                       variant="outlined"
                       size="small"
                       className={classes.textField2}
-                      name="tsType"
-                      value={tsType}
+                      name="operation"
+                      value={operation}
                       onChange={handleChange}
                     >
-                      {!!dropdown.ts_status
-                        ? dropdown.ts_status
+                      {!!dataList.resultsDisplay &&
+                      dataList.resultsDisplay[0].state === 1
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 2)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 2
+                        ? dropdown.operation_key
                             .filter(
                               (item) =>
-                                item.id === 2 || item.id === 3 || item.id === 5
+                                item.id === 1 || item.id === 2 || item.id === 3
                             )
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          (dataList.resultsDisplay[0].state === 3 ||
+                            dataList.resultsDisplay[0].state === 4 ||
+                            dataList.resultsDisplay[0].state === 5)
+                        ? []
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 6
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 4)
                             .map((item, index) => (
                               <MenuItem key={index} value={item.id}>
                                 {item.name}
@@ -1177,10 +1262,37 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ประเภท TS</TableCell>
+                  <TableCell>
+                    {!!dataList.resultsDisplay
+                      ? dataList.resultsDisplay[0].state === 1
+                        ? "ปกติ"
+                        : dataList.resultsDisplay[0].state === 2
+                        ? "ผิดปกติ"
+                        : dataList.resultsDisplay[0].state === 3
+                        ? "รอ pk3 ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 4
+                        ? "รอ super audit ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 5
+                        ? "รอ พิจารณาพิเศษ"
+                        : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ"
+                        : "ไม่มีสถานะ"
+                      : ""}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
-                      disabled={tsType === 2 || tsType === 3 ? false : true}
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
+                          ? true
+                          : false
+                      }
                       variant="outlined"
                       select
                       size="small"
@@ -1215,9 +1327,17 @@ export default function ModalActivity2(props) {
             }}
           >
             <Button
+              disabled={
+                !!dataList.resultsDisplay &&
+                (dataList.resultsDisplay[0].state === 3 ||
+                  dataList.resultsDisplay[0].state === 4 ||
+                  dataList.resultsDisplay[0].state === 5)
+                  ? true
+                  : false
+              }
               variant="contained"
               color="primary"
-              style={{ marginTop: 96, float: "right" }}
+              style={{ marginTop: 17, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >

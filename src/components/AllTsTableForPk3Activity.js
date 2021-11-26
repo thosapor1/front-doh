@@ -16,7 +16,7 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
-import ModalActivity2 from "./ModalActivity2";
+import ModalPK3Activity from "./ModalPk3Activity";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -29,22 +29,22 @@ const apiURL = axios.create({
 const detailStatus = [
   {
     state: 1,
-    color: "gray",
-    label: "ปกติรอเก็บเงิน",
+    color: "lightgray",
+    label: "ปกติ",
   },
   {
     state: 2,
     color: "#FF2400",
-    label: "ประเภทไม่ตรง",
+    label: "ผิดปกติ",
   },
   {
     state: 3,
     color: "blue",
-    label: "รอจัดเก็บตรวจสอบ",
+    label: "รอ pk3 ตรวจสอบ",
   },
   {
     state: 4,
-    color: "yellow",
+    color: "orange",
     label: "รอ super audit ตรวจสอบ",
   },
   {
@@ -54,18 +54,8 @@ const detailStatus = [
   },
   {
     state: 6,
-    color: "pink",
-    label: "ปกติรอเก็บเงิน",
-  },
-  {
-    state: 7,
-    color: "green",
-    label: "ปกติชำระแล้ว",
-  },
-  {
-    state: 8,
-    color: "#FF2400",
-    label: "MF สูญหาย",
+    color: "#46005E",
+    label: "รอตรวจสอบรับทราบ",
   },
 ];
 const useStyles = makeStyles((theme, props) => {
@@ -137,6 +127,13 @@ const useStyles = makeStyles((theme, props) => {
     dot: {
       fontSize: "0.8rem",
     },
+    box: {
+      display: "flex",
+      justifyContent: "space-between",
+      [theme.breakpoints.down("sm")]: {
+        display: "block",
+      },
+    },
   };
 });
 
@@ -148,7 +145,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function AllTsTableForPk3Activity(props) {
+export default function TablePK3display(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
@@ -167,13 +164,10 @@ export default function AllTsTableForPk3Activity(props) {
       date: date,
     };
     let endpoint = "";
-    if (State === 2) {
-      endpoint = "/display-activity2";
-      setOpen(true);
-    } else {
-      endpoint = "/display-activity2";
-      setOpen(true);
-    }
+
+    endpoint = "/display-pk3-activity";
+    setOpen(true);
+
     apiURL
       .post(endpoint, sendData)
       .then((res) => {
@@ -207,7 +201,7 @@ export default function AllTsTableForPk3Activity(props) {
 
   return (
     <div>
-      <Box style={{ display: "flex", justifyContent: "space-between" }}>
+      <Box className={classes.box}>
         <Pagination
           count={dataList.totalPages}
           color="primary"
@@ -238,6 +232,12 @@ export default function AllTsTableForPk3Activity(props) {
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ด่าน
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ช่อง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 เวลาเข้าด่าน
@@ -271,10 +271,10 @@ export default function AllTsTableForPk3Activity(props) {
                 AD
               </TableCell>
               <TableCell align="center" className={classes.header2}>
-                ML
+                Lane
               </TableCell>
               <TableCell align="center" className={classes.header2}>
-                MF
+                HQ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าผ่านทาง
@@ -310,28 +310,34 @@ export default function AllTsTableForPk3Activity(props) {
                     <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
                         style={{
-                          fontSize: "0.8rem",
+                          // fontSize: "0.8rem",
                           color:
                             data.state === 2
                               ? "#FF2400"
                               : data.state === 3
                               ? "blue"
                               : data.state === 4
-                              ? "yellow"
+                              ? "orange"
                               : data.state === 5
                               ? "black"
                               : data.state === 6
-                              ? "pink"
+                              ? "##46005E"
                               : data.state === 7
                               ? "green"
                               : data.state === 8
                               ? "#FF2400"
-                              : "gray",
+                              : "lightgray",
                         }}
                       />
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
@@ -386,7 +392,7 @@ export default function AllTsTableForPk3Activity(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity2
+      <ModalPK3Activity
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}

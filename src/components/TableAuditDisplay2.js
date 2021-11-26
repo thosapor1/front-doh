@@ -29,45 +29,35 @@ const apiURL = axios.create({
 const detailStatus = [
   {
     state: 1,
-    color: 'lightgray',
-    label: 'ปกติรอเก็บเงิน'
+    color: "lightgray",
+    label: "ปกติ",
   },
   {
     state: 2,
-    color: '#FF2400',
-    label: 'ประเภทไม่ตรง'
+    color: "#FF2400",
+    label: "ผิดปกติ",
   },
   {
     state: 3,
-    color: 'blue',
-    label: 'รอจัดเก็บตรวจสอบ'
+    color: "blue",
+    label: "รอ pk3 ตรวจสอบ",
   },
   {
     state: 4,
-    color: 'orange',
-    label: 'รอ super audit ตรวจสอบ'
+    color: "orange",
+    label: "รอ super audit ตรวจสอบ",
   },
   {
     state: 5,
-    color: 'black',
-    label: 'รอพิจารณาพิเศษ'
+    color: "black",
+    label: "รอพิจารณาพิเศษ",
   },
   {
     state: 6,
-    color: 'pink',
-    label: 'รอตรวจสอบรับทราบ'
+    color: "darkviolet",
+    label: "รอตรวจสอบรับทราบ",
   },
-  {
-    state: 7,
-    color: 'green',
-    label: 'ปกติชำระแล้ว'
-  },
-  {
-    state: 8,
-    color: '#FF2400',
-    label: 'MF สูญหาย'
-  }
-]
+];
 const useStyles = makeStyles((theme, props) => {
   return {
     "@global": {
@@ -83,11 +73,11 @@ const useStyles = makeStyles((theme, props) => {
       },
     },
     container: {
-      maxHeight: '55vh',
-      overflow: 'auto',
-      [theme.breakpoints.down('lg')]: {
-        maxHeight: '42vh'
-      }
+      maxHeight: "55vh",
+      overflow: "auto",
+      [theme.breakpoints.down("lg")]: {
+        maxHeight: "42vh",
+      },
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -112,16 +102,15 @@ const useStyles = makeStyles((theme, props) => {
       },
     },
     pagination: {
-      '& .MuiPaginationItem-root': {
+      "& .MuiPaginationItem-root": {
         height: 25,
         minWidth: 25,
-        fontSize: '0.8rem',
-        [theme.breakpoints.down('lg')]: {
-          fontSize: '0.7rem'
+        fontSize: "0.8rem",
+        [theme.breakpoints.down("lg")]: {
+          fontSize: "0.7rem",
         },
       },
       marginBottom: 10,
-
     },
     tableCell: {
       cursor: "pointer",
@@ -129,22 +118,22 @@ const useStyles = makeStyles((theme, props) => {
       padding: "6px",
     },
     detailStatus: {
-      display: 'inline',
-      fontSize: '0.8rem',
-      [theme.breakpoints.down('lg')]: {
-        fontSize: '0.7rem'
+      display: "inline",
+      fontSize: "0.8rem",
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "0.7rem",
       },
     },
     dot: {
-      fontSize: '0.8rem',
+      fontSize: "0.8rem",
     },
     box: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      [theme.breakpoints.down('lg')]: {
-        display: 'block'
-      }
-    }
+      display: "flex",
+      justifyContent: "space-between",
+      [theme.breakpoints.down("sm")]: {
+        display: "block",
+      },
+    },
   };
 });
 
@@ -223,12 +212,18 @@ export default function TableAuditDisplay2(props) {
           onChange={onChange}
           className={classes.pagination}
         />
-        <Box style={{ display: 'flex', paddingTop: 2 }}>
-          {detailStatus.map((item) =>
+        <Box style={{ display: "flex", paddingTop: 2 }}>
+          {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
-              <FiberManualRecordIcon className={classes.dot} style={{ color: item.color }} />
-              <Typography className={classes.detailStatus} >{item.label}</Typography> </Box>
-          )}
+              <FiberManualRecordIcon
+                className={classes.dot}
+                style={{ color: item.color }}
+              />
+              <Typography className={classes.detailStatus}>
+                {item.label}
+              </Typography>{" "}
+            </Box>
+          ))}
         </Box>
       </Box>
       <TableContainer className={classes.container}>
@@ -240,6 +235,12 @@ export default function TableAuditDisplay2(props) {
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ด่าน
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                ช่อง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 เวลาเข้าด่าน
@@ -266,17 +267,17 @@ export default function TableAuditDisplay2(props) {
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
-              <TableCell align="center" className={classes.header2} >
+              <TableCell align="center" className={classes.header2}>
                 จริง
               </TableCell>
               <TableCell align="center" className={classes.header2}>
                 AD
               </TableCell>
               <TableCell align="center" className={classes.header2}>
-                ML
+                Lane
               </TableCell>
               <TableCell align="center" className={classes.header2}>
-                MF
+                HQ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header2}>
                 ค่าผ่านทาง
@@ -298,91 +299,97 @@ export default function TableAuditDisplay2(props) {
           <TableBody>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay.map((data) => (
-                <StyledTableRow
-                  key={data.transactionId}
-                  onClick={() => {
-                    fetchData(
-                      data.transactionId,
-                      data.state,
-                      data.match_timestamp
-                    );
-                  }}
-                  className={classes.tableRow}
-                >
-                  <TableCell align="center" className={classes.tableCell}>
-                    <FiberManualRecordIcon
-                      style={{
-                        // fontSize: "0.8rem",
-                        color:
-                          data.state === 2
-                            ? "#FF2400"
-                            : data.state === 3
+                  <StyledTableRow
+                    key={data.transactionId}
+                    onClick={() => {
+                      fetchData(
+                        data.transactionId,
+                        data.state,
+                        data.match_timestamp
+                      );
+                    }}
+                    className={classes.tableRow}
+                  >
+                    <TableCell align="center" className={classes.tableCell}>
+                      <FiberManualRecordIcon
+                        style={{
+                          // fontSize: "0.8rem",
+                          color:
+                            data.state === 2
+                              ? "#FF2400"
+                              : data.state === 3
                               ? "blue"
                               : data.state === 4
-                                ? "orange"
-                                : data.state === 5
-                                  ? "black"
-                                  : data.state === 6
-                                    ? "pink"
-                                    : data.state === 7
-                                      ? "green"
-                                      : data.state === 8
-                                        ? "#FF2400"
-                                        : "lightgray",
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {data.transactionId}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_timestamp
-                      ? data.match_timestamp.split(" ").pop()
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_real_vehicleClass
-                      ? `C${data.match_real_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.audit_check_vehicleClass
-                      ? `C${data.audit_check_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {data.mf_lane_vehicleClass
-                      ? `C${data.mf_lane_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_transaction_type
-                      ? data.match_transaction_type_name
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_real_fee ? data.match_real_fee : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.fine ? data.fine : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_total_cost ? data.match_total_cost : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                </StyledTableRow>
-              ))
+                              ? "orange"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "##46005E"
+                              : data.state === 7
+                              ? "green"
+                              : data.state === 8
+                              ? "darkviolet"
+                              : "lightgray",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.transactionId}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_timestamp
+                        ? data.match_timestamp.split(" ").pop()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_vehicleClass
+                        ? `C${data.match_real_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_check_vehicleClass
+                        ? `C${data.audit_check_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.mf_lane_vehicleClass
+                        ? `C${data.mf_lane_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_transaction_type
+                        ? data.match_transaction_type_name
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.fine ? data.fine : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_total_cost ? data.match_total_cost : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                  </StyledTableRow>
+                ))
               : []}
           </TableBody>
         </Table>
@@ -402,6 +409,6 @@ export default function TableAuditDisplay2(props) {
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />
-    </div >
+    </div>
   );
 }
