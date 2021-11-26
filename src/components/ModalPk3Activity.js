@@ -2,7 +2,6 @@ import {
   Button,
   CardMedia,
   Grid,
-  IconButton,
   makeStyles,
   MenuItem,
   Modal,
@@ -14,17 +13,21 @@ import {
   TableRow,
   Tabs,
   TextField,
-  Tooltip,
   Typography,
+  Box,
+  Paper,
+  Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { format } from "date-fns";
 
 const apiURL = axios.create({
   baseURL:
@@ -32,7 +35,6 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
       : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
-
 const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -114,18 +116,16 @@ function a11yProps(index) {
 const useStyle = makeStyles((theme) => {
   return {
     root: {},
-    modal: {
-      width: "70%",
+    bodyModal: {
+      height: "auto",
+      width: "90%",
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.down("md")]: {
-        marginTop: 600,
-      },
-      [theme.breakpoints.down("sm")]: {
-        marginTop: 1955,
+        marginTop: 700,
       },
     },
     head: {
@@ -142,8 +142,8 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "300px",
-      width: "90%",
+      height: "140px",
+      width: "100%",
       border: "1px solid lightgray",
       marginRight: "auto",
       marginLeft: "auto",
@@ -165,22 +165,15 @@ const useStyle = makeStyles((theme) => {
     },
     table: {
       width: "100%",
-      padding: "1rem",
-      "& .MuiTableCell-root": { paddingTop: "0.2rem", paddingBottom: "0.2rem" },
-    },
-    btn: {
-      margin: theme.spacing(1),
-      fontSize: 12,
-    },
-    btnUpload: {
-      margin: theme.spacing(1),
-      fontSize: 12,
-      background: "#3f51b5",
-      color: "white",
-      "&:hover": {
-        background: "#303F9F",
+      paddingTop: "1rem",
+
+      "& .MuiTableCell-root": {
+        paddingTop: "0.2rem",
+        paddingBottom: "0.2rem",
+        fontSize: "0.8rem",
       },
     },
+    btn: { marginTop: 10 },
     textField: {
       height: 20,
       bottom: 5,
@@ -188,45 +181,64 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInput-input": { fontSize: "0.8rem" },
       float: "right",
     },
+    textField2: {
+      height: 20,
+      bottom: 5,
+      width: 100,
+      "& .MuiInput-input": { fontSize: "0.75rem" },
+      float: "right",
+      "& .MuiOutlinedInput-inputMarginDense": {
+        padding: "5px 5px",
+      },
+      // "& .MuiInputBase-root": {
+      //   width: 50,
+      // },
+    },
+    tab: {
+      fontSize: "0.7rem",
+      minWidth: "25%",
+    },
     tabs: {
       height: "0.3rem",
       color: "blue",
       padding: "0px 10px",
     },
-    tab: {
-      fontSize: "0.7rem",
-      minWidth: "25%",
-      color: "blue",
+    headTable: {
+      fontSize: "0.75rem",
+      color: "white",
     },
-    disableLabel: {
-      "& .MuiInputLabel-root": {
-        color: "blue",
+    checkType: {
+      "& .MuiTableRow-root": {
+        backgroundColor: "red",
       },
-      marginLeft: 20,
-      marginRight: 20,
-      width: "91%",
-      marginTop: 2,
+    },
+    smallText: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
     },
     disableLabel2: {
-      width: "100%",
-    },
-    input: {
-      // color:'red'
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
     },
   };
 });
 
-export default function ModalPk3Activity(props) {
+export default function ModalPK3Activity(props) {
   const classes = useStyle();
-  const { dataList } = props;
+  const { dataList, dropdown, checkDate } = props;
 
-  const [fileName, setFileName] = useState("");
-  const [selectFile, setSelectFile] = useState("");
-
-  const [value1, setValue1] = React.useState(2);
-  const [value2, setValue2] = React.useState(2);
-  const [value3, setValue3] = React.useState(2);
-  const [value4, setValue4] = React.useState(2);
+  const [value1, setValue1] = useState(2);
+  const [value2, setValue2] = useState(2);
+  const [value3, setValue3] = useState(2);
+  const [value4, setValue4] = useState(2);
+  const [value5, setValue5] = useState(2);
+  const [value6, setValue6] = useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -240,16 +252,64 @@ export default function ModalPk3Activity(props) {
   const handleChangeTabs4 = (event, newValue) => {
     setValue4(newValue);
   };
+  const handleChangeTabs5 = (event, newValue) => {
+    setValue5(newValue);
+  };
+  const handleChangeTabs6 = (event, newValue) => {
+    setValue6(newValue);
+  };
 
-  const [fileDownload, setFileDownload] = useState(true);
+  // const download = () => {
+  //   const header = {
+  //     "Content-Type": "application/pdf",
+  //     responseType: "blob",
+  //   };
+  //   const sendData = {
+  //     transactionId: dataList.transactionId,
+  //     date: "2021-09-29",
+  //   };
+  //   apiURLv1
+  //     .post("/download-file-super-audit", sendData, header)
+  //     .then((res) => {
+  //       const url = window.URL.createObjectURL(new Blob([res.data]));
+  //       const link = document.createElement("a");
+  //       link.href = url;
+  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       link.parentNode.removeChild(link);
+  //       console.log(res.data);
+  //       console.log(url);
+  //     });
+  // };
+
+  const mockPic = 0;
+  const [state, setState] = useState({
+    operation: "",
+    commentSuper: "",
+    commentPK3: "",
+    TransactionsPeat: "",
+  });
+  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
+
+  const [vehicleClass, setVehicleClass] = useState(0);
+  const [audit_feeAmount, setAudit_feeAmount] = useState("");
+  const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
+  const [resultDisplay, setResultDisplay] = useState([]);
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
 
   const upload = () => {
     const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
-    const getDate = dataList.timestamp.split(" ").shift();
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
     let formData = new FormData();
     formData.append("file", selectFile);
     formData.append("date", getDate);
-    formData.append("transactionId", dataList.transactionId);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
 
     if (fileName !== "") {
       axios
@@ -275,74 +335,38 @@ export default function ModalPk3Activity(props) {
     }
   };
 
-  const download = () => {
-    const header = {
-      "Content-Type": "application/pdf",
-      responseType: "blob",
-    };
-    const sendData = {
-      transactionId: dataList.transactionId,
-      date: dataList.timestamp.split(" ").shift(),
-    };
-    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "downloadFromPk3.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      console.log(res.data);
-      console.log(url);
-    });
-  };
-
-  const mockPic = 0;
-  const [state, setState] = useState({
-    pk3_lp: "",
-    pk3_province: "",
-    pk3_comment: "",
-  });
-  const { pk3_lp, pk3_province, pk3_comment } = state;
-
-  const [pk3_vehicleClass, setPk3_vehicleClass] = useState("");
-  const [pk3_feeAmount, setPk3_feeAmount] = useState("");
-  const [pk3_vehicleClass_id, setPk3_vehicleClass_id] = useState(0);
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.value });
-    // console.log(event.target.value)
-  };
-
   const handleOptionChange = (event) => {
     const index = event.target.value;
-    setPk3_vehicleClass(index);
-    setPk3_feeAmount(dataList.dropdown_audit_vehicle[index].fee);
-    setPk3_vehicleClass_id(dataList.dropdown_audit_vehicle[index].id);
+    setVehicleClass(index);
+    setAudit_vehicleClass_id(dropdown.vehicle[index].id);
+    setAudit_feeAmount(dropdown.vehicle[index].fee);
 
     console.log(
-      "pk3_feeAmount:",
-      pk3_feeAmount,
-      "pk3_vehicleClass:",
-      pk3_vehicleClass,
-      "pk3_vehicleId:",
-      pk3_vehicleClass_id,
-      "event.target.value:",
-      index
+      `super_audit_feeAmount: ${audit_feeAmount}
+        super_audit_vehicleClass: ${vehicleClass}
+        event.target.value: ${index}`
     );
   };
 
-  const handleUpdateState3To4 = () => {
+  const handleUpdate = () => {
+    let endPointURL = "";
+
+    endPointURL = "/operation";
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
     const sendData = {
+      date: date,
       user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      pk3_lp: pk3_lp,
-      pk3_province: pk3_province,
-      // pk3_vehicleClass: pk3_vehicleClass,
-      pk3_feeAmount: pk3_feeAmount,
-      pk3_comment: pk3_comment,
-      timestamp: dataList.timestamp,
-      pk3_vehicleClass_id: pk3_vehicleClass_id,
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
+      fee: audit_feeAmount || "0",
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: state.operation,
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
     };
 
     Swal.fire({
@@ -353,13 +377,11 @@ export default function ModalPk3Activity(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        upload();
-        apiURL
-          .post("/changeState3to4", sendData)
-          .then((res) => {
-            console.log(res.data);
+      zIndex: 1300,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURLv1.post(endPointURL, sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -375,27 +397,21 @@ export default function ModalPk3Activity(props) {
                 confirmButtonText: "OK",
               });
             }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-      }
-    });
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
 
-    // const res = await apiURL.post("/changeState3to4", sendData);
+    // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
     // console.log(res.data);
   };
-  const handleUpdateState3To6 = () => {
+  const handleChangeState6To7 = () => {
     const sendData = {
       user_id: Cookies.get("userId"),
       transactionId: dataList.transactionId,
-      pk3_lp: pk3_lp,
-      pk3_province: pk3_province,
-      // pk3_vehicleClass: pk3_vehicleClass,
-      pk3_feeAmount: pk3_feeAmount,
-      pk3_comment: pk3_comment,
-      timestamp: dataList.timeStamp,
-      pk3_vehicleClass_id: pk3_vehicleClass_id,
+      timestamp: dataList.timestamp,
     };
 
     Swal.fire({
@@ -406,12 +422,10 @@ export default function ModalPk3Activity(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/changeState3to6", sendData)
-          .then((res) => {
-            console.log(res.data);
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL.post("/changeState2to7", sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -427,13 +441,13 @@ export default function ModalPk3Activity(props) {
                 confirmButtonText: "OK",
               });
             }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-      }
-    });
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
 
-    // const res = await apiURL.post("/changeState3to6", sendData);
+    // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
     // console.log(res.data);
   };
@@ -441,40 +455,53 @@ export default function ModalPk3Activity(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      // console.log("MyState", state, "dataList", dataList);
-    }
-    if (dataList.pk3_upload_file === 1) {
-      setFileDownload(false);
+      setVehicleClass(dataList.vehicleClass);
+      setAudit_feeAmount(dataList.audit_feeAmount);
+      setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
+      setResultDisplay(
+        !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
+      );
+      setState({ ...state, TransactionsPeat: "", commentPK3: "" });
+      setFileName("");
+      console.log("dataList", dataList);
     }
   }, [dataList]);
 
   const body = (
-    <div className={classes.modal}>
+    <div className={classes.bodyModal}>
       <div className={classes.head}>
         <div>
           <Typography variant="h6" style={{ color: "#c80000" }}>
-            {dataList.state === 1
-              ? "ข้อมูลปกติ (state 1)"
-              : dataList.state === 2
-              ? "ข้อมูลรอตรวจสอบ (state 2)"
-              : dataList.state === 3
-              ? "อยู่ระหว่างการตรวจสอบ (state 3)"
-              : dataList.state === 4
-              ? "ตรวจสอบ:ส่งกลับแก้ไข (state 4)"
-              : dataList.state === 5
-              ? "ข้อมูลแแก้ไขกลับมาตรวจสอบ (state 5)"
-              : dataList.state === 6
-              ? "ตรวจสอบ:รอการยืนยันความถูกต้อง (state 6)"
-              : dataList.state === 7
-              ? "ตรวจสอบ:ยืนยันความถูกต้อง (state 7)"
-              : "ไม่มีสถานะ"}
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay[0].state === 1
+                ? "ปกติ"
+                : dataList.resultsDisplay[0].state === 2
+                ? "ผิดปกติ"
+                : dataList.resultsDisplay[0].state === 3
+                ? "รอ pk3 ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 4
+                ? "รอ super audit ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 5
+                ? "รอ พิจารณาพิเศษ"
+                : dataList.resultsDisplay[0].state === 6
+                ? "รอตรวจสอบรับทราบ"
+                : "ไม่มีสถานะ"
+              : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction: {dataList.transactionId}{" "}
+            transaction:{" "}
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay[0].transactionId
+              : ""}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {dataList.highway_name} / {dataList.checkpoint_name} /{" "}
-            {dataList.gate_name}
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay[0].match_checkpoint
+              : ""}{" "}
+            /
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay[0].match_gate
+              : ""}
           </Typography>
         </div>
         <div>
@@ -485,12 +512,182 @@ export default function ModalPk3Activity(props) {
           />
         </div>
       </div>
-      <Grid container className={classes.cardContainer}>
-        {/* CCTV Audit  block */}
-        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
+      <Grid container spacing={1}>
+        {/* AD vehicle section */}
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>CCTV Audit</Typography>
+            <Typography style={{ marginLeft: 10 }}>AD (Vehicle)</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value5}
+              onChange={handleChangeTabs5}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value5} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value5} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                !!mockPic
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>AD (overview)</Typography>
+          </div>
+          <div>
+            <Tabs
+              value={value6}
+              onChange={handleChangeTabs6}
+              aria-label="simple tabs example"
+              indicatorColor="primary"
+              className={classes.tabs}
+            >
+              <Tab
+                label="ก่อน 2 คัน"
+                {...a11yProps(0)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="ก่อน 1 คัน"
+                {...a11yProps(1)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="คันที่ตรวจ"
+                {...a11yProps(2)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+              <Tab
+                label="วิดีโอ"
+                {...a11yProps(3)}
+                style={{ minWidth: "15%" }}
+                className={classes.tab}
+              />
+            </Tabs>
+          </div>
+          <TabPanel4 value={value6} index={0}>
+            <CardMedia
+              component="img"
+              src={
+                mockPic !== 0
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={1}>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={2}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+          <TabPanel4 value={value6} index={3}>
+            <CardMedia
+              component="img"
+              src={
+                !!mockPic
+                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </TabPanel4>
+        </Grid>
+
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
+          <div className={classes.headCard}>
+            <CameraEnhanceTwoToneIcon />
+            <Typography style={{ marginLeft: 10 }}>ML (Vehicle)</Typography>
           </div>
           <div>
             <Tabs
@@ -541,8 +738,8 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -552,8 +749,8 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                !!dataList.mf_lane_picFull
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
               className={classes.image}
@@ -563,107 +760,80 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
+                !!mockPic
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
               className={classes.image}
             />
           </TabPanel4>
-          <div style={{ padding: "0px 15px", marginTop: 20 }}>
-            <TextField
-              id="upload"
-              disabled
-              variant="outlined"
-              className={classes.disableLabel2}
-              label="upload file here"
-              value={fileName}
-              InputProps={{
-                endAdornment: (
-                  <Tooltip title="cancel upload file" placement="top">
-                    <IconButton onClick={() => setFileName("")}>
-                      <HighlightOffIcon />{" "}
-                    </IconButton>
-                  </Tooltip>
-                ),
-              }}
-            />
-          </div>
-          <div
-            style={{
-              paddingLeft: 6,
-              paddingRight: 6,
-              // marginTop: 10,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <input
-              // accept="image/*"
-              className={classes.input}
-              style={{ display: "none" }}
-              id="raised-button-file"
-              // multiple
-              type="file"
-              onChange={(e) => {
-                setFileName(e.target.files[0].name);
-                setSelectFile(e.target.files[0]);
-                console.log(selectFile);
-                // console.log(ref.current.value.split("\\").pop());
-              }}
-            />
-            <label htmlFor="raised-button-file">
-              <Button
-                variant="contained"
-                className={classes.btn}
-                color="primary"
-                component="span"
-                // onClick={() => {
-                //   alert("test");
-                // }}
-              >
-                choose file
-              </Button>
-            </label>
-            <Button
-              variant="contained"
-              className={classes.btn}
-              color="secondary"
-              onClick={() => {
-                upload();
-              }}
-              style={{ fontSize: "0.7rem" }}
-            >
-              upload
-            </Button>
-          </div>
-          <div
-            style={{
-              float: "right",
-              paddingRight: 6,
-              marginTop: 102,
-            }}
-          >
-            <Button
-              disabled={fileDownload}
-              variant="contained"
-              color="secondary"
-              className={classes.btn}
-              onClick={() => download()}
-              style={{ fontSize: "0.7rem" }}
-            >
-              download
-            </Button>
-          </div>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginBottom: 58 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบตรวจสอบรายได้ (AD : เช็ค)
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_check_vehicleClass
+                      ? resultDisplay.audit_check_vehicleClass
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginTop: 26 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ค่าปรับ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ระยะ 1</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t1
+                      ? resultDisplay.match_fine_t1
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 2</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t2
+                      ? resultDisplay.match_fine_t2
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ระยะ 3</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_fine_t3
+                      ? resultDisplay.match_fine_t3
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
-        {/* CCTV Audit (Vehicle) Block */}
-        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
+        {/* ML (LP) Block */}
+        <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>
-              CCTV Audit (Vehicle)
-            </Typography>
+            <Typography style={{ marginLeft: 10 }}>ML (LP)</Typography>
           </div>
           <div>
             <Tabs
@@ -676,7 +846,6 @@ export default function ModalPk3Activity(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
-                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -703,7 +872,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop !== 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -714,8 +883,9 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                mockPic !== 0
+                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    Logo_doh
                   : noImage
               }
               className={classes.image}
@@ -725,8 +895,8 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop !== 0 && !!dataList.audit_pic_crop
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                !!dataList.mf_lane_picCrop
+                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
                   : noImage
               }
               className={classes.image}
@@ -736,7 +906,7 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                dataList.audit_pic_crop !== 0
+                mockPic !== 0
                   ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                   : noImage
               }
@@ -747,65 +917,84 @@ export default function ModalPk3Activity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
-                    ระบบตรวจสอบรายได้
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบจัดเก็บรายได้ (ML : ระดับเลน)
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>กว้าง</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell colSpan={2}>
+                    {!!resultDisplay.mf_lane_tranId
+                      ? resultDisplay.mf_lane_tranId
+                      : "-"}
+                  </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>ยาว</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
+                {/* <TableRow>
+                    <TableCell>ทะเบียน</TableCell>
+                    <TableCell>
+                      {!!resultDisplay.mf_lane_plateNo1
+                        ? resultDisplay.mf_lane_plateNo1
+                        : "-"}
+                    </TableCell>
+                  </TableRow> */}
+                {/* <TableRow>
+                    <TableCell>จัดหวัด</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.audit_vehicleClass}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ค่าธรรมเนียม</TableCell>
-                  {/* <TableCell>{dataList.audit_feeAmount}</TableCell> */}
-                  <TableCell>30</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.mf_lane_vehicleClass
+                      ? resultDisplay.mf_lane_vehicleClass
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
-
-          <div
-            style={{
-              padding: "0px 10px",
-              marginTop: 45,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button
-              className={classes.btn}
-              variant="contained"
-              color="primary"
-              disabled
-            >
-              สร้างรายการใหม่
-            </Button>
-            <Button
-              disabled
-              className={classes.btn}
-              variant="contained"
-              color="secondary"
-            >
-              ลบรายการนี้
-            </Button>
-          </div>
+          <TableContainer>
+            <table className={classes.table} style={{ marginTop: 57 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    การชำระ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ชำระรวม (ค่าธรรมเนียม + ค่าปรับ)</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_total_cost
+                      ? resultDisplay.match_total_cost
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ชำระแล้ว</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ค้างจ่าย</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_cost_dif
+                      ? resultDisplay.match_cost_dif
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
-        {/* ALPR Block */}
-        <Grid item sm={12} md={6} lg={3}>
+        {/* MF (Vehicle : HQ)  Block */}
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>ALPR</Typography>
+            <Typography style={{ marginLeft: 10 }}>
+              MF (Vehicle : HQ){" "}
+            </Typography>
           </div>
           <div>
             <Tabs
@@ -818,7 +1007,6 @@ export default function ModalPk3Activity(props) {
               <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
-                style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
               <Tab
@@ -867,8 +1055,8 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.mf_pic}`
+                !!dataList.imageFile
+                  ? `data:image/png;base64, ${dataList.imageFile}`
                   : noImage
               }
               className={classes.image}
@@ -889,46 +1077,161 @@ export default function ModalPk3Activity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
-                  <TableCell colSpan={2} style={{ color: "white" }}>
-                    ระบบจัดเก็บรายได้
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ระบบจัดเก็บรายได้ (MF : ระดับ HQ)
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
-                  <TableCell>{dataList.mf_lp}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>{dataList.mf_lp_province}</TableCell>
+                  <TableCell colSpan={2}>
+                    {!!resultDisplay.refTransactionId
+                      ? resultDisplay.refTransactionId
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>{dataList.mf_class}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.vehicleClass
+                      ? resultDisplay.vehicleClass
+                      : "-"}
+                  </TableCell>
                 </TableRow>
+                {/* <TableRow>
+                    <TableCell>จังหวัด</TableCell>
+                    <TableCell>
+                      {dataList.mf_lp_province === null
+                        ? "-"
+                        : dataList.mf_lp_province}
+                    </TableCell>
+                  </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>{dataList.mf_fee_ref}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.billing_fee
+                      ? resultDisplay.billing_fee
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ทะเบียน</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
-          <TextField
-            disabled
-            variant="outlined"
-            label="ข้อความจากผู้ตรวจสอบ"
-            value={dataList.audit_comment || ""}
-            className={classes.disableLabel}
-            style={{ marginTop: 30 }}
-          />
+
+          <TableContainer>
+            <table className={classes.table} style={{ marginTop: 3 }}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>File จากจัดเก็บ</TableCell>
+                  <TableCell>
+                    <Button
+                      style={{ marginLeft: -7.5 }}
+                      onClick={() =>
+                        document.getElementById("raised-button-file").click()
+                      }
+                    >
+                      <label htmlFor="raised-button-file">
+                        <TextField
+                          id="upload"
+                          disabled
+                          variant="outlined"
+                          className={classes.disableLabel2}
+                          label="choose file here"
+                          size="small"
+                          defaultValue="Small"
+                          value={fileName}
+                          InputLabelProps={{
+                            style: {
+                              fontSize: "10px",
+                            },
+                          }}
+                        />
+                      </label>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      className={classes.btn}
+                      color="secondary"
+                      onClick={() => {
+                        upload();
+                      }}
+                      style={{ fontSize: "0.7rem", marginTop: 1 }}
+                    >
+                      upload
+                    </Button>
+                    <input
+                      // accept="image/*"
+                      className={classes.input}
+                      style={{ display: "none" }}
+                      id="raised-button-file"
+                      // multiple
+                      type="file"
+                      onChange={(e) => {
+                        setFileName(
+                          !!e.target.files[0] ? e.target.files[0].name : ""
+                        );
+                        setSelectFile(e.target.files[0]);
+                        console.log(selectFile);
+                        // console.log(ref.current.value.split("\\").pop());
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="TransactionsPeat"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={state.TransactionsPeat}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นจัดเก็บ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentPK3"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={state.commentPK3}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็น super audit</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
-        {/* DVES Block */}
-        <Grid item sm={12} md={6} lg={3} className={classes.cardItem}>
+        {/* MF (LP : HQ) Block */}
+        <Grid item sm={6} md={6} lg={2}>
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
-            <Typography style={{ marginLeft: 10 }}>DVES</Typography>
+            <Typography style={{ marginLeft: 10 }}>MF (LP : HQ)</Typography>
           </div>
           <div>
             <Tabs
@@ -989,8 +1292,8 @@ export default function ModalPk3Activity(props) {
             <CardMedia
               component="img"
               src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
+                !!dataList.imageFileCrop
+                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
                   : noImage
               }
               className={classes.image}
@@ -1011,116 +1314,102 @@ export default function ModalPk3Activity(props) {
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
-                  <TableCell
-                    colSpan={2}
-                    style={{ color: "white", fontSize: "0.75rem" }}
-                  >
-                    ส่งคำสั่งแก้ไขไปยังระบบจัดเก็บรายได้
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เก็บจริง
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
+                  <TableCell>การดำเนินการ</TableCell>
                   <TableCell>
                     <TextField
+                      select
+                      variant="outlined"
                       size="small"
-                      className={classes.textField}
-                      name="pk3_lp"
-                      value={pk3_lp}
+                      className={classes.textField2}
+                      name="operation"
+                      value={operation}
                       onChange={handleChange}
-                    />
+                    >
+                      {!!dataList.resultsDisplay &&
+                      dataList.resultsDisplay[0].state === 3
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 1 || item.id === 2)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : []}
+                    </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>จังหวัด</TableCell>
+                  <TableCell>ประเภท TS</TableCell>
                   <TableCell>
-                    <TextField
-                      size="small"
-                      className={classes.textField}
-                      name="pk3_province"
-                      value={pk3_province}
-                      onChange={handleChange}
-                    />
+                    {!!dataList.resultsDisplay
+                      ? dataList.resultsDisplay[0].state === 1
+                        ? "ปกติ"
+                        : dataList.resultsDisplay[0].state === 2
+                        ? "ผิดปกติ"
+                        : dataList.resultsDisplay[0].state === 3
+                        ? "รอ pk3 ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 4
+                        ? "รอ super audit ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 5
+                        ? "รอ พิจารณาพิเศษ"
+                        : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ"
+                        : "ไม่มีสถานะ"
+                      : ""}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
+                      variant="outlined"
                       select
                       size="small"
-                      className={classes.textField}
-                      name="pk3_vehicleClass"
-                      value={pk3_vehicleClass}
+                      className={classes.textField2}
+                      name="vehicleClass"
+                      value={vehicleClass}
                       onChange={handleOptionChange}
                     >
-                      {!!dataList.dropdown_audit_vehicle
-                        ? dataList.dropdown_audit_vehicle.map((item, index) => (
-                            <MenuItem key={item.id} value={index}>
-                              {item.class}
-                            </MenuItem>
-                          ))
+                      {!!dropdown.vehicle
+                        ? dropdown.vehicle
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.class}
+                              </MenuItem>
+                            ))
                         : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell>
-                    <TextField
-                      size="small"
-                      name="valueRef"
-                      value={pk3_feeAmount}
-                      className={classes.textField}
-                    />
-                  </TableCell>
+                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
-
           <div
             style={{
-              padding: "0px 10px",
-              textAlign: "center",
+              paddingLeft: 20,
+              paddingRight: 20,
             }}
           >
-            <TextField
-              style={{
-                height: 20,
-                width: "100%",
-              }}
-              name="pk3_comment"
-              label="คำสั่งแก้ไข"
-              value={pk3_comment || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div style={{ marginTop: 30, padding: "0px 10px" }}>
             <Button
               variant="contained"
               color="primary"
-              onClick={handleUpdateState3To6}
-              style={{
-                float: "right",
-                margin: "0.2rem",
-                fontSize: "0.75rem",
-              }}
+              style={{ marginTop: 96, float: "right" }}
+              // endIcon={<SendTwoToneIcon fontSize="small" />}
+              onClick={handleUpdate}
             >
-              ยินยอม
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleUpdateState3To4}
-              style={{
-                float: "right",
-                margin: "0.2rem",
-                fontSize: "0.75rem",
-              }}
-            >
-              ไม่ยินยอม
+              บันทึก
             </Button>
           </div>
         </Grid>
@@ -1139,7 +1428,7 @@ export default function ModalPk3Activity(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: 2,
+          zIndex: 3,
           overflow: "scroll",
         }}
       >

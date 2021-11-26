@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import AllTsTableForPk3Activity from "../components/AllTsTableForPk3Activity";
+import TablePK3display from "../components/AllTsTableForPk3Activity";
 
 const apiURL = axios.create({
   baseURL:
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 70,
+      height: 60,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -80,11 +80,38 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
       width: 150,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
         width: 150,
       },
+    },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
+    typography: {
+      fontSize: "0.8rem",
     },
   };
 });
@@ -97,18 +124,27 @@ const valueStatus = [
   },
 ];
 
-export default function SuperAuditDisplay2() {
+const valueTransaction = [
+  {
+    id: 1,
+    value: 3,
+    label: "รอจัดเก็บตรวจสอบ",
+  },
+];
+
+export default function PK3Display() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  const [status_select, setStatus_select] = useState(3);
+  const [status_select, setStatus_select] = useState("3");
   // const [status, setStatus] = useState(0);
   // const [subState, setSubState] = useState(0);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
-  const [cardData, setCardData] = useState("0");
+  const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
+  const [tsType, setTsType] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -163,6 +199,7 @@ export default function SuperAuditDisplay2() {
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
+      status: tsType.toString(),
     };
     console.log(sendData);
 
@@ -224,7 +261,7 @@ export default function SuperAuditDisplay2() {
       state: "0",
     };
 
-    apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
+    apiURL.post("/display-pk3-activity", sendData).then((res) => {
       Swal.close();
       setAllTsTable({
         summary: {
@@ -261,7 +298,7 @@ export default function SuperAuditDisplay2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          รายการรอตรวจสอบ
+          super audit display
         </Typography>
 
         {/* Filter Section */}
@@ -272,7 +309,7 @@ export default function SuperAuditDisplay2() {
             label="ด่าน"
             value={checkpoint}
             onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate_select"
           >
             {!!dropdown.checkpoint
@@ -290,7 +327,7 @@ export default function SuperAuditDisplay2() {
             label="ช่อง"
             value={selectGate}
             onChange={(e) => setSelectGate(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate"
           >
             {!!dropdown.gate
@@ -308,7 +345,7 @@ export default function SuperAuditDisplay2() {
             label="ประเภทรถ"
             value={selectCarType}
             onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="carType"
           >
             {!!dropdown.vehicle
@@ -328,14 +365,40 @@ export default function SuperAuditDisplay2() {
             onChange={(e) => {
               setStatus_select(e.target.value);
             }}
-            className={classes.input}
+            className={classes.input1}
             name="status_select"
           >
-            {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.value}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!valueStatus
+              ? valueStatus.map((item, index) => (
+                  <MenuItem key={index} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+
+          <TextField
+            select
+            variant="outlined"
+            label="ประเภทTS"
+            value={tsType}
+            onChange={(e) => {
+              setTsType(e.target.value);
+            }}
+            className={classes.input1}
+            name="tsType"
+          >
+            {!!dropdown.ts_status
+              ? dropdown.ts_status
+                  .filter(
+                    (item) => item.id === 0 || item.id === 2 || item.id === 3
+                  )
+                  .map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+              : []}
           </TextField>
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -430,7 +493,7 @@ export default function SuperAuditDisplay2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <AllTsTableForPk3Activity
+            <TablePK3display
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
