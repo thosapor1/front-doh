@@ -217,12 +217,12 @@ export default function ModalActivity2(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
-  const [value1, setValue1] = React.useState(2);
-  const [value2, setValue2] = React.useState(2);
-  const [value3, setValue3] = React.useState(2);
-  const [value4, setValue4] = React.useState(2);
-  const [value5, setValue5] = React.useState(2);
-  const [value6, setValue6] = React.useState(2);
+  const [value1, setValue1] = useState(2);
+  const [value2, setValue2] = useState(2);
+  const [value3, setValue3] = useState(2);
+  const [value4, setValue4] = useState(2);
+  const [value5, setValue5] = useState(2);
+  const [value6, setValue6] = useState(2);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -274,6 +274,7 @@ export default function ModalActivity2(props) {
   });
   const { tsType, operation } = state;
 
+  const [dropdownToggle, setDropdownToggle] = useState(true);
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
@@ -353,50 +354,6 @@ export default function ModalActivity2(props) {
     console.log(sendData);
     // console.log(res.data);
   };
-  const handleChangeState6To7 = () => {
-    const sendData = {
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      timestamp: dataList.timestamp,
-    };
-
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL.post("/changeState2to7", sendData).then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        }
-      })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData());
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
 
   useEffect(() => {
     if (dataList) {
@@ -409,6 +366,10 @@ export default function ModalActivity2(props) {
       );
       console.log("dataList", dataList);
     }
+
+    // if(dataList.state === 1){
+    //   setState({...state, operation:[]})
+    // }
   }, [dataList]);
 
   const body = (
@@ -1086,7 +1047,7 @@ export default function ModalActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{resultDisplay.pk3_upload_file}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
@@ -1094,11 +1055,11 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{resultDisplay.pk3_comment}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{resultDisplay.super_audit_comment}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1202,6 +1163,14 @@ export default function ModalActivity2(props) {
                   <TableCell>การดำเนินการ</TableCell>
                   <TableCell>
                     <TextField
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
+                          ? true
+                          : false
+                      }
                       select
                       variant="outlined"
                       size="small"
@@ -1210,12 +1179,36 @@ export default function ModalActivity2(props) {
                       value={operation}
                       onChange={handleChange}
                     >
-                      {!!dropdown.ts_status
-                        ? dropdown.ts_status
+                      {!!dataList.resultsDisplay &&
+                      dataList.resultsDisplay[0].state === 1
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 2)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 2
+                        ? dropdown.operation_key
                             .filter(
                               (item) =>
-                                item.id === 2 || item.id === 3 || item.id === 5
+                                item.id === 1 || item.id === 2 || item.id === 3
                             )
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          (dataList.resultsDisplay[0].state === 3 ||
+                            dataList.resultsDisplay[0].state === 4 ||
+                            dataList.resultsDisplay[0].state === 5)
+                        ? []
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 6
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 4)
                             .map((item, index) => (
                               <MenuItem key={index} value={item.id}>
                                 {item.name}

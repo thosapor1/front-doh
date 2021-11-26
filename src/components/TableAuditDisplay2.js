@@ -54,7 +54,7 @@ const detailStatus = [
   },
   {
     state: 6,
-    color: "#46005E",
+    color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
 ];
@@ -328,7 +328,7 @@ export default function TableAuditDisplay2(props) {
                               : data.state === 7
                               ? "green"
                               : data.state === 8
-                              ? "#FF2400"
+                              ? "darkviolet"
                               : "lightgray",
                         }}
                       />
