@@ -193,14 +193,15 @@ export default function SuperAuditDisplay2() {
     // console.log(selectCarType);
     // console.log(status_select);
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       checkpoint_id: checkpoint,
       gate_id: selectGate,
-      state: status_select,
+      state: status_select.toString(),
       vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
+      status: tsType.toString(),
     };
     console.log(sendData);
 
