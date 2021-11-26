@@ -40,11 +40,11 @@ export const menuItemsForSuperAdmin = [
     path: "/report",
   },
 
-   {
-     text: "transactionMonitor",
-     icon: "file_present",
-     path: "/transactionMonitorV1",
-   },
+  {
+    text: "transactionMonitor",
+    icon: "file_present",
+    path: "/transactionMonitorV1",
+  },
   {
     text: "ปริมาณข้อมูล",
     icon: "assessment",
@@ -191,6 +191,11 @@ export const menuItemsForPk3 = [
     text: "ปริมาณข้อมูล",
     icon: "assessment",
     path: "/DataVolume",
+  },
+  {
+    text: "รายการบังคับ",
+    icon: "playlist_add_check",
+    path: "/MandatoryItem",
   },
 ];
 export const menuConfigForPk3 = [];
