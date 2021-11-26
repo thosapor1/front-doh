@@ -55,6 +55,11 @@ export const menuItemsForSuperAdmin = [
     icon: "playlist_add_check",
     path: "/MandatoryItem",
   },
+  // {
+  //   text: "test",
+  //   icon: "playlist_add_check",
+  //   path: "/test",
+  // },
 ];
 
 export const menuConfigForSuperAdmin = [
