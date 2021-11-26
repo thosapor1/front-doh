@@ -19,7 +19,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/logo_doh.png";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
@@ -380,7 +380,6 @@ export default function ModalActivity2(props) {
           <Typography variant="h6" style={{ color: "#c80000" }}>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].state === 1
-
                 ? "ปกติ"
                 : dataList.resultsDisplay[0].state === 2
                 ? "ผิดปกติ"
@@ -392,7 +391,6 @@ export default function ModalActivity2(props) {
                 ? "รอ พิจารณาพิเศษ"
                 : dataList.resultsDisplay[0].state === 6
                 ? "รอตรวจสอบรับทราบ"
-
                 : "ไม่มีสถานะ"
               : ""}
           </Typography>
@@ -423,7 +421,6 @@ export default function ModalActivity2(props) {
       <Grid container spacing={1}>
         {/* AD vehicle section */}
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
-
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>AD (Vehicle)</Typography>
@@ -507,7 +504,6 @@ export default function ModalActivity2(props) {
             />
           </TabPanel4>
         </Grid>
-
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
           <div className={classes.headCard}>

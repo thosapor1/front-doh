@@ -16,8 +16,6 @@ import {
   Typography,
   Box,
   Paper,
-  Tooltip,
-  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -28,6 +26,7 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 const apiURL = axios.create({
   baseURL:
@@ -219,17 +218,10 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
-    disableLabel2: {
-      "& .MuiOutlinedInput-input": {
-        height: "30px",
-        fontSize: "0.75rem",
-        padding: "0px 5px",
-      },
-    },
   };
 });
 
-export default function ModalPK3Activity(props) {
+export default function ModalSuperActivity2(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
@@ -259,14 +251,34 @@ export default function ModalPK3Activity(props) {
     setValue6(newValue);
   };
 
+  const download = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
+
   const mockPic = 0;
   const [state, setState] = useState({
     operation: "",
     commentSuper: "",
-    commentPK3: "",
-    TransactionsPeat: "",
   });
-  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
+  const { commentSuper, operation } = state;
 
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
@@ -274,41 +286,6 @@ export default function ModalPK3Activity(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-  };
-  const [selectFile, setSelectFile] = useState("");
-  const [fileName, setFileName] = useState("");
-
-  const upload = () => {
-    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
-    const getDate = format(checkDate, "yyyy-MM-dd");
-    console.log(getDate);
-    let formData = new FormData();
-    formData.append("file", selectFile);
-    formData.append("date", getDate);
-    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
-
-    if (fileName !== "") {
-      axios
-        .post(`${URL}/pk3-upload-file`, formData)
-        .then((res) => {
-          if (res.data.status === true) {
-            Swal.fire({
-              title: "Success",
-              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Fail",
-              text: "อัพโหลดข้อมูลไม่สำเร็จ",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        })
-        .then(() => setFileName(""));
-    }
   };
 
   const handleOptionChange = (event) => {
@@ -340,9 +317,9 @@ export default function ModalPK3Activity(props) {
       fee: audit_feeAmount || "0",
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: state.operation,
-      pk3_comment: state.commentPK3,
-      super_audit_comment: "",
-      ts_duplication: state.TransactionsPeat,
+      pk3_comment: "",
+      super_audit_comment: commentSuper,
+      ts_duplication: "",
     };
 
     Swal.fire({
@@ -437,8 +414,6 @@ export default function ModalPK3Activity(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      setState({ ...state, TransactionsPeat: "", commentPK3: "" });
-      setFileName("");
       console.log("dataList", dataList);
     }
   }, [dataList]);
@@ -1115,88 +1090,33 @@ export default function ModalPK3Activity(props) {
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
-                    <Button
-                      style={{ marginLeft: -7.5 }}
-                      onClick={() =>
-                        document.getElementById("raised-button-file").click()
-                      }
-                    >
-                      <label htmlFor="raised-button-file">
-                        <TextField
-                          id="upload"
-                          disabled
-                          variant="outlined"
-                          className={classes.disableLabel2}
-                          label="choose file here"
-                          size="small"
-                          defaultValue="Small"
-                          value={fileName}
-                          InputLabelProps={{
-                            style: {
-                              fontSize: "10px",
-                            },
-                          }}
-                        />
-                      </label>
-                    </Button>
-                    <Button
-                      variant="contained"
-                      className={classes.btn}
-                      color="secondary"
-                      onClick={() => {
-                        upload();
-                      }}
-                      style={{ fontSize: "0.7rem", marginTop: 1 }}
-                    >
-                      upload
-                    </Button>
-                    <input
-                      // accept="image/*"
-                      className={classes.input}
-                      style={{ display: "none" }}
-                      id="raised-button-file"
-                      // multiple
-                      type="file"
-                      onChange={(e) => {
-                        setFileName(
-                          !!e.target.files[0] ? e.target.files[0].name : ""
-                        );
-                        setSelectFile(e.target.files[0]);
-                        console.log(selectFile);
-                        // console.log(ref.current.value.split("\\").pop());
-                      }}
-                    />
+                    {!!resultDisplay.pk3_upload_file ? (
+                      <Link onClick={download}>download</Link>
+                    ) : (
+                      "-"
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="TransactionsPeat"
-                      variant="outlined"
-                      onChange={handleChange}
-                      className={classes.smallText}
-                      value={state.TransactionsPeat}
-                    />
-                  </TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="commentPK3"
-                      variant="outlined"
-                      onChange={handleChange}
-                      className={classes.smallText}
-                      value={state.commentPK3}
-                    />
-                  </TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentSuper"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={state.commentSuper}
+                    />
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1309,7 +1229,19 @@ export default function ModalPK3Activity(props) {
                       onChange={handleChange}
                     >
                       {!!dataList.resultsDisplay &&
-                      dataList.resultsDisplay[0].state === 3
+                      dataList.resultsDisplay[0].state === 4
+                        ? dropdown.operation_key
+                            .filter(
+                              (item) =>
+                                item.id === 1 || item.id === 2 || item.id === 5
+                            )
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 5
                         ? dropdown.operation_key
                             .filter((item) => item.id === 1 || item.id === 2)
                             .map((item, index) => (
