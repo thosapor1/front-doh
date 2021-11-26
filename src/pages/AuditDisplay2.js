@@ -134,7 +134,7 @@ export default function AuditDisplay2() {
   const [selectCarType, setSelectCarType] = useState(0);
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(1);
+  const [tsType, setTsType] = useState(0);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );

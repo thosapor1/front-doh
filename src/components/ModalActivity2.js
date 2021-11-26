@@ -25,6 +25,8 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import HelpOutlineTwoToneIcon from '@material-ui/icons/HelpOutlineTwoTone';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURL = axios.create({
   baseURL:
@@ -230,6 +232,8 @@ export default function ModalActivity2(props) {
   const [value5, setValue5] = useState(2);
   const [value6, setValue6] = useState(2);
 
+  const [disable, setDisable] = useState(true);
+
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
   };
@@ -258,19 +262,17 @@ export default function ModalActivity2(props) {
       transactionId: resultDisplay.transactionId,
       date: format(checkDate, "yyyy-MM-dd"),
     };
-    apiURLv1
-      .post("/download-file-pk3", sendData, header)
-      .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "M20210929000000014_PK3.pdf");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-        console.log(res.data);
-        console.log(url);
-      });
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
   };
 
   const mockPic = 0;
@@ -308,10 +310,10 @@ export default function ModalActivity2(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: vehicleClass.toString() || "0",
       fee: audit_feeAmount || "0",
-      operation: operation,
+      operation: operation.toString(),
       pk3_comment: "",
       super_audit_comment: "",
       ts_duplication: "",
@@ -372,6 +374,31 @@ export default function ModalActivity2(props) {
     //   setState({...state, operation:[]})
     // }
   }, [dataList]);
+
+  const disableItem = () => {
+    if (!!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1) {
+      setDisable(false);
+    } else if (
+      !!dataList.resultsDisplay &&
+      dataList.resultsDisplay[0].state === 2
+    ) {
+      setDisable(false);
+    } else if (
+      !!dataList.resultsDisplay &&
+      (dataList.resultsDisplay[0].state === 3 ||
+        dataList.resultsDisplay[0].state === 4 ||
+        dataList.resultsDisplay[0].state === 5)
+    ) {
+      setDisable(true);
+    } else if (
+      !!dataList.resultsDisplay &&
+      dataList.resultsDisplay[0].state === 6
+    ) {
+      setDisable(true);
+    } else {
+      setDisable(true);
+    }
+  };
 
   const body = (
     <div className={classes.bodyModal}>
@@ -870,7 +897,12 @@ export default function ModalActivity2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>ชำระรวม (ค่าธรรมเนียม + ค่าปรับ)</TableCell>
+                  <TableCell>
+                    ชำระรวม
+                    <Tooltip title="ค่าธรรมเนียม + ค่าปรับ">
+                      <HelpOutlineTwoToneIcon style={{ fontSize: "0.8rem" }} />
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>
                     {!!resultDisplay.match_total_cost
                       ? resultDisplay.match_total_cost
@@ -1253,6 +1285,14 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
+                          ? true
+                          : false
+                      }
                       variant="outlined"
                       select
                       size="small"
@@ -1289,22 +1329,11 @@ export default function ModalActivity2(props) {
             <Button
               disabled={
                 !!dataList.resultsDisplay &&
-                dataList.resultsDisplay[0].state === 1 &&
-                tsType !== "" &&
-                operation !== ""
-                  ? false
-                  : !!dataList.resultsDisplay &&
-                    dataList.resultsDisplay[0].state === 2
-                  ? false
-                  : !!dataList.resultsDisplay &&
-                    (dataList.resultsDisplay[0].state === 3 ||
-                      dataList.resultsDisplay[0].state === 4 ||
-                      dataList.resultsDisplay[0].state === 5)
+                (dataList.resultsDisplay[0].state === 3 ||
+                  dataList.resultsDisplay[0].state === 4 ||
+                  dataList.resultsDisplay[0].state === 5)
                   ? true
-                  : !!dataList.resultsDisplay &&
-                    dataList.resultsDisplay[0].state === 6
-                  ? true
-                  : true
+                  : false
               }
               variant="contained"
               color="primary"
