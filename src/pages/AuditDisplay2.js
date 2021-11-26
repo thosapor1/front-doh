@@ -18,8 +18,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay from "../components/TableAuditDisplay2";
-import { Translate } from "@material-ui/icons";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 
 const apiURL = axios.create({
@@ -136,7 +134,7 @@ export default function AuditDisplay2() {
   const [selectCarType, setSelectCarType] = useState(0);
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0)
+  const [tsType, setTsType] = useState(1);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -400,8 +398,8 @@ export default function AuditDisplay2() {
             className={classes.input1}
             name="tsType"
           >
-            {!!dropdown.state
-              ? dropdown.state.map((item, index) => (
+            {!!dropdown.ts_status
+              ? dropdown.ts_status.map((item, index) => (
                   <MenuItem key={index} value={item.id}>
                     {item.name}
                   </MenuItem>
