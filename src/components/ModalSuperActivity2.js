@@ -26,6 +26,7 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 const apiURL = axios.create({
   baseURL:
@@ -250,29 +251,27 @@ export default function ModalSuperActivity2(props) {
     setValue6(newValue);
   };
 
-  // const download = () => {
-  //   const header = {
-  //     "Content-Type": "application/pdf",
-  //     responseType: "blob",
-  //   };
-  //   const sendData = {
-  //     transactionId: dataList.transactionId,
-  //     date: "2021-09-29",
-  //   };
-  //   apiURLv1
-  //     .post("/download-file-super-audit", sendData, header)
-  //     .then((res) => {
-  //       const url = window.URL.createObjectURL(new Blob([res.data]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.parentNode.removeChild(link);
-  //       console.log(res.data);
-  //       console.log(url);
-  //     });
-  // };
+  const download = () => {
+    const header = {
+      "Content-Type": "application/pdf",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
 
   const mockPic = 0;
   const [state, setState] = useState({
@@ -1090,7 +1089,13 @@ export default function ModalSuperActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_upload_file ? (
+                      <Link onClick={download}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>

@@ -259,30 +259,6 @@ export default function ModalPK3Activity(props) {
     setValue6(newValue);
   };
 
-  // const download = () => {
-  //   const header = {
-  //     "Content-Type": "application/pdf",
-  //     responseType: "blob",
-  //   };
-  //   const sendData = {
-  //     transactionId: dataList.transactionId,
-  //     date: "2021-09-29",
-  //   };
-  //   apiURLv1
-  //     .post("/download-file-super-audit", sendData, header)
-  //     .then((res) => {
-  //       const url = window.URL.createObjectURL(new Blob([res.data]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "M20210929000000014_PK3.pdf");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.parentNode.removeChild(link);
-  //       console.log(res.data);
-  //       console.log(url);
-  //     });
-  // };
-
   const mockPic = 0;
   const [state, setState] = useState({
     operation: "",
