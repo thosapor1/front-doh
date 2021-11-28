@@ -315,7 +315,9 @@ export default function TableAuditDisplay2(props) {
                         style={{
                           // fontSize: "0.8rem",
                           color:
-                            data.state === 2
+                            data.state === 1
+                              ? "lightgray"
+                              : data.state === 2
                               ? "#FF2400"
                               : data.state === 3
                               ? "blue"
@@ -325,11 +327,7 @@ export default function TableAuditDisplay2(props) {
                               ? "black"
                               : data.state === 6
                               ? "##46005E"
-                              : data.state === 7
-                              ? "green"
-                              : data.state === 8
-                              ? "darkviolet"
-                              : "lightgray",
+                              : "rgba(0,0,0,0)",
                         }}
                       />
                     </TableCell>

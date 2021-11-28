@@ -162,14 +162,14 @@ export default function AuditDisplay2() {
     });
   };
 
-  const fetchData = (pageId = "1") => {
+  const fetchData = (pageId = 1) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    if (pageId === "1") {
-      setPage("1");
+    if (pageId === 1) {
+      setPage(1);
     } else {
       setPage(pageId);
     }

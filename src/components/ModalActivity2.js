@@ -889,7 +889,7 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.mf_lane_vehicleClass
-                      ? resultDisplay.mf_lane_vehicleClass
+                      ? `C${resultDisplay.mf_lane_vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1046,7 +1046,7 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.vehicleClass
-                      ? resultDisplay.vehicleClass
+                      ? `C${resultDisplay.vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
