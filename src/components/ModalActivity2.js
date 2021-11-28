@@ -25,7 +25,7 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import HelpOutlineTwoToneIcon from '@material-ui/icons/HelpOutlineTwoTone';
+import HelpOutlineTwoToneIcon from "@material-ui/icons/HelpOutlineTwoTone";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURL = axios.create({
@@ -144,15 +144,17 @@ const useStyle = makeStyles((theme) => {
       paddingRight: "0.5rem",
     },
     image: {
-      height: "150px",
+      height: "100%",
       Width: "100%",
       border: "1px solid lightgray",
-      marginRight: "auto",
-      marginLeft: "auto",
+      position: "absolute",
       objectFit: "cover",
-      [theme.breakpoints.down("md")]: {
-        height: "250px",
-      },
+    },
+    imageWrap: {
+      height: "0",
+      paddingBottom: "45%",
+      position: "relative",
+      overflow: "hidden",
     },
     tableHead1: {
       backgroundColor: "#7C85BFff",
@@ -509,15 +511,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel4>
           <TabPanel4 value={value5} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.mf_lane_picFull
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.mf_lane_picFull
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={3}>
             <CardMedia
@@ -594,15 +598,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel4>
           <TabPanel4 value={value6} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.mf_lane_picFull
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.mf_lane_picFull
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value6} index={3}>
             <CardMedia
@@ -679,15 +685,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel4>
           <TabPanel4 value={value4} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.mf_lane_picFull
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.mf_lane_picFull
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value4} index={3}>
             <CardMedia
@@ -825,15 +833,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel1>
           <TabPanel1 value={value1} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.mf_lane_picCrop
-                  ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.mf_lane_picCrop
+                    ? `data:image/png;base64, ${dataList.mf_lane_picCrop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={3}>
             <CardMedia
@@ -931,7 +941,7 @@ export default function ModalActivity2(props) {
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
-              MF (Vehicle : HQ){" "}
+              MF (Vehicle : HQ)
             </Typography>
           </div>
           <div>
@@ -979,26 +989,30 @@ export default function ModalActivity2(props) {
             />
           </TabPanel2>
           <TabPanel2 value={value2} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.mf_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel2>
           <TabPanel2 value={value2} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.imageFile
-                  ? `data:image/png;base64, ${dataList.imageFile}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.imageFile
+                    ? `data:image/png;base64, ${dataList.imageFile}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel2>
           <TabPanel2 value={value2} index={3}>
             <CardMedia
@@ -1171,15 +1185,17 @@ export default function ModalActivity2(props) {
             />
           </TabPanel3>
           <TabPanel3 value={value3} index={2}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.imageFileCrop
-                  ? `data:image/png;base64, ${dataList.imageFileCrop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.imageFileCrop
+                    ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel3>
           <TabPanel3 value={value3} index={3}>
             <CardMedia
