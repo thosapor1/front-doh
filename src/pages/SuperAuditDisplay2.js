@@ -390,8 +390,8 @@ export default function SuperAuditDisplay2() {
             className={classes.input1}
             name="tsType"
           >
-            {!!dropdown.state
-              ? dropdown.state.map((item, index) => (
+            {!!dropdown.ts_status
+              ? dropdown.ts_status.map((item, index) => (
                   <MenuItem key={index} value={item.id}>
                     {item.name}
                   </MenuItem>
