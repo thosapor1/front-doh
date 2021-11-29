@@ -152,6 +152,12 @@ export default function Login() {
           text: "ตรวจสอบ username และ password ของท่าน",
         });
       }
+    }).catch((error) => {
+      // handleClose();
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
     });
 
     // console.log(state.username, state.password);
