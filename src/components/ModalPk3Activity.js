@@ -443,8 +443,14 @@ export default function ModalPK3Activity(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      setState({ ...state, TransactionsPeat: "", commentPK3: "" });
+      setState({
+        ...state,
+        TransactionsPeat: "",
+        commentPK3: "",
+        operation: "",
+      });
       setFileName("");
+
       console.log("dataList", dataList);
     }
   }, [dataList]);
