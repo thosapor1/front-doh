@@ -758,7 +758,7 @@ export default function ModalPK3Activity(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_check_vehicleClass
-                      ? resultDisplay.audit_check_vehicleClass
+                      ? "C" + resultDisplay.audit_check_vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -922,7 +922,7 @@ export default function ModalPK3Activity(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.mf_lane_vehicleClass
-                      ? resultDisplay.mf_lane_vehicleClass
+                      ? "C" + resultDisplay.mf_lane_vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1070,7 +1070,7 @@ export default function ModalPK3Activity(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.vehicleClass
-                      ? resultDisplay.vehicleClass
+                      ? "C" + resultDisplay.vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
