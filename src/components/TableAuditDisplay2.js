@@ -172,7 +172,7 @@ export default function TableAuditDisplay2(props) {
       setOpen(true);
     }
     apiURL
-      .post(endpoint, sendData)
+      .post("/display-activity2", sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);

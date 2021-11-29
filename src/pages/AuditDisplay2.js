@@ -213,6 +213,12 @@ export default function AuditDisplay2() {
 
       setAllTsTable(res.data.status !== false ? res.data : []);
       setCardData(res.data.status !== false ? res.data.summary : []);
+    }).catch((error) => {
+      // handleClose();
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
     });
   };
 
@@ -325,10 +331,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.checkpoint
               ? dropdown.checkpoint.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.checkpoint_name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.checkpoint_name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -343,10 +349,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.gate
               ? dropdown.gate.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -361,10 +367,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.vehicle
               ? dropdown.vehicle.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.class}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.class}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -381,10 +387,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.state
               ? dropdown.state.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 
@@ -401,10 +407,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.ts_status
               ? dropdown.ts_status.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
+                <MenuItem key={index} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
               : []}
           </TextField>
 

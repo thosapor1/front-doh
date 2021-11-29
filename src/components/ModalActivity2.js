@@ -142,6 +142,7 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
+      minWidth: 0,
     },
     image: {
       height: "100%",
@@ -411,16 +412,16 @@ export default function ModalActivity2(props) {
               ? dataList.resultsDisplay[0].state === 1
                 ? "ปกติ"
                 : dataList.resultsDisplay[0].state === 2
-                ? "ผิดปกติ"
-                : dataList.resultsDisplay[0].state === 3
-                ? "รอ pk3 ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 4
-                ? "รอ super audit ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 5
-                ? "รอ พิจารณาพิเศษ"
-                : dataList.resultsDisplay[0].state === 6
-                ? "รอตรวจสอบรับทราบ"
-                : "ไม่มีสถานะ"
+                  ? "ผิดปกติ"
+                  : dataList.resultsDisplay[0].state === 3
+                    ? "รอ pk3 ตรวจสอบ"
+                    : dataList.resultsDisplay[0].state === 4
+                      ? "รอ super audit ตรวจสอบ"
+                      : dataList.resultsDisplay[0].state === 5
+                        ? "รอ พิจารณาพิเศษ"
+                        : dataList.resultsDisplay[0].state === 6
+                          ? "รอตรวจสอบรับทราบ"
+                          : "ไม่มีสถานะ"
               : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
@@ -489,34 +490,38 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value5} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.mf_lane_picFull !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={2}>
             <div className={classes.imageWrap}>
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
@@ -524,15 +529,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                !!mockPic
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
         </Grid>
 
@@ -576,34 +583,38 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value6} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value6} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.mf_lane_picFull !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value6} index={2}>
             <div className={classes.imageWrap}>
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
@@ -611,15 +622,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value6} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                !!mockPic
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
         </Grid>
 
@@ -663,26 +676,30 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value4} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.mf_lane_picFull !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  dataList.mf_lane_picFull !== 0
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value4} index={2}>
             <div className={classes.imageWrap}>
@@ -698,15 +715,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value4} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                !!mockPic
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
 
           <TableContainer>
@@ -810,27 +829,31 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel1 value={value1} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     Logo_doh
-                  : noImage
-              }
-              className={classes.image}
-            />
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={2}>
             <div className={classes.imageWrap}>
@@ -846,15 +869,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel1>
           <TableContainer>
             <table className={classes.table}>
@@ -978,15 +1003,17 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel2 value={value2} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.mf_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel2>
           <TabPanel2 value={value2} index={1}>
             <div className={classes.imageWrap}>
@@ -1015,15 +1042,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel2>
           <TabPanel2 value={value2} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.mf_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel2>
           <TableContainer>
             <table className={classes.table}>
@@ -1163,26 +1192,30 @@ export default function ModalActivity2(props) {
             </Tabs>
           </div>
           <TabPanel3 value={value3} index={0}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel3>
           <TabPanel3 value={value3} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel3>
           <TabPanel3 value={value3} index={2}>
             <div className={classes.imageWrap}>
@@ -1198,15 +1231,17 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel3>
           <TabPanel3 value={value3} index={3}>
-            <CardMedia
-              component="img"
-              src={
-                mockPic !== 0
-                  ? `data:image/png;base64, ${dataList.audit_pic}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel3>
           <TableContainer>
             <table className={classes.table}>
@@ -1224,9 +1259,9 @@ export default function ModalActivity2(props) {
                     <TextField
                       disabled={
                         !!dataList.resultsDisplay &&
-                        (dataList.resultsDisplay[0].state === 3 ||
-                          dataList.resultsDisplay[0].state === 4 ||
-                          dataList.resultsDisplay[0].state === 5)
+                          (dataList.resultsDisplay[0].state === 3 ||
+                            dataList.resultsDisplay[0].state === 4 ||
+                            dataList.resultsDisplay[0].state === 5)
                           ? true
                           : false
                       }
@@ -1239,17 +1274,17 @@ export default function ModalActivity2(props) {
                       onChange={handleChange}
                     >
                       {!!dataList.resultsDisplay &&
-                      dataList.resultsDisplay[0].state === 1
+                        dataList.resultsDisplay[0].state === 1
                         ? dropdown.operation_key
-                            .filter((item) => item.id === 2)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.name}
-                              </MenuItem>
-                            ))
+                          .filter((item) => item.id === 2)
+                          .map((item, index) => (
+                            <MenuItem key={index} value={item.id}>
+                              {item.name}
+                            </MenuItem>
+                          ))
                         : !!dataList.resultsDisplay &&
                           dataList.resultsDisplay[0].state === 2
-                        ? dropdown.operation_key
+                          ? dropdown.operation_key
                             .filter(
                               (item) =>
                                 item.id === 1 || item.id === 2 || item.id === 3
@@ -1259,21 +1294,21 @@ export default function ModalActivity2(props) {
                                 {item.name}
                               </MenuItem>
                             ))
-                        : !!dataList.resultsDisplay &&
-                          (dataList.resultsDisplay[0].state === 3 ||
-                            dataList.resultsDisplay[0].state === 4 ||
-                            dataList.resultsDisplay[0].state === 5)
-                        ? []
-                        : !!dataList.resultsDisplay &&
-                          dataList.resultsDisplay[0].state === 6
-                        ? dropdown.operation_key
-                            .filter((item) => item.id === 4)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.name}
-                              </MenuItem>
-                            ))
-                        : []}
+                          : !!dataList.resultsDisplay &&
+                            (dataList.resultsDisplay[0].state === 3 ||
+                              dataList.resultsDisplay[0].state === 4 ||
+                              dataList.resultsDisplay[0].state === 5)
+                            ? []
+                            : !!dataList.resultsDisplay &&
+                              dataList.resultsDisplay[0].state === 6
+                              ? dropdown.operation_key
+                                .filter((item) => item.id === 4)
+                                .map((item, index) => (
+                                  <MenuItem key={index} value={item.id}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))
+                              : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
@@ -1284,16 +1319,16 @@ export default function ModalActivity2(props) {
                       ? dataList.resultsDisplay[0].state === 1
                         ? "ปกติ"
                         : dataList.resultsDisplay[0].state === 2
-                        ? "ผิดปกติ"
-                        : dataList.resultsDisplay[0].state === 3
-                        ? "รอ pk3 ตรวจสอบ"
-                        : dataList.resultsDisplay[0].state === 4
-                        ? "รอ super audit ตรวจสอบ"
-                        : dataList.resultsDisplay[0].state === 5
-                        ? "รอ พิจารณาพิเศษ"
-                        : dataList.resultsDisplay[0].state === 6
-                        ? "รอตรวจสอบรับทราบ"
-                        : "ไม่มีสถานะ"
+                          ? "ผิดปกติ"
+                          : dataList.resultsDisplay[0].state === 3
+                            ? "รอ pk3 ตรวจสอบ"
+                            : dataList.resultsDisplay[0].state === 4
+                              ? "รอ super audit ตรวจสอบ"
+                              : dataList.resultsDisplay[0].state === 5
+                                ? "รอ พิจารณาพิเศษ"
+                                : dataList.resultsDisplay[0].state === 6
+                                  ? "รอตรวจสอบรับทราบ"
+                                  : "ไม่มีสถานะ"
                       : ""}
                   </TableCell>
                 </TableRow>
@@ -1303,9 +1338,9 @@ export default function ModalActivity2(props) {
                     <TextField
                       disabled={
                         !!dataList.resultsDisplay &&
-                        (dataList.resultsDisplay[0].state === 3 ||
-                          dataList.resultsDisplay[0].state === 4 ||
-                          dataList.resultsDisplay[0].state === 5)
+                          (dataList.resultsDisplay[0].state === 3 ||
+                            dataList.resultsDisplay[0].state === 4 ||
+                            dataList.resultsDisplay[0].state === 5)
                           ? true
                           : false
                       }
@@ -1319,12 +1354,12 @@ export default function ModalActivity2(props) {
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
+                          .filter((item) => item.id !== 0)
+                          .map((item, index) => (
+                            <MenuItem key={index} value={item.id}>
+                              {item.class}
+                            </MenuItem>
+                          ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -1345,9 +1380,9 @@ export default function ModalActivity2(props) {
             <Button
               disabled={
                 !!dataList.resultsDisplay &&
-                (dataList.resultsDisplay[0].state === 3 ||
-                  dataList.resultsDisplay[0].state === 4 ||
-                  dataList.resultsDisplay[0].state === 5)
+                  (dataList.resultsDisplay[0].state === 3 ||
+                    dataList.resultsDisplay[0].state === 4 ||
+                    dataList.resultsDisplay[0].state === 5)
                   ? true
                   : false
               }
