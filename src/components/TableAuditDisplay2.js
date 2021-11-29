@@ -308,7 +308,7 @@ export default function TableAuditDisplay2(props) {
                                   : data.state === 5
                                     ? "black"
                                     : data.state === 6
-                                      ? "##46005E"
+                                      ? "darkviolet"
                                       : "rgba(0,0,0,0)",
                       }}
                     />
