@@ -16,7 +16,9 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
-import ModalPK3Activity from "./ModalActivity2";
+
+import ModalPK3Activity from "./ModalPk3Activity";
+
 // import format from "date-fns/format";
 
 const apiURL = axios.create({

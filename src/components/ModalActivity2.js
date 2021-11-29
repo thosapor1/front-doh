@@ -142,7 +142,7 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
-      minWidth: 0,
+      overflow: 'hidden'
     },
     image: {
       height: "100%",
@@ -175,7 +175,6 @@ const useStyle = makeStyles((theme) => {
     table: {
       width: "100%",
       paddingTop: "1rem",
-
       "& .MuiTableCell-root": {
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
@@ -193,12 +192,15 @@ const useStyle = makeStyles((theme) => {
     textField2: {
       height: 20,
       bottom: 5,
-      width: 100,
+      width: '100px',
       "& .MuiInput-input": { fontSize: "0.75rem" },
       float: "right",
       "& .MuiOutlinedInput-inputMarginDense": {
         padding: "5px 5px",
       },
+      // [theme.breakpoints.down('lg')]: {
+      //   width: '300%'
+      // }
       // "& .MuiInputBase-root": {
       //   width: 50,
       // },
@@ -221,6 +223,11 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
+    // tableContainer: {
+    //   [theme.breakpoints.down('lg')]: {
+    //     width: '80%'
+    //   }
+    // }
   };
 });
 
@@ -269,7 +276,7 @@ export default function ModalActivity2(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      link.setAttribute("download", "downloadFile.pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -881,7 +888,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel1>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -1054,7 +1061,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel2>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
@@ -1243,7 +1250,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel3>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
