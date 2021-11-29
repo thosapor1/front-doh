@@ -149,22 +149,16 @@ export default function TableAuditDisplay2(props) {
 
     const sendData = {
       transactionId: ts,
-      date: date,
+      date: checkDate,
     };
-    let endpoint = "";
-    if (State === 2) {
-      endpoint = "/display-activity2";
-      setOpen(true);
-    } else {
-      endpoint = "/display-activity2";
-      setOpen(true);
-    }
+
     apiURL
       .post("/display-activity2", sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
+        setOpen(true);
       })
       .catch((error) => {
         handleClose();
@@ -389,12 +383,7 @@ export default function TableAuditDisplay2(props) {
         dropdown={dropdown}
         checkDate={checkDate}
       />
-      <ModalReadOnly2
-        dataList={dataForActivity}
-        open={open1}
-        onClick={handleClose}
-        onFetchData={props.onFetchData}
-      />
+
     </div>
   );
 }
