@@ -50,11 +50,11 @@ export const menuItemsForSuperAdmin = [
     icon: "assessment",
     path: "/DataVolume",
   },
-  {
-    text: "รายการบังคับ",
-    icon: "playlist_add_check",
-    path: "/MandatoryItem",
-  },
+  // {
+  //   text: "รายการบังคับ",
+  //   icon: "playlist_add_check",
+  //   path: "/MandatoryItem",
+  // },
   // {
   //   text: "test",
   //   icon: "playlist_add_check",
