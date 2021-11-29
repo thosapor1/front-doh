@@ -205,29 +205,38 @@ export default function SuperAuditDisplay2() {
     };
     console.log(sendData);
 
-    apiURL.post("/display-superaudit2", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
-      });
-      console.log(
-        "res: ",
-        res.data,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
+    apiURL
+      .post("/display-superaudit2", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
 
-      setAllTsTable(res.data.status !== false ? res.data : []);
-      setCardData(res.data.status !== false ? res.data.summary : []);
-    });
+        setAllTsTable(res.data.status !== false ? res.data : []);
+        setCardData(res.data.status !== false ? res.data.summary : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   const refresh = (pageId = 1) => {
@@ -263,31 +272,40 @@ export default function SuperAuditDisplay2() {
       state: "0",
     };
 
-    apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
+    apiURL
+      .post("/display-superaudit-activity2", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "tsClass:",
+          res.data.ts_class,
+          "tsGate: ",
+          res.data.ts_gate_table,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
+        setAllTsTable(res.data.status !== false ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      console.log(
-        "res: ",
-        res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setAllTsTable(res.data.status !== false ? res.data : []);
-    });
   };
 
   useEffect(() => {
