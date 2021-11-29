@@ -114,6 +114,18 @@ function a11yProps(index) {
 
 const useStyle = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {},
     bodyModal: {
       height: "auto",
@@ -321,9 +333,9 @@ export default function ModalActivity2(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: vehicleClass.toString() || "0",
+      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
       fee: audit_feeAmount || "0",
-      operation: operation.toString(),
+      operation: !!operation ? operation.toString() : "",
       pk3_comment: "",
       super_audit_comment: "",
       ts_duplication: "",
