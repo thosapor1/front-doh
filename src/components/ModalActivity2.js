@@ -742,7 +742,7 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_check_vehicleClass
-                      ? resultDisplay.audit_check_vehicleClass
+                      ? `C${resultDisplay.audit_check_vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
