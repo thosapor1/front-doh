@@ -310,6 +310,7 @@ export default function ModalActivity2(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+    // console.log()
   };
 
   const handleOptionChange = (event) => {
@@ -373,7 +374,7 @@ export default function ModalActivity2(props) {
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData());
+      .then(() => props.onFetchData())
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -444,7 +445,7 @@ export default function ModalActivity2(props) {
               : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction:{" "}
+            transaction:
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].transactionId
               : ""}
@@ -452,7 +453,7 @@ export default function ModalActivity2(props) {
           <Typography style={{ color: "gray", fontSize: 14 }}>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_checkpoint
-              : ""}{" "}
+              : ""}
             /
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_gate
@@ -1085,8 +1086,8 @@ export default function ModalActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1148,7 +1149,11 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.ts_duplication
+                      ? resultDisplay.ts_duplication
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
@@ -1361,7 +1366,11 @@ export default function ModalActivity2(props) {
                             dataList.resultsDisplay[0].state === 4 ||
                             dataList.resultsDisplay[0].state === 5)
                           ? true
-                          : false
+                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 ? true
+                            : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? true
+                              : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? true
+                                : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 ? false
+                                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 5 ? true : true
                       }
                       variant="outlined"
                       select
@@ -1403,7 +1412,11 @@ export default function ModalActivity2(props) {
                     dataList.resultsDisplay[0].state === 4 ||
                     dataList.resultsDisplay[0].state === 5)
                   ? true
-                  : false
+                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 && !!operation ? false
+                    : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? false
+                      : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? false
+                        : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 && !!vehicleClass ? false
+                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 6 && !!operation ? false : true
               }
               variant="contained"
               color="primary"
@@ -1416,7 +1429,7 @@ export default function ModalActivity2(props) {
           </div>
         </Grid>
       </Grid>
-    </div>
+    </div >
   );
 
   return (

@@ -58,7 +58,7 @@ const detailStatus = [
     label: "รอตรวจสอบรับทราบ",
   },
 ];
-const useStyles = makeStyles((theme, props) => {
+const useStyles = makeStyles((theme) => {
   return {
     container: {
       maxHeight: "55vh",
@@ -143,9 +143,8 @@ export default function TableAuditDisplay2(props) {
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
+      // background: 'rgba(0,0,0,0.80)'
     });
-
-    let date = timeStamp.split(" ").shift();
 
     const sendData = {
       transactionId: ts,
@@ -178,7 +177,6 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
-    setOpen1(false);
   };
 
   const classes = useStyles();
@@ -366,7 +364,7 @@ export default function TableAuditDisplay2(props) {
                     -
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
-                    -
+                    {!!data.forceFlag ? "บังคับ" : "-"}
                   </TableCell>
                 </StyledTableRow>
               ))
