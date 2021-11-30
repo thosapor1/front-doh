@@ -54,7 +54,7 @@ const detailStatus = [
   },
   {
     state: 6,
-    color: "#46005E",
+    color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
 ];

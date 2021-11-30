@@ -1110,8 +1110,8 @@ export default function ModalPK3Activity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
