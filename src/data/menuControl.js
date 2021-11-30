@@ -107,7 +107,7 @@ export const menuItemsForAdmin = [
     path: "/dashboard2",
   },
   {
-    text: "รายได้รายวัน2",
+    text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay2",
   },
