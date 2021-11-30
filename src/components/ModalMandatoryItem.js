@@ -406,7 +406,14 @@ export default function ModalMandatoryItem(props) {
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData());
+      .then(() => props.onFetchData())
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
