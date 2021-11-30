@@ -114,6 +114,18 @@ function a11yProps(index) {
 
 const useStyle = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {},
     bodyModal: {
       height: "auto",
@@ -142,7 +154,7 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
-      minWidth: 0,
+      overflow: 'hidden'
     },
     image: {
       height: "100%",
@@ -175,7 +187,6 @@ const useStyle = makeStyles((theme) => {
     table: {
       width: "100%",
       paddingTop: "1rem",
-
       "& .MuiTableCell-root": {
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
@@ -193,12 +204,15 @@ const useStyle = makeStyles((theme) => {
     textField2: {
       height: 20,
       bottom: 5,
-      width: 100,
+      width: '100px',
       "& .MuiInput-input": { fontSize: "0.75rem" },
       float: "right",
       "& .MuiOutlinedInput-inputMarginDense": {
         padding: "5px 5px",
       },
+      // [theme.breakpoints.down('lg')]: {
+      //   width: '300%'
+      // }
       // "& .MuiInputBase-root": {
       //   width: 50,
       // },
@@ -221,6 +235,11 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
+    // tableContainer: {
+    //   [theme.breakpoints.down('lg')]: {
+    //     width: '80%'
+    //   }
+    // }
   };
 });
 
@@ -269,7 +288,7 @@ export default function ModalActivity2(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      link.setAttribute("download", "downloadFile.pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -291,6 +310,7 @@ export default function ModalActivity2(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+    // console.log()
   };
 
   const handleOptionChange = (event) => {
@@ -314,9 +334,9 @@ export default function ModalActivity2(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: vehicleClass.toString() || "0",
+      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
       fee: audit_feeAmount || "0",
-      operation: operation.toString(),
+      operation: !!operation ? operation.toString() : "",
       pk3_comment: "",
       super_audit_comment: "",
       ts_duplication: "",
@@ -354,7 +374,7 @@ export default function ModalActivity2(props) {
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData());
+      .then(() => props.onFetchData())
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -425,7 +445,7 @@ export default function ModalActivity2(props) {
               : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction:{" "}
+            transaction:
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].transactionId
               : ""}
@@ -433,7 +453,7 @@ export default function ModalActivity2(props) {
           <Typography style={{ color: "gray", fontSize: 14 }}>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_checkpoint
-              : ""}{" "}
+              : ""}
             /
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_gate
@@ -881,7 +901,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel1>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -1054,7 +1074,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel2>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
@@ -1066,8 +1086,8 @@ export default function ModalActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1129,7 +1149,11 @@ export default function ModalActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.ts_duplication
+                      ? resultDisplay.ts_duplication
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
@@ -1243,7 +1267,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel3>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
@@ -1342,7 +1366,11 @@ export default function ModalActivity2(props) {
                             dataList.resultsDisplay[0].state === 4 ||
                             dataList.resultsDisplay[0].state === 5)
                           ? true
-                          : false
+                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 ? true
+                            : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? true
+                              : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? true
+                                : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 ? false
+                                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 5 ? true : true
                       }
                       variant="outlined"
                       select
@@ -1384,7 +1412,11 @@ export default function ModalActivity2(props) {
                     dataList.resultsDisplay[0].state === 4 ||
                     dataList.resultsDisplay[0].state === 5)
                   ? true
-                  : false
+                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 && !!operation ? false
+                    : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? false
+                      : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? false
+                        : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 && !!vehicleClass ? false
+                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 6 && !!operation ? false : true
               }
               variant="contained"
               color="primary"
@@ -1397,7 +1429,7 @@ export default function ModalActivity2(props) {
           </div>
         </Grid>
       </Grid>
-    </div>
+    </div >
   );
 
   return (

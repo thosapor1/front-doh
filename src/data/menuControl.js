@@ -102,6 +102,11 @@ export const menuItemsForAdmin = [
   //   path: "/auditDisplay",
   // },
   {
+    text: "รายได้รายเดือน",
+    icon: "assessment",
+    path: "/dashboard2",
+  },
+  {
     text: "รายได้รายวัน2",
     icon: "poll",
     path: "/auditDisplay2",
@@ -132,12 +137,12 @@ export const menuConfigForAdmin = [
   {
     text: "ค่าภายในระบบ",
     icon: "settings_applications",
-    path: "/6",
+    path: "/config",
   },
   {
     text: "รายงานความเคลื่อนไหวผู้ใช้งาน",
     icon: "text_snippet",
-    path: "/7x",
+    path: "/userLogs",
   },
 ];
 
