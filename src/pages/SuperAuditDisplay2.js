@@ -487,23 +487,23 @@ export default function SuperAuditDisplay2() {
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายการทั้งหมด :{" "}
-                {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""}{" "}
+                {!!allTsTable.totalCount
+                  ? allTsTable.totalCount.toLocaleString()
+                  : 0}
               </Typography>
               <Typography className={classes.typography}>
-                ตรงกัน :{" "}
-                {!!cardData.ts_normal
-                  ? cardData.ts_normal.toLocaleString()
-                  : ""}{" "}
+                ปกติ :{" "}
+                {!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0}
               </Typography>
               <Typography className={classes.typography}>
                 ไม่ตรงกัน :{" "}
                 {!!cardData.ts_not_normal
                   ? cardData.ts_not_normal.toLocaleString()
-                  : ""}{" "}
+                  : 0}
               </Typography>
               <Typography className={classes.typography}>
                 สูญหาย :{" "}
-                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""}{" "}
+                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
               </Typography>
             </Paper>
           </Grid>
@@ -511,13 +511,13 @@ export default function SuperAuditDisplay2() {
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายได้ประมาณการ :{" "}
-                {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""}{" "}
+                {!!cardData.revenue ? cardData.revenue.toLocaleString() : "-"}
               </Typography>
               <Typography className={classes.typography}>
-                ชำระแล้ว : -{" "}
+                ชำระแล้ว : -
               </Typography>
               <Typography className={classes.typography}>
-                ค้างชำระ : -{" "}
+                ค้างชำระ : -
               </Typography>
             </Paper>
           </Grid>

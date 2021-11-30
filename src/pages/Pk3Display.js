@@ -316,7 +316,7 @@ export default function PK3Display() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          super audit display
+          รายการตรวจสอบ
         </Typography>
 
         {/* Filter Section */}
@@ -489,17 +489,19 @@ export default function PK3Display() {
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายการทั้งหมด :{" "}
-                {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""}{" "}
+                {!!allTsTable.totalCount
+                  ? allTsTable.totalCount.toLocaleString()
+                  : 0}
               </Typography>
               <Typography className={classes.typography}>
                 ไม่ตรงกัน :{" "}
                 {!!cardData.ts_not_normal
                   ? cardData.ts_not_normal.toLocaleString()
-                  : ""}{" "}
+                  : 0}
               </Typography>
               <Typography className={classes.typography}>
                 สูญหาย :{" "}
-                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""}{" "}
+                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
               </Typography>
             </Paper>
           </Grid>

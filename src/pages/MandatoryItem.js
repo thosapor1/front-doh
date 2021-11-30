@@ -19,7 +19,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableMandatoryItem from "../components/TableMandatoryItem";
-
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -55,7 +54,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 100,
+      height: 60,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -80,20 +79,47 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
       width: 150,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
         width: 150,
       },
     },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
+    typography: {
+      fontSize: "0.8rem",
+    },
   };
 });
 
 const valueStatus = [
   {
-    id: 1,
-    value: 3,
-    label: "รอจัดเก็บตรวจสอบ",
+    id: 0,
+    value: 0,
+    label: "ทุกสถานะ",
   },
 ];
 
@@ -102,13 +128,14 @@ export default function MandatoryItem() {
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  const [status_select, setStatus_select] = useState(3);
+  const [status_select, setStatus_select] = useState("0");
   // const [status, setStatus] = useState(0);
   // const [subState, setSubState] = useState(0);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
-  const [cardData, setCardData] = useState("0");
+  const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
+  const [tsType, setTsType] = useState("0");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -163,32 +190,42 @@ export default function MandatoryItem() {
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
+      status: tsType.toString(),
     };
     console.log(sendData);
 
-    apiURL.post("/display-pk3", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
-      });
-      console.log(
-        "res: ",
-        res.data,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
+    apiURL
+      .post("/pk3-force-display", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
 
-      setAllTsTable(res.data.status !== false ? res.data : []);
-      setCardData(res.data.status !== false ? res.data.summary : []);
-    });
+        setAllTsTable(res.data.status !== false ? res.data : []);
+        setCardData(res.data.status !== false ? res.data.summary : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   const refresh = (pageId = 1) => {
@@ -224,31 +261,40 @@ export default function MandatoryItem() {
       state: "0",
     };
 
-    apiURL.post("/display-superaudit-activity2", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
+    apiURL
+      .post("/display-pk3-activity", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "tsClass:",
+          res.data.ts_class,
+          "tsGate: ",
+          res.data.ts_gate_table,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
+        setAllTsTable(res.data.status !== false ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      console.log(
-        "res: ",
-        res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setAllTsTable(res.data.status !== false ? res.data : []);
-    });
   };
 
   useEffect(() => {
@@ -272,7 +318,7 @@ export default function MandatoryItem() {
             label="ด่าน"
             value={checkpoint}
             onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate_select"
           >
             {!!dropdown.checkpoint
@@ -290,7 +336,7 @@ export default function MandatoryItem() {
             label="ช่อง"
             value={selectGate}
             onChange={(e) => setSelectGate(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="gate"
           >
             {!!dropdown.gate
@@ -308,7 +354,7 @@ export default function MandatoryItem() {
             label="ประเภทรถ"
             value={selectCarType}
             onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input}
+            className={classes.input1}
             name="carType"
           >
             {!!dropdown.vehicle
@@ -325,17 +371,45 @@ export default function MandatoryItem() {
             variant="outlined"
             label="สถานะ"
             value={status_select}
+            disabled
             onChange={(e) => {
               setStatus_select(e.target.value);
             }}
-            className={classes.input}
+            className={classes.input1}
             name="status_select"
           >
-            {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.value}>
-                {item.label}
-              </MenuItem>
-            ))}
+            {!!valueStatus
+              ? valueStatus.map((item, index) => (
+                  <MenuItem key={index} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+
+          <TextField
+            select
+            variant="outlined"
+            label="ประเภทTS"
+            disabled
+            value={tsType}
+            onChange={(e) => {
+              setTsType(e.target.value);
+            }}
+            className={classes.input1}
+            name="tsType"
+          >
+            {!!dropdown.ts_status
+              ? dropdown.ts_status
+                  .filter(
+                    (item) => item.id === 0 || item.id === 2 || item.id === 3
+                  )
+                  .map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+              : []}
           </TextField>
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -406,17 +480,22 @@ export default function MandatoryItem() {
         <Grid container spacing={1} className={classes.cardSection}>
           <Grid item>
             <Paper className={classes.card}>
-              <Typography>รายการทั้งหมด : {cardData.ts_total} </Typography>
-              <Typography>ตรงกัน : {cardData.ts_normal} </Typography>
-              <Typography>ไม่ตรงกัน : {cardData.ts_not_normal} </Typography>
-              <Typography>สูญหาย : {cardData.ts_miss} </Typography>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className={classes.card}>
-              <Typography>รายได้ประมาณการ : - </Typography>
-              <Typography>ชำระแล้ว : - </Typography>
-              <Typography>ค้างชำระ : - </Typography>
+              <Typography className={classes.typography}>
+                รายการทั้งหมด :{" "}
+                {!!allTsTable.totalCount
+                  ? allTsTable.totalCount.toLocaleString()
+                  : 0}
+              </Typography>
+              <Typography className={classes.typography}>
+                ไม่ตรงกัน :{" "}
+                {!!cardData.ts_not_normal
+                  ? cardData.ts_not_normal.toLocaleString()
+                  : 0}
+              </Typography>
+              <Typography className={classes.typography}>
+                สูญหาย :{" "}
+                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
+              </Typography>
             </Paper>
           </Grid>
         </Grid>
