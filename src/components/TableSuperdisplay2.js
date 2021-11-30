@@ -156,7 +156,7 @@ export default function TableSuperdisplay2(props) {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-
+    console.log(timeStamp);
     let date = timeStamp.split(" ").shift();
 
     const sendData = {
@@ -334,10 +334,18 @@ export default function TableSuperdisplay2(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.match_gate && data.match_checkpoint === 1
+                        ? "ทับช้าง1"
+                        : !!data.match_gate && data.match_checkpoint === 2
+                        ? "ทับช้าง2"
+                        : !!data.match_gate && data.match_checkpoint === 3
+                        ? "ธัญบุรี1"
+                        : !!data.match_gate && data.match_checkpoint === 4
+                        ? "ธัญบุรี2"
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.match_gate ? data.match_gate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
