@@ -1337,6 +1337,17 @@ export default function ModalSuperActivity2(props) {
                       name="vehicleClass"
                       value={vehicleClass}
                       onChange={handleOptionChange}
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        dataList.resultsDisplay[0].state === 4 &&
+                        operation === 1
+                          ? false
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 5 &&
+                            operation === 1
+                          ? false
+                          : true
+                      }
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
@@ -1369,6 +1380,15 @@ export default function ModalSuperActivity2(props) {
               style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
+              disabled={
+                !!operation && operation === 1 && !!vehicleClass
+                  ? false
+                  : !!operation && operation === 2
+                  ? false
+                  : !!operation && operation === 5
+                  ? false
+                  : true
+              }
             >
               บันทึก
             </Button>

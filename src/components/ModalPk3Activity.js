@@ -1409,6 +1409,7 @@ export default function ModalPK3Activity(props) {
                       name="vehicleClass"
                       value={vehicleClass}
                       onChange={handleOptionChange}
+                      disabled
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
@@ -1441,6 +1442,13 @@ export default function ModalPK3Activity(props) {
               style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
+              disabled={
+                !!operation && operation === 1
+                  ? false
+                  : !!operation && operation === 2
+                  ? false
+                  : true
+              }
             >
               บันทึก
             </Button>
