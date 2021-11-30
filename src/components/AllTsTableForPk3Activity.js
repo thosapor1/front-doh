@@ -56,7 +56,7 @@ const detailStatus = [
   },
   {
     state: 6,
-    color: "#46005E",
+    color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
 ];
@@ -336,10 +336,18 @@ export default function TablePK3display(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.match_gate && data.match_checkpoint === 1
+                        ? "ทับช้าง1"
+                        : !!data.match_gate && data.match_checkpoint === 2
+                        ? "ทับช้าง2"
+                        : !!data.match_gate && data.match_checkpoint === 3
+                        ? "ธัญบุรี1"
+                        : !!data.match_gate && data.match_checkpoint === 4
+                        ? "ธัญบุรี2"
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.match_gate ? data.match_gate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp

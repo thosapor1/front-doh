@@ -14,6 +14,10 @@ import {
   Tabs,
   TextField,
   Typography,
+  Box,
+  Paper,
+  Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -25,8 +29,6 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import HelpOutlineTwoToneIcon from "@material-ui/icons/HelpOutlineTwoTone";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURL = axios.create({
   baseURL:
@@ -114,18 +116,6 @@ function a11yProps(index) {
 
 const useStyle = makeStyles((theme) => {
   return {
-    "@global": {
-      "*::-webkit-scrollbar": {
-        width: "0.3em",
-      },
-      "*::-webkit-scrollbar-track": {
-        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-      },
-      "*::-webkit-scrollbar-thumb": {
-        backgroundColor: "rgba(0,0,0,.1)",
-        outline: "1px  lightgray",
-      },
-    },
     root: {},
     bodyModal: {
       height: "auto",
@@ -135,11 +125,8 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.only("md")]: {
-        marginTop: "90%",
-      },
-      [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
+      [theme.breakpoints.down("md")]: {
+        marginTop: 700,
       },
     },
     head: {
@@ -154,7 +141,6 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
-      overflow: 'hidden'
     },
     image: {
       height: "100%",
@@ -187,6 +173,7 @@ const useStyle = makeStyles((theme) => {
     table: {
       width: "100%",
       paddingTop: "1rem",
+
       "& .MuiTableCell-root": {
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
@@ -204,15 +191,12 @@ const useStyle = makeStyles((theme) => {
     textField2: {
       height: 20,
       bottom: 5,
-      width: '100px',
+      width: 100,
       "& .MuiInput-input": { fontSize: "0.75rem" },
       float: "right",
       "& .MuiOutlinedInput-inputMarginDense": {
         padding: "5px 5px",
       },
-      // [theme.breakpoints.down('lg')]: {
-      //   width: '300%'
-      // }
       // "& .MuiInputBase-root": {
       //   width: 50,
       // },
@@ -235,15 +219,24 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
-    // tableContainer: {
-    //   [theme.breakpoints.down('lg')]: {
-    //     width: '80%'
-    //   }
-    // }
+    smallText: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
+    disableLabel2: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
   };
 });
 
-export default function ModalActivity2(props) {
+export default function ModalMandatoryItem(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
@@ -253,8 +246,6 @@ export default function ModalActivity2(props) {
   const [value4, setValue4] = useState(2);
   const [value5, setValue5] = useState(2);
   const [value6, setValue6] = useState(2);
-
-  const [disable, setDisable] = useState(true);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -288,7 +279,7 @@ export default function ModalActivity2(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "downloadFile.pdf");
+      link.setAttribute("download", "M20210929000000014_PK3.pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -299,18 +290,54 @@ export default function ModalActivity2(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({
-    tsType: "",
     operation: "",
+    commentSuper: "",
+    commentPK3: "",
+    TransactionsPeat: "",
   });
-  const { tsType, operation } = state;
+  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
 
-  const [vehicleClass, setVehicleClass] = useState("");
+  const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-    // console.log()
+  };
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const upload = () => {
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    if (fileName !== "") {
+      axios
+        .post(`${URL}/pk3-upload-file`, formData)
+        .then((res) => {
+          if (res.data.status === true) {
+            Swal.fire({
+              title: "Success",
+              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Fail",
+              text: "อัพโหลดข้อมูลไม่สำเร็จ",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .then(() => setFileName(""));
+    }
   };
 
   const handleOptionChange = (event) => {
@@ -321,25 +348,30 @@ export default function ModalActivity2(props) {
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-      super_audit_vehicleClass: ${vehicleClass}
-      event.target.value: ${index}`
+          super_audit_vehicleClass: ${vehicleClass}
+          event.target.value: ${index}`
     );
   };
 
   const handleUpdate = () => {
+    let endPointURL = "";
+
+    endPointURL = "/operation";
+
     const date = format(checkDate, "yyyy-MM-dd");
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
       fee: audit_feeAmount || "0",
-      operation: !!operation ? operation.toString() : "",
-      pk3_comment: "",
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: state.operation,
+      pk3_comment: state.commentPK3,
       super_audit_comment: "",
-      ts_duplication: "",
+      ts_duplication: state.TransactionsPeat,
     };
 
     Swal.fire({
@@ -354,7 +386,7 @@ export default function ModalActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post("/operation", sendData).then((res) => {
+          apiURLv1.post(endPointURL, sendData).then((res) => {
             if (res.data.status === true) {
               Swal.fire({
                 title: "Success",
@@ -375,6 +407,57 @@ export default function ModalActivity2(props) {
       })
       .then(() => props.onClick())
       .then(() => props.onFetchData())
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+
+    // const res = await apiURL.post("/changeState2to3", sendData);
+    console.log(sendData);
+    // console.log(res.data);
+  };
+  const handleChangeState6To7 = () => {
+    const sendData = {
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.transactionId,
+      timestamp: dataList.timestamp,
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL.post("/changeState2to7", sendData).then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          });
+        }
+      })
+      .then(() => props.onClick())
+      .then(() => props.onFetchData());
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -390,38 +473,17 @@ export default function ModalActivity2(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
+      setState({
+        ...state,
+        TransactionsPeat: "",
+        commentPK3: "",
+        operation: "",
+      });
+      setFileName("");
+
       console.log("dataList", dataList);
     }
-
-    // if(dataList.state === 1){
-    //   setState({...state, operation:[]})
-    // }
   }, [dataList]);
-
-  const disableItem = () => {
-    if (!!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1) {
-      setDisable(false);
-    } else if (
-      !!dataList.resultsDisplay &&
-      dataList.resultsDisplay[0].state === 2
-    ) {
-      setDisable(false);
-    } else if (
-      !!dataList.resultsDisplay &&
-      (dataList.resultsDisplay[0].state === 3 ||
-        dataList.resultsDisplay[0].state === 4 ||
-        dataList.resultsDisplay[0].state === 5)
-    ) {
-      setDisable(true);
-    } else if (
-      !!dataList.resultsDisplay &&
-      dataList.resultsDisplay[0].state === 6
-    ) {
-      setDisable(true);
-    } else {
-      setDisable(true);
-    }
-  };
 
   const body = (
     <div className={classes.bodyModal}>
@@ -432,20 +494,20 @@ export default function ModalActivity2(props) {
               ? dataList.resultsDisplay[0].state === 1
                 ? "ปกติ"
                 : dataList.resultsDisplay[0].state === 2
-                  ? "ผิดปกติ"
-                  : dataList.resultsDisplay[0].state === 3
-                    ? "รอ pk3 ตรวจสอบ"
-                    : dataList.resultsDisplay[0].state === 4
-                      ? "รอ super audit ตรวจสอบ"
-                      : dataList.resultsDisplay[0].state === 5
-                        ? "รอ พิจารณาพิเศษ"
-                        : dataList.resultsDisplay[0].state === 6
-                          ? "รอตรวจสอบรับทราบ"
-                          : "ไม่มีสถานะ"
+                ? "ผิดปกติ"
+                : dataList.resultsDisplay[0].state === 3
+                ? "รอ pk3 ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 4
+                ? "รอ super audit ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 5
+                ? "รอ พิจารณาพิเศษ"
+                : dataList.resultsDisplay[0].state === 6
+                ? "รอตรวจสอบรับทราบ"
+                : "ไม่มีสถานะ"
               : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction:
+            transaction:{" "}
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].transactionId
               : ""}
@@ -453,7 +515,7 @@ export default function ModalActivity2(props) {
           <Typography style={{ color: "gray", fontSize: 14 }}>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_checkpoint
-              : ""}
+              : ""}{" "}
             /
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay[0].match_gate
@@ -523,25 +585,23 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={1}>
-            <div className={classes.imageWrap}>
-              <CardMedia
-                component="img"
-                src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    : noImage
-                }
-                className={classes.image}
-              />
-            </div>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
           </TabPanel4>
           <TabPanel4 value={value5} index={2}>
             <div className={classes.imageWrap}>
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.mf_lane_picFull
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -620,8 +680,8 @@ export default function ModalActivity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  dataList.mf_lane_picFull !== 0
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -633,8 +693,8 @@ export default function ModalActivity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.mf_lane_picFull
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -747,7 +807,6 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel4>
-
           <TableContainer>
             <table className={classes.table} style={{ marginBottom: 58 }}>
               <TableHead>
@@ -762,7 +821,7 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_check_vehicleClass
-                      ? `C${resultDisplay.audit_check_vehicleClass}`
+                      ? "C" + resultDisplay.audit_check_vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -868,7 +927,7 @@ export default function ModalActivity2(props) {
                 src={
                   mockPic !== 0
                     ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                      Logo_doh
                     : noImage
                 }
                 className={classes.image}
@@ -901,7 +960,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel1>
-          <TableContainer className={classes.tableContainer}>
+          <TableContainer>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -919,22 +978,22 @@ export default function ModalActivity2(props) {
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                  <TableCell>ทะเบียน</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.mf_lane_plateNo1
-                      ? resultDisplay.mf_lane_plateNo1
-                      : "-"}
-                  </TableCell>
-                </TableRow> */}
+                      <TableCell>ทะเบียน</TableCell>
+                      <TableCell>
+                        {!!resultDisplay.mf_lane_plateNo1
+                          ? resultDisplay.mf_lane_plateNo1
+                          : "-"}
+                      </TableCell>
+                    </TableRow> */}
                 {/* <TableRow>
-                  <TableCell>จัดหวัด</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow> */}
+                      <TableCell>จัดหวัด</TableCell>
+                      <TableCell>-</TableCell>
+                    </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.mf_lane_vehicleClass
-                      ? `C${resultDisplay.mf_lane_vehicleClass}`
+                      ? "C" + resultDisplay.mf_lane_vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -952,12 +1011,7 @@ export default function ModalActivity2(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>
-                    ชำระรวม
-                    <Tooltip title="ค่าธรรมเนียม + ค่าปรับ">
-                      <HelpOutlineTwoToneIcon style={{ fontSize: "0.8rem" }} />
-                    </Tooltip>
-                  </TableCell>
+                  <TableCell>ชำระรวม (ค่าธรรมเนียม + ค่าปรับ)</TableCell>
                   <TableCell>
                     {!!resultDisplay.match_total_cost
                       ? resultDisplay.match_total_cost
@@ -986,7 +1040,7 @@ export default function ModalActivity2(props) {
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
-              MF (Vehicle : HQ)
+              MF (Vehicle : HQ){" "}
             </Typography>
           </div>
           <div>
@@ -1074,7 +1128,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel2>
-          <TableContainer className={classes.tableContainer}>
+          <TableContainer>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
@@ -1095,18 +1149,18 @@ export default function ModalActivity2(props) {
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     {!!resultDisplay.vehicleClass
-                      ? `C${resultDisplay.vehicleClass}`
+                      ? "C" + resultDisplay.vehicleClass
                       : "-"}
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    {dataList.mf_lp_province === null
-                      ? "-"
-                      : dataList.mf_lp_province}
-                  </TableCell>
-                </TableRow> */}
+                      <TableCell>จังหวัด</TableCell>
+                      <TableCell>
+                        {dataList.mf_lp_province === null
+                          ? "-"
+                          : dataList.mf_lp_province}
+                      </TableCell>
+                    </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -1140,6 +1194,7 @@ export default function ModalActivity2(props) {
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
+                    {" "}
                     {!!resultDisplay.pk3_upload_file ? (
                       <Link onClick={download}>download</Link>
                     ) : (
@@ -1267,7 +1322,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel3>
-          <TableContainer className={classes.tableContainer}>
+          <TableContainer>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead3}>
@@ -1281,14 +1336,6 @@ export default function ModalActivity2(props) {
                   <TableCell>การดำเนินการ</TableCell>
                   <TableCell>
                     <TextField
-                      disabled={
-                        !!dataList.resultsDisplay &&
-                          (dataList.resultsDisplay[0].state === 3 ||
-                            dataList.resultsDisplay[0].state === 4 ||
-                            dataList.resultsDisplay[0].state === 5)
-                          ? true
-                          : false
-                      }
                       select
                       variant="outlined"
                       size="small"
@@ -1296,43 +1343,18 @@ export default function ModalActivity2(props) {
                       name="operation"
                       value={operation}
                       onChange={handleChange}
+                      disabled
                     >
                       {!!dataList.resultsDisplay &&
-                        dataList.resultsDisplay[0].state === 1
+                      dataList.resultsDisplay[0].state === 3
                         ? dropdown.operation_key
-                          .filter((item) => item.id === 2)
-                          .map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.name}
-                            </MenuItem>
-                          ))
-                        : !!dataList.resultsDisplay &&
-                          dataList.resultsDisplay[0].state === 2
-                          ? dropdown.operation_key
-                            .filter(
-                              (item) =>
-                                item.id === 1 || item.id === 2 || item.id === 3
-                            )
+                            .filter((item) => item.id === 1 || item.id === 2)
                             .map((item, index) => (
                               <MenuItem key={index} value={item.id}>
                                 {item.name}
                               </MenuItem>
                             ))
-                          : !!dataList.resultsDisplay &&
-                            (dataList.resultsDisplay[0].state === 3 ||
-                              dataList.resultsDisplay[0].state === 4 ||
-                              dataList.resultsDisplay[0].state === 5)
-                            ? []
-                            : !!dataList.resultsDisplay &&
-                              dataList.resultsDisplay[0].state === 6
-                              ? dropdown.operation_key
-                                .filter((item) => item.id === 4)
-                                .map((item, index) => (
-                                  <MenuItem key={index} value={item.id}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))
-                              : []}
+                        : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
@@ -1343,58 +1365,34 @@ export default function ModalActivity2(props) {
                       ? dataList.resultsDisplay[0].state === 1
                         ? "ปกติ"
                         : dataList.resultsDisplay[0].state === 2
-                          ? "ผิดปกติ"
-                          : dataList.resultsDisplay[0].state === 3
-                            ? "รอ pk3 ตรวจสอบ"
-                            : dataList.resultsDisplay[0].state === 4
-                              ? "รอ super audit ตรวจสอบ"
-                              : dataList.resultsDisplay[0].state === 5
-                                ? "รอ พิจารณาพิเศษ"
-                                : dataList.resultsDisplay[0].state === 6
-                                  ? "รอตรวจสอบรับทราบ"
-                                  : "ไม่มีสถานะ"
+                        ? "ผิดปกติ"
+                        : dataList.resultsDisplay[0].state === 3
+                        ? "รอ pk3 ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 4
+                        ? "รอ super audit ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 5
+                        ? "รอ พิจารณาพิเศษ"
+                        : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ"
+                        : "ไม่มีสถานะ"
                       : ""}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    <TextField
-                      disabled={
-                        !!dataList.resultsDisplay &&
-                          (dataList.resultsDisplay[0].state === 3 ||
-                            dataList.resultsDisplay[0].state === 4 ||
-                            dataList.resultsDisplay[0].state === 5)
-                          ? true
-                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 ? true
-                            : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? true
-                              : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? true
-                                : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 ? false
-                                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 5 ? true : true
-                      }
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                          .filter((item) => item.id !== 0)
-                          .map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.class}
-                            </MenuItem>
-                          ))
-                        : []}
-                    </TextField>
+                    {!!resultDisplay.match_real_vehicleClass
+                      ? "C" + resultDisplay.match_real_vehicleClass
+                      : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
+                  <TableCell style={{ width: 20 }}>
+                    {!!resultDisplay.match_real_fee
+                      ? resultDisplay.match_real_fee
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1406,30 +1404,19 @@ export default function ModalActivity2(props) {
             }}
           >
             <Button
-              disabled={
-                !!dataList.resultsDisplay &&
-                  (dataList.resultsDisplay[0].state === 3 ||
-                    dataList.resultsDisplay[0].state === 4 ||
-                    dataList.resultsDisplay[0].state === 5)
-                  ? true
-                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 && !!operation ? false
-                    : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? false
-                      : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? false
-                        : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 && !!vehicleClass ? false
-                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 6 && !!operation ? false : true
-              }
               variant="contained"
               color="primary"
-              style={{ marginTop: 17, float: "right" }}
+              style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
+              disabled
             >
               บันทึก
             </Button>
           </div>
         </Grid>
       </Grid>
-    </div >
+    </div>
   );
 
   return (

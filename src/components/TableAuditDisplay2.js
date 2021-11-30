@@ -58,7 +58,7 @@ const detailStatus = [
     label: "รอตรวจสอบรับทราบ",
   },
 ];
-const useStyles = makeStyles((theme, props) => {
+const useStyles = makeStyles((theme) => {
   return {
     container: {
       maxHeight: "55vh",
@@ -143,9 +143,8 @@ export default function TableAuditDisplay2(props) {
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
+      // background: 'rgba(0,0,0,0.80)'
     });
-
-    let date = timeStamp.split(" ").shift();
 
     const sendData = {
       transactionId: ts,
@@ -178,7 +177,6 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
-    setOpen1(false);
   };
 
   const classes = useStyles();
@@ -317,10 +315,15 @@ export default function TableAuditDisplay2(props) {
                     {data.transactionId}
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
-                    -
+                    {!!data.match_gate && data.match_checkpoint === 1 ? 'ทับช้าง1'
+                      : !!data.match_gate && data.match_checkpoint === 2 ? 'ทับช้าง2'
+                        : !!data.match_gate && data.match_checkpoint === 3 ? 'ธัญบุรี1'
+                          : !!data.match_gate && data.match_checkpoint === 4 ? 'ธัญบุรี2' : '-'}
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
-                    -
+                    {!!data.match_gate
+                      ? data.match_gate
+                      : "-"}
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
                     {!!data.match_timestamp
@@ -366,7 +369,7 @@ export default function TableAuditDisplay2(props) {
                     -
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
-                    -
+                    {!!data.forceFlag ? "บังคับ" : "-"}
                   </TableCell>
                 </StyledTableRow>
               ))

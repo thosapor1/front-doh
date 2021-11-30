@@ -23,8 +23,8 @@ import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 const apiURLv1 = axios.create({
   baseURL:
@@ -211,8 +211,8 @@ export default function AuditDisplay2() {
         res.data.summary
       );
 
-      setAllTsTable(res.data.status !== false ? res.data : []);
-      setCardData(res.data.status !== false ? res.data.summary : []);
+      setAllTsTable(!!res.data.status ? res.data : []);
+      setCardData(!!res.data.status ? res.data.summary : []);
     }).catch((error) => {
       // handleClose();
       Swal.fire({
@@ -247,17 +247,19 @@ export default function AuditDisplay2() {
     );
 
     const sendData = {
-      page: pageId,
-      checkpoint_id: "0",
-      datetime: date,
+      page: pageId.toString(),
+      checkpoint_id: checkpoint.toString() || "0",
+      gate_id: selectGate.toString() || "0",
+      state: status_select.toString() || "0",
+      vehicleClass: selectCarType.toString() || "0",
+      date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: "0",
-      sub_state: subState,
+      status: tsType.toString(),
     };
     console.log(sendData);
 
-    apiURL.post("/display", sendData).then((res) => {
+    apiURL.post("/display2", sendData).then((res) => {
       Swal.close();
       setAllTsTable({
         summary: {
@@ -283,27 +285,6 @@ export default function AuditDisplay2() {
       setAllTsTable(res.data.status !== false ? res.data : []);
     });
   };
-
-  // const changeSubState = (e) => {
-  //   console.log(e);
-  //   if (e === 0) {
-  //     setStatus_select(0);
-  //     setStatus(0);
-  //     setSubState(0);
-  //   } else if (e === 1) {
-  //     setStatus_select(1);
-  //     setStatus(1);
-  //     setSubState(1);
-  //   } else if (e === 2) {
-  //     setStatus_select(2);
-  //     setStatus(2);
-  //     setSubState(1);
-  //   } else if (e === 3) {
-  //     setStatus_select(3);
-  //     setStatus(2);
-  //     setSubState(2);
-  //   }
-  // };
 
   useEffect(() => {
     // fetchData();
@@ -483,38 +464,29 @@ export default function AuditDisplay2() {
           <Grid item>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
-                รายการทั้งหมด :{" "}
-                {!!cardData.ts_total ? cardData.ts_total.toLocaleString() : ""}{" "}
+                {`รายการทั้งหมด : ${!!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0}`}
               </Typography>
               <Typography className={classes.typography}>
-                ตรงกัน :{" "}
-                {!!cardData.ts_normal
-                  ? cardData.ts_normal.toLocaleString()
-                  : ""}{" "}
+                {`ปกติ : ${!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0}`}
               </Typography>
               <Typography className={classes.typography}>
-                ไม่ตรงกัน :{" "}
-                {!!cardData.ts_not_normal
-                  ? cardData.ts_not_normal.toLocaleString()
-                  : ""}{" "}
+                {`ไม่ตรงกัน : ${!!cardData.ts_not_normal ? cardData.ts_not_normal.toLocaleString() : 0}`}
               </Typography>
               <Typography className={classes.typography}>
-                สูญหาย :{" "}
-                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : ""}{" "}
+                {`สูญหาย : ${!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}`}
               </Typography>
             </Paper>
           </Grid>
           <Grid item>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
-                รายได้ประมาณการ :{" "}
-                {!!cardData.revenue ? cardData.revenue.toLocaleString() : ""}{" "}
+                {`รายได้ประมาณการ : ${!!cardData.revenue ? cardData.revenue.toLocaleString() : 0}`}
               </Typography>
               <Typography className={classes.typography}>
-                ชำระแล้ว : -{" "}
+                ชำระแล้ว : 0
               </Typography>
               <Typography className={classes.typography}>
-                ค้างชำระ : -{" "}
+                ค้างชำระ : 0
               </Typography>
             </Paper>
           </Grid>

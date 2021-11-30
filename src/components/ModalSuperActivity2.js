@@ -360,7 +360,14 @@ export default function ModalSuperActivity2(props) {
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData());
+      .then(() => props.onFetchData())
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -1081,8 +1088,8 @@ export default function ModalSuperActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1144,11 +1151,19 @@ export default function ModalSuperActivity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.ts_duplication
+                      ? resultDisplay.ts_duplication
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_comment
+                      ? resultDisplay.pk3_comment
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
@@ -1337,6 +1352,17 @@ export default function ModalSuperActivity2(props) {
                       name="vehicleClass"
                       value={vehicleClass}
                       onChange={handleOptionChange}
+                      disabled={
+                        !!dataList.resultsDisplay &&
+                        dataList.resultsDisplay[0].state === 4 &&
+                        operation === 1
+                          ? false
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 5 &&
+                            operation === 1
+                          ? false
+                          : true
+                      }
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
@@ -1369,6 +1395,15 @@ export default function ModalSuperActivity2(props) {
               style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
+              disabled={
+                !!operation && operation === 1 && !!vehicleClass
+                  ? false
+                  : !!operation && operation === 2
+                  ? false
+                  : !!operation && operation === 5
+                  ? false
+                  : true
+              }
             >
               บันทึก
             </Button>
