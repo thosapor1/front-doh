@@ -1110,8 +1110,8 @@ export default function ModalPK3Activity(props) {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1409,6 +1409,7 @@ export default function ModalPK3Activity(props) {
                       name="vehicleClass"
                       value={vehicleClass}
                       onChange={handleOptionChange}
+                      disabled
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
@@ -1441,6 +1442,13 @@ export default function ModalPK3Activity(props) {
               style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
+              disabled={
+                !!operation && operation === 1
+                  ? false
+                  : !!operation && operation === 2
+                  ? false
+                  : true
+              }
             >
               บันทึก
             </Button>

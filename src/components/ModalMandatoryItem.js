@@ -16,6 +16,8 @@ import {
   Typography,
   Box,
   Paper,
+  Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -224,10 +226,17 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
+    disableLabel2: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
   };
 });
 
-export default function ModalSuperActivity2(props) {
+export default function ModalMandatoryItem(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate } = props;
 
@@ -283,8 +292,10 @@ export default function ModalSuperActivity2(props) {
   const [state, setState] = useState({
     operation: "",
     commentSuper: "",
+    commentPK3: "",
+    TransactionsPeat: "",
   });
-  const { commentSuper, operation } = state;
+  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
 
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
@@ -292,6 +303,41 @@ export default function ModalSuperActivity2(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const upload = () => {
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    if (fileName !== "") {
+      axios
+        .post(`${URL}/pk3-upload-file`, formData)
+        .then((res) => {
+          if (res.data.status === true) {
+            Swal.fire({
+              title: "Success",
+              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Fail",
+              text: "อัพโหลดข้อมูลไม่สำเร็จ",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .then(() => setFileName(""));
+    }
   };
 
   const handleOptionChange = (event) => {
@@ -302,8 +348,8 @@ export default function ModalSuperActivity2(props) {
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-        super_audit_vehicleClass: ${vehicleClass}
-        event.target.value: ${index}`
+          super_audit_vehicleClass: ${vehicleClass}
+          event.target.value: ${index}`
     );
   };
 
@@ -323,9 +369,9 @@ export default function ModalSuperActivity2(props) {
       fee: audit_feeAmount || "0",
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: state.operation,
-      pk3_comment: "",
-      super_audit_comment: commentSuper,
-      ts_duplication: "",
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
     };
 
     Swal.fire({
@@ -420,6 +466,14 @@ export default function ModalSuperActivity2(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
+      setState({
+        ...state,
+        TransactionsPeat: "",
+        commentPK3: "",
+        operation: "",
+      });
+      setFileName("");
+
       console.log("dataList", dataList);
     }
   }, [dataList]);
@@ -524,17 +578,15 @@ export default function ModalSuperActivity2(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={1}>
-            <div className={classes.imageWrap}>
-              <CardMedia
-                component="img"
-                src={
-                  dataList.mf_lane_picFull !== 0
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                    : noImage
-                }
-                className={classes.image}
-              />
-            </div>
+            <CardMedia
+              component="img"
+              src={
+                dataList.mf_lane_picFull !== 0
+                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
           </TabPanel4>
           <TabPanel4 value={value5} index={2}>
             <div className={classes.imageWrap}>
@@ -919,17 +971,17 @@ export default function ModalSuperActivity2(props) {
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                    <TableCell>ทะเบียน</TableCell>
-                    <TableCell>
-                      {!!resultDisplay.mf_lane_plateNo1
-                        ? resultDisplay.mf_lane_plateNo1
-                        : "-"}
-                    </TableCell>
-                  </TableRow> */}
+                      <TableCell>ทะเบียน</TableCell>
+                      <TableCell>
+                        {!!resultDisplay.mf_lane_plateNo1
+                          ? resultDisplay.mf_lane_plateNo1
+                          : "-"}
+                      </TableCell>
+                    </TableRow> */}
                 {/* <TableRow>
-                    <TableCell>จัดหวัด</TableCell>
-                    <TableCell>-</TableCell>
-                  </TableRow> */}
+                      <TableCell>จัดหวัด</TableCell>
+                      <TableCell>-</TableCell>
+                    </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
@@ -1095,13 +1147,13 @@ export default function ModalSuperActivity2(props) {
                   </TableCell>
                 </TableRow>
                 {/* <TableRow>
-                    <TableCell>จังหวัด</TableCell>
-                    <TableCell>
-                      {dataList.mf_lp_province === null
-                        ? "-"
-                        : dataList.mf_lp_province}
-                    </TableCell>
-                  </TableRow> */}
+                      <TableCell>จังหวัด</TableCell>
+                      <TableCell>
+                        {dataList.mf_lp_province === null
+                          ? "-"
+                          : dataList.mf_lp_province}
+                      </TableCell>
+                    </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -1135,6 +1187,7 @@ export default function ModalSuperActivity2(props) {
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
+                    {" "}
                     {!!resultDisplay.pk3_upload_file ? (
                       <Link onClick={download}>download</Link>
                     ) : (
@@ -1161,14 +1214,9 @@ export default function ModalSuperActivity2(props) {
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
                   <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="commentSuper"
-                      variant="outlined"
-                      onChange={handleChange}
-                      className={classes.smallText}
-                      value={state.commentSuper}
-                    />
+                    {!!resultDisplay.super_audit_comment
+                      ? resultDisplay.super_audit_comment
+                      : "-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -1288,21 +1336,10 @@ export default function ModalSuperActivity2(props) {
                       name="operation"
                       value={operation}
                       onChange={handleChange}
+                      disabled
                     >
                       {!!dataList.resultsDisplay &&
-                      dataList.resultsDisplay[0].state === 4
-                        ? dropdown.operation_key
-                            .filter(
-                              (item) =>
-                                item.id === 1 || item.id === 2 || item.id === 5
-                            )
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.name}
-                              </MenuItem>
-                            ))
-                        : !!dataList.resultsDisplay &&
-                          dataList.resultsDisplay[0].state === 5
+                      dataList.resultsDisplay[0].state === 3
                         ? dropdown.operation_key
                             .filter((item) => item.id === 1 || item.id === 2)
                             .map((item, index) => (
@@ -1337,41 +1374,18 @@ export default function ModalSuperActivity2(props) {
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    <TextField
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                      disabled={
-                        !!dataList.resultsDisplay &&
-                        dataList.resultsDisplay[0].state === 4 &&
-                        operation === 1
-                          ? false
-                          : !!dataList.resultsDisplay &&
-                            dataList.resultsDisplay[0].state === 5 &&
-                            operation === 1
-                          ? false
-                          : true
-                      }
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
-                        : []}
-                    </TextField>
+                    {!!resultDisplay.match_real_vehicleClass
+                      ? "C" + resultDisplay.match_real_vehicleClass
+                      : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
+                  <TableCell style={{ width: 20 }}>
+                    {!!resultDisplay.match_real_fee
+                      ? resultDisplay.match_real_fee
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1388,15 +1402,7 @@ export default function ModalSuperActivity2(props) {
               style={{ marginTop: 96, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
-              disabled={
-                !!operation && operation === 1 && !!vehicleClass
-                  ? false
-                  : !!operation && operation === 2
-                  ? false
-                  : !!operation && operation === 5
-                  ? false
-                  : true
-              }
+              disabled
             >
               บันทึก
             </Button>
