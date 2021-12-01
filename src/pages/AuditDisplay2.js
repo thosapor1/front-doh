@@ -20,7 +20,8 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import SeachComponent from "../components/SeachComponent";
+import SearchComponent from "../components/SearchComponent";
+import { CallMerge } from "@material-ui/icons";
 
 const apiURL = axios.create({
   baseURL:
@@ -136,6 +137,7 @@ export default function AuditDisplay2() {
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [pageSearch, setPageSearch] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -464,13 +466,16 @@ export default function AuditDisplay2() {
         {/* Card Section */}
         <Box className={classes.cardSection}>
           <Box>
-            <SeachComponent
+            <SearchComponent
               value={transactionId}
               date={selectedDate}
-              onChange={(e) => {
+              handleOnChange={(e) => {
                 setTransactionId(e.target.value);
                 console.log(transactionId);
               }}
+              name="search"
+              label="transaction id"
+              setTable = {setAllTsTable}
             />
           </Box>
           <Box style={{ display: "flex" }}>

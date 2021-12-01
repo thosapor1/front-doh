@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import HighlightOffTwoToneIcon from "@material-ui/icons/HighlightOffTwoTone";
-import SeachComponent from "../components/SeachComponent";
+import SearchComponent from "../components/SearchComponent";
 
 const useStyle = makeStyles((theme) => {
   return {

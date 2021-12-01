@@ -17,7 +17,6 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalActivity2 from "./ModalActivity2";
 // import format from "date-fns/format";
 
@@ -146,7 +145,7 @@ const useStyles = makeStyles((theme) => {
       },
       width: 100,
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 100,
         marginBottom: 10,
       },
     },
@@ -163,6 +162,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function TableAuditDisplay2(props) {
   const [open, setOpen] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = async (ts, State, timeStamp) => {
@@ -207,7 +207,7 @@ export default function TableAuditDisplay2(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate } = props;
+  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
@@ -219,8 +219,15 @@ export default function TableAuditDisplay2(props) {
             className={classes.input1}
             style={{ margin: "0" }}
             label="go to page"
+            value={selectedPage}
+            onChange={(e) => setSelectedPage(e.target.value)}
           />
-          <Button variant="contained" color="secondary" style={{ height: 35 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ height: 35 }}
+            onClick={() => onFetchData(parseInt(selectedPage))}
+          >
             Go
           </Button>
         </Box>

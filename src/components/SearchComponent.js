@@ -6,6 +6,16 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import DateFnsUtils from "@date-io/date-fns";
+import axios from "axios";
+import format from "date-fns/format";
+import Swal from "sweetalert2";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -52,9 +62,36 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-export default function SeachComponent(props) {
+export default function SearchComponent(props) {
   const classes = useStyle();
-  const { transactionId, date } = props;
+  const { date, label, value, name, handleOnChange, setTable } = props;
+
+  const onClickHandle = () => {
+    const sendData = {
+      date: format(date, "yyyy-MM-dd"),
+      transactionId: value,
+    };
+
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    apiURL
+      .post("/audit-search", sendData)
+      .then((res) => {
+        Swal.close();
+        setTable(!!res.data.status ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+  };
 
   return (
     <>
@@ -62,15 +99,16 @@ export default function SeachComponent(props) {
         <TextField
           variant="outlined"
           className={classes.input1}
-          label="TransactionId"
-          value={transactionId}
-          name="transactionId"
+          label={label}
+          value={value}
+          name={name}
+          onChange={handleOnChange}
         />
         <Button
           variant="contained"
           color="primary"
           style={{ display: "block", marginLeft: 120 }}
-          onClick={() => alert(transactionId)}
+          onClick={onClickHandle}
         >
           Search{" "}
         </Button>
