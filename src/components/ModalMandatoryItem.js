@@ -238,7 +238,7 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalMandatoryItem(props) {
   const classes = useStyle();
-  const { dataList, dropdown, checkDate } = props;
+  const { dataList, dropdown, checkDate, page } = props;
 
   const [value1, setValue1] = useState(2);
   const [value2, setValue2] = useState(2);
@@ -457,7 +457,7 @@ export default function ModalMandatoryItem(props) {
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData());
+      .then(() => props.onFetchData(page));
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);

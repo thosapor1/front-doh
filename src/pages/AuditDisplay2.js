@@ -1,5 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -19,6 +20,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
+import SeachComponent from "../components/SeachComponent";
 
 const apiURL = axios.create({
   baseURL:
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "end",
+      justifyContent: "space-between",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -128,16 +130,13 @@ export default function AuditDisplay2() {
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState(0);
   const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [subState, setSubState] = useState(0);
   const [selectGate, setSelectGate] = useState(0);
   const [selectCarType, setSelectCarType] = useState(0);
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date("Sep 01, 2021")
-  // );
+  const [transactionId, setTransactionId] = useState("");
+
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -191,35 +190,38 @@ export default function AuditDisplay2() {
     };
     console.log(sendData);
 
-    apiURL.post("/display2", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
-      });
-      console.log(
-        "res: ",
-        res.data,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
+    apiURL
+      .post("/display2", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
 
-      setAllTsTable(!!res.data.status ? res.data : []);
-      setCardData(!!res.data.status ? res.data.summary : []);
-    }).catch((error) => {
-      // handleClose();
-      Swal.fire({
-        icon: "error",
-        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        setAllTsTable(!!res.data.status ? res.data : []);
+        setCardData(!!res.data.status ? res.data.summary : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-    });
   };
 
   const refresh = (pageId = 1) => {
@@ -312,10 +314,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.checkpoint
               ? dropdown.checkpoint.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.checkpoint_name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -330,10 +332,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.gate
               ? dropdown.gate.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -348,10 +350,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.vehicle
               ? dropdown.vehicle.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.class}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.class}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -368,10 +370,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.state
               ? dropdown.state.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -388,10 +390,10 @@ export default function AuditDisplay2() {
           >
             {!!dropdown.ts_status
               ? dropdown.ts_status.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
               : []}
           </TextField>
 
@@ -460,27 +462,48 @@ export default function AuditDisplay2() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection}>
-          <Grid item>
+        <Box className={classes.cardSection}>
+          <Box>
+            <SeachComponent
+              value={transactionId}
+              date={selectedDate}
+              onChange={(e) => {
+                setTransactionId(e.target.value);
+                console.log(transactionId);
+              }}
+            />
+          </Box>
+          <Box style={{ display: "flex" }}>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
-                {`รายการทั้งหมด : ${!!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0}`}
+                {`รายการทั้งหมด : ${
+                  !!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
-                {`ปกติ : ${!!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0}`}
+                {`ปกติ : ${
+                  !!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
-                {`ไม่ตรงกัน : ${!!cardData.ts_not_normal ? cardData.ts_not_normal.toLocaleString() : 0}`}
+                {`ไม่ตรงกัน : ${
+                  !!cardData.ts_not_normal
+                    ? cardData.ts_not_normal.toLocaleString()
+                    : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
-                {`สูญหาย : ${!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}`}
+                {`สูญหาย : ${
+                  !!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0
+                }`}
               </Typography>
             </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className={classes.card}>
+
+            <Paper className={classes.card} style={{ marginLeft: 10 }}>
               <Typography className={classes.typography}>
-                {`รายได้ประมาณการ : ${!!cardData.revenue ? cardData.revenue.toLocaleString() : 0}`}
+                {`รายได้ประมาณการ : ${
+                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
                 ชำระแล้ว : 0
@@ -489,8 +512,9 @@ export default function AuditDisplay2() {
                 ค้างชำระ : 0
               </Typography>
             </Paper>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
+
         {/* Table Section */}
         <Grid
           container

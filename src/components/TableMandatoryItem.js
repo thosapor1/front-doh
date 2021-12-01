@@ -408,6 +408,7 @@ export default function TablePK3display(props) {
         onFetchData={props.onFetchData}
         dropdown={dropdown}
         checkDate={checkDate}
+        page={page}
       />
       <ModalReadOnly2
         dataList={dataForActivity}
