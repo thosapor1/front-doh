@@ -1,5 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -19,6 +20,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableSuperdisplay2 from "../components/TableSuperdisplay2";
+import SearchComponent from "../components/SearchComponent";
 
 const apiURL = axios.create({
   baseURL:
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "end",
+      justifyContent: "space-between",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -147,6 +149,7 @@ export default function SuperAuditDisplay2() {
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
+  const [transactionId, setTransactionId] = useState("");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -483,7 +486,21 @@ export default function SuperAuditDisplay2() {
 
         {/* Card Section */}
         <Grid container spacing={1} className={classes.cardSection}>
-          <Grid item>
+          <Box>
+            <SearchComponent
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                console.log(transactionId);
+              }}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint="/audit-search"
+            />
+          </Box>
+          <Box style={{ display: "flex" }}>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายการทั้งหมด :{" "}
@@ -506,8 +523,7 @@ export default function SuperAuditDisplay2() {
                 {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
               </Typography>
             </Paper>
-          </Grid>
-          <Grid item>
+
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายได้ประมาณการ :{" "}
@@ -520,7 +536,7 @@ export default function SuperAuditDisplay2() {
                 ค้างชำระ : -
               </Typography>
             </Paper>
-          </Grid>
+          </Box>
         </Grid>
         {/* Table Section */}
         <Grid
