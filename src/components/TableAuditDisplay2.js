@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   makeStyles,
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -15,7 +17,6 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalActivity2 from "./ModalActivity2";
 // import format from "date-fns/format";
 
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.down("lg")]: {
         maxHeight: "42vh",
       },
+      marginTop: 10,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -96,6 +98,7 @@ const useStyles = makeStyles((theme) => {
         fontSize: "0.8rem",
         [theme.breakpoints.down("lg")]: {
           fontSize: "0.7rem",
+          marginTop: 10,
         },
       },
       marginBottom: 10,
@@ -118,8 +121,32 @@ const useStyles = makeStyles((theme) => {
     box: {
       display: "flex",
       justifyContent: "space-between",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         display: "block",
+      },
+    },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 35,
+      },
+      "& .MuiInputLabel-outlined": {
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+        transform: "translate(10px, 10px) scale(1)",
+      },
+      "& .MuiInputLabel-shrink": {
+        transform: "translate(14px, -6px) scale(0.75)",
+      },
+      width: 100,
+      [theme.breakpoints.down("lg")]: {
+        width: 100,
+        marginBottom: 10,
       },
     },
   };
@@ -135,7 +162,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function TableAuditDisplay2(props) {
   const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
 
   const fetchData = async (ts, State, timeStamp) => {
@@ -180,11 +207,31 @@ export default function TableAuditDisplay2(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate } = props;
+  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
       <Box className={classes.box}>
+        {/* page box */}
+        <Box>
+          <TextField
+            variant="outlined"
+            className={classes.input1}
+            style={{ margin: "0" }}
+            label="go to page"
+            value={selectedPage}
+            onChange={(e) => setSelectedPage(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ height: 35 }}
+            onClick={() => onFetchData(parseInt(selectedPage))}
+          >
+            Go
+          </Button>
+        </Box>
+        {/* search page box */}
         <Pagination
           count={dataList.totalPages}
           color="primary"
@@ -192,6 +239,7 @@ export default function TableAuditDisplay2(props) {
           onChange={onChange}
           className={classes.pagination}
         />
+        {/* detail box */}
         <Box style={{ display: "flex", paddingTop: 2 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
@@ -201,7 +249,7 @@ export default function TableAuditDisplay2(props) {
               />
               <Typography className={classes.detailStatus}>
                 {item.label}
-              </Typography>{" "}
+              </Typography>
             </Box>
           ))}
         </Box>
@@ -279,95 +327,103 @@ export default function TableAuditDisplay2(props) {
           <TableBody>
             {!!dataList.resultsDisplay
               ? dataList.resultsDisplay.map((data) => (
-                <StyledTableRow
-                  key={data.transactionId}
-                  onClick={() => {
-                    fetchData(
-                      data.transactionId,
-                      data.state,
-                      data.match_timestamp
-                    );
-                  }}
-                  className={classes.tableRow}
-                >
-                  <TableCell align="center" className={classes.tableCell}>
-                    <FiberManualRecordIcon
-                      style={{
-                        // fontSize: "0.8rem",
-                        color:
-                          data.state === 1
-                            ? "lightgray"
-                            : data.state === 2
+                  <StyledTableRow
+                    key={data.transactionId}
+                    onClick={() => {
+                      fetchData(
+                        data.transactionId,
+                        data.state,
+                        data.match_timestamp
+                      );
+                    }}
+                    className={classes.tableRow}
+                  >
+                    <TableCell align="center" className={classes.tableCell}>
+                      <FiberManualRecordIcon
+                        style={{
+                          // fontSize: "0.8rem",
+                          color:
+                            data.state === 1
+                              ? "lightgray"
+                              : data.state === 2
                               ? "#FF2400"
                               : data.state === 3
-                                ? "blue"
-                                : data.state === 4
-                                  ? "orange"
-                                  : data.state === 5
-                                    ? "black"
-                                    : data.state === 6
-                                      ? "darkviolet"
-                                      : "rgba(0,0,0,0)",
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {data.transactionId}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_timestamp
-                      ? data.match_timestamp.split(" ").pop()
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_real_vehicleClass
-                      ? `C${data.match_real_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.audit_check_vehicleClass
-                      ? `C${data.audit_check_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {data.mf_lane_vehicleClass
-                      ? `C${data.mf_lane_vehicleClass}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_transaction_type
-                      ? data.match_transaction_type_name
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_real_fee ? data.match_real_fee : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.fine ? data.fine : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.match_total_cost ? data.match_total_cost : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.forceFlag ? "บังคับ" : "-"}
-                  </TableCell>
-                </StyledTableRow>
-              ))
+                              ? "blue"
+                              : data.state === 4
+                              ? "orange"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "darkviolet"
+                              : "rgba(0,0,0,0)",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.transactionId}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_gate && data.match_checkpoint === 1
+                        ? "ทับช้าง1"
+                        : !!data.match_gate && data.match_checkpoint === 2
+                        ? "ทับช้าง2"
+                        : !!data.match_gate && data.match_checkpoint === 3
+                        ? "ธัญบุรี1"
+                        : !!data.match_gate && data.match_checkpoint === 4
+                        ? "ธัญบุรี2"
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_gate ? data.match_gate : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_timestamp
+                        ? data.match_timestamp.split(" ").pop()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_vehicleClass
+                        ? `C${data.match_real_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_check_vehicleClass
+                        ? `C${data.audit_check_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.mf_lane_vehicleClass
+                        ? `C${data.mf_lane_vehicleClass}`
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_transaction_type
+                        ? data.match_transaction_type_name
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_real_fee ? data.match_real_fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.fine ? data.fine : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.match_total_cost ? data.match_total_cost : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.forceFlag ? "บังคับ" : "-"}
+                    </TableCell>
+                  </StyledTableRow>
+                ))
               : []}
           </TableBody>
         </Table>
@@ -380,8 +436,8 @@ export default function TableAuditDisplay2(props) {
         onFetchData={props.onFetchData}
         dropdown={dropdown}
         checkDate={checkDate}
+        page={page}
       />
-
     </div>
   );
 }
