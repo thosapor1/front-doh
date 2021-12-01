@@ -407,6 +407,7 @@ export default function TableSuperdisplay2(props) {
         onFetchData={props.onFetchData}
         dropdown={dropdown}
         checkDate={checkDate}
+        page={page}
       />
       <ModalReadOnly2
         dataList={dataForActivity}
