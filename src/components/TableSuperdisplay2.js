@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   makeStyles,
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -58,26 +60,15 @@ const detailStatus = [
     label: "รอตรวจสอบรับทราบ",
   },
 ];
-const useStyles = makeStyles((theme, props) => {
+const useStyles = makeStyles((theme) => {
   return {
-    "@global": {
-      "*::-webkit-scrollbar": {
-        width: "0.3em",
-      },
-      "*::-webkit-scrollbar-track": {
-        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-      },
-      "*::-webkit-scrollbar-thumb": {
-        backgroundColor: "rgba(0,0,0,.1)",
-        outline: "1px  lightgray",
-      },
-    },
     container: {
       maxHeight: "55vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "42vh",
       },
+      marginTop: 10,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -108,6 +99,7 @@ const useStyles = makeStyles((theme, props) => {
         fontSize: "0.8rem",
         [theme.breakpoints.down("lg")]: {
           fontSize: "0.7rem",
+          marginTop: 10,
         },
       },
       marginBottom: 10,
@@ -130,8 +122,32 @@ const useStyles = makeStyles((theme, props) => {
     box: {
       display: "flex",
       justifyContent: "space-between",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         display: "block",
+      },
+    },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 35,
+      },
+      "& .MuiInputLabel-outlined": {
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+        transform: "translate(10px, 10px) scale(1)",
+      },
+      "& .MuiInputLabel-shrink": {
+        transform: "translate(14px, -6px) scale(0.75)",
+      },
+      width: 100,
+      [theme.breakpoints.down("lg")]: {
+        width: 100,
+        marginBottom: 10,
       },
     },
   };
@@ -149,6 +165,7 @@ export default function TableSuperdisplay2(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [selectedPage, setSelectedPage] = useState("");
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -197,11 +214,30 @@ export default function TableSuperdisplay2(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate } = props;
+  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
       <Box className={classes.box}>
+        {/* page box */}
+        <Box>
+          <TextField
+            variant="outlined"
+            className={classes.input1}
+            style={{ margin: "0" }}
+            label="go to page"
+            value={selectedPage}
+            onChange={(e) => setSelectedPage(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ height: 35 }}
+            onClick={() => onFetchData(parseInt(selectedPage))}
+          >
+            Go
+          </Button>
+        </Box>
         <Pagination
           count={dataList.totalPages}
           color="primary"
@@ -407,6 +443,7 @@ export default function TableSuperdisplay2(props) {
         onFetchData={props.onFetchData}
         dropdown={dropdown}
         checkDate={checkDate}
+        page={page}
       />
       <ModalReadOnly2
         dataList={dataForActivity}
