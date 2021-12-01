@@ -64,7 +64,8 @@ const useStyle = makeStyles((theme) => {
 
 export default function SearchComponent(props) {
   const classes = useStyle();
-  const { date, label, value, name, handleOnChange, setTable } = props;
+  const { date, label, value, name, handleOnChange, setTable, endpoint } =
+    props;
 
   const onClickHandle = () => {
     const sendData = {
@@ -79,7 +80,7 @@ export default function SearchComponent(props) {
     });
 
     apiURL
-      .post("/audit-search", sendData)
+      .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
         setTable(!!res.data.status ? res.data : []);

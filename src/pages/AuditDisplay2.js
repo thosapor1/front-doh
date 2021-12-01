@@ -475,7 +475,8 @@ export default function AuditDisplay2() {
               }}
               name="search"
               label="transaction id"
-              setTable = {setAllTsTable}
+              setTable={setAllTsTable}
+              endpoint="/audit-search"
             />
           </Box>
           <Box style={{ display: "flex" }}>
