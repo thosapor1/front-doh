@@ -1,5 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -19,6 +20,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableMandatoryItem from "../components/TableMandatoryItem";
+import SearchComponent from "../components/SearchComponent";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "end",
+      justifyContent: "space-between",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 60,
+      height: 80,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -136,6 +138,7 @@ export default function MandatoryItem() {
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState("0");
+  const [transactionId, setTransactionId] = useState("");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -478,7 +481,21 @@ export default function MandatoryItem() {
 
         {/* Card Section */}
         <Grid container spacing={1} className={classes.cardSection}>
-          <Grid item>
+          <Box>
+            <SearchComponent
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                console.log(transactionId);
+              }}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint="/audit-search"
+            />
+          </Box>
+          <Box style={{ display: "flex" }}>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
                 รายการทั้งหมด :{" "}
@@ -497,7 +514,7 @@ export default function MandatoryItem() {
                 {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
               </Typography>
             </Paper>
-          </Grid>
+          </Box>
         </Grid>
         {/* Table Section */}
         <Grid
