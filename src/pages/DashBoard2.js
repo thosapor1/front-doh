@@ -262,16 +262,24 @@ export default function DashBoard2() {
     });
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
-    apiURL.post("/dashboard-month", sendData).then((res) => {
-      Swal.close();
-      const allData = res.data;
-      const dataInMonth = res.data.month;
-      console.log("dataInMonth", dataInMonth);
-      setDataTable(allData);
-      getChartData(dataInMonth);
-      getPopUpData(allData);
-    });
-    // console.log(dateCalendar);
+    apiURL
+      .post("/dashboard-month", sendData)
+      .then((res) => {
+        Swal.close();
+        const allData = res.data;
+        const dataInMonth = res.data.month;
+        console.log("dataInMonth", dataInMonth);
+        setDataTable(allData);
+        getChartData(dataInMonth);
+        getPopUpData(allData);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   useEffect(() => {

@@ -62,10 +62,10 @@ const detailStatus = [
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "55vh",
+      maxHeight: "60vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
-        maxHeight: "42vh",
+        maxHeight: "50vh",
       },
       marginTop: 10,
     },
@@ -284,6 +284,9 @@ export default function TableAuditDisplay2(props) {
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 ประเภท TS
               </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                member
+              </TableCell>
               <TableCell colSpan={3} align="center" className={classes.header}>
                 ตรวจสอบ
               </TableCell>
@@ -408,6 +411,9 @@ export default function TableAuditDisplay2(props) {
                       {!!data.match_transaction_type
                         ? data.match_transaction_type_name
                         : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
