@@ -52,8 +52,9 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     allTsTable: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       backgroundColor: "white",
+      
     },
     card: {
       padding: "1rem",
@@ -487,7 +488,7 @@ export default function PK3Display() {
         </Grid>
 
         {/* Card Section */}
-        <Grid container spacing={1} className={classes.cardSection}>
+        <Box className={classes.cardSection}>
           <Box>
             <SearchComponent
               value={transactionId}
@@ -505,24 +506,44 @@ export default function PK3Display() {
           <Box style={{ display: "flex" }}>
             <Paper className={classes.card}>
               <Typography className={classes.typography}>
-                รายการทั้งหมด :{" "}
-                {!!allTsTable.totalCount
-                  ? allTsTable.totalCount.toLocaleString()
-                  : 0}
+                {`รายการทั้งหมด : ${
+                  !!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
-                ไม่ตรงกัน :{" "}
-                {!!cardData.ts_not_normal
-                  ? cardData.ts_not_normal.toLocaleString()
-                  : 0}
+                {`ปกติ : ${
+                  !!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0
+                }`}
               </Typography>
               <Typography className={classes.typography}>
-                สูญหาย :{" "}
-                {!!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0}
+                {`ไม่ตรงกัน : ${
+                  !!cardData.ts_not_normal
+                    ? cardData.ts_not_normal.toLocaleString()
+                    : 0
+                }`}
+              </Typography>
+              <Typography className={classes.typography}>
+                {`สูญหาย : ${
+                  !!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0
+                }`}
+              </Typography>
+            </Paper>
+
+            <Paper className={classes.card} style={{ marginLeft: 10 }}>
+              <Typography className={classes.typography}>
+                {`รายได้ประมาณการ : ${
+                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
+                }`}
+              </Typography>
+              <Typography className={classes.typography}>
+                ชำระแล้ว : 0
+              </Typography>
+              <Typography className={classes.typography}>
+                ค้างชำระ : 0
               </Typography>
             </Paper>
           </Box>
-        </Grid>
+        </Box>
         {/* Table Section */}
         <Grid
           container

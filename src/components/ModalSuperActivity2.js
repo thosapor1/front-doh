@@ -308,9 +308,7 @@ export default function ModalSuperActivity2(props) {
   };
 
   const handleUpdate = () => {
-    let endPointURL = "";
-
-    endPointURL = "/operation";
+    let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
 
@@ -340,40 +338,42 @@ export default function ModalSuperActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post(endPointURL, sendData).then((res) => {
-            if (res.data.status === true) {
+          apiURLv1
+            .post(endPointURL, sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              // handleClose();
               Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
                 icon: "error",
-                confirmButtonText: "OK",
+                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
               });
-            }
-          });
+            });
         }
       })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData(page))
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+      .then(() => {
+        props.onClick();
+        setTimeout(() => {
+          props.onFetchData(page);
+        }, 2000);
       });
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
   };
-  
+
   useEffect(() => {
     if (dataList) {
       setState(dataList);
@@ -734,7 +734,7 @@ export default function ModalSuperActivity2(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 26 }}>
+            <table className={classes.table} style={{ marginTop: 44 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -881,18 +881,6 @@ export default function ModalSuperActivity2(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
-                {/* <TableRow>
-                    <TableCell>ทะเบียน</TableCell>
-                    <TableCell>
-                      {!!resultDisplay.mf_lane_plateNo1
-                        ? resultDisplay.mf_lane_plateNo1
-                        : "-"}
-                    </TableCell>
-                  </TableRow> */}
-                {/* <TableRow>
-                    <TableCell>จัดหวัด</TableCell>
-                    <TableCell>-</TableCell>
-                  </TableRow> */}
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
@@ -905,7 +893,7 @@ export default function ModalSuperActivity2(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 57 }}>
+            <table className={classes.table} style={{ marginTop: 75 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
