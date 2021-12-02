@@ -18,6 +18,7 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ModalActivity2 from "./ModalActivity2";
+import format from "date-fns/format";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -175,7 +176,7 @@ export default function TableAuditDisplay2(props) {
 
     const sendData = {
       transactionId: ts,
-      date: checkDate,
+      date: format(checkDate,'yyyy-MM-dd'),
     };
 
     apiURL
