@@ -154,7 +154,7 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
-      overflow: 'hidden'
+      overflow: "hidden",
     },
     image: {
       height: "100%",
@@ -204,7 +204,7 @@ const useStyle = makeStyles((theme) => {
     textField2: {
       height: 20,
       bottom: 5,
-      width: '100px',
+      width: "100px",
       "& .MuiInput-input": { fontSize: "0.75rem" },
       float: "right",
       "& .MuiOutlinedInput-inputMarginDense": {
@@ -360,21 +360,21 @@ export default function ModalActivity2(props) {
                 title: "Success",
                 text: "ข้อมูลของท่านถูกบันทึกแล้ว",
                 icon: "success",
-                confirmButtonText: "OK",
+                // confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
                 title: "Fail",
                 text: "บันทึกข้อมูลไม่สำเร็จ",
                 icon: "error",
-                confirmButtonText: "OK",
+                // confirmButtonText: "OK",
               });
             }
           });
         }
       })
       .then(() => props.onClick())
-      .then(() => props.onFetchData(page))
+      .then(() => props.onFetchData(page));
 
     // const res = await apiURL.post("/changeState2to3", sendData);
     console.log(sendData);
@@ -432,32 +432,36 @@ export default function ModalActivity2(props) {
               ? dataList.resultsDisplay[0].state === 1
                 ? "ปกติ"
                 : dataList.resultsDisplay[0].state === 2
-                  ? "ผิดปกติ"
-                  : dataList.resultsDisplay[0].state === 3
-                    ? "รอ pk3 ตรวจสอบ"
-                    : dataList.resultsDisplay[0].state === 4
-                      ? "รอ super audit ตรวจสอบ"
-                      : dataList.resultsDisplay[0].state === 5
-                        ? "รอ พิจารณาพิเศษ"
-                        : dataList.resultsDisplay[0].state === 6
-                          ? "รอตรวจสอบรับทราบ"
-                          : "ไม่มีสถานะ"
+                ? "ผิดปกติ"
+                : dataList.resultsDisplay[0].state === 3
+                ? "รอ pk3 ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 4
+                ? "รอ super audit ตรวจสอบ"
+                : dataList.resultsDisplay[0].state === 5
+                ? "รอ พิจารณาพิเศษ"
+                : dataList.resultsDisplay[0].state === 6
+                ? "รอตรวจสอบรับทราบ"
+                : "ไม่มีสถานะ"
               : ""}
           </Typography>
           <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction:
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].transactionId
-              : ""}
+            {`transaction :
+            ${
+              !!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].transactionId
+                : ""
+            }`}
           </Typography>
           <Typography style={{ color: "gray", fontSize: 14 }}>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].match_checkpoint
-              : ""}
-            /
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].match_gate
-              : ""}
+            {`${
+              !!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].match_checkpoint
+                : ""
+            } / ${
+              !!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].match_gate
+                : ""
+            }`}
           </Typography>
         </div>
         <div>
@@ -868,7 +872,7 @@ export default function ModalActivity2(props) {
                 src={
                   mockPic !== 0
                     ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                    Logo_doh
+                      Logo_doh
                     : noImage
                 }
                 className={classes.image}
@@ -1283,9 +1287,9 @@ export default function ModalActivity2(props) {
                     <TextField
                       disabled={
                         !!dataList.resultsDisplay &&
-                          (dataList.resultsDisplay[0].state === 3 ||
-                            dataList.resultsDisplay[0].state === 4 ||
-                            dataList.resultsDisplay[0].state === 5)
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
                           ? true
                           : false
                       }
@@ -1298,17 +1302,17 @@ export default function ModalActivity2(props) {
                       onChange={handleChange}
                     >
                       {!!dataList.resultsDisplay &&
-                        dataList.resultsDisplay[0].state === 1
+                      dataList.resultsDisplay[0].state === 1
                         ? dropdown.operation_key
-                          .filter((item) => item.id === 2)
-                          .map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.name}
-                            </MenuItem>
-                          ))
+                            .filter((item) => item.id === 2)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
                         : !!dataList.resultsDisplay &&
                           dataList.resultsDisplay[0].state === 2
-                          ? dropdown.operation_key
+                        ? dropdown.operation_key
                             .filter(
                               (item) =>
                                 item.id === 1 || item.id === 2 || item.id === 3
@@ -1318,21 +1322,21 @@ export default function ModalActivity2(props) {
                                 {item.name}
                               </MenuItem>
                             ))
-                          : !!dataList.resultsDisplay &&
-                            (dataList.resultsDisplay[0].state === 3 ||
-                              dataList.resultsDisplay[0].state === 4 ||
-                              dataList.resultsDisplay[0].state === 5)
-                            ? []
-                            : !!dataList.resultsDisplay &&
-                              dataList.resultsDisplay[0].state === 6
-                              ? dropdown.operation_key
-                                .filter((item) => item.id === 4)
-                                .map((item, index) => (
-                                  <MenuItem key={index} value={item.id}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))
-                              : []}
+                        : !!dataList.resultsDisplay &&
+                          (dataList.resultsDisplay[0].state === 3 ||
+                            dataList.resultsDisplay[0].state === 4 ||
+                            dataList.resultsDisplay[0].state === 5)
+                        ? []
+                        : !!dataList.resultsDisplay &&
+                          dataList.resultsDisplay[0].state === 6
+                        ? dropdown.operation_key
+                            .filter((item) => item.id === 4)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.name}
+                              </MenuItem>
+                            ))
+                        : []}
                     </TextField>
                   </TableCell>
                 </TableRow>
@@ -1343,16 +1347,16 @@ export default function ModalActivity2(props) {
                       ? dataList.resultsDisplay[0].state === 1
                         ? "ปกติ"
                         : dataList.resultsDisplay[0].state === 2
-                          ? "ผิดปกติ"
-                          : dataList.resultsDisplay[0].state === 3
-                            ? "รอ pk3 ตรวจสอบ"
-                            : dataList.resultsDisplay[0].state === 4
-                              ? "รอ super audit ตรวจสอบ"
-                              : dataList.resultsDisplay[0].state === 5
-                                ? "รอ พิจารณาพิเศษ"
-                                : dataList.resultsDisplay[0].state === 6
-                                  ? "รอตรวจสอบรับทราบ"
-                                  : "ไม่มีสถานะ"
+                        ? "ผิดปกติ"
+                        : dataList.resultsDisplay[0].state === 3
+                        ? "รอ pk3 ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 4
+                        ? "รอ super audit ตรวจสอบ"
+                        : dataList.resultsDisplay[0].state === 5
+                        ? "รอ พิจารณาพิเศษ"
+                        : dataList.resultsDisplay[0].state === 6
+                        ? "รอตรวจสอบรับทราบ"
+                        : "ไม่มีสถานะ"
                       : ""}
                   </TableCell>
                 </TableRow>
@@ -1362,15 +1366,29 @@ export default function ModalActivity2(props) {
                     <TextField
                       disabled={
                         !!dataList.resultsDisplay &&
-                          (dataList.resultsDisplay[0].state === 3 ||
-                            dataList.resultsDisplay[0].state === 4 ||
-                            dataList.resultsDisplay[0].state === 5)
+                        (dataList.resultsDisplay[0].state === 3 ||
+                          dataList.resultsDisplay[0].state === 4 ||
+                          dataList.resultsDisplay[0].state === 5)
                           ? true
-                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 ? true
-                            : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? true
-                              : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? true
-                                : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 ? false
-                                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 5 ? true : true
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 1
+                          ? true
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 2 &&
+                            operation === 1
+                          ? true
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 2 &&
+                            operation === 2
+                          ? true
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 2 &&
+                            operation === 3
+                          ? false
+                          : !!dataList.resultsDisplay &&
+                            dataList.resultsDisplay[0].state === 5
+                          ? true
+                          : true
                       }
                       variant="outlined"
                       select
@@ -1382,12 +1400,12 @@ export default function ModalActivity2(props) {
                     >
                       {!!dropdown.vehicle
                         ? dropdown.vehicle
-                          .filter((item) => item.id !== 0)
-                          .map((item, index) => (
-                            <MenuItem key={index} value={item.id}>
-                              {item.class}
-                            </MenuItem>
-                          ))
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.class}
+                              </MenuItem>
+                            ))
                         : []}
                     </TextField>
                   </TableCell>
@@ -1408,15 +1426,32 @@ export default function ModalActivity2(props) {
             <Button
               disabled={
                 !!dataList.resultsDisplay &&
-                  (dataList.resultsDisplay[0].state === 3 ||
-                    dataList.resultsDisplay[0].state === 4 ||
-                    dataList.resultsDisplay[0].state === 5)
+                (dataList.resultsDisplay[0].state === 3 ||
+                  dataList.resultsDisplay[0].state === 4 ||
+                  dataList.resultsDisplay[0].state === 5)
                   ? true
-                  : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1 && !!operation ? false
-                    : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 1 ? false
-                      : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 2 ? false
-                        : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 2 && operation === 3 && !!vehicleClass ? false
-                          : !!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 6 && !!operation ? false : true
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 1 &&
+                    !!operation
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2 &&
+                    operation === 1
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2 &&
+                    operation === 2
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2 &&
+                    operation === 3 &&
+                    !!vehicleClass
+                  ? false
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 6 &&
+                    !!operation
+                  ? false
+                  : true
               }
               variant="contained"
               color="primary"
@@ -1429,7 +1464,7 @@ export default function ModalActivity2(props) {
           </div>
         </Grid>
       </Grid>
-    </div >
+    </div>
   );
 
   return (

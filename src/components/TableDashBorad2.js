@@ -55,6 +55,10 @@ const headerCells = [
     label: "รายได้พึงได้",
   },
   {
+    id: "not_normal",
+    label: "ผิดปกติ / รอดำเนินการ",
+  },
+  {
     id: "paid",
     label: "ชำระแล้ว",
   },
@@ -146,6 +150,9 @@ export default function TableDashBoard2(props) {
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
                     {!!data.income ? data.income.toLocaleString() : "-"}
+                  </TableCell>
+                  <TableCell align="center" className={classes.tableCell}>
+                    -
                   </TableCell>
                   <TableCell align="center" className={classes.tableCell}>
                     -

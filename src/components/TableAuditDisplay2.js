@@ -98,10 +98,9 @@ const useStyles = makeStyles((theme) => {
         fontSize: "0.8rem",
         [theme.breakpoints.down("lg")]: {
           fontSize: "0.7rem",
-          marginTop: 10,
         },
       },
-      marginBottom: 10,
+      paddingTop: 5,
     },
     tableCell: {
       cursor: "pointer",
@@ -124,6 +123,7 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.down("md")]: {
         display: "block",
       },
+      justifyItems: "center",
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -213,34 +213,39 @@ export default function TableAuditDisplay2(props) {
     <div>
       <Box className={classes.box}>
         {/* page box */}
-        <Box>
-          <TextField
-            variant="outlined"
-            className={classes.input1}
-            style={{ margin: "0" }}
-            label="go to page"
-            value={selectedPage}
-            onChange={(e) => setSelectedPage(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ height: 35 }}
-            onClick={() => onFetchData(parseInt(selectedPage))}
-          >
-            Go
-          </Button>
+        <Box style={{ marginTop: -5, display: "flex" }}>
+          <Box>
+            <TextField
+              variant="outlined"
+              className={classes.input1}
+              style={{ margin: "0" }}
+              label="go to page"
+              value={selectedPage}
+              onChange={(e) => setSelectedPage(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ height: 35 }}
+              onClick={() => onFetchData(parseInt(selectedPage))}
+            >
+              Go
+            </Button>
+          </Box>
+          <Box>
+            {/* search page box */}
+            <Pagination
+              count={dataList.totalPages}
+              color="primary"
+              page={page}
+              onChange={onChange}
+              className={classes.pagination}
+            />
+          </Box>
         </Box>
-        {/* search page box */}
-        <Pagination
-          count={dataList.totalPages}
-          color="primary"
-          page={page}
-          onChange={onChange}
-          className={classes.pagination}
-        />
+
         {/* detail box */}
-        <Box style={{ display: "flex", paddingTop: 2 }}>
+        <Box style={{ display: "flex", paddingTop: 4 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon
