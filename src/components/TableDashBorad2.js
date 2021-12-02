@@ -51,8 +51,32 @@ const headerCells = [
     label: "จำนวนรถ",
   },
   {
-    id: "income",
-    label: "รายได้พึงได้",
+    id: "all",
+    label: "ทั้งหมด",
+  },
+  {
+    id: "normal",
+    label: "ปกติ",
+  },
+  {
+    id: "not_normal",
+    label: "ผิดปกติ",
+  },
+  {
+    id: "wait",
+    label: "รอจัดเก็บ",
+  },
+  {
+    id: "wait_to_know",
+    label: "รอรับทราบ",
+  },
+  {
+    id: "wait_super",
+    label: "รอ super",
+  },
+  {
+    id: "wait_for_decide",
+    label: "รอพิจารณา",
   },
   {
     id: "paid",
@@ -137,27 +161,47 @@ export default function TableDashBoard2(props) {
           <TableBody>
             {!!dataList.month
               ? dataList.month.map((data, index) => (
-                <StyledTableRow key={index} className={classes.tableRow}>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.date ? data.date : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.count_vehicle ? data.count_vehicle.toLocaleString() : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    {!!data.income ? data.income.toLocaleString() : "-"}
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                  <TableCell align="center" className={classes.tableCell}>
-                    -
-                  </TableCell>
-                </StyledTableRow>
-              ))
+                  <StyledTableRow key={index} className={classes.tableRow}>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.date ? data.date : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.count_vehicle
+                        ? data.count_vehicle.toLocaleString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.income ? data.income.toLocaleString() : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                  </StyledTableRow>
+                ))
               : []}
           </TableBody>
         </Table>

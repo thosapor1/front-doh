@@ -354,9 +354,7 @@ export default function ModalMandatoryItem(props) {
   };
 
   const handleUpdate = () => {
-    let endPointURL = "";
-
-    endPointURL = "/operation";
+    let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
 
@@ -386,82 +384,40 @@ export default function ModalMandatoryItem(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post(endPointURL, sendData).then((res) => {
-            if (res.data.status === true) {
+          apiURLv1
+            .post(endPointURL, sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              // handleClose();
               Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
                 icon: "error",
-                confirmButtonText: "OK",
+                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
               });
-            }
-          });
+            });
         }
       })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData())
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+      .then(() => {
+        props.onClick();
+        setTimeout(() => {
+          props.onFetchData(page);
+        }, 2000);
       });
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
-  const handleChangeState6To7 = () => {
-    const sendData = {
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      timestamp: dataList.timestamp,
-    };
-
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL.post("/changeState2to7", sendData).then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        }
-      })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData(page));
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -830,7 +786,7 @@ export default function ModalMandatoryItem(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 26 }}>
+            <table className={classes.table} style={{ marginTop: 44 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1001,7 +957,7 @@ export default function ModalMandatoryItem(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 57 }}>
+            <table className={classes.table} style={{ marginTop: 75 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1153,14 +1109,6 @@ export default function ModalMandatoryItem(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
-                {/* <TableRow>
-                      <TableCell>จังหวัด</TableCell>
-                      <TableCell>
-                        {dataList.mf_lp_province === null
-                          ? "-"
-                          : dataList.mf_lp_province}
-                      </TableCell>
-                    </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -1205,7 +1153,8 @@ export default function ModalMandatoryItem(props) {
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.ts_duplication
+                    {!!resultDisplay.ts_duplication &&
+                    !resultDisplay.ts_duplication === "0"
                       ? resultDisplay.ts_duplication
                       : "-"}
                   </TableCell>

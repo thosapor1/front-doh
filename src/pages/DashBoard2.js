@@ -262,16 +262,24 @@ export default function DashBoard2() {
     });
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
-    apiURL.post("/dashboard-month", sendData).then((res) => {
-      Swal.close();
-      const allData = res.data;
-      const dataInMonth = res.data.month;
-      console.log("dataInMonth", dataInMonth);
-      setDataTable(allData);
-      getChartData(dataInMonth);
-      getPopUpData(allData);
-    });
-    // console.log(dateCalendar);
+    apiURL
+      .post("/dashboard-month", sendData)
+      .then((res) => {
+        Swal.close();
+        const allData = res.data;
+        const dataInMonth = res.data.month;
+        console.log("dataInMonth", dataInMonth);
+        setDataTable(allData);
+        getChartData(dataInMonth);
+        getPopUpData(allData);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   useEffect(() => {
@@ -284,15 +292,14 @@ export default function DashBoard2() {
       <Grid container spacing={1}>
         <Grid item lg={12} md={12} sm={12}>
           <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-            ข้อมูลประจำเดือน{monthChart}
+            ข้อมูลประจำเดือน
+            {format(selectedDate, "MMMM yyyy", {
+              locale: th,
+            })}
           </Typography>
         </Grid>
         <Grid item lg={10} md={12} sm={12}>
-          <Grid
-            item
-            component={Paper}
-            className={classes.filterSection}
-          >
+          <Grid item component={Paper} className={classes.filterSection}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 inputVariant="outlined"
@@ -352,30 +359,30 @@ export default function DashBoard2() {
           >
             {!!cardData
               ? cardData.map((card, index) => (
-                <Grid
-                  key={index}
-                  item
-                  component={Paper}
-                  sm={5}
-                  md={5}
-                  lg={10}
-                  className={classes.card}
-                >
-                  <Typography style={{ fontSize: "0.75rem" }}>
-                    {card.label}
-                  </Typography>
-                  <Divider
-                    variant="middle"
-                    style={{ marginTop: 10, marginBottom: 10 }}
-                  />
-                  <Typography
-                    style={{ color: card.color, fontSize: "0.75rem" }}
-                    variant="subtitle2"
+                  <Grid
+                    key={index}
+                    item
+                    component={Paper}
+                    sm={5}
+                    md={5}
+                    lg={10}
+                    className={classes.card}
                   >
-                    {card.value}
-                  </Typography>
-                </Grid>
-              ))
+                    <Typography style={{ fontSize: "0.75rem" }}>
+                      {card.label}
+                    </Typography>
+                    <Divider
+                      variant="middle"
+                      style={{ marginTop: 10, marginBottom: 10 }}
+                    />
+                    <Typography
+                      style={{ color: card.color, fontSize: "0.75rem" }}
+                      variant="subtitle2"
+                    >
+                      {card.value}
+                    </Typography>
+                  </Grid>
+                ))
               : [{}]}
           </Grid>
 
@@ -467,7 +474,7 @@ export default function DashBoard2() {
               />
             </div>
           </Paper>
-          <div>{ }</div>
+          <div>{}</div>
 
           {/* <div className={classes.btnContainer}>
             <Button variant="contained" color="primary" size="small">

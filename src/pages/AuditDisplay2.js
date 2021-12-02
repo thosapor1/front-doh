@@ -59,8 +59,9 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     allTsTable: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       backgroundColor: "white",
+      
     },
     card: {
       padding: "1rem",
@@ -214,7 +215,7 @@ export default function AuditDisplay2() {
           res.data.summary
         );
 
-        setAllTsTable(!!res.data.status ? res.data : []);
+        setAllTsTable(!!res.data.status && !!res.data ? res.data : []);
         setCardData(!!res.data.status ? res.data.summary : []);
       })
       .catch((error) => {
