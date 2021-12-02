@@ -237,7 +237,7 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalPK3Activity(props) {
   const classes = useStyle();
-  const { dataList, dropdown, checkDate , page } = props;
+  const { dataList, dropdown, checkDate, page } = props;
 
   const [value1, setValue1] = useState(2);
   const [value2, setValue2] = useState(2);
@@ -331,9 +331,7 @@ export default function ModalPK3Activity(props) {
   };
 
   const handleUpdate = () => {
-    let endPointURL = "";
-
-    endPointURL = "/operation";
+    let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
 
@@ -363,82 +361,40 @@ export default function ModalPK3Activity(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1.post(endPointURL, sendData).then((res) => {
-            if (res.data.status === true) {
+          apiURLv1
+            .post(endPointURL, sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              // handleClose();
               Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
                 icon: "error",
-                confirmButtonText: "OK",
+                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
               });
-            }
-          });
+            });
         }
       })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData(page));
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
-  };
-  const handleChangeState6To7 = () => {
-    const sendData = {
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.transactionId,
-      timestamp: dataList.timestamp,
-    };
-
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL.post("/changeState2to7", sendData).then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          });
-        }
-      })
-      .then(() => props.onClick())
-      .then(() => props.onFetchData())
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+      .then(() => {
+        props.onClick();
+        setTimeout(() => {
+          props.onFetchData(page);
+        }, 2000);
       });
-
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
   };
 
   useEffect(() => {
@@ -807,7 +763,7 @@ export default function ModalPK3Activity(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 26 }}>
+            <table className={classes.table} style={{ marginTop: 44 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -978,7 +934,7 @@ export default function ModalPK3Activity(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 57 }}>
+            <table className={classes.table} style={{ marginTop: 75 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1189,7 +1145,7 @@ export default function ModalPK3Activity(props) {
                           value={fileName}
                           InputLabelProps={{
                             style: {
-                              fontSize: "10px",
+                              fontSize: "0.65rem",
                             },
                           }}
                         />
@@ -1202,7 +1158,10 @@ export default function ModalPK3Activity(props) {
                       onClick={() => {
                         upload();
                       }}
-                      style={{ fontSize: "0.7rem", marginTop: 1 }}
+                      style={{
+                        fontSize: "0.7rem",
+                        marginTop: 1,
+                      }}
                     >
                       upload
                     </Button>
