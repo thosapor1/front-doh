@@ -119,7 +119,7 @@ export const menuItemsForAdmin = [
   {
     text: "รายงาน",
     icon: "file_present",
-    path: "/3",
+    path: "/report",
   },
 ];
 
@@ -163,7 +163,12 @@ export const menuItemsForMember = [
   //   path: "/auditDisplay",
   // },
   {
-    text: "รายได้รายวัน2",
+    text: "รายได้รายเดือน",
+    icon: "assessment",
+    path: "/dashboard2",
+  },
+  {
+    text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay2",
   },
@@ -175,13 +180,13 @@ export const menuItemsForMember = [
   {
     text: "รายงาน",
     icon: "file_present",
-    path: "/3",
+    path: "/report",
   },
-  {
-    text: "ปริมาณข้อมูล",
-    icon: "assessment",
-    path: "/DataVolume",
-  },
+  // {
+  //   text: "ปริมาณข้อมูล",
+  //   icon: "assessment",
+  //   path: "/DataVolume",
+  // },
 ];
 
 export const menuConfigForMember = [];
