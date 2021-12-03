@@ -248,6 +248,7 @@ export default function TransactionMonitorV1() {
     }
 
     const date = format(selectDate, "yyyy-MM-dd");
+    
     const sendData = {
       page: pageId,
       date: date,
@@ -445,7 +446,7 @@ export default function TransactionMonitorV1() {
       date: date2,
     };
     console.log("sendData:", sendData);
-    apiURL.post("/aw-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setDataAW({
         ...dataAW,
@@ -535,14 +536,14 @@ export default function TransactionMonitorV1() {
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
       date: date,
-      headerTransactionId: transactionId,
+      tranId: transactionId,
     };
-    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/lane-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
-      setAwSearch({
-        ...awSearch,
-        imageCrop: res.data.imageFileCrop,
-        imageFull: res.data.imageFile,
+      setFetcSearch({
+        ...fetcSearch,
+        imageCrop: res.data.mf_lane_picCrop,
+        imageFull: res.data.mf_lane_picFull,
       });
     });
   };
@@ -571,6 +572,7 @@ export default function TransactionMonitorV1() {
             />
           </Tabs>
 
+          {/* audit block */}
           <TabPanel value={value} index={0}>
             <Grid
               container
@@ -630,6 +632,7 @@ export default function TransactionMonitorV1() {
                 />
               </Grid>
 
+              {/* transaction block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
                   transaction
@@ -680,6 +683,7 @@ export default function TransactionMonitorV1() {
                 />
               </Grid>
 
+              {/* lane block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
                   lane (FETC)
@@ -743,6 +747,7 @@ export default function TransactionMonitorV1() {
               component={Paper}
               style={{ marginTop: 10 }}
             >
+              {/* audit block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
                   audit sensor
@@ -774,6 +779,7 @@ export default function TransactionMonitorV1() {
                 />
               </Grid>
 
+              {/* transaction block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
                   transaction
@@ -802,6 +808,7 @@ export default function TransactionMonitorV1() {
                 />
               </Grid>
 
+              {/* lane block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
                   lane (FETC)
@@ -817,7 +824,7 @@ export default function TransactionMonitorV1() {
                   }}
                   transactionValue={fetcSearch.transactionId}
                   transactionOnChange={(e) => {
-                    setAwSearch({
+                    setFetcSearch({
                       ...fetcSearch,
                       transactionId: e.target.value,
                     });
@@ -828,8 +835,8 @@ export default function TransactionMonitorV1() {
                   color={"blue"}
                 />
                 <ImageSectionMonitorPage
-                  imageCrop={dataFetc.imageCrop}
-                  imageFull={dataFetc.imageFull}
+                  imageCrop={fetcSearch.imageCrop}
+                  imageFull={fetcSearch.imageFull}
                 />
               </Grid>
             </Grid>
