@@ -1,14 +1,12 @@
 import {
   Button,
   Container,
-  Divider,
   Grid,
   makeStyles,
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { format } from "date-fns";
 import { th } from "date-fns/locale";
 import axios from "axios";
@@ -23,8 +21,8 @@ import DateFnsUtils from "@date-io/date-fns";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -148,29 +146,9 @@ const useStyle = makeStyles((theme) => {
 });
 
 export default function DataVolume() {
-  let dateArray = [];
-  let valueArray = [];
-
   const classes = useStyle();
 
-  const [popUP, setPopUP] = useState({
-    status: "",
-    C1: 0,
-    c1SumAmount: 0,
-    C2: 0,
-    c2SumAmount: 0,
-    C3: 0,
-    c3SumAmount: 0,
-    reject: 0,
-    countReject: 0,
-    sumAmountallClass: 0,
-    percentC1: 0,
-    percentC2: 0,
-    percentC3: 0,
-    percentReject: 0,
-  });
-
-  const [monthChart, setMonthChart] = useState("");
+  // const [monthChart, setMonthChart] = useState("");
   const [dateCalendar, setDateCalendar] = useState(new Date());
   const [dataTable, setDataTable] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
@@ -185,19 +163,25 @@ export default function DataVolume() {
     });
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
-    apiURL.post("/data-monitor", sendData).then((res) => {
-      Swal.close();
-      const allData = res.data;
-      //   console.log("allData", allData);
-
-      setDataTable(allData);
-    });
-    // console.log(dateCalendar);
+    apiURL
+      .post("/data-monitor", sendData)
+      .then((res) => {
+        Swal.close();
+        const allData = res.data;
+        setDataTable(allData);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   useEffect(() => {
     fetchData();
-    setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
+    // setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -205,7 +189,8 @@ export default function DataVolume() {
       <Grid container spacing={1}>
         <Grid item lg={12} md={12} sm={12}>
           <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-            ปริมาณข้อมูลประจำเดือน{monthChart}
+            ปริมาณข้อมูลประจำเดือน
+            {format(selectedDate, "MMMM yyyy", { locale: th })}
           </Typography>
         </Grid>
         <Grid item lg={12} md={12} sm={12}>
