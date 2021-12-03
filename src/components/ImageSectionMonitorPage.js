@@ -2,8 +2,6 @@ import { CardMedia, Grid, Paper } from "@material-ui/core";
 import React from "react";
 import noImage from "../image/noImageFound.jpg";
 
-
-
 export default function ImageSectionMonitorPage(props) {
   const { imageCrop, imageFull } = props;
   // const mocpic = 0;
@@ -11,19 +9,21 @@ export default function ImageSectionMonitorPage(props) {
     <Paper style={{ marginTop: 10, padding: 5 }}>
       <Grid container spacing={1}>
         <Grid item xl={6} lg={6} md={6}>
-          <CardMedia
-            style={{
-              height: "140px",
-              width: "100%",
-              border: "1px solid lightgray",
-              marginRight: "auto",
-              marginLeft: "auto",
-            }}
-            component="img"
-            src={
-              !!imageCrop ? `data:image/png;base64, ${imageCrop}` : noImage
-            }
-          />
+          <div>
+            <CardMedia
+              style={{
+                height: "140px",
+                width: "100%",
+                border: "1px solid lightgray",
+                marginRight: "auto",
+                marginLeft: "auto",
+              }}
+              component="img"
+              src={
+                !!imageCrop ? `data:image/png;base64, ${imageCrop}` : noImage
+              }
+            />
+          </div>
         </Grid>
         <Grid item xl={6} lg={6} md={6}>
           <CardMedia
@@ -35,9 +35,7 @@ export default function ImageSectionMonitorPage(props) {
               marginLeft: "auto",
             }}
             component="img"
-            src={
-              !!imageFull ? `data:image/png;base64, ${imageFull}` : noImage
-            }
+            src={!!imageFull ? `data:image/png;base64, ${imageFull}` : noImage}
           />
         </Grid>
       </Grid>

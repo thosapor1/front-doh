@@ -169,11 +169,7 @@ export default function DashBoard2() {
     percentC3: 0,
     percentReject: 0,
   });
-  const [dayChart, setDayChart] = useState([]);
-  const [valueChart, setValueChart] = useState([]);
   const [cardData, setCardData] = useState([{}]);
-  const [monthChart, setMonthChart] = useState("");
-  const [dateCalendar, setDateCalendar] = useState(new Date());
   const [visible, setVisible] = useState("hidden");
   const [dataTable, setDataTable] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
@@ -250,8 +246,6 @@ export default function DashBoard2() {
         return console.log("success");
       });
     }
-    setDayChart(dateArray);
-    setValueChart(valueArray);
   };
 
   const fetchData = (month = format(new Date(), "yyyy-MM")) => {
@@ -284,7 +278,6 @@ export default function DashBoard2() {
 
   useEffect(() => {
     fetchData();
-    setMonthChart(format(dateCalendar, "MMMM yyyy", { locale: th }));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -316,6 +309,7 @@ export default function DashBoard2() {
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
+                // onClose={() => fetchData(format(selectedDate, "yyyy-MM"))}
               />
             </MuiPickersUtilsProvider>
             <Button className={classes.btn} onClick={() => fetchData()}>
