@@ -48,10 +48,6 @@ const headerCells = [
   },
   {
     id: "number_of_car",
-    label: "จำนวนรถ",
-  },
-  {
-    id: "all",
     label: "ทั้งหมด",
   },
   {
@@ -79,6 +75,10 @@ const headerCells = [
     label: "รอพิจารณา",
   },
   {
+    id: "income",
+    label: "รายได้พึงได้",
+  },
+  {
     id: "paid",
     label: "ชำระแล้ว",
   },
@@ -102,7 +102,6 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function TableDashBoard2(props) {
   //   const [open, setOpen] = useState(false);
-  const [dataForActivity, SetDataForActivity] = useState([]);
 
   const fetchData = (ts, timestamp) => {
     Swal.fire({
@@ -118,7 +117,6 @@ export default function TableDashBoard2(props) {
       .post("/pk3display-activity", sendData)
       .then((res) => {
         Swal.close();
-        SetDataForActivity(res.data);
         console.log("res2:", res.data);
       })
       .catch((error) => {
@@ -139,7 +137,7 @@ export default function TableDashBoard2(props) {
   //   };
 
   const classes = useStyles();
-  const { dataList, onChange } = props;
+  const { dataList } = props;
 
   return (
     <>
@@ -171,25 +169,33 @@ export default function TableDashBoard2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
+                      {!!data.ts_normal ? data.ts_normal.toLocaleString() : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.ts_not_normal
+                        ? data.ts_not_normal.toLocaleString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.wait_hq ? data.wait_hq.toLocaleString() : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.wait_acknowledge
+                        ? data.wait_acknowledge.toLocaleString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.wait_super
+                        ? data.wait_super.toLocaleString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.wait_consider
+                        ? data.wait_consider.toLocaleString()
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
                       {!!data.income ? data.income.toLocaleString() : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
