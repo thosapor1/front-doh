@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   CardMedia,
   Grid,
@@ -28,12 +29,6 @@ import { Link } from "react-router-dom";
 import HelpOutlineTwoToneIcon from "@material-ui/icons/HelpOutlineTwoTone";
 import Tooltip from "@material-ui/core/Tooltip";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
 const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -222,9 +217,8 @@ const useStyle = makeStyles((theme) => {
       minWidth: "25%",
     },
     tabs: {
-      height: "0.3rem",
-      color: "blue",
-      padding: "0px 10px",
+      color: "white",
+      backgroundColor: "#6200ea",
     },
     headTable: {
       fontSize: "0.75rem",
@@ -235,11 +229,12 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
-    // tableContainer: {
-    //   [theme.breakpoints.down('lg')]: {
-    //     width: '80%'
-    //   }
-    // }
+    tableContainer: {
+      height: "20vh",
+      [theme.breakpoints.down("lg")]: {
+        height: "25vh",
+      },
+    },
   };
 });
 
@@ -253,8 +248,6 @@ export default function ModalActivity2(props) {
   const [value4, setValue4] = useState(2);
   const [value5, setValue5] = useState(2);
   const [value6, setValue6] = useState(2);
-
-  const [disable, setDisable] = useState(true);
 
   const handleChangeTabs1 = (event, newValue) => {
     setValue1(newValue);
@@ -399,77 +392,98 @@ export default function ModalActivity2(props) {
       );
       console.log("dataList", dataList);
     }
-
-    // if(dataList.state === 1){
-    //   setState({...state, operation:[]})
-    // }
   }, [dataList]);
-
-  const disableItem = () => {
-    if (!!dataList.resultsDisplay && dataList.resultsDisplay[0].state === 1) {
-      setDisable(false);
-    } else if (
-      !!dataList.resultsDisplay &&
-      dataList.resultsDisplay[0].state === 2
-    ) {
-      setDisable(false);
-    } else if (
-      !!dataList.resultsDisplay &&
-      (dataList.resultsDisplay[0].state === 3 ||
-        dataList.resultsDisplay[0].state === 4 ||
-        dataList.resultsDisplay[0].state === 5)
-    ) {
-      setDisable(true);
-    } else if (
-      !!dataList.resultsDisplay &&
-      dataList.resultsDisplay[0].state === 6
-    ) {
-      setDisable(true);
-    } else {
-      setDisable(true);
-    }
-  };
 
   const body = (
     <div className={classes.bodyModal}>
       <div className={classes.head}>
-        <div>
-          <Typography variant="h6" style={{ color: "#c80000" }}>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].state === 1
-                ? "ปกติ"
-                : dataList.resultsDisplay[0].state === 2
-                ? "ผิดปกติ"
-                : dataList.resultsDisplay[0].state === 3
-                ? "รอ pk3 ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 4
-                ? "รอ super audit ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 5
-                ? "รอ พิจารณาพิเศษ"
-                : dataList.resultsDisplay[0].state === 6
-                ? "รอตรวจสอบรับทราบ"
-                : "ไม่มีสถานะ"
-              : ""}
-          </Typography>
-          <Typography style={{ color: "blue", fontSize: 14 }}>
-            {`transaction :
+        <div style={{ width: "100%" }}>
+          <Box
+            style={{
+              backgroundColor:
+                !!dataList.resultsDisplay &&
+                dataList.resultsDisplay[0].state === 1
+                  ? "lightgray"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2
+                  ? "red"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 3
+                  ? "blue"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 4
+                  ? "orange"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 5
+                  ? "black"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 6
+                  ? "darkviolet"
+                  : "none",
+              width: "100%",
+              display: "flex",
+              justifyItems: "center",
+              flexWrap: "wrap",
+              columnGap: "1rem",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{ color: "white", paddingLeft: 20 }}
+            >
+              {!!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].state === 1
+                  ? "ปกติ"
+                  : dataList.resultsDisplay[0].state === 2
+                  ? "ผิดปกติ"
+                  : dataList.resultsDisplay[0].state === 3
+                  ? "รอ pk3 ตรวจสอบ"
+                  : dataList.resultsDisplay[0].state === 4
+                  ? "รอ super audit ตรวจสอบ"
+                  : dataList.resultsDisplay[0].state === 5
+                  ? "รอ พิจารณาพิเศษ"
+                  : dataList.resultsDisplay[0].state === 6
+                  ? "รอตรวจสอบรับทราบ"
+                  : "ไม่มีสถานะ"
+                : ""}
+            </Typography>
+
+            <Typography
+              style={{
+                color:
+                  !!dataList.resultsDisplay &&
+                  dataList.resultsDisplay[0].state === 3
+                    ? "white"
+                    : "blue",
+                fontSize: "0.8rem",
+                paddingTop: 8,
+              }}
+            >
+              {`transaction :
             ${
               !!dataList.resultsDisplay
                 ? dataList.resultsDisplay[0].transactionId
                 : ""
             }`}
-          </Typography>
-          <Typography style={{ color: "gray", fontSize: 14 }}>
-            {`${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].match_checkpoint
-                : ""
-            } / ${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].match_gate
-                : ""
-            }`}
-          </Typography>
+            </Typography>
+            <Typography
+              style={{
+                color: "white",
+                fontSize: "0.8rem",
+                paddingTop: 8,
+              }}
+            >
+              {`${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_checkpoint
+                  : ""
+              } / ${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_gate
+                  : ""
+              }`}
+            </Typography>
+          </Box>
         </div>
         <div>
           <CancelTwoToneIcon
@@ -492,6 +506,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs5}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -585,6 +600,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs6}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -678,6 +694,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs4}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -759,8 +776,8 @@ export default function ModalActivity2(props) {
             </div>
           </TabPanel4>
 
-          <TableContainer>
-            <table className={classes.table} style={{ marginBottom: 58 }}>
+          <TableContainer className={classes.tableContainer}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -782,7 +799,7 @@ export default function ModalActivity2(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 44 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -832,6 +849,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -912,6 +930,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel1>
+
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -940,8 +959,9 @@ export default function ModalActivity2(props) {
               </TableBody>
             </table>
           </TableContainer>
+
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 75 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -994,6 +1014,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -1098,14 +1119,6 @@ export default function ModalActivity2(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
-                {/* <TableRow>
-                  <TableCell>จังหวัด</TableCell>
-                  <TableCell>
-                    {dataList.mf_lp_province === null
-                      ? "-"
-                      : dataList.mf_lp_province}
-                  </TableCell>
-                </TableRow> */}
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
                   <TableCell>
@@ -1127,7 +1140,7 @@ export default function ModalActivity2(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 3 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1187,6 +1200,7 @@ export default function ModalActivity2(props) {
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -1266,6 +1280,7 @@ export default function ModalActivity2(props) {
               />
             </div>
           </TabPanel3>
+
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -1450,7 +1465,7 @@ export default function ModalActivity2(props) {
               }
               variant="contained"
               color="primary"
-              style={{ marginTop: 17, float: "right" }}
+              style={{ marginTop: 18, float: "right" }}
               // endIcon={<SendTwoToneIcon fontSize="small" />}
               onClick={handleUpdate}
             >
