@@ -303,7 +303,10 @@ export default function ModalActivity2(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-    // console.log()
+    if (event.target.value === 0 || event.target.value === 2) {
+      setVehicleClass("");
+      setAudit_feeAmount("");
+    }
   };
 
   const handleOptionChange = (event) => {
@@ -487,11 +490,17 @@ export default function ModalActivity2(props) {
           </Box>
         </div>
         <div>
-          <CancelTwoToneIcon
-            fontSize="small"
-            color="secondary"
-            onClick={props.onClick}
-          />
+          <Tooltip title="close">
+            <CancelTwoToneIcon
+              onClick={props.onClick}
+              style={{
+                cursor: "pointer",
+                fontSize: "1.5rem",
+                paddingTop: 5,
+                color: "red",
+              }}
+            />
+          </Tooltip>
         </div>
       </div>
       <Grid container spacing={1}>
@@ -1300,7 +1309,8 @@ export default function ModalActivity2(props) {
                         !!dataList.resultsDisplay &&
                         (dataList.resultsDisplay[0].state === 3 ||
                           dataList.resultsDisplay[0].state === 4 ||
-                          dataList.resultsDisplay[0].state === 5)
+                          dataList.resultsDisplay[0].state === 5 ||
+                          dataList.resultsDisplay[0].state === 7)
                           ? true
                           : false
                       }
@@ -1367,6 +1377,8 @@ export default function ModalActivity2(props) {
                         ? "รอ พิจารณาพิเศษ"
                         : dataList.resultsDisplay[0].state === 6
                         ? "รอตรวจสอบรับทราบ"
+                        : dataList.resultsDisplay[0].state === 7
+                        ? "รอจัดเก็บยืนยัน"
                         : "ไม่มีสถานะ"
                       : ""}
                   </TableCell>
@@ -1379,7 +1391,8 @@ export default function ModalActivity2(props) {
                         !!dataList.resultsDisplay &&
                         (dataList.resultsDisplay[0].state === 3 ||
                           dataList.resultsDisplay[0].state === 4 ||
-                          dataList.resultsDisplay[0].state === 5)
+                          dataList.resultsDisplay[0].state === 5 ||
+                          dataList.resultsDisplay[0].state === 7)
                           ? true
                           : !!dataList.resultsDisplay &&
                             dataList.resultsDisplay[0].state === 1
@@ -1439,7 +1452,8 @@ export default function ModalActivity2(props) {
                 !!dataList.resultsDisplay &&
                 (dataList.resultsDisplay[0].state === 3 ||
                   dataList.resultsDisplay[0].state === 4 ||
-                  dataList.resultsDisplay[0].state === 5)
+                  dataList.resultsDisplay[0].state === 5 ||
+                  dataList.resultsDisplay[0].state === 7)
                   ? true
                   : !!dataList.resultsDisplay &&
                     dataList.resultsDisplay[0].state === 1 &&
