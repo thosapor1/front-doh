@@ -70,7 +70,10 @@ const headerCells = [
     id: "last_Time_HQ",
     label: "lastTimeStampHQ",
   },
-
+  {
+    id: "Verify",
+    label: "รอ Verify",
+  },
   {
     id: "confirm_TS",
     label: "ยืนยันจำนวน TS",
@@ -122,24 +125,40 @@ export default function TableDataVolume(props) {
                       {!!data.date ? data.date : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.ts_count ? data.ts_count.toLocaleString() : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.firstTimeStampLane
-                        ? data.firstTimeStampLane
+                      {!!data.lane_count
+                        ? data.lane_count.toLocaleString()
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.lastTimeStampLane ? data.lastTimeStampLane : "-"}
+                      {!!data.lane_first &&
+                      data.lane_first !== "0000-00-00 00:00:00"
+                        ? data.lane_first
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.lane_last &&
+                      data.lane_last !== "0000-00-00 00:00:00"
+                        ? data.lane_last
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.hq_count ? data.hq_count.toLocaleString() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.firstTimeStampHQ ? data.firstTimeStampHQ : "-"}
+                      {!!data.hq_first &&
+                      data.hq_first !== "0000-00-00 00:00:00"
+                        ? data.hq_first
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.lastTimeStampHQ ? data.lastTimeStampHQ : "-"}
+                      {!!data.hq_last && data.hq_last !== "0000-00-00 00:00:00"
+                        ? data.hq_last
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.verify_count
+                        ? data.verify_count.toLocaleString()
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
