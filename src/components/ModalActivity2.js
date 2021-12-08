@@ -419,6 +419,9 @@ export default function ModalActivity2(props) {
                   : !!dataList.resultsDisplay &&
                     dataList.resultsDisplay[0].state === 6
                   ? "darkviolet"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 7
+                  ? "lightblue"
                   : "none",
               width: "100%",
               display: "flex",
@@ -444,17 +447,15 @@ export default function ModalActivity2(props) {
                   ? "รอ พิจารณาพิเศษ"
                   : dataList.resultsDisplay[0].state === 6
                   ? "รอตรวจสอบรับทราบ"
+                  : dataList.resultsDisplay[0].state === 7
+                  ? "รอจัดเก็บยืนยัน"
                   : "ไม่มีสถานะ"
                 : ""}
             </Typography>
 
             <Typography
               style={{
-                color:
-                  !!dataList.resultsDisplay &&
-                  dataList.resultsDisplay[0].state === 3
-                    ? "white"
-                    : "blue",
+                color: "white",
                 fontSize: "0.8rem",
                 paddingTop: 8,
               }}
@@ -728,7 +729,7 @@ export default function ModalActivity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
@@ -741,7 +742,7 @@ export default function ModalActivity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  dataList.mf_lane_picFull !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
