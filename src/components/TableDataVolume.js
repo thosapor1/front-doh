@@ -70,7 +70,10 @@ const headerCells = [
     id: "last_Time_HQ",
     label: "lastTimeStampHQ",
   },
-
+  {
+    id: "Verify",
+    label: "รอ Verify",
+  },
   {
     id: "confirm_TS",
     label: "ยืนยันจำนวน TS",
@@ -140,6 +143,9 @@ export default function TableDataVolume(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.lastTimeStampHQ ? data.lastTimeStampHQ : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.verify ? data.verify : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       -
