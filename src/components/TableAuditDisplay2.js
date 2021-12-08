@@ -59,6 +59,11 @@ const detailStatus = [
     color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
+  {
+    state: 7,
+    color: "lightblue",
+    label: "รอจัดเก็บยืนยัน",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {
@@ -364,6 +369,8 @@ export default function TableAuditDisplay2(props) {
                               ? "black"
                               : data.state === 6
                               ? "darkviolet"
+                              : data.state === 7
+                              ? "lightblue"
                               : "rgba(0,0,0,0)",
                         }}
                       />
