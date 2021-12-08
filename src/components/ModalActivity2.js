@@ -303,7 +303,10 @@ export default function ModalActivity2(props) {
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-    // console.log()
+    if (event.target.value === 0 || event.target.value === 2) {
+      setVehicleClass("");
+      setAudit_feeAmount("");
+    }
   };
 
   const handleOptionChange = (event) => {
