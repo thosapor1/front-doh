@@ -59,6 +59,11 @@ const detailStatus = [
     color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
+  {
+    state: 7,
+    color: "lightblue",
+    label: "รอจัดเก็บยืนยัน",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {
@@ -176,7 +181,7 @@ export default function TableAuditDisplay2(props) {
 
     const sendData = {
       transactionId: ts,
-      date: format(checkDate,'yyyy-MM-dd'),
+      date: format(checkDate, "yyyy-MM-dd"),
     };
 
     apiURL
@@ -364,6 +369,8 @@ export default function TableAuditDisplay2(props) {
                               ? "black"
                               : data.state === 6
                               ? "darkviolet"
+                              : data.state === 7
+                              ? "lightblue"
                               : "rgba(0,0,0,0)",
                         }}
                       />
@@ -414,7 +421,7 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.type ? data.type : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
