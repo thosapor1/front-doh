@@ -206,9 +206,8 @@ const useStyle = makeStyles((theme) => {
       minWidth: "25%",
     },
     tabs: {
-      height: "0.3rem",
-      color: "blue",
-      padding: "0px 10px",
+      color: "white",
+      backgroundColor: "#6200ea",
     },
     headTable: {
       fontSize: "0.75rem",
@@ -231,6 +230,12 @@ const useStyle = makeStyles((theme) => {
         height: "30px",
         fontSize: "0.75rem",
         padding: "0px 5px",
+      },
+    },
+    tableContainer: {
+      height: "20vh",
+      [theme.breakpoints.down("lg")]: {
+        height: "25vh",
       },
     },
   };
@@ -483,6 +488,12 @@ export default function ModalMandatoryItem(props) {
             fontSize="small"
             color="secondary"
             onClick={props.onClick}
+            style={{
+              cursor: "pointer",
+              fontSize: "1.5rem",
+              paddingTop: 5,
+              color: "red",
+            }}
           />
         </div>
       </div>
@@ -499,6 +510,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs5}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -590,6 +602,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs6}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -683,6 +696,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs4}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -763,7 +777,7 @@ export default function ModalMandatoryItem(props) {
               />
             </div>
           </TabPanel4>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table} style={{ marginBottom: 58 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -786,7 +800,7 @@ export default function ModalMandatoryItem(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 44 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -836,6 +850,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -916,7 +931,7 @@ export default function ModalMandatoryItem(props) {
               />
             </div>
           </TabPanel1>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -957,7 +972,7 @@ export default function ModalMandatoryItem(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 75 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1005,6 +1020,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -1084,7 +1100,7 @@ export default function ModalMandatoryItem(props) {
               />
             </div>
           </TabPanel2>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
@@ -1130,7 +1146,7 @@ export default function ModalMandatoryItem(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 3 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1192,6 +1208,7 @@ export default function ModalMandatoryItem(props) {
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
