@@ -59,14 +59,19 @@ const detailStatus = [
     color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
+  {
+    state: 7,
+    color: "lightblue",
+    label: "รอจัดเก็บยืนยัน",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "55vh",
+      maxHeight: "60vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
-        maxHeight: "42vh",
+        maxHeight: "50vh",
       },
       marginTop: 10,
     },
