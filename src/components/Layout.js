@@ -255,6 +255,7 @@ export default function Layout({ children }) {
                   button
                   onClick={() => history.push(item.path)}
                 >
+                
                   <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
                   <ListItemText
                     primary={item.text}

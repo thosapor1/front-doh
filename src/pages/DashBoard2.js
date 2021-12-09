@@ -286,9 +286,9 @@ export default function DashBoard2() {
         <Grid item lg={12} md={12} sm={12}>
           <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
             ข้อมูลประจำเดือน
-            {format(selectedDate, "MMMM yyyy", {
+            {/* {format(selectedDate, "MMMM yyyy", {
               locale: th,
-            })}
+            })} */}
           </Typography>
         </Grid>
         <Grid item lg={10} md={12} sm={12}>
