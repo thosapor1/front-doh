@@ -29,12 +29,6 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
 const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -124,8 +118,11 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+      [theme.breakpoints.only("md")]: {
+        marginTop: "90%",
+      },
+      [theme.breakpoints.only("sm")]: {
+        marginTop: "120%",
       },
     },
     head: {
@@ -516,11 +513,19 @@ export default function ModalPK3Activity(props) {
           </Box>
         </div>
         <div>
-          <CancelTwoToneIcon
-            fontSize="small"
-            color="secondary"
-            onClick={props.onClick}
-          />
+          <Tooltip title="close">
+            <CancelTwoToneIcon
+              fontSize="small"
+              color="secondary"
+              onClick={props.onClick}
+              style={{
+                cursor: "pointer",
+                fontSize: "1.5rem",
+                paddingTop: 5,
+                color: "red",
+              }}
+            />
+          </Tooltip>
         </div>
       </div>
       <Grid container spacing={1}>
@@ -570,7 +575,7 @@ export default function ModalPK3Activity(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
@@ -579,22 +584,24 @@ export default function ModalPK3Activity(props) {
             </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={1}>
-            <CardMedia
-              component="img"
-              src={
-                dataList.mf_lane_picFull !== 0
-                  ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
-                  : noImage
-              }
-              className={classes.image}
-            />
+            <div className={classes.imageWrap}>
+              <CardMedia
+                component="img"
+                src={
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                    : noImage
+                }
+                className={classes.image}
+              />
+            </div>
           </TabPanel4>
           <TabPanel4 value={value5} index={2}>
             <div className={classes.imageWrap}>
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
@@ -662,7 +669,7 @@ export default function ModalPK3Activity(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
@@ -675,7 +682,7 @@ export default function ModalPK3Activity(props) {
               <CardMedia
                 component="img"
                 src={
-                  dataList.mf_lane_picFull !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
@@ -688,7 +695,7 @@ export default function ModalPK3Activity(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }

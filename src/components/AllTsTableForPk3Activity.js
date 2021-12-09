@@ -60,6 +60,11 @@ const detailStatus = [
     color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
+  {
+    state: 7,
+    color: "lightblue",
+    label: "รอจัดเก็บยืนยัน",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {
@@ -359,7 +364,9 @@ export default function TablePK3display(props) {
                         style={{
                           // fontSize: "0.8rem",
                           color:
-                            data.state === 2
+                            data.state === 1
+                              ? "lightgray"
+                              : data.state === 2
                               ? "#FF2400"
                               : data.state === 3
                               ? "blue"
@@ -368,12 +375,10 @@ export default function TablePK3display(props) {
                               : data.state === 5
                               ? "black"
                               : data.state === 6
-                              ? "##46005E"
+                              ? "darkviolet"
                               : data.state === 7
-                              ? "green"
-                              : data.state === 8
-                              ? "#FF2400"
-                              : "lightgray",
+                              ? "lightblue"
+                              : "rgba(0,0,0,0)",
                         }}
                       />
                     </TableCell>
