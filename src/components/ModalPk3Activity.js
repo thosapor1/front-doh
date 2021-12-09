@@ -205,9 +205,8 @@ const useStyle = makeStyles((theme) => {
       minWidth: "25%",
     },
     tabs: {
-      height: "0.3rem",
-      color: "blue",
-      padding: "0px 10px",
+      color: "white",
+      backgroundColor: "#6200ea",
     },
     headTable: {
       fontSize: "0.75rem",
@@ -230,6 +229,12 @@ const useStyle = makeStyles((theme) => {
         height: "30px",
         fontSize: "0.75rem",
         padding: "0px 5px",
+      },
+    },
+    tableContainer: {
+      height: "20vh",
+      [theme.breakpoints.down("lg")]: {
+        height: "25vh",
       },
     },
   };
@@ -421,39 +426,94 @@ export default function ModalPK3Activity(props) {
   const body = (
     <div className={classes.bodyModal}>
       <div className={classes.head}>
-        <div>
-          <Typography variant="h6" style={{ color: "#c80000" }}>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].state === 1
-                ? "ปกติ"
-                : dataList.resultsDisplay[0].state === 2
-                ? "ผิดปกติ"
-                : dataList.resultsDisplay[0].state === 3
-                ? "รอ pk3 ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 4
-                ? "รอ super audit ตรวจสอบ"
-                : dataList.resultsDisplay[0].state === 5
-                ? "รอ พิจารณาพิเศษ"
-                : dataList.resultsDisplay[0].state === 6
-                ? "รอตรวจสอบรับทราบ"
-                : "ไม่มีสถานะ"
-              : ""}
-          </Typography>
-          <Typography style={{ color: "blue", fontSize: 14 }}>
-            transaction:{" "}
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].transactionId
-              : ""}
-          </Typography>
-          <Typography style={{ color: "gray", fontSize: 14 }}>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].match_checkpoint
-              : ""}{" "}
-            /
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay[0].match_gate
-              : ""}
-          </Typography>
+        <div style={{ width: "100%" }}>
+          <Box
+            style={{
+              backgroundColor:
+                !!dataList.resultsDisplay &&
+                dataList.resultsDisplay[0].state === 1
+                  ? "lightgray"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 2
+                  ? "red"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 3
+                  ? "blue"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 4
+                  ? "orange"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 5
+                  ? "black"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 6
+                  ? "darkviolet"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 7
+                  ? "lightblue"
+                  : "none",
+              width: "100%",
+              display: "flex",
+              justifyItems: "center",
+              flexWrap: "wrap",
+              columnGap: "1rem",
+            }}
+          >
+            <Typography
+              variant="h6"
+              style={{ color: "white", paddingLeft: 20 }}
+            >
+              {!!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].state === 1
+                  ? "ปกติ"
+                  : dataList.resultsDisplay[0].state === 2
+                  ? "ผิดปกติ"
+                  : dataList.resultsDisplay[0].state === 3
+                  ? "รอ pk3 ตรวจสอบ"
+                  : dataList.resultsDisplay[0].state === 4
+                  ? "รอ super audit ตรวจสอบ"
+                  : dataList.resultsDisplay[0].state === 5
+                  ? "รอ พิจารณาพิเศษ"
+                  : dataList.resultsDisplay[0].state === 6
+                  ? "รอตรวจสอบรับทราบ"
+                  : dataList.resultsDisplay[0].state === 7
+                  ? "รอจัดเก็บยืนยัน"
+                  : "ไม่มีสถานะ"
+                : ""}
+            </Typography>
+
+            <Typography
+              style={{
+                color: "white",
+                fontSize: "0.8rem",
+                paddingTop: 8,
+              }}
+            >
+              {`transaction :
+            ${
+              !!dataList.resultsDisplay
+                ? dataList.resultsDisplay[0].transactionId
+                : ""
+            }`}
+            </Typography>
+            <Typography
+              style={{
+                color: "white",
+                fontSize: "0.8rem",
+                paddingTop: 8,
+              }}
+            >
+              {`${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_checkpoint
+                  : ""
+              } / ${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_gate
+                  : ""
+              }`}
+            </Typography>
+          </Box>
         </div>
         <div>
           <CancelTwoToneIcon
@@ -476,6 +536,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs5}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -567,6 +628,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs6}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -660,6 +722,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs4}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -740,7 +803,7 @@ export default function ModalPK3Activity(props) {
               />
             </div>
           </TabPanel4>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table} style={{ marginBottom: 58 }}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -763,7 +826,7 @@ export default function ModalPK3Activity(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 44 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -813,6 +876,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs1}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -893,7 +957,7 @@ export default function ModalPK3Activity(props) {
               />
             </div>
           </TabPanel1>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
@@ -934,7 +998,7 @@ export default function ModalPK3Activity(props) {
             </table>
           </TableContainer>
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 75 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -982,6 +1046,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs2}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
@@ -1061,7 +1126,7 @@ export default function ModalPK3Activity(props) {
               />
             </div>
           </TabPanel2>
-          <TableContainer>
+          <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead2}>
@@ -1115,7 +1180,7 @@ export default function ModalPK3Activity(props) {
           </TableContainer>
 
           <TableContainer>
-            <table className={classes.table} style={{ marginTop: 3 }}>
+            <table className={classes.table}>
               <TableHead>
                 <TableRow className={classes.tableHead1}>
                   <TableCell colSpan={2} className={classes.headTable}>
@@ -1230,6 +1295,7 @@ export default function ModalPK3Activity(props) {
               onChange={handleChangeTabs3}
               aria-label="simple tabs example"
               indicatorColor="primary"
+              variant="scrollable"
               className={classes.tabs}
             >
               <Tab
