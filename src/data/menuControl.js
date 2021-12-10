@@ -10,14 +10,19 @@ export const menuItemsForSuperAdmin = [
     path: "/dashboard2",
   },
   {
-    text: "รายได้รายวัน",
-    icon: "poll",
-    path: "/auditDisplay",
+    text: "รายการฐานข้อมูล",
+    icon: "receipt_long",
+    path: "/rawTransaction",
+  },
+  {
+    text: "รายได้พึงได้รายวัน",
+    icon: "task",
+    path: "/auditDisplay3",
   },
   {
     text: "รายได้รายวัน",
-    icon: "task",
-    path: "/auditDisplay2",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "super audit display",
