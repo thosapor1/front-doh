@@ -13,14 +13,14 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalActivity2 from "./ModalActivity2";
-import format from "date-fns/format";
-import ModalActivity3 from "./ModalActivity3";
+import ModalReadOnly2 from "./ModalReadOnly2";
+import ModalPK3Activity from "./ModalPk3Activity";
+import ModalPK3Activity2 from "./ModalPk3Activity2";
+
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -132,7 +132,6 @@ const useStyles = makeStyles((theme) => {
         display: "block",
       },
       justifyItems: "center",
-      marginTop: "0.5rem",
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -169,31 +168,36 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay2(props) {
+export default function TablePK3display2(props) {
   const [open, setOpen] = useState(false);
-  const [selectedPage, setSelectedPage] = useState("");
+  const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [selectedPage, setSelectedPage] = useState("");
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
-      // background: 'rgba(0,0,0,0.80)'
     });
+
+    let date = timeStamp.split(" ").shift();
 
     const sendData = {
       transactionId: ts,
-      date: format(checkDate, "yyyy-MM-dd"),
+      date: date,
     };
+    let endpoint = "";
+
+    endpoint = "/display-pk3-activity";
+    setOpen(true);
 
     apiURL
-      .post("/display-activity2", sendData)
+      .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
-        setOpen(true);
       })
       .catch((error) => {
         handleClose();
@@ -213,6 +217,7 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setOpen1(false);
   };
 
   const classes = useStyles();
@@ -254,7 +259,7 @@ export default function TableAuditDisplay2(props) {
         </Box>
 
         {/* detail box */}
-        <Box style={{ display: "flex", paddingTop: 4 }}>
+        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon
@@ -266,7 +271,7 @@ export default function TableAuditDisplay2(props) {
               </Typography>
             </Box>
           ))}
-        </Box>
+        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -408,7 +413,7 @@ export default function TableAuditDisplay2(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity3
+      <ModalPK3Activity2
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
