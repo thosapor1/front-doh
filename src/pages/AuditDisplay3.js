@@ -21,7 +21,9 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 import SearchComponent from "../components/SearchComponent";
-import { CallMerge } from "@material-ui/icons";
+import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
+import GateTable2 from "../components/GateTable2";
+import ClassTable from "../components/ClassTable";
 
 const apiURL = axios.create({
   baseURL:
@@ -50,7 +52,6 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "space-between",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -59,12 +60,14 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     allTsTable: {
+      marginTop: 10,
       padding: theme.spacing(1),
       backgroundColor: "white",
     },
     card: {
       padding: "1rem",
-      height: 80,
+      height: 112,
+      paddingTop: 30,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -129,11 +132,12 @@ export default function AuditDisplay3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(0);
+  const [checkpoint, setCheckpoint] = useState(1);
   const [status_select, setStatus_select] = useState(0);
   const [selectGate, setSelectGate] = useState(0);
   const [selectCarType, setSelectCarType] = useState(0);
-  const [cardData, setCardData] = useState("");
+  const [summary, setSummary] = useState([]);
+
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
@@ -195,15 +199,6 @@ export default function AuditDisplay3() {
       .post("/display2", sendData)
       .then((res) => {
         Swal.close();
-        setAllTsTable({
-          summary: {
-            total: 0,
-            normal: 0,
-            unMatch: 0,
-            miss: 0,
-          },
-          ts_table: [],
-        });
         console.log(
           "res: ",
           res.data,
@@ -213,8 +208,8 @@ export default function AuditDisplay3() {
           res.data.summary
         );
 
-        setAllTsTable(!!res.data.status && !!res.data ? res.data : []);
-        setCardData(!!res.data.status ? res.data.summary : []);
+        setAllTsTable(!!res.data.status ? res.data : []);
+        setSummary(!!res.data.summary ? res.data.summary : summary);
       })
       .catch((error) => {
         // handleClose();
@@ -289,6 +284,29 @@ export default function AuditDisplay3() {
     });
   };
 
+  const dataCard = [
+    {
+      value: !!summary.total ? summary.total : 0,
+      status: "total",
+      label: "จำนวนรายการทั้งหมดของวัน",
+    },
+    {
+      value: !!summary.normal ? summary.normal : 0,
+      status: "normal",
+      label: "จำนวนรายการรถปกติ",
+    },
+    {
+      value: !!summary.unMatch ? summary.unMatch : 0,
+      status: "unMatch",
+      label: "จำนวนรายการตรวจสอบ",
+    },
+    {
+      value: !!summary.miss ? summary.miss : 0,
+      status: "miss",
+      label: "รายได้พึงได้รายวัน",
+    },
+  ];
+
   useEffect(() => {
     // fetchData();
     getDropdown();
@@ -314,11 +332,13 @@ export default function AuditDisplay3() {
             name="gate_select"
           >
             {!!dropdown.checkpoint
-              ? dropdown.checkpoint.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.checkpoint_name}
-                  </MenuItem>
-                ))
+              ? dropdown.checkpoint
+                  .filter((item) => item.id > 0)
+                  .map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.checkpoint_name}
+                    </MenuItem>
+                  ))
               : []}
           </TextField>
 
@@ -340,7 +360,7 @@ export default function AuditDisplay3() {
               : []}
           </TextField>
 
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="ประเภทรถ"
@@ -356,7 +376,7 @@ export default function AuditDisplay3() {
                   </MenuItem>
                 ))
               : []}
-          </TextField>
+          </TextField> */}
 
           <TextField
             select
@@ -464,7 +484,7 @@ export default function AuditDisplay3() {
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
-          <Box>
+          <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
               value={transactionId}
               date={selectedDate}
@@ -478,46 +498,59 @@ export default function AuditDisplay3() {
               endpoint="/audit-search"
             />
           </Box>
-          <Box style={{ display: "flex" }}>
-            <Paper className={classes.card}>
-              <Typography className={classes.typography}>
-                {`รายการทั้งหมด : ${
-                  !!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`ปกติ : ${
-                  !!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`ไม่ตรงกัน : ${
-                  !!cardData.ts_not_normal
-                    ? cardData.ts_not_normal.toLocaleString()
-                    : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`สูญหาย : ${
-                  !!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0
-                }`}
-              </Typography>
-            </Paper>
-
-            <Paper className={classes.card} style={{ marginLeft: 10 }}>
-              <Typography className={classes.typography}>
-                {`รายได้ประมาณการ : ${
-                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                ชำระแล้ว : 0
-              </Typography>
-              <Typography className={classes.typography}>
-                ค้างชำระ : 0
-              </Typography>
-            </Paper>
-          </Box>
+          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
+            {dataCard.map((card, index) => (
+              <Grid
+                item
+                component={Paper}
+                key={index}
+                lg
+                className={classes.card}
+                style={{
+                  borderLeft:
+                    card.status === "total"
+                      ? "3px solid gray"
+                      : card.status === "normal"
+                      ? "3px solid green"
+                      : card.status === "unMatch"
+                      ? "3px solid orange"
+                      : "3px solid red",
+                }}
+              >
+                <Grid
+                  container
+                  justifyContent="space-around"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color:
+                          card.status === "total"
+                            ? "gray"
+                            : card.status === "normal"
+                            ? "green"
+                            : card.status === "unMatch"
+                            ? "orange"
+                            : "red",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography style={{ fontSize: "1rem" }}>
+                      {card.value}{" "}
+                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <DescriptionTwoToneIcon />
+                  </Grid>
+                </Grid>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
 
         {/* Table Section */}
@@ -526,16 +559,22 @@ export default function AuditDisplay3() {
           component={Paper}
           className={classes.gateAndClassSection}
         >
-          <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableAuditDisplay2
-              dataList={allTsTable}
-              page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-              dropdown={dropdown}
-              checkDate={selectedDate}
-            />
+          <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
+            <GateTable2 dataList={allTsTable} />
           </Grid>
+          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
+            <ClassTable dataList={allTsTable} />
+          </Grid>
+        </Grid>
+        <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
+          <TableAuditDisplay2
+            dataList={allTsTable}
+            page={page}
+            onChange={handlePageChange}
+            onFetchData={fetchData}
+            dropdown={dropdown}
+            checkDate={selectedDate}
+          />
         </Grid>
       </Container>
     </>

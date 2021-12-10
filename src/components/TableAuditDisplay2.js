@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
@@ -270,9 +271,6 @@ export default function TableAuditDisplay2(props) {
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                สถานะ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -291,21 +289,13 @@ export default function TableAuditDisplay2(props) {
                 ประเภท TS
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                member
-              </TableCell>
-              <TableCell colSpan={3} align="center" className={classes.header}>
-                ตรวจสอบ
-              </TableCell>
-              <TableCell
-                colSpan={2}
-                align="center"
-                className={classes.header}
-                style={{ backgroundColor: "orange" }}
-              >
-                จัดเก็บ
+                ค่าผ่านทาง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                สถานะ
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
@@ -320,21 +310,6 @@ export default function TableAuditDisplay2(props) {
               </TableCell>
               <TableCell align="center" className={classes.header2}>
                 HQ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ค่าผ่านทาง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ค่าปรับ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                รวม
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                เรียกเก็บ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ชำระ
               </TableCell>
             </StyledTableRow>
           </TableHead>
@@ -352,29 +327,6 @@ export default function TableAuditDisplay2(props) {
                     }}
                     className={classes.tableRow}
                   >
-                    <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
-                    </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
@@ -416,30 +368,36 @@ export default function TableAuditDisplay2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_transaction_type
-                        ? data.match_transaction_type_name
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
                       {!!data.type ? data.type : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_total_cost ? data.match_total_cost : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
                       -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag ? "บังคับ" : "-"}
+                      <FiberManualRecordIcon
+                        style={{
+                          // fontSize: "0.8rem",
+                          color:
+                            data.state === 1
+                              ? "lightgray"
+                              : data.state === 2
+                              ? "#FF2400"
+                              : data.state === 3
+                              ? "blue"
+                              : data.state === 4
+                              ? "orange"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "darkviolet"
+                              : data.state === 7
+                              ? "lightblue"
+                              : "rgba(0,0,0,0)",
+                        }}
+                      />
                     </TableCell>
                   </StyledTableRow>
                 ))
