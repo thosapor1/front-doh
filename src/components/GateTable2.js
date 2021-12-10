@@ -80,11 +80,11 @@ export default function GateTable2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
+            {!!dataList.result_gate
+              ? dataList.result_gate.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell align="center" className={classes.body}>
-                      {data.gate_name}
+                      {data.match_gate}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
                       {data.ts_count}

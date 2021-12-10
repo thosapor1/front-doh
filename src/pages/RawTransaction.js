@@ -191,14 +191,23 @@ export default function RawTransaction() {
       state: status.toString(),
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
-    await apiURLv1.post("/raw-data", sendData).then((res) => {
-      console.log(sendData);
-      Swal.close();
-      setState(res.data);
-      setSummary(!!res.data.summary ? res.data.summary : summary);
-      console.log(res.data.dropdown_Checkpoint);
-      // console.log(`state_length: ${state.record.length}`);
-    });
+    await apiURLv1
+      .post("/raw-data", sendData)
+      .then((res) => {
+        console.log(sendData);
+        Swal.close();
+        setState(res.data);
+        setSummary(!!res.data.summary ? res.data.summary : summary);
+        console.log(res.data.dropdown_Checkpoint);
+        // console.log(`state_length: ${state.record.length}`);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   }
 
   useEffect(() => {
@@ -338,6 +347,7 @@ export default function RawTransaction() {
             page={page}
             onChange={handlePageChange}
             onFetchData={fetchData}
+            checkDate={selectedDate}
           />
         </Paper>
       </Container>

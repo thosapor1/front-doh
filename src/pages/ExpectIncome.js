@@ -186,8 +186,8 @@ export default function ExpectIncome() {
 
     const sendData = {
       page: pageId.toString(),
-      checkpoint_id: checkpoint.toString() || "0",
-      gate_id: selectGate.toString() || "0",
+      checkpoint: checkpoint.toString() || "0",
+      gate: selectGate.toString() || "0",
       state: status_select.toString() || "0",
       vehicleClass: selectCarType.toString() || "0",
       date: date,
@@ -197,8 +197,8 @@ export default function ExpectIncome() {
     };
     console.log(sendData);
 
-    apiURL
-      .post("/display2", sendData)
+    apiURLv1
+      .post("/expect-income", sendData)
       .then((res) => {
         Swal.close();
         console.log(
@@ -259,7 +259,7 @@ export default function ExpectIncome() {
     };
     console.log(sendData);
 
-    apiURL.post("/display2", sendData).then((res) => {
+    apiURLv1.post("/expect-income", sendData).then((res) => {
       Swal.close();
       setAllTsTable({
         summary: {

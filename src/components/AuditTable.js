@@ -19,6 +19,15 @@ import { Pagination } from "@material-ui/lab";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
+import axios from "axios";
+import format from "date-fns/format";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 const detailStatus = [
   {
@@ -89,6 +98,26 @@ const useStyle = makeStyles((theme) => {
       height: 10,
       fontSize: "0.8rem",
     },
+    headerPK2: {
+      height: 10,
+      backgroundColor: "#BB564B",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 46,
+    },
+    headerPK3: {
+      height: 10,
+      backgroundColor: "#BB564B",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 108,
+    },
     bodyData: {
       fontSize: "0.65rem",
     },
@@ -145,6 +174,24 @@ const useStyle = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
+    header2: {
+      backgroundColor: "#7C85BFff",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 46,
+    },
+    header3: {
+      backgroundColor: "#7C85BFff",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+      padding: "6px",
+      position: "sticky",
+      top: 108,
+    },
   };
 });
 
@@ -160,23 +207,57 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AuditTable(props) {
-  const { page, onChange, dataList, onFetchData } = props;
+  const { page, onChange, dataList, onFetchData, checkDate } = props;
+  const [mfLaneTime, setMfLaneTime] = useState("");
   const [selectedPage, setSelectedPage] = useState("");
   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [pathImage, setPathImage] = useState("");
   const classes = useStyle();
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const fetchData = () => {
-    // Swal.fire({
-    //   title: "Loading",
-    //   allowOutsideClick: false,
-    //   didOpen: () => Swal.showLoading(),
-    // });
-    setOpen(true);
+  const fetchData = (ts) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const sendData = {
+      date: format(checkDate, "yyyy-MM-dd"),
+      transactionId: ts,
+    };
+
+    apiURL
+      .post("/display-activity2", sendData)
+      .then((res) => {
+        Swal.close();
+        SetDataForActivity(
+          pathImage === 2
+            ? {
+                picCrop: res.data.mf_lane_picCrop,
+                picFull: res.data.mf_lane_picFull,
+              }
+            : pathImage === 2
+            ? {
+                picCrop: res.data.mf_lane_picCrop,
+                picFull: res.data.mf_lane_picFull,
+              }
+            : { picCrop: "", picFull: "" }
+        );
+        console.log("res2:", res.data);
+        setOpen(true);
+      })
+      .catch((error) => {
+        handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
   return (
     <div>
@@ -249,129 +330,109 @@ export default function AuditTable(props) {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell
-                align="center"
-                rowSpan={2}
-                className={classes.headerAudit}
-              >
+              <TableCell align="center" rowSpan={2} className={classes.header2}>
                 สถานะ
               </TableCell>
-              <TableCell
-                align="center"
-                rowSpan={2}
-                className={classes.headerAudit}
-              >
+              <TableCell align="center" rowSpan={2} className={classes.header2}>
                 หมายเลขรายการ
               </TableCell>
-              <TableCell
-                align="left"
-                rowSpan={2}
-                className={classes.headerAudit}
-              >
+              <TableCell align="left" rowSpan={2} className={classes.header2}>
                 ช่องทาง
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header2}>
                 double lidar
               </TableCell>
-              <TableCell
-                align="center"
-                colSpan={3}
-                className={classes.headerAudit}
-              >
+              <TableCell align="center" colSpan={3} className={classes.header2}>
                 อุปกรณ์ตรวจจับ
               </TableCell>
-              <TableCell
-                align="center"
-                colSpan={6}
-                className={classes.headerAudit}
-              >
+              <TableCell align="center" colSpan={6} className={classes.header2}>
                 กรมการขนส่งทางบก
               </TableCell>
               <TableCell
                 align="center"
                 colSpan={5}
-                className={classes.headerPK}
+                className={classes.headerPK2}
               >
                 ระดับช่องจราจร (Lane)
               </TableCell>
               <TableCell
                 align="center"
                 colSpan={5}
-                className={classes.headerPK}
+                className={classes.headerPK2}
               >
                 ระดับแม่ข่าย (HQ)
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 เวลา
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 เวลา
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 ประเภท
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 กล้อง Audit
               </TableCell>
               <TableCell
                 align="center"
-                className={classes.headerAudit}
+                className={classes.header3}
                 style={{ width: 50 }}
               >
                 เวลา
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 ประเภทรถ
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 ทะเบียน
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 หมวดจังหวัด
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 ยี่ห้อรถ
               </TableCell>
-              <TableCell align="center" className={classes.headerAudit}>
+              <TableCell align="center" className={classes.header3}>
                 สีรถ
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 เวลา
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 ประเภทรถ
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 ทะเบียน
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 หมวดจังหวัด
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 กล้อง
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 เวลา
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 ประเภทรถ
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 ทะเบียน
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 หมวดจังหวัด
               </TableCell>
-              <TableCell align="center" className={classes.headerPK}>
+              <TableCell align="center" className={classes.headerPK3}>
                 กล้อง
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {!!dataList
-              ? dataList.map((data, index) => (
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell align="center">
                       <FiberManualRecordIcon
@@ -403,7 +464,7 @@ export default function AuditTable(props) {
                       {!!data.transactionId ? data.transactionId : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
-                      {!!data.match_gate ? data.match_gate : "-"}
+                      {!!data.match_gate ? [...data.match_gate].pop : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       -
@@ -417,7 +478,10 @@ export default function AuditTable(props) {
                     <TableCell
                       align="center"
                       className={classes.bodyData}
-                      onClick={fetchData}
+                      onClick={() => {
+                        fetchData(data.transactionId);
+                        setPathImage(1);
+                      }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -445,12 +509,12 @@ export default function AuditTable(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       {!!data.mf_lane_tranDatetime
-                        ? data.mf_lane_tranDatetime.split(" ").pop()
+                        ? data.mf_lane_tranDatetime
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       {!!data.mf_lane_vehicleClass
-                        ? data.mf_lane_vehicleClass
+                        ? `C${data.mf_lane_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
@@ -462,7 +526,10 @@ export default function AuditTable(props) {
                     <TableCell
                       align="center"
                       className={classes.bodyData}
-                      onClick={fetchData}
+                      onClick={() => {
+                        fetchData(data.transactionId);
+                        setPathImage(2);
+                      }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -472,7 +539,7 @@ export default function AuditTable(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
-                      {!!data.vehicleClass ? data.vehicleClass : "-"}
+                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       {!!data.cameras_plateNo1 ? data.cameras_plateNo1 : "-"}
@@ -485,7 +552,10 @@ export default function AuditTable(props) {
                     <TableCell
                       align="center"
                       className={classes.bodyData}
-                      onClick={fetchData}
+                      onClick={() => {
+                        fetchData(data.transactionId);
+                        setPathImage(3);
+                      }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -501,6 +571,7 @@ export default function AuditTable(props) {
         open={open}
         onClick={handleClose}
         onFetchData={onFetchData}
+        pathImage={[]}
       />
     </div>
   );

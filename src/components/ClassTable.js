@@ -81,8 +81,8 @@ export default function ClassTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) =>
+            {!!dataList.result_vehicleClass
+              ? dataList.result_vehicleClass.map((data, index) =>
                   dataList.length === index + 1 ? (
                     <TableRow
                       key={index}
@@ -110,16 +110,16 @@ export default function ClassTable(props) {
                         {data.class}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_count}
+                        {data.sum_all}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_reject}
+                        {data.reject}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.ts_countState1}
+                        {data.normal}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.sumAmount}
+                        {data.revenue}
                       </TableCell>
                     </StyledTableRow>
                   )

@@ -224,34 +224,43 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
 
-    apiURL.post("/display", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
+    apiURL
+      .post("/display", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "tsClass:",
+          res.data.ts_class,
+          "tsGate: ",
+          res.data.ts_gate_table,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
+        setSummary(res.data.status !== false ? res.data.summary : []);
+        setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
+        setClassTable(res.data.status !== false ? res.data.ts_class : []);
+        setAllTsTable(res.data.status !== false ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      console.log(
-        "res: ",
-        res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setSummary(res.data.status !== false ? res.data.summary : []);
-      setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
-      setClassTable(res.data.status !== false ? res.data.ts_class : []);
-      setAllTsTable(res.data.status !== false ? res.data : []);
-    });
   };
 
   const refresh = (pageId = 1) => {

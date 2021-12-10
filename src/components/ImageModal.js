@@ -7,12 +7,34 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     bodyModal: {
+      display: "flex",
       height: "auto",
-    //   width: "auto",
+      width: "50%",
       position: "absolute",
+      backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      //   [theme.breakpoints.only("md")]: {
+      //     marginTop: "90%",
+      //   },
+      //   [theme.breakpoints.only("sm")]: {
+      //     marginTop: "120%",
+      //   },
     },
-    imageContainer: {},
+    imageWrap: {
+      height: "0",
+      paddingBottom: "20%",
+      position: "relative",
+      overflow: "hidden",
+    },
+    image: {
+      height: "100%",
+      Width: "100%",
+      border: "1px solid lightgray",
+      position: "absolute",
+      objectFit: "cover",
+    },
   };
 });
 
@@ -22,30 +44,30 @@ export default function ImageModal(props) {
 
   const body = (
     <Box className={classes.bodyModal}>
-      <Box style={{ display: "flex" }}>
-        <Box className={classes.imageContainer}>
-          <CardMedia
-            component="img"
-            src={
-              !!dataList.audit_pic_crop
-                ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                : noImage
-            }
-            className={classes.image}
-          />
-        </Box>
+      <Box className={classes.imageWrap}>
         <Box>
           <CardMedia
             component="img"
             src={
-              !!dataList.audit_pic_crop
-                ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+              !!dataList.picFull
+                ? `data:image/png;base64, ${dataList.picFull}`
                 : noImage
             }
             className={classes.image}
           />
+          <Box>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.picCrop
+                  ? `data:image/png;base64, ${dataList.picCrop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </Box>
         </Box>
-        <Box style={{backgroundColor:'#E6E6E6'}}>
+        <Box style={{ backgroundColor: "#E6E6E6" }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
               onClick={props.onClick}
