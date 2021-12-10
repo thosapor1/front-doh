@@ -61,7 +61,6 @@ const useStyles = makeStyles((theme) => {
     allTsTable: {
       padding: theme.spacing(1),
       backgroundColor: "white",
-      
     },
     card: {
       padding: "1rem",
@@ -126,7 +125,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function AuditDisplay2() {
+export default function AuditDisplay3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
