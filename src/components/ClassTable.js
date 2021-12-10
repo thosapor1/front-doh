@@ -81,8 +81,8 @@ export default function ClassTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList
-              ? dataList.map((data, index) =>
+            {!!dataList.resultsDisplay
+              ? dataList.resultsDisplay.map((data, index) =>
                   dataList.length === index + 1 ? (
                     <TableRow
                       key={index}

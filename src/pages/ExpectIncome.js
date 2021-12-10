@@ -19,11 +19,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableSuperdisplay2 from "../components/TableSuperdisplay2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
+import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 import SearchComponent from "../components/SearchComponent";
+import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
+import GateTable2 from "../components/GateTable2";
+import ClassTable from "../components/ClassTable";
 
 const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
+});
+const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
@@ -50,8 +58,11 @@ const useStyles = makeStyles((theme) => {
       marginTop: 10,
       padding: theme.spacing(2),
       backgroundColor: "white",
+      columnGap: "1rem",
+      justifyContent: "space-between",
     },
     allTsTable: {
+      marginTop: 10,
       padding: theme.spacing(1),
       backgroundColor: "white",
     },
@@ -119,33 +130,16 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const valueStatus = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกสถานะ",
-  },
-  {
-    id: 1,
-    value: 4,
-    label: "รอ super audit ตรวจสอบ",
-  },
-  {
-    id: 2,
-    value: 5,
-    label: "รอพิจารณา",
-  },
-];
-
-export default function SuperAuditDisplay2() {
+export default function ExpectIncome() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("1");
-  const [status_select, setStatus_select] = useState("0");
+  const [checkpoint, setCheckpoint] = useState(1);
+  const [status_select, setStatus_select] = useState(0);
+  const [selectGate, setSelectGate] = useState(0);
+  const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
-  const [selectGate, setSelectGate] = useState("0");
-  const [selectCarType, setSelectCarType] = useState("0");
+
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
@@ -165,8 +159,10 @@ export default function SuperAuditDisplay2() {
   };
   // const handleOpen = () => {
   //   setOpen(true);
-  const getCheckpoint = (e) => {
-    apiURL.post("/dropdown").then((res) => {
+  // };
+
+  const getDropdown = () => {
+    apiURLv1.post("/dropdown").then((res) => {
       console.log(res.data);
       setDropdown(res.data);
     });
@@ -188,16 +184,12 @@ export default function SuperAuditDisplay2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    // console.log(checkpoint);
-    // console.log(selectGate);
-    // console.log(selectCarType);
-    // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
-      checkpoint_id: checkpoint,
-      gate_id: selectGate,
-      state: status_select.toString(),
-      vehicleClass: selectCarType,
+      checkpoint_id: checkpoint.toString() || "0",
+      gate_id: selectGate.toString() || "0",
+      state: status_select.toString() || "0",
+      vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
@@ -206,18 +198,9 @@ export default function SuperAuditDisplay2() {
     console.log(sendData);
 
     apiURL
-      .post("/display-superaudit2", sendData)
+      .post("/display2", sendData)
       .then((res) => {
         Swal.close();
-        setAllTsTable({
-          summary: {
-            total: 0,
-            normal: 0,
-            unMatch: 0,
-            miss: 0,
-          },
-          ts_table: [],
-        });
         console.log(
           "res: ",
           res.data,
@@ -227,8 +210,8 @@ export default function SuperAuditDisplay2() {
           res.data.summary
         );
 
-        setAllTsTable(res.data.status !== false ? res.data : []);
-        setSummary(res.data.status !== false ? res.data.summary : []);
+        setAllTsTable(!!res.data.status ? res.data : []);
+        setSummary(!!res.data.summary ? res.data.summary : summary);
       })
       .catch((error) => {
         // handleClose();
@@ -264,76 +247,71 @@ export default function SuperAuditDisplay2() {
     );
 
     const sendData = {
-      page: pageId,
-      checkpoint_id: "0",
-      datetime: date,
+      page: pageId.toString(),
+      checkpoint_id: checkpoint.toString() || "0",
+      gate_id: selectGate.toString() || "0",
+      state: status_select.toString() || "0",
+      vehicleClass: selectCarType.toString() || "0",
+      date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      state: "0",
+      status: tsType.toString(),
     };
+    console.log(sendData);
 
-    apiURL
-      .post("/display-superaudit-activity2", sendData)
-      .then((res) => {
-        Swal.close();
-        setAllTsTable({
-          summary: {
-            total: 0,
-            normal: 0,
-            unMatch: 0,
-            miss: 0,
-          },
-          ts_table: [],
-        });
-        console.log(
-          "res: ",
-          res.data,
-          "tsClass:",
-          res.data.ts_class,
-          "tsGate: ",
-          res.data.ts_gate_table,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
-        setAllTsTable(res.data.status !== false ? res.data : []);
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+    apiURL.post("/display2", sendData).then((res) => {
+      Swal.close();
+      setAllTsTable({
+        summary: {
+          total: 0,
+          normal: 0,
+          unMatch: 0,
+          miss: 0,
+        },
+        ts_table: [],
       });
+      console.log(
+        "res: ",
+        res.data,
+        "tsClass:",
+        res.data.ts_class,
+        "tsGate: ",
+        res.data.ts_gate_table,
+        "ts_Table:",
+        res.data.ts_table,
+        "Summary: ",
+        res.data.summary
+      );
+      setAllTsTable(res.data.status !== false ? res.data : []);
+    });
   };
 
   const dataCard = [
     {
       value: !!summary.total ? summary.total : 0,
-      status: "checklist",
+      status: "total",
+      label: "จำนวนรายการทั้งหมดของวัน",
+    },
+    {
+      value: !!summary.normal ? summary.normal : 0,
+      status: "normal",
+      label: "จำนวนรายการรถปกติ",
+    },
+    {
+      value: !!summary.unMatch ? summary.unMatch : 0,
+      status: "unMatch",
       label: "จำนวนรายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
+    {
+      value: !!summary.miss ? summary.miss : 0,
+      status: "miss",
+      label: "รายได้พึงได้รายวัน",
+    },
   ];
 
   useEffect(() => {
     // fetchData();
-    getCheckpoint();
+    getDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -341,7 +319,7 @@ export default function SuperAuditDisplay2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          super audit display
+          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
         </Typography>
 
         {/* Filter Section */}
@@ -413,10 +391,10 @@ export default function SuperAuditDisplay2() {
             className={classes.input1}
             name="status_select"
           >
-            {!!valueStatus
-              ? valueStatus.map((item, index) => (
-                  <MenuItem key={index} value={item.value}>
-                    {item.label}
+            {!!dropdown.state
+              ? dropdown.state.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
                   </MenuItem>
                 ))
               : []}
@@ -522,14 +500,13 @@ export default function SuperAuditDisplay2() {
               endpoint="/audit-search"
             />
           </Box>
-
           <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
             {dataCard.map((card, index) => (
               <Grid
                 item
                 component={Paper}
                 key={index}
-                lg={4}
+                lg
                 className={classes.card}
                 style={{
                   borderLeft:
@@ -584,16 +561,22 @@ export default function SuperAuditDisplay2() {
           component={Paper}
           className={classes.gateAndClassSection}
         >
-          <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableSuperdisplay2
-              dataList={allTsTable}
-              page={page}
-              onChange={handlePageChange}
-              onFetchData={fetchData}
-              dropdown={dropdown}
-              checkDate={selectedDate}
-            />
+          <Grid item md={12} sm={12} lg={4} className={classes.gateTable}>
+            <GateTable2 dataList={allTsTable} />
           </Grid>
+          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
+            <ClassTable dataList={allTsTable} />
+          </Grid>
+        </Grid>
+        <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
+          <TableAuditDisplay2
+            dataList={allTsTable}
+            page={page}
+            onChange={handlePageChange}
+            onFetchData={fetchData}
+            dropdown={dropdown}
+            checkDate={selectedDate}
+          />
         </Grid>
       </Container>
     </>
