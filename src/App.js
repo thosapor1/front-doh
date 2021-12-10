@@ -18,14 +18,13 @@ import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
-
-import AuditDisplay2 from "./pages/AuditDisplay2";
 import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
 import Test from "./pages/Test";
-import AuditDisplay3 from "./pages/AuditDisplay3";
+
+import ExpectIncome from "./pages/ExpectIncome";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -53,7 +52,7 @@ function App() {
             <Route path="/dashboard" component={DashBoard} />
             <Route path="/dashboard2" component={DashBoard2} />
             <Route path="/rawTransaction" component={RawTransaction} />
-            <Route path="/auditDisplay3" component={AuditDisplay3} />
+            <Route path="/expectIncome" component={ExpectIncome} />
             <Route path="/auditDisplay" component={AuditDisplay} />
             <Route path="/pk3Display" component={Pk3Display} />
             <Route path="/superAuditDisplay" component={SuperAuditDisplay} />

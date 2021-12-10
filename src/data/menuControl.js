@@ -17,7 +17,7 @@ export const menuItemsForSuperAdmin = [
   {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
-    path: "/auditDisplay3",
+    path: "/expectIncome",
   },
   {
     text: "รายได้รายวัน",

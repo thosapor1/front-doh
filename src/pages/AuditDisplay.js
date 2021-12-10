@@ -1,5 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -11,23 +12,29 @@ import {
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
-  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import React, { useEffect, useState } from "react";
-import GateTable from "../components/GateTable";
-import ClassTable from "../components/ClassTable";
 import axios from "axios";
 import { format } from "date-fns";
 import AllTsTableForActivity from "../components/AllTsTableForActivity";
 import Swal from "sweetalert2";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import ClassTable2 from "../components/ClassTable2";
+import AllTsTableForActivity2 from "../components/AllTsTableForActivity2";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
       : `${process.env.REACT_APP_BASE_URL_V3}`,
+});
+const apiURLv1 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -36,16 +43,11 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "#f9f9f9",
       paddingTop: 20,
     },
-    filterSection: {
-      padding: theme.spacing(2),
-      marginTop: 10,
-      justifyContent: "center",
-      alignItems: "center",
-    },
     cardSection: {
       display: "flex",
       justifyContent: "space-between",
       marginTop: 10,
+      columnGap: 10,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -69,8 +71,6 @@ const useStyles = makeStyles((theme) => {
       width: "100%",
       height: 100,
       display: "flex",
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1),
     },
     btn: {
       backgroundColor: "#46005E",
@@ -101,31 +101,39 @@ const useStyles = makeStyles((theme) => {
         width: 150,
       },
     },
+    filterSection: {
+      padding: theme.spacing(1),
+      marginTop: 10,
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    searchButton: {
+      textAlign: "right",
+      [theme.breakpoints.down("md")]: {},
+    },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
   };
 });
-
-const valueStatus = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกสถานะ",
-  },
-  {
-    id: 1,
-    value: 1,
-    label: "ปกติ",
-  },
-  {
-    id: 2,
-    value: 2,
-    label: "ข้อมูลไม่ตรงกัน",
-  },
-  {
-    id: 3,
-    value: 3,
-    label: "ข้อมูลสูญหาย",
-  },
-];
 
 export default function AuditDisplay() {
   // const [open, setOpen] = useState(false);
@@ -135,10 +143,8 @@ export default function AuditDisplay() {
   const [allTsTable, setAllTsTable] = useState([]);
   const [summary, setSummary] = useState([]);
   const [checkpoint, setCheckpoint] = useState("");
-  const [status_select, setStatus_select] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [valueMenuItem, setValueMenuItem] = useState([]);
-  const [subState, setSubState] = useState(0);
+  const [station, setStation] = useState(0);
+  const [dropdown, setDropdown] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -159,28 +165,39 @@ export default function AuditDisplay() {
   //   setOpen(true);
   // };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const dataCard = [
     {
-      value: summary.ts_total,
-      status: "ts_total",
-      label: "จำนวนรายการทั้งหมด",
+      value: !!summary.total ? summary.total : 0,
+      status: "total",
+      label: "รายการทั้งหมด",
     },
     {
-      value: summary.ts_normal,
-      status: "ts_normal",
-      label: "จำนวนรายการปกติ",
+      value: !!summary.normal ? summary.normal : 0,
+      status: "normal",
+      label: "ชำระปกติ",
     },
     {
-      value: summary.ts_not_normal,
-      status: "ts_not_normal",
-      label: "จำนวนรายการตรวจสอบ",
+      value: !!summary.unMatch ? summary.unMatch : 0,
+      status: "unMatch",
+      label: "ชำระล่าช้า 2-32 วัน",
     },
     {
-      value: summary.revenue,
-      status: "revenue",
-      label: "รายได้พึงได้รายวัน",
+      value: !!summary.miss ? summary.miss : 0,
+      status: "miss",
+      label: "ชำระโดยผู้รับจ้าง(มากกว่า32วัน)",
     },
   ];
+
+  const getDropdown = () => {
+    apiURLv1.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
+  };
 
   const fetchData = (pageId = 1) => {
     Swal.fire({
@@ -204,8 +221,6 @@ export default function AuditDisplay() {
       datetime: date,
       startTime: timeStart,
       endTime: timeEnd,
-      transactionStatus: status,
-      sub_state: subState,
     };
     console.log(sendData);
 
@@ -236,9 +251,6 @@ export default function AuditDisplay() {
       setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
       setClassTable(res.data.status !== false ? res.data.ts_class : []);
       setAllTsTable(res.data.status !== false ? res.data : []);
-      setValueMenuItem(
-        res.data.status !== false ? res.data.dropdown_Checkpoint : []
-      );
     });
   };
 
@@ -256,7 +268,6 @@ export default function AuditDisplay() {
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
     setCheckpoint(0);
-    setStatus_select(0);
     setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
@@ -273,7 +284,6 @@ export default function AuditDisplay() {
       startTime: timeStart,
       endTime: timeEnd,
       transactionStatus: "0",
-      sub_state: subState,
     };
     console.log(sendData);
 
@@ -307,29 +317,9 @@ export default function AuditDisplay() {
     });
   };
 
-  const changeSubState = (e) => {
-    console.log(e);
-    if (e === 0) {
-      setStatus_select(0);
-      setStatus(0);
-      setSubState(0);
-    } else if (e === 1) {
-      setStatus_select(1);
-      setStatus(1);
-      setSubState(1);
-    } else if (e === 2) {
-      setStatus_select(2);
-      setStatus(2);
-      setSubState(1);
-    } else if (e === 3) {
-      setStatus_select(3);
-      setStatus(2);
-      setSubState(2);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    getDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -342,155 +332,113 @@ export default function AuditDisplay() {
 
         {/* Filter Section */}
         <Grid container component={Paper} className={classes.filterSection}>
-          <TextField
-            select
-            variant="outlined"
-            label="ด่าน"
-            value={checkpoint}
-            onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input}
-            name="gate_select"
-          >
-            {valueMenuItem.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.checkpoint_name}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Box>
+            <TextField
+              select
+              variant="outlined"
+              label="ด่าน"
+              className={classes.input1}
+              onChange={(event) => setStation(event.target.value)}
+              name="station"
+              value={station}
+            >
+              {!!dropdown.checkpoint
+                ? dropdown.checkpoint.map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.checkpoint_name}
+                    </MenuItem>
+                  ))
+                : []}
+            </TextField>
 
-          <TextField
-            select
-            variant="outlined"
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              changeSubState(e.target.value);
-            }}
-            className={classes.input}
-            name="status_select"
-          >
-            {valueStatus.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item.label}
-              </MenuItem>
-            ))}
-          </TextField>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                className={classes.input1}
+                style={{ width: 170 }}
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                format="dd/MM/yyyy"
+                margin="normal"
+                // minDate={selectedDate}
+                id="date"
+                label="วันที่เข้าด่าน"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              className={classes.input}
-              disableToolbar
-              variant="inlined"
-              inputVariant="outlined"
-              format="dd/MM/yyyy"
-              margin="normal"
-              id="date-picker-inline"
-              label="วันที่เข้าด่าน"
-              value={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
+            <Button
+              className={classes.btn}
+              color="primary"
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              onClick={() => {
+                fetchData(1);
               }}
-            />
-          </MuiPickersUtilsProvider>
-
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              inputVariant="outlined"
-              ampm={false}
-              variant="inline"
-              label="เวลาเริ่มต้น"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeStart}
-              onChange={setSelectedTimeStart}
-              className={classes.input}
-            />
-          </MuiPickersUtilsProvider>
-
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              inputVariant="outlined"
-              ampm={false}
-              variant="inline"
-              label="เวลาสิ้นสุด"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeEnd}
-              onChange={setSelectedTimeEnd}
-              className={classes.input}
-            />
-          </MuiPickersUtilsProvider>
-
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
-            ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
-            refresh
-          </Button>
+            >
+              กรองข้อมูล
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              style={{ backgroundColor: "#ec407a" }}
+            >
+              พิมพ์รายงาน
+            </Button>
+          </Box>
         </Grid>
 
         {/* Card Section */}
         <div className={classes.cardSection}>
-          {!!dataCard
-            ? dataCard.map((card, index) => (
-                <Paper
-                  key={index}
-                  className={classes.card}
-                  style={{
-                    borderLeft:
-                      card.status === "ts_total"
-                        ? "3px solid gray"
-                        : card.status === "ts_normal"
-                        ? "3px solid gray"
-                        : card.status === "ts_not_normal"
-                        ? "3px solid orange"
-                        : "3px solid green",
-                  }}
-                >
-                  <Grid
-                    container
-                    justifyContent="space-around"
-                    alignItems="center"
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "unMatch"
+                    ? "3px solid orange"
+                    : "3px solid red",
+              }}
+            >
+              <Grid container justifyContent="space-around" alignItems="center">
+                <Grid item>
+                  <Typography
+                    style={{
+                      color:
+                        card.status === "total"
+                          ? "gray"
+                          : card.status === "normal"
+                          ? "green"
+                          : card.status === "unMatch"
+                          ? "orange"
+                          : "red",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                    }}
                   >
-                    <Grid item sm={12} md={6} lg={6}>
-                      <Typography
-                        style={{
-                          fontSize: "0.9rem",
-                          color:
-                            card.status === "ts_total"
-                              ? "gray"
-                              : card.status === "ts_normal"
-                              ? "gray"
-                              : card.status === "ts_not_normal"
-                              ? "orange"
-                              : "green",
-                        }}
-                      >
-                        {card.label}
-                      </Typography>
-                      <Typography style={{ fontSize: "0.9rem" }}>
-                        {card.value}
-                        {card.status === "revenue" ? "บาท" : "รายการ"}
-                      </Typography>
-                    </Grid>
-                    <Grid>
-                      <DescriptionTwoToneIcon />
-                    </Grid>
-                  </Grid>
-                </Paper>
-              ))
-            : []}
+                    {card.label}
+                  </Typography>
+                  <Typography style={{ fontSize: "1rem" }}>
+                    {`${card.value} บาท`}
+                  </Typography>
+                </Grid>
+                <Grid>
+                  <DescriptionTwoToneIcon />
+                </Grid>
+              </Grid>
+            </Paper>
+          ))}
         </div>
 
         {/* Table Section */}
@@ -499,15 +447,15 @@ export default function AuditDisplay() {
           component={Paper}
           className={classes.gateAndClassSection}
         >
-          <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
+          {/* <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
             <GateTable dataList={gateTable} />
-          </Grid>
-          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
-            <ClassTable dataList={classTable} />
+          </Grid> */}
+          <Grid item md={12} sm={12} lg={5} className={classes.classTable}>
+            <ClassTable2 dataList={classTable} />
           </Grid>
         </Grid>
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-          <AllTsTableForActivity
+          <AllTsTableForActivity2
             dataList={allTsTable}
             page={page}
             onChange={handlePageChange}

@@ -58,6 +58,8 @@ const useStyles = makeStyles((theme) => {
       marginTop: 10,
       padding: theme.spacing(2),
       backgroundColor: "white",
+      columnGap: "1rem",
+      justifyContent: "space-between",
     },
     allTsTable: {
       marginTop: 10,
@@ -128,7 +130,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function AuditDisplay3() {
+export default function ExpectIncome() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
@@ -559,7 +561,7 @@ export default function AuditDisplay3() {
           component={Paper}
           className={classes.gateAndClassSection}
         >
-          <Grid item md={12} sm={12} lg={5} className={classes.gateTable}>
+          <Grid item md={12} sm={12} lg={4} className={classes.gateTable}>
             <GateTable2 dataList={allTsTable} />
           </Grid>
           <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
