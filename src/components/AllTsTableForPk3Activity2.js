@@ -18,7 +18,9 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
-import ModalSuperActivity2 from "./ModalSuperActivity2";
+import ModalPK3Activity from "./ModalPk3Activity";
+import ModalPK3Activity2 from "./ModalPk3Activity2";
+
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -26,6 +28,12 @@ const apiURL = axios.create({
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const detailStatus = [
@@ -166,7 +174,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableSuperdisplay2(props) {
+export default function TablePK3display2(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
@@ -178,7 +186,7 @@ export default function TableSuperdisplay2(props) {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    console.log(timeStamp);
+
     let date = timeStamp.split(" ").shift();
 
     const sendData = {
@@ -187,10 +195,10 @@ export default function TableSuperdisplay2(props) {
     };
     let endpoint = "";
 
-    endpoint = "/display-super-audit-activity";
+    endpoint = "/display-pk3-activity";
     setOpen(true);
 
-    apiURL
+    apiURLv2
       .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
@@ -257,7 +265,7 @@ export default function TableSuperdisplay2(props) {
         </Box>
 
         {/* detail box */}
-        <Box style={{ display: "flex", paddingTop: 4 }}>
+        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon
@@ -269,7 +277,7 @@ export default function TableSuperdisplay2(props) {
               </Typography>
             </Box>
           ))}
-        </Box>
+        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -371,7 +379,7 @@ export default function TableSuperdisplay2(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {`-`}
+                      -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
@@ -403,7 +411,7 @@ export default function TableSuperdisplay2(props) {
         </Table>
       </TableContainer>
 
-      <ModalSuperActivity2
+      <ModalPK3Activity2
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
@@ -411,12 +419,6 @@ export default function TableSuperdisplay2(props) {
         dropdown={dropdown}
         checkDate={checkDate}
         page={page}
-      />
-      <ModalReadOnly2
-        dataList={dataForActivity}
-        open={open1}
-        onClick={handleClose}
-        onFetchData={props.onFetchData}
       />
     </div>
   );
