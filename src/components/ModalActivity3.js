@@ -361,13 +361,14 @@ export default function ModalActivity3(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
-      fee: audit_feeAmount || "0",
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
+      status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: "",
+      pk3_comment: state.commentPK3,
       super_audit_comment: "",
-      ts_duplication: "",
+      ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
@@ -380,6 +381,7 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
+      zIndex: 99999,
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -448,13 +450,14 @@ export default function ModalActivity3(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
-      fee: audit_feeAmount || "0",
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
+      status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: "",
+      pk3_comment: state.commentPK3,
       super_audit_comment: "",
-      ts_duplication: "",
+      ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
@@ -512,6 +515,16 @@ export default function ModalActivity3(props) {
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
+      );
+      setVehicleClass(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_vehicleClass
+          : 0
+      );
+      setAudit_feeAmount(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_fee
+          : 0
       );
       console.log("dataList", dataList);
     }
@@ -1497,7 +1510,6 @@ export default function ModalActivity3(props) {
             {!!resultDisplay.state &&
             (resultDisplay.state === 2 || resultDisplay.state === 6) ? (
               <Button
-                disabled={!!vehicleClass ? false : true}
                 variant="contained"
                 style={{
                   backgroundColor: "green",
@@ -1513,7 +1525,6 @@ export default function ModalActivity3(props) {
             {(!!resultDisplay.state && resultDisplay.state === 1) ||
             resultDisplay.state === 2 ? (
               <Button
-                disabled={!!vehicleClass ? false : true}
                 variant="contained"
                 style={{
                   backgroundColor: "red",

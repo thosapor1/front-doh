@@ -89,6 +89,7 @@ const useStyle = makeStyles((theme) => {
       padding: 10,
       height: 10,
       fontSize: "0.8rem",
+      zIndex: 1,
     },
     headerPK: {
       backgroundColor: "#BB564B",
@@ -182,7 +183,7 @@ const useStyle = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 46,
-      
+      zIndex: 1,
     },
     header3: {
       backgroundColor: "#7C85BFff",
@@ -192,6 +193,7 @@ const useStyle = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 108,
+      zIndex: 1,
     },
   };
 });
@@ -209,18 +211,16 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function AuditTable(props) {
   const { page, onChange, dataList, onFetchData, checkDate } = props;
-  const [mfLaneTime, setMfLaneTime] = useState("");
   const [selectedPage, setSelectedPage] = useState("");
   const [open, setOpen] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
-  const [pathImage, setPathImage] = useState("");
   const classes = useStyle();
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const fetchData = (ts) => {
+  const fetchData = (ts, path) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -237,15 +237,15 @@ export default function AuditTable(props) {
       .then((res) => {
         Swal.close();
         SetDataForActivity(
-          pathImage === 2
+          path === 2
             ? {
                 picCrop: res.data.mf_lane_picCrop,
                 picFull: res.data.mf_lane_picFull,
               }
-            : pathImage === 2
+            : path === 3
             ? {
-                picCrop: res.data.mf_lane_picCrop,
-                picFull: res.data.mf_lane_picFull,
+                picCrop: res.data.imageFileCrop,
+                picFull: res.data.imageFile,
               }
             : { picCrop: "", picFull: "" }
         );
@@ -480,9 +480,9 @@ export default function AuditTable(props) {
                       align="center"
                       className={classes.bodyData}
                       onClick={() => {
-                        fetchData(data.transactionId);
-                        setPathImage(1);
+                        fetchData(data.transactionId, 1);
                       }}
+                      style={{ cursor: "pointer" }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -528,9 +528,9 @@ export default function AuditTable(props) {
                       align="center"
                       className={classes.bodyData}
                       onClick={() => {
-                        fetchData(data.transactionId);
-                        setPathImage(2);
+                        fetchData(data.transactionId, 2);
                       }}
+                      style={{ cursor: "pointer" }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -554,9 +554,9 @@ export default function AuditTable(props) {
                       align="center"
                       className={classes.bodyData}
                       onClick={() => {
-                        fetchData(data.transactionId);
-                        setPathImage(3);
+                        fetchData(data.transactionId, 3);
                       }}
+                      style={{ cursor: "pointer" }}
                     >
                       <CameraAltIcon />
                     </TableCell>
@@ -572,7 +572,7 @@ export default function AuditTable(props) {
         open={open}
         onClick={handleClose}
         onFetchData={onFetchData}
-        pathImage={[]}
+        onClose={handleClose}
       />
     </div>
   );

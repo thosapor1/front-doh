@@ -509,6 +509,16 @@ export default function ModalPK3Activity2(props) {
         operation: "",
       });
       setFileName("");
+      setVehicleClass(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_vehicleClass
+          : 0
+      );
+      setAudit_feeAmount(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_fee
+          : 0
+      );
 
       console.log("dataList", dataList);
     }

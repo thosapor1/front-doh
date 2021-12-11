@@ -139,6 +139,7 @@ export default function ExpectIncome() {
   const [selectGate, setSelectGate] = useState(0);
   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
+
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");

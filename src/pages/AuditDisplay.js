@@ -216,7 +216,7 @@ export default function AuditDisplay() {
 
     const sendData = {
       page: pageId.toString(),
-      checkPoint: checkpoint.toString(),
+      checkPoint: station.toString(),
       date: date,
     };
     console.log(sendData);

@@ -24,8 +24,13 @@ const useStyles = makeStyles((theme) => {
         outline: "1px  lightgray",
       },
     },
+    root: {
+      "& .MuiTableCell-root": {
+        padding: 10,
+      },
+    },
     container: {
-      maxHeight: 212,
+      maxHeight: 210,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -65,7 +70,7 @@ export default function GateTable2(props) {
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
               {headCells.map((headCell, index) => (

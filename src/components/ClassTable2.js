@@ -12,8 +12,13 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
+    root: {
+      "& .MuiTableCell-root": {
+        padding: 10,
+      },
+    },
     container: {
-      maxHeight: 270,
+      maxHeight: 250,
     },
     header: {
       backgroundColor: "#7C85BFff;",
@@ -62,7 +67,7 @@ export default function ClassTable2(props) {
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
               {headerCells.map((headerCell, index) => (
@@ -94,7 +99,7 @@ export default function ClassTable2(props) {
                     </TableCell>
                   </TableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>

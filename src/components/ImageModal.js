@@ -14,7 +14,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     bodyModal: {
-      display: "flex",
+      // display: "flex",
       height: "auto",
       width: "50%",
       position: "absolute",
@@ -28,6 +28,10 @@ const useStyle = makeStyles((theme) => {
       //   [theme.breakpoints.only("sm")]: {
       //     marginTop: "120%",
       //   },
+    },
+    head: {
+      display: "flex",
+      justifyContent: "space-between",
     },
     imageWrap: {
       height: "0",
@@ -48,26 +52,23 @@ const useStyle = makeStyles((theme) => {
 export default function ImageModal(props) {
   const classes = useStyle();
   const { open, onClose, dataList } = props;
-  const mockPic = 0;
 
   const body = (
     <div className={classes.bodyModal}>
-      <div className={classes.head}>
-        <div style={{ width: "100%", float: "right" }}>
-          <Tooltip title="close">
-            <CancelTwoToneIcon
-              fontSize="small"
-              color="secondary"
-              onClick={props.onClick}
-              style={{
-                cursor: "pointer",
-                fontSize: "1.5rem",
-                paddingTop: 5,
-                color: "red",
-              }}
-            />
-          </Tooltip>
-        </div>
+      <div style={{ float: "right" }}>
+        <Tooltip title="close">
+          <CancelTwoToneIcon
+            fontSize="small"
+            color="secondary"
+            onClick={props.onClick}
+            style={{
+              cursor: "pointer",
+              fontSize: "1.5rem",
+              paddingTop: 5,
+              color: "red",
+            }}
+          />
+        </Tooltip>
       </div>
       <Grid container spacing={1} justifyContent="center" justifyItem="center">
         <Grid item lg={6} md={6}>

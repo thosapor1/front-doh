@@ -353,16 +353,18 @@ export default function ModalSuperActivity2(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
-      fee: audit_feeAmount || "0",
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
+      status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: "",
-      super_audit_comment: commentSuper,
-      ts_duplication: "",
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
+
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -372,7 +374,6 @@ export default function ModalSuperActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex: 1300,
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -435,16 +436,17 @@ export default function ModalSuperActivity2(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
-      fee: audit_feeAmount || "0",
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: "",
-      super_audit_comment: commentSuper,
-      ts_duplication: "",
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
+
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -502,6 +504,16 @@ export default function ModalSuperActivity2(props) {
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
+      );
+      setVehicleClass(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_vehicleClass
+          : 0
+      );
+      setAudit_feeAmount(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_fee
+          : 0
       );
       console.log("dataList", dataList);
     }
@@ -1478,7 +1490,6 @@ export default function ModalSuperActivity2(props) {
           </TableContainer>
           <div>
             <Button
-              disabled={!!vehicleClass ? false : true}
               variant="contained"
               style={{
                 backgroundColor: "green",
@@ -1490,7 +1501,6 @@ export default function ModalSuperActivity2(props) {
             </Button>
             {!!resultDisplay.state && resultDisplay.state !== 3 ? (
               <Button
-                disabled={!!vehicleClass ? false : true}
                 variant="contained"
                 style={{
                   backgroundColor: "red",
