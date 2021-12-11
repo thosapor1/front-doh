@@ -179,8 +179,8 @@ export default function AllTsTableForActivity2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.ts_table
-              ? dataList.ts_table.map((data) => (
+            {!!dataList.detail
+              ? dataList.detail.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
@@ -240,12 +240,6 @@ export default function AllTsTableForActivity2(props) {
       <ModalActivity
         dataList={dataForActivity}
         open={open}
-        onClick={handleClose}
-        onFetchData={props.onFetchData}
-      />
-      <ModalReadOnly
-        dataList={dataForActivity}
-        open={open1}
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />

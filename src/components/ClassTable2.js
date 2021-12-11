@@ -77,8 +77,8 @@ export default function ClassTable2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
+            {!!dataList.total
+              ? dataList.total.map((data, index) => (
                   <TableRow
                     key={index}
                     style={{ left: 0, bottom: 0, position: "sticky" }}

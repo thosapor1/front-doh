@@ -1,4 +1,11 @@
-import { Box, CardMedia, makeStyles, Modal, Tooltip } from "@material-ui/core";
+import {
+  Box,
+  CardMedia,
+  Grid,
+  makeStyles,
+  Modal,
+  Tooltip,
+} from "@material-ui/core";
 import React from "react";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
@@ -22,19 +29,19 @@ const useStyle = makeStyles((theme) => {
       //     marginTop: "120%",
       //   },
     },
-    imageWrap: {
-      height: "0",
-      paddingBottom: "20%",
-      position: "relative",
-      overflow: "hidden",
-    },
-    image: {
-      height: "100%",
-      Width: "100%",
-      border: "1px solid lightgray",
-      position: "absolute",
-      objectFit: "cover",
-    },
+    // imageWrap: {
+    //   height: "0",
+    //   paddingBottom: "20%",
+    //   position: "relative",
+    //   overflow: "hidden",
+    // },
+    // image: {
+    //   height: "100%",
+    //   Width: "100%",
+    //   border: "1px solid lightgray",
+    //   position: "absolute",
+    //   objectFit: "cover",
+    // },
   };
 });
 
@@ -44,8 +51,8 @@ export default function ImageModal(props) {
 
   const body = (
     <Box className={classes.bodyModal}>
-      <Box className={classes.imageWrap}>
-        <Box>
+      <Grid container>
+        <Grid item lg={6}>
           <CardMedia
             component="img"
             src={
@@ -55,7 +62,7 @@ export default function ImageModal(props) {
             }
             className={classes.image}
           />
-          <Box>
+          <Grid item lg={6}>
             <CardMedia
               component="img"
               src={
@@ -65,8 +72,8 @@ export default function ImageModal(props) {
               }
               className={classes.image}
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
         <Box style={{ backgroundColor: "#E6E6E6" }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
@@ -80,7 +87,7 @@ export default function ImageModal(props) {
             />
           </Tooltip>
         </Box>
-      </Box>
+      </Grid>
     </Box>
   );
   return (

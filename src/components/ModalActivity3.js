@@ -35,6 +35,12 @@ const apiURLv1 = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -191,7 +197,7 @@ const useStyle = makeStyles((theme) => {
     btn: {
       color: "white",
       width: "100%",
-      marginTop: "1rem",
+      marginTop: 5,
     },
     textField: {
       height: 20,
@@ -300,7 +306,6 @@ export default function ModalActivity3(props) {
     operation: "",
   });
   const { tsType, operation } = state;
-
   const [vehicleClass, setVehicleClass] = useState("");
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
@@ -324,7 +329,7 @@ export default function ModalActivity3(props) {
     );
   };
 
-  const handleUpdate = () => {
+  const handleUpdate1 = () => {
     const date = format(checkDate, "yyyy-MM-dd");
 
     const sendData = {
@@ -348,7 +353,66 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex: 1300,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURLv2
+            .post("/operation", sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                });
+              }
+            })
+            .then(() => {
+              props.onClick();
+              setTimeout(() => {
+                props.onFetchData(page);
+              }, 2000);
+            });
+        }
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+  };
+  const handleUpdate2 = () => {
+    const date = format(checkDate, "yyyy-MM-dd");
+
+    const sendData = {
+      date: date,
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
+      fee: audit_feeAmount || "0",
+      operation: !!operation ? operation.toString() : "",
+      pk3_comment: "",
+      super_audit_comment: "",
+      ts_duplication: "",
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     })
       .then((result) => {
         if (result.isConfirmed) {
@@ -369,20 +433,20 @@ export default function ModalActivity3(props) {
                 });
               }
             })
-            .catch((error) => {
-              // handleClose();
-              Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-              });
+            .then(() => {
+              props.onClick();
+              setTimeout(() => {
+                props.onFetchData(page);
+              }, 2000);
             });
         }
       })
-      .then(() => {
-        props.onClick();
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 2000);
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
   };
 
@@ -468,7 +532,7 @@ export default function ModalActivity3(props) {
               {`Status :
             ${
               !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].transactionId
+                ? dataList.resultsDisplay[0].status
                 : ""
             }`}
             </Typography>
@@ -630,19 +694,35 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.brand_description
+                      ? resultDisplay.brand_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.colors_description
+                      ? resultDisplay.colors_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -754,15 +834,15 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -976,6 +1056,7 @@ export default function ModalActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Lane_TS</TableCell>
                   <TableCell colSpan={2}>
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
@@ -1081,7 +1162,7 @@ export default function ModalActivity3(props) {
               />
             </div>
           </TabPanel2>
-          
+
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -1110,12 +1191,17 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>HQ_TS</TableCell>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.pk3_transactionId
-                      ? resultDisplay.pk3_transactionId
+                    {!!resultDisplay.refTransactionId
+                      ? resultDisplay.refTransactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1277,15 +1363,27 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_vehicleClass
+                      ? `C${resultDisplay.match_real_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_fee
+                      ? resultDisplay.match_real_fee
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภทTS</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.status
+                      ? resultDisplay.status
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1332,22 +1430,16 @@ export default function ModalActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              columnGap: "1rem",
-            }}
-          >
+          <div>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "green",
               }}
               className={classes.btn}
-              onClick={handleUpdate}
+              onClick={handleUpdate1}
             >
-              บันทึก
+              ยืนยันตามฝ่ายจัดเก็บ
             </Button>
             <Button
               variant="contained"
@@ -1355,9 +1447,9 @@ export default function ModalActivity3(props) {
                 backgroundColor: "red",
               }}
               className={classes.btn}
-              onClick={handleUpdate}
+              onClick={handleUpdate2}
             >
-              บันทึก
+              ส่งฝ่ายจัดเก็บเตรวจสอบ
             </Button>
           </div>
         </Grid>

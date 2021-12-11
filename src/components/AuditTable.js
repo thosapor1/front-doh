@@ -182,6 +182,7 @@ const useStyle = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 46,
+      
     },
     header3: {
       backgroundColor: "#7C85BFff",

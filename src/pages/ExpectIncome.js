@@ -139,7 +139,6 @@ export default function ExpectIncome() {
   const [selectGate, setSelectGate] = useState(0);
   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
-
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
@@ -288,23 +287,23 @@ export default function ExpectIncome() {
 
   const dataCard = [
     {
-      value: !!summary.total ? summary.total : 0,
+      value: !!summary.ts_total ? summary.ts_total : 0,
       status: "total",
       label: "จำนวนรายการทั้งหมดของวัน",
     },
     {
-      value: !!summary.normal ? summary.normal : 0,
+      value: !!summary.ts_normal ? summary.ts_normal : 0,
       status: "normal",
       label: "จำนวนรายการรถปกติ",
     },
     {
-      value: !!summary.unMatch ? summary.unMatch : 0,
-      status: "unMatch",
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : 0,
+      status: "not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
     {
-      value: !!summary.miss ? summary.miss : 0,
-      status: "miss",
+      value: !!summary.revenue ? summary.revenue : 0,
+      status: "revenue",
       label: "รายได้พึงได้รายวัน",
     },
   ];
@@ -514,9 +513,11 @@ export default function ExpectIncome() {
                       ? "3px solid gray"
                       : card.status === "normal"
                       ? "3px solid green"
-                      : card.status === "unMatch"
+                      : card.status === "not_normal"
+                      ? "3px solid red"
+                      : card.status === "revenue"
                       ? "3px solid orange"
-                      : "3px solid red",
+                      : "3px solid lightgrey",
                 }}
               >
                 <Grid
@@ -532,9 +533,11 @@ export default function ExpectIncome() {
                             ? "gray"
                             : card.status === "normal"
                             ? "green"
-                            : card.status === "unMatch"
+                            : card.status === "not_normal"
+                            ? "red"
+                            : card.status === "revenue"
                             ? "orange"
-                            : "red",
+                            : "lightgrey",
                         fontSize: "1rem",
                         fontWeight: 700,
                       }}

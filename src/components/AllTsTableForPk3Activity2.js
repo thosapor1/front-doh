@@ -29,6 +29,12 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const detailStatus = [
   {
@@ -192,7 +198,7 @@ export default function TablePK3display2(props) {
     endpoint = "/display-pk3-activity";
     setOpen(true);
 
-    apiURL
+    apiURLv2
       .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
@@ -338,15 +344,7 @@ export default function TablePK3display2(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate && data.match_checkpoint === 1
-                        ? "ทับช้าง1"
-                        : !!data.match_gate && data.match_checkpoint === 2
-                        ? "ทับช้าง2"
-                        : !!data.match_gate && data.match_checkpoint === 3
-                        ? "ธัญบุรี1"
-                        : !!data.match_gate && data.match_checkpoint === 4
-                        ? "ธัญบุรี2"
-                        : "-"}
+                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
@@ -375,7 +373,7 @@ export default function TablePK3display2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.type ? data.type : "-"}
+                      {!!data.status ? data.status : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}

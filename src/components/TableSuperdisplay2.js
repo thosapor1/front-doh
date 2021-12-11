@@ -187,7 +187,7 @@ export default function TableSuperdisplay2(props) {
     };
     let endpoint = "";
 
-    endpoint = "/display-superaudit-activity2";
+    endpoint = "/display-super-audit-activity";
     setOpen(true);
 
     apiURL

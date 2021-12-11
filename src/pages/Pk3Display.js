@@ -29,6 +29,12 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -128,13 +134,7 @@ const valueStatus = [
   },
 ];
 
-const valueTransaction = [
-  {
-    id: 1,
-    value: 3,
-    label: "รอจัดเก็บตรวจสอบ",
-  },
-];
+
 
 export default function PK3Display() {
   // const [open, setOpen] = useState(false);
@@ -195,8 +195,8 @@ export default function PK3Display() {
     // console.log(status_select);
     const sendData = {
       page: pageId,
-      checkpoint_id: checkpoint,
-      gate_id: selectGate,
+      checkpoint: checkpoint,
+      gate: selectGate,
       state: status_select,
       vehicleClass: selectCarType,
       date: date,
@@ -206,7 +206,7 @@ export default function PK3Display() {
     };
     console.log(sendData);
 
-    apiURL
+    apiURLv2
       .post("/display-pk3", sendData)
       .then((res) => {
         Swal.close();
@@ -311,7 +311,7 @@ export default function PK3Display() {
 
   const dataCard = [
     {
-      value: !!summary.total ? summary.total : 0,
+      value: !!summary.ts_count ? summary.ts_count : 0,
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },

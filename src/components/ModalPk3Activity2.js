@@ -187,7 +187,7 @@ const useStyle = makeStyles((theme) => {
     btn2: {
       color: "white",
       width: "100%",
-      marginTop: "1rem",
+      marginTop: 8,
     },
     textField2: {
       height: 20,
@@ -337,7 +337,73 @@ export default function ModalPK3Activity2(props) {
     );
   };
 
-  const handleUpdate = () => {
+  const handleUpdate1 = () => {
+    let endPointURL = "/operation";
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
+    const sendData = {
+      date: date,
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
+      fee: audit_feeAmount || "0",
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: state.operation,
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURLv1
+            .post(endPointURL, sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              // handleClose();
+              Swal.fire({
+                icon: "error",
+                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+              });
+            });
+        }
+      })
+      .then(() => {
+        props.onClick();
+        setTimeout(() => {
+          props.onFetchData(page);
+        }, 2000);
+      });
+  };
+  const handleUpdate2 = () => {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
@@ -493,9 +559,7 @@ export default function ModalPK3Activity2(props) {
             >
               {`Status :
             ${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].transactionId
-                : ""
+              !!dataList.resultsDisplay ? dataList.resultsDisplay[0].status : ""
             }`}
             </Typography>
 
@@ -658,19 +722,35 @@ export default function ModalPK3Activity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.brand_description
+                      ? resultDisplay.brand_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.colors_description
+                      ? resultDisplay.colors_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1003,6 +1083,7 @@ export default function ModalPK3Activity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Lane_TS</TableCell>
                   <TableCell colSpan={2}>
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
@@ -1240,12 +1321,17 @@ export default function ModalPK3Activity2(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>HQ_TS</TableCell>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.pk3_transactionId
-                      ? resultDisplay.pk3_transactionId
+                    {!!resultDisplay.refTransactionId
+                      ? resultDisplay.refTransactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1359,15 +1445,25 @@ export default function ModalPK3Activity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_vehicleClass
+                      ? `C${resultDisplay.match_real_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_fee
+                      ? resultDisplay.match_real_fee
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภทTS</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.status ? resultDisplay.status : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1414,22 +1510,16 @@ export default function ModalPK3Activity2(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              columnGap: "1rem",
-            }}
-          >
+          <div>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "green",
               }}
               className={classes.btn2}
-              onClick={handleUpdate}
+              onClick={handleUpdate1}
             >
-              บันทึก
+              ยืนยันตามฝ่ายตรวจสอบ
             </Button>
             <Button
               variant="contained"
@@ -1437,9 +1527,9 @@ export default function ModalPK3Activity2(props) {
                 backgroundColor: "red",
               }}
               className={classes.btn2}
-              onClick={handleUpdate}
+              onClick={handleUpdate2}
             >
-              บันทึก
+              ชี้แจงรายระเอียดเพิ่มเติม
             </Button>
           </div>
         </Grid>

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: 270,
+      maxHeight: 212,
     },
     header: {
       backgroundColor: "#7C85BFff",

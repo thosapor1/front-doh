@@ -141,22 +141,22 @@ export default function RawTransaction() {
 
   const dataCard = [
     {
-      value: !!summary.total ? summary.total : 0,
+      value: !!summary.ts_total ? summary.ts_total : 0,
       status: "total",
       label: "รายการทั้งหมด",
     },
     {
-      value: !!summary.normal ? summary.normal : 0,
+      value: !!summary.ts_normal ? summary.ts_normal : 0,
       status: "normal",
       label: "รายการปกติ",
     },
     {
-      value: !!summary.unMatch ? summary.unMatch : 0,
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : 0,
       status: "unMatch",
       label: "รายการข้อมูลไม่ตรงกัน",
     },
     {
-      value: !!summary.miss ? summary.miss : 0,
+      value: !!summary.ts_miss ? summary.ts_miss : 0,
       status: "miss",
       label: "รายการสูญหาย",
     },
