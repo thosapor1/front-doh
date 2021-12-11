@@ -330,23 +330,38 @@ export default function ModalSuperActivity2(props) {
     );
   };
 
-  const handleUpdate = () => {
+  const handleUpdate1 = () => {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
+
+    let setOperation = 0;
+
+    if (
+      dataList.resultsDisplay[0].state === 4 &&
+      (dataList.resultsDisplay[0].match_transaction_type === 2 ||
+        dataList.resultsDisplay[0].match_transaction_type === 3 ||
+        dataList.resultsDisplay[0].match_transaction_type === 7 ||
+        dataList.resultsDisplay[0].match_transaction_type === 8)
+    ) {
+      setOperation = 8;
+    } else {
+      setOperation = 0;
+    }
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
       fee: audit_feeAmount || "0",
-      status: dataList.resultsDisplay[0].match_transaction_type,
-      operation: state.operation,
+      operation: setOperation.toString(),
       pk3_comment: "",
       super_audit_comment: commentSuper,
       ts_duplication: "",
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -361,7 +376,89 @@ export default function ModalSuperActivity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1
+          apiURL
+            .post(endPointURL, sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                  confirmButtonText: "OK",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              // handleClose();
+              Swal.fire({
+                icon: "error",
+                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+              });
+            });
+        }
+      })
+      .then(() => {
+        props.onClick();
+        setTimeout(() => {
+          props.onFetchData(page);
+        }, 2000);
+      });
+  };
+
+  const handleUpdate2 = () => {
+    let endPointURL = "/operation";
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
+    let setOperation = 0;
+
+    if (
+      dataList.resultsDisplay[0].state === 4 &&
+      (dataList.resultsDisplay[0].match_transaction_type === 3 ||
+        dataList.resultsDisplay[0].match_transaction_type === 7 ||
+        dataList.resultsDisplay[0].match_transaction_type === 8)
+    ) {
+      setOperation = 9;
+    } else {
+      setOperation = 0;
+    }
+
+    const sendData = {
+      date: date,
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass || "0",
+      fee: audit_feeAmount || "0",
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: setOperation.toString(),
+      pk3_comment: "",
+      super_audit_comment: commentSuper,
+      ts_duplication: "",
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURL
             .post(endPointURL, sendData)
             .then((res) => {
               if (res.data.status === true) {
@@ -478,9 +575,7 @@ export default function ModalSuperActivity2(props) {
             >
               {`Status :
             ${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].status
-                : ""
+              !!dataList.resultsDisplay ? dataList.resultsDisplay[0].status : ""
             }`}
             </Typography>
 
@@ -1334,9 +1429,7 @@ export default function ModalSuperActivity2(props) {
                 <TableRow>
                   <TableCell>ประเภทTS</TableCell>
                   <TableCell>
-                    {!!resultDisplay.status
-                      ? resultDisplay.status
-                      : "-"}
+                    {!!resultDisplay.status ? resultDisplay.status : "-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -1385,25 +1478,31 @@ export default function ModalSuperActivity2(props) {
           </TableContainer>
           <div>
             <Button
+              disabled={!!vehicleClass ? false : true}
               variant="contained"
               style={{
                 backgroundColor: "green",
               }}
               className={classes.btn2}
-              onClick={handleUpdate}
+              onClick={handleUpdate1}
             >
               ยืนยันการจับเก็บรายได้
             </Button>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "red",
-              }}
-              className={classes.btn2}
-              onClick={handleUpdate}
-            >
-              เห็นควรตามฝ่ายจัดเก็บรายได้
-            </Button>
+            {!!resultDisplay.state && resultDisplay.state !== 3 ? (
+              <Button
+                disabled={!!vehicleClass ? false : true}
+                variant="contained"
+                style={{
+                  backgroundColor: "red",
+                }}
+                className={classes.btn2}
+                onClick={handleUpdate2}
+              >
+                เห็นควรตามฝ่ายจัดเก็บรายได้
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </Grid>
       </Grid>

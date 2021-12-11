@@ -35,6 +35,12 @@ const apiURLv1 = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -341,19 +347,27 @@ export default function ModalPK3Activity2(props) {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 0;
+    if (dataList.resultsDisplay[0].state === 3) {
+      setOperation = 6;
+    } else {
+      setOperation = 0;
+    }
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
-      fee: audit_feeAmount || "0",
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
       status: dataList.resultsDisplay[0].match_transaction_type,
-      operation: state.operation,
+      operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
       super_audit_comment: "",
       ts_duplication: state.TransactionsPeat,
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -368,7 +382,7 @@ export default function ModalPK3Activity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1
+          apiURLv2
             .post(endPointURL, sendData)
             .then((res) => {
               if (res.data.status === true) {
@@ -408,18 +422,27 @@ export default function ModalPK3Activity2(props) {
 
     const date = format(checkDate, "yyyy-MM-dd");
 
+    let setOperation = 0;
+    if (dataList.resultsDisplay[0].state === 3) {
+      setOperation = 7;
+    } else {
+      setOperation = 0;
+    }
+
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass || "0",
-      fee: audit_feeAmount || "0",
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
       status: dataList.resultsDisplay[0].match_transaction_type,
-      operation: state.operation,
+      operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
       super_audit_comment: "",
       ts_duplication: state.TransactionsPeat,
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -434,7 +457,7 @@ export default function ModalPK3Activity2(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1
+          apiURLv2
             .post(endPointURL, sendData)
             .then((res) => {
               if (res.data.status === true) {
@@ -1482,7 +1505,7 @@ export default function ModalPK3Activity2(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
@@ -1506,7 +1529,7 @@ export default function ModalPK3Activity2(props) {
                         : []}
                     </TextField>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableBody>
             </table>
           </TableContainer>

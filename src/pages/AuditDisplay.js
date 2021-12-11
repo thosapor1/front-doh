@@ -143,6 +143,7 @@ export default function AuditDisplay() {
   const [checkpoint, setCheckpoint] = useState(0);
   const [station, setStation] = useState(0);
   const [dropdown, setDropdown] = useState([]);
+  const [countPage, setCountPage] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -236,6 +237,7 @@ export default function AuditDisplay() {
           "Summary: ",
           res.data.summary
         );
+        setCountPage(!!res.data.status ? res.data.total_page : 0);
         setSummary(!!res.data.status ? res.data.data.card : []);
         // setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
         // setClassTable(res.data.status !== false ? res.data : []);
@@ -452,6 +454,7 @@ export default function AuditDisplay() {
           <AllTsTableForActivity2
             dataList={allTsTable}
             page={page}
+            countPage={countPage}
             onChange={handlePageChange}
             onFetchData={fetchData}
           />

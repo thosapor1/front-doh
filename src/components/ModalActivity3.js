@@ -331,6 +331,31 @@ export default function ModalActivity3(props) {
 
   const handleUpdate1 = () => {
     const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 0;
+
+    if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 3
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 7
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 6
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 2
+    ) {
+      setOperation = 2;
+    } else if (dataList.resultsDisplay[0].state === 6) {
+      setOperation = 4;
+    }
 
     const sendData = {
       date: date,
@@ -339,10 +364,12 @@ export default function ModalActivity3(props) {
       state: dataList.resultsDisplay[0].state.toString(),
       vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
       fee: audit_feeAmount || "0",
-      operation: !!operation ? operation.toString() : "",
+      operation: setOperation.toString(),
       pk3_comment: "",
       super_audit_comment: "",
       ts_duplication: "",
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -391,6 +418,31 @@ export default function ModalActivity3(props) {
   };
   const handleUpdate2 = () => {
     const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 0;
+
+    if (dataList.resultsDisplay[0].state === 1) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 3
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 7
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 6
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 2
+    ) {
+      setOperation = 3;
+    }
 
     const sendData = {
       date: date,
@@ -399,10 +451,12 @@ export default function ModalActivity3(props) {
       state: dataList.resultsDisplay[0].state.toString(),
       vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
       fee: audit_feeAmount || "0",
-      operation: !!operation ? operation.toString() : "",
+      operation: setOperation.toString(),
       pk3_comment: "",
       super_audit_comment: "",
       ts_duplication: "",
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -416,7 +470,7 @@ export default function ModalActivity3(props) {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1
+          apiURLv2
             .post("/operation", sendData)
             .then((res) => {
               if (res.data.status === true) {
@@ -491,6 +545,9 @@ export default function ModalActivity3(props) {
                   : !!dataList.resultsDisplay &&
                     dataList.resultsDisplay[0].state === 7
                   ? "lightblue"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 8
+                  ? "lightgreen"
                   : "none",
               width: "100%",
               display: "flex",
@@ -518,6 +575,8 @@ export default function ModalActivity3(props) {
                   ? "รอตรวจสอบรับทราบ"
                   : dataList.resultsDisplay[0].state === 7
                   ? "รอจัดเก็บยืนยัน"
+                  : dataList.resultsDisplay[0].state === 8
+                  ? "ตรวจสอบแล้ว"
                   : "ไม่มีสถานะ"
                 : ""}
             </Typography>
@@ -531,9 +590,7 @@ export default function ModalActivity3(props) {
             >
               {`Status :
             ${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].status
-                : ""
+              !!dataList.resultsDisplay ? dataList.resultsDisplay[0].status : ""
             }`}
             </Typography>
 
@@ -1380,77 +1437,95 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ประเภทTS</TableCell>
                   <TableCell>
-                    {!!resultDisplay.status
-                      ? resultDisplay.status
-                      : "-"}
+                    {!!resultDisplay.status ? resultDisplay.status : "-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
 
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow
-                  className={classes.tableHead1}
-                  style={{ backgroundColor: "lightgreen" }}
-                >
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    การดำเนินการ
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      // disabled={}
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
-                        : []}
-                    </TextField>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
+          {!!resultDisplay.state &&
+          (resultDisplay.state === 1 ||
+            resultDisplay.state === 2 ||
+            resultDisplay.state === 6) ? (
+            <TableContainer>
+              <table className={classes.table}>
+                <TableHead>
+                  <TableRow
+                    className={classes.tableHead1}
+                    style={{ backgroundColor: "lightgreen" }}
+                  >
+                    <TableCell colSpan={2} className={classes.headTable}>
+                      การดำเนินการ
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>ประเภท</TableCell>
+                    <TableCell>
+                      <TextField
+                        // disabled={}
+                        variant="outlined"
+                        select
+                        size="small"
+                        className={classes.textField2}
+                        name="vehicleClass"
+                        value={vehicleClass}
+                        onChange={handleOptionChange}
+                      >
+                        {!!dropdown.vehicle
+                          ? dropdown.vehicle
+                              .filter((item) => item.id !== 0)
+                              .map((item, index) => (
+                                <MenuItem key={index} value={item.id}>
+                                  {item.class}
+                                </MenuItem>
+                              ))
+                          : []}
+                      </TextField>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </table>
+            </TableContainer>
+          ) : (
+            ""
+          )}
+
           <div>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "green",
-              }}
-              className={classes.btn}
-              onClick={handleUpdate1}
-            >
-              ยืนยันตามฝ่ายจัดเก็บ
-            </Button>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "red",
-              }}
-              className={classes.btn}
-              onClick={handleUpdate2}
-            >
-              ส่งฝ่ายจัดเก็บเตรวจสอบ
-            </Button>
+            {!!resultDisplay.state &&
+            (resultDisplay.state === 2 || resultDisplay.state === 6) ? (
+              <Button
+                disabled={!!vehicleClass ? false : true}
+                variant="contained"
+                style={{
+                  backgroundColor: "green",
+                }}
+                className={classes.btn}
+                onClick={handleUpdate1}
+              >
+                ยืนยันตามฝ่ายจัดเก็บ
+              </Button>
+            ) : (
+              ""
+            )}
+            {(!!resultDisplay.state && resultDisplay.state === 1) ||
+            resultDisplay.state === 2 ? (
+              <Button
+                disabled={!!vehicleClass ? false : true}
+                variant="contained"
+                style={{
+                  backgroundColor: "red",
+                }}
+                className={classes.btn}
+                onClick={handleUpdate2}
+              >
+                ส่งฝ่ายจัดเก็บเตรวจสอบ
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </Grid>
       </Grid>

@@ -29,54 +29,35 @@ const useStyle = makeStyles((theme) => {
       //     marginTop: "120%",
       //   },
     },
-    // imageWrap: {
-    //   height: "0",
-    //   paddingBottom: "20%",
-    //   position: "relative",
-    //   overflow: "hidden",
-    // },
-    // image: {
-    //   height: "100%",
-    //   Width: "100%",
-    //   border: "1px solid lightgray",
-    //   position: "absolute",
-    //   objectFit: "cover",
-    // },
+    imageWrap: {
+      height: "0",
+      paddingBottom: "50%",
+      position: "relative",
+      overflow: "hidden",
+    },
+    image: {
+      height: "100%",
+      Width: "100%",
+      border: "1px solid lightgray",
+      position: "absolute",
+      objectFit: "cover",
+    },
   };
 });
 
 export default function ImageModal(props) {
   const classes = useStyle();
   const { open, onClose, dataList } = props;
+  const mockPic = 0;
 
   const body = (
-    <Box className={classes.bodyModal}>
-      <Grid container>
-        <Grid item lg={6}>
-          <CardMedia
-            component="img"
-            src={
-              !!dataList.picFull
-                ? `data:image/png;base64, ${dataList.picFull}`
-                : noImage
-            }
-            className={classes.image}
-          />
-          <Grid item lg={6}>
-            <CardMedia
-              component="img"
-              src={
-                !!dataList.picCrop
-                  ? `data:image/png;base64, ${dataList.picCrop}`
-                  : noImage
-              }
-              className={classes.image}
-            />
-          </Grid>
-        </Grid>
-        <Box style={{ backgroundColor: "#E6E6E6" }}>
+    <div className={classes.bodyModal}>
+      <div className={classes.head}>
+        <div style={{ width: "100%", float: "right" }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
+              fontSize="small"
+              color="secondary"
               onClick={props.onClick}
               style={{
                 cursor: "pointer",
@@ -86,9 +67,37 @@ export default function ImageModal(props) {
               }}
             />
           </Tooltip>
-        </Box>
+        </div>
+      </div>
+      <Grid container spacing={1} justifyContent="center" justifyItem="center">
+        <Grid item lg={6} md={6}>
+          <div className={classes.imageWrap}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.picFull
+                  ? `data:image/png;base64, ${dataList.picFull}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </div>
+        </Grid>
+        <Grid item lg={6} md={6}>
+          <div className={classes.imageWrap}>
+            <CardMedia
+              component="img"
+              src={
+                !!dataList.picCrop
+                  ? `data:image/png;base64, ${dataList.picCrop}`
+                  : noImage
+              }
+              className={classes.image}
+            />
+          </div>
+        </Grid>
       </Grid>
-    </Box>
+    </div>
   );
   return (
     <div>

@@ -79,24 +79,18 @@ export default function ClassTable2(props) {
           <TableBody>
             {!!dataList.total
               ? dataList.total.map((data, index) => (
-                  <TableRow
-                    key={index}
-                    style={{ left: 0, bottom: 0, position: "sticky" }}
-                  >
-                    <TableCell align="center" className={classes.header}>
-                      {data.class}
+                  <TableRow key={index} style={{ left: 0, bottom: 0 }}>
+                    <TableCell align="center" className={classes.body}>
+                      {data.name}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_count}
+                    <TableCell align="center" className={classes.body}>
+                      {data.fee}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_reject}
+                    <TableCell align="center" className={classes.body}>
+                      {data.fine}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_countState1}
-                    </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.sumAmount}
+                    <TableCell align="center" className={classes.body}>
+                      {data.total}
                     </TableCell>
                   </TableRow>
                 ))
