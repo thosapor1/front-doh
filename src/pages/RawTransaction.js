@@ -141,22 +141,22 @@ export default function RawTransaction() {
 
   const dataCard = [
     {
-      value: !!summary.total ? summary.total : 0,
+      value: !!summary.ts_total ? summary.ts_total : 0,
       status: "total",
       label: "รายการทั้งหมด",
     },
     {
-      value: !!summary.normal ? summary.normal : 0,
+      value: !!summary.ts_normal ? summary.ts_normal : 0,
       status: "normal",
       label: "รายการปกติ",
     },
     {
-      value: !!summary.unMatch ? summary.unMatch : 0,
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : 0,
       status: "unMatch",
       label: "รายการข้อมูลไม่ตรงกัน",
     },
     {
-      value: !!summary.miss ? summary.miss : 0,
+      value: !!summary.ts_miss ? summary.ts_miss : 0,
       status: "miss",
       label: "รายการสูญหาย",
     },
@@ -191,14 +191,23 @@ export default function RawTransaction() {
       state: status.toString(),
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
-    await apiURLv1.post("/raw-data", sendData).then((res) => {
-      console.log(sendData);
-      Swal.close();
-      setState(res.data);
-      setSummary(!!res.data.summary ? res.data.summary : summary);
-      console.log(res.data.dropdown_Checkpoint);
-      // console.log(`state_length: ${state.record.length}`);
-    });
+    await apiURLv1
+      .post("/raw-data", sendData)
+      .then((res) => {
+        console.log(sendData);
+        Swal.close();
+        setState(res.data);
+        setSummary(!!res.data.summary ? res.data.summary : summary);
+        console.log(res.data.dropdown_Checkpoint);
+        // console.log(`state_length: ${state.record.length}`);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   }
 
   useEffect(() => {
@@ -338,6 +347,7 @@ export default function RawTransaction() {
             page={page}
             onChange={handlePageChange}
             onFetchData={fetchData}
+            checkDate={selectedDate}
           />
         </Paper>
       </Container>

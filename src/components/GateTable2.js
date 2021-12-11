@@ -24,8 +24,13 @@ const useStyles = makeStyles((theme) => {
         outline: "1px  lightgray",
       },
     },
+    root: {
+      "& .MuiTableCell-root": {
+        padding: 10,
+      },
+    },
     container: {
-      maxHeight: 270,
+      maxHeight: 210,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -65,7 +70,7 @@ export default function GateTable2(props) {
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
               {headCells.map((headCell, index) => (
@@ -80,11 +85,11 @@ export default function GateTable2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
+            {!!dataList.result_gate
+              ? dataList.result_gate.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell align="center" className={classes.body}>
-                      {data.gate_name}
+                      {data.match_gate}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
                       {data.ts_count}

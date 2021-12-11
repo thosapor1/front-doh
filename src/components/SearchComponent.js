@@ -111,7 +111,7 @@ export default function SearchComponent(props) {
           style={{ display: "block", marginLeft: 120 }}
           onClick={onClickHandle}
         >
-          Search{" "}
+          {`Search`}
         </Button>
       </Paper>
     </>

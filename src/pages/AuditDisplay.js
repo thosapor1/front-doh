@@ -138,25 +138,24 @@ const useStyles = makeStyles((theme) => {
 export default function AuditDisplay() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [gateTable, setGateTable] = useState([]);
-  const [classTable, setClassTable] = useState([]);
   const [allTsTable, setAllTsTable] = useState([]);
   const [summary, setSummary] = useState([]);
-  const [checkpoint, setCheckpoint] = useState("");
+  const [checkpoint, setCheckpoint] = useState(0);
   const [station, setStation] = useState(0);
   const [dropdown, setDropdown] = useState([]);
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date("Sep 01, 2021")
-  // );
+  const [countPage, setCountPage] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
-  const [selectedTimeStart, setSelectedTimeStart] = useState(
-    new Date("Aug 10, 2021 00:00:00")
-  );
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState(
-    new Date("Aug 10, 2021 00:00:00")
-  );
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new Date("Sep 01, 2021")
+  // );
+  // const [selectedTimeStart, setSelectedTimeStart] = useState(
+  //   new Date("Aug 10, 2021 00:00:00")
+  // );
+  // const [selectedTimeEnd, setSelectedTimeEnd] = useState(
+  //   new Date("Aug 10, 2021 00:00:00")
+  // );
 
   const handlePageChange = (event, value) => {
     fetchData(value);
@@ -181,13 +180,13 @@ export default function AuditDisplay() {
       label: "ชำระปกติ",
     },
     {
-      value: !!summary.unMatch ? summary.unMatch : 0,
-      status: "unMatch",
+      value: !!summary.late ? summary.late : 0,
+      status: "late",
       label: "ชำระล่าช้า 2-32 วัน",
     },
     {
-      value: !!summary.miss ? summary.miss : 0,
-      status: "miss",
+      value: !!summary.fine ? summary.fine : 0,
+      status: "fine",
       label: "ชำระโดยผู้รับจ้าง(มากกว่า32วัน)",
     },
   ];
@@ -212,46 +211,45 @@ export default function AuditDisplay() {
     }
 
     const date = format(selectedDate, "yyyy-MM-dd");
-    const timeStart = format(selectedTimeStart, "HH:mm:ss");
-    const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
+    // const timeStart = format(selectedTimeStart, "HH:mm:ss");
+    // const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
     const sendData = {
-      page: pageId,
-      checkpoint_id: checkpoint,
-      datetime: date,
-      startTime: timeStart,
-      endTime: timeEnd,
+      page: pageId.toString(),
+      checkPoint: station.toString(),
+      date: date,
     };
     console.log(sendData);
 
-    apiURL.post("/display", sendData).then((res) => {
-      Swal.close();
-      setAllTsTable({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        ts_table: [],
+    apiURLv1
+      .post("/daily-income", sendData)
+      .then((res) => {
+        Swal.close();
+        console.log(
+          "res: ",
+          res.data,
+          "tsClass:",
+          res.data.ts_class,
+          "tsGate: ",
+          res.data.ts_gate_table,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
+        setCountPage(!!res.data.status ? res.data.total_page : 0);
+        setSummary(!!res.data.status ? res.data.data.card : []);
+        // setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
+        // setClassTable(res.data.status !== false ? res.data : []);
+        setAllTsTable(!!res.data.status ? res.data.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      console.log(
-        "res: ",
-        res.data,
-        "tsClass:",
-        res.data.ts_class,
-        "tsGate: ",
-        res.data.ts_gate_table,
-        "ts_Table:",
-        res.data.ts_table,
-        "Summary: ",
-        res.data.summary
-      );
-      setSummary(res.data.status !== false ? res.data.summary : []);
-      setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
-      setClassTable(res.data.status !== false ? res.data.ts_class : []);
-      setAllTsTable(res.data.status !== false ? res.data : []);
-    });
   };
 
   const refresh = (pageId = 1) => {
@@ -268,8 +266,8 @@ export default function AuditDisplay() {
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
     setCheckpoint(0);
-    setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
-    setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
+    // setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
+    // setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
     const timeEnd = "00:00:00";
     const date = format(
@@ -310,10 +308,8 @@ export default function AuditDisplay() {
         "Summary: ",
         res.data.summary
       );
-      setSummary(res.data.status !== false ? res.data.summary : []);
-      setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
-      setClassTable(res.data.status !== false ? res.data.ts_class : []);
-      setAllTsTable(res.data.status !== false ? res.data : []);
+      setSummary(!!res.data.status ? res.data.summary : []);
+      setAllTsTable(!!res.data.status ? res.data : []);
     });
   };
 
@@ -406,9 +402,9 @@ export default function AuditDisplay() {
                     ? "3px solid gray"
                     : card.status === "normal"
                     ? "3px solid green"
-                    : card.status === "unMatch"
-                    ? "3px solid orange"
-                    : "3px solid red",
+                    : card.status === "late"
+                    ? "3px solid red"
+                    : "3px solid blue",
               }}
             >
               <Grid container justifyContent="space-around" alignItems="center">
@@ -420,9 +416,9 @@ export default function AuditDisplay() {
                           ? "gray"
                           : card.status === "normal"
                           ? "green"
-                          : card.status === "unMatch"
-                          ? "orange"
-                          : "red",
+                          : card.status === "late"
+                          ? "red"
+                          : "blue",
                       fontSize: "1rem",
                       fontWeight: 700,
                     }}
@@ -451,13 +447,14 @@ export default function AuditDisplay() {
             <GateTable dataList={gateTable} />
           </Grid> */}
           <Grid item md={12} sm={12} lg={5} className={classes.classTable}>
-            <ClassTable2 dataList={classTable} />
+            <ClassTable2 dataList={allTsTable} />
           </Grid>
         </Grid>
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
           <AllTsTableForActivity2
             dataList={allTsTable}
             page={page}
+            countPage={countPage}
             onChange={handlePageChange}
             onFetchData={fetchData}
           />

@@ -187,7 +187,7 @@ export default function TableSuperdisplay2(props) {
     };
     let endpoint = "";
 
-    endpoint = "/display-superaudit-activity2";
+    endpoint = "/display-super-audit-activity";
     setOpen(true);
 
     apiURL
@@ -336,15 +336,7 @@ export default function TableSuperdisplay2(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate && data.match_checkpoint === 1
-                        ? "ทับช้าง1"
-                        : !!data.match_gate && data.match_checkpoint === 2
-                        ? "ทับช้าง2"
-                        : !!data.match_gate && data.match_checkpoint === 3
-                        ? "ธัญบุรี1"
-                        : !!data.match_gate && data.match_checkpoint === 4
-                        ? "ธัญบุรี2"
-                        : "-"}
+                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
@@ -373,13 +365,13 @@ export default function TableSuperdisplay2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.type ? data.type : "-"}
+                      {!!data.status ? data.status : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {`-`}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon

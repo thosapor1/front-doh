@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -12,11 +13,22 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
+    root: {
+      "& .MuiTableCell-root": {
+        padding: 10,
+      },
+    },
     container: {
-      maxHeight: 270,
+      maxHeight: 210,
     },
     header: {
       backgroundColor: "#7C85BFff;",
+      border: "1px solid white",
+      color: "white",
+      fontSize: "0.8rem",
+    },
+    footer: {
+      backgroundColor: "darkgreen;",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
@@ -66,7 +78,7 @@ export default function ClassTable(props) {
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
               {headerCells.map((headerCell, index) => (
@@ -81,51 +93,64 @@ export default function ClassTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) =>
-                  dataList.length === index + 1 ? (
-                    <TableRow
-                      key={index}
-                      style={{ left: 0, bottom: 0, position: "sticky" }}
-                    >
-                      <TableCell align="center" className={classes.header}>
-                        {data.class}
-                      </TableCell>
-                      <TableCell align="center" className={classes.header}>
-                        {data.ts_count}
-                      </TableCell>
-                      <TableCell align="center" className={classes.header}>
-                        {data.ts_reject}
-                      </TableCell>
-                      <TableCell align="center" className={classes.header}>
-                        {data.ts_countState1}
-                      </TableCell>
-                      <TableCell align="center" className={classes.header}>
-                        {data.sumAmount}
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    <StyledTableRow key={index}>
-                      <TableCell align="center" className={classes.body}>
-                        {data.class}
-                      </TableCell>
-                      <TableCell align="center" className={classes.body}>
-                        {data.ts_count}
-                      </TableCell>
-                      <TableCell align="center" className={classes.body}>
-                        {data.ts_reject}
-                      </TableCell>
-                      <TableCell align="center" className={classes.body}>
-                        {data.ts_countState1}
-                      </TableCell>
-                      <TableCell align="center" className={classes.body}>
-                        {data.sumAmount}
-                      </TableCell>
-                    </StyledTableRow>
-                  )
-                )
-              : dataList}
+            {!!dataList.result_vehicleClass
+              ? dataList.result_vehicleClass.map((data, index) => (
+                  <StyledTableRow key={index}>
+                    <TableCell align="center" className={classes.body}>
+                      {`C${data.class}`}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.sum_all}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.reject}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.normal}
+                    </TableCell>
+                    <TableCell align="center" className={classes.body}>
+                      {data.revenue}
+                    </TableCell>
+                  </StyledTableRow>
+                ))
+              : []}
           </TableBody>
+          <TableFooter>
+            <StyledTableRow>
+              <TableCell
+                className={classes.footer}
+                align="center"
+              >{`รวม`}</TableCell>
+              <TableCell className={classes.footer} align="center">
+                {!!dataList.result_vehicleClass
+                  ? dataList.result_vehicleClass[0].sum_all +
+                    dataList.result_vehicleClass[1].sum_all +
+                    dataList.result_vehicleClass[2].sum_all
+                  : 0}
+              </TableCell>
+              <TableCell className={classes.footer} align="center">
+                {!!dataList.result_vehicleClass
+                  ? dataList.result_vehicleClass[0].reject +
+                    dataList.result_vehicleClass[1].reject +
+                    dataList.result_vehicleClass[2].reject
+                  : 0}
+              </TableCell>
+              <TableCell className={classes.footer} align="center">
+                {!!dataList.result_vehicleClass
+                  ? dataList.result_vehicleClass[0].normal +
+                    dataList.result_vehicleClass[1].normal +
+                    dataList.result_vehicleClass[2].normal
+                  : 0}
+              </TableCell>
+              <TableCell className={classes.footer} align="center">
+                {!!dataList.result_vehicleClass
+                  ? dataList.result_vehicleClass[0].revenue +
+                    dataList.result_vehicleClass[1].revenue +
+                    dataList.result_vehicleClass[2].revenue
+                  : 0}
+              </TableCell>
+            </StyledTableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </div>

@@ -35,6 +35,12 @@ const apiURLv1 = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 function TabPanel1(props) {
   const { children, value, index, ...other } = props;
@@ -191,7 +197,7 @@ const useStyle = makeStyles((theme) => {
     btn: {
       color: "white",
       width: "100%",
-      marginTop: "1rem",
+      marginTop: 5,
     },
     textField: {
       height: 20,
@@ -300,7 +306,6 @@ export default function ModalActivity3(props) {
     operation: "",
   });
   const { tsType, operation } = state;
-
   const [vehicleClass, setVehicleClass] = useState("");
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
@@ -324,20 +329,48 @@ export default function ModalActivity3(props) {
     );
   };
 
-  const handleUpdate = () => {
+  const handleUpdate1 = () => {
     const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 0;
+
+    if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 3
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 7
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 6
+    ) {
+      setOperation = 1;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 2
+    ) {
+      setOperation = 2;
+    } else if (dataList.resultsDisplay[0].state === 6) {
+      setOperation = 4;
+    }
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state.toString(),
-      vehicleClass: !!vehicleClass ? vehicleClass.toString() : "0",
-      fee: audit_feeAmount || "0",
-      operation: !!operation ? operation.toString() : "",
-      pk3_comment: "",
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: setOperation.toString(),
+      pk3_comment: state.commentPK3,
       super_audit_comment: "",
-      ts_duplication: "",
+      ts_duplication: state.TransactionsPeat,
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
     Swal.fire({
@@ -348,11 +381,11 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex: 1300,
+      zIndex: 99999,
     })
       .then((result) => {
         if (result.isConfirmed) {
-          apiURLv1
+          apiURLv2
             .post("/operation", sendData)
             .then((res) => {
               if (res.data.status === true) {
@@ -369,20 +402,108 @@ export default function ModalActivity3(props) {
                 });
               }
             })
-            .catch((error) => {
-              // handleClose();
-              Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-              });
+            .then(() => {
+              props.onClick();
+              setTimeout(() => {
+                props.onFetchData(page);
+              }, 2000);
             });
         }
       })
-      .then(() => {
-        props.onClick();
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 2000);
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+  };
+  const handleUpdate2 = () => {
+    const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 0;
+
+    if (dataList.resultsDisplay[0].state === 1) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 3
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 7
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 6
+    ) {
+      setOperation = 3;
+    } else if (
+      dataList.resultsDisplay[0].state === 2 &&
+      dataList.resultsDisplay[0].match_transaction_type === 2
+    ) {
+      setOperation = 3;
+    }
+
+    const sendData = {
+      date: date,
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
+      fee: dataList.resultsDisplay[0].match_real_fee,
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: setOperation.toString(),
+      pk3_comment: state.commentPK3,
+      super_audit_comment: "",
+      ts_duplication: state.TransactionsPeat,
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          apiURLv2
+            .post("/operation", sendData)
+            .then((res) => {
+              if (res.data.status === true) {
+                Swal.fire({
+                  title: "Success",
+                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                  icon: "success",
+                });
+              } else {
+                Swal.fire({
+                  title: "Fail",
+                  text: "บันทึกข้อมูลไม่สำเร็จ",
+                  icon: "error",
+                });
+              }
+            })
+            .then(() => {
+              props.onClick();
+              setTimeout(() => {
+                props.onFetchData(page);
+              }, 2000);
+            });
+        }
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
   };
 
@@ -394,6 +515,16 @@ export default function ModalActivity3(props) {
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
+      );
+      setVehicleClass(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_vehicleClass
+          : 0
+      );
+      setAudit_feeAmount(
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_fee
+          : 0
       );
       console.log("dataList", dataList);
     }
@@ -427,6 +558,9 @@ export default function ModalActivity3(props) {
                   : !!dataList.resultsDisplay &&
                     dataList.resultsDisplay[0].state === 7
                   ? "lightblue"
+                  : !!dataList.resultsDisplay &&
+                    dataList.resultsDisplay[0].state === 8
+                  ? "lightgreen"
                   : "none",
               width: "100%",
               display: "flex",
@@ -454,6 +588,8 @@ export default function ModalActivity3(props) {
                   ? "รอตรวจสอบรับทราบ"
                   : dataList.resultsDisplay[0].state === 7
                   ? "รอจัดเก็บยืนยัน"
+                  : dataList.resultsDisplay[0].state === 8
+                  ? "ตรวจสอบแล้ว"
                   : "ไม่มีสถานะ"
                 : ""}
             </Typography>
@@ -467,9 +603,7 @@ export default function ModalActivity3(props) {
             >
               {`Status :
             ${
-              !!dataList.resultsDisplay
-                ? dataList.resultsDisplay[0].transactionId
-                : ""
+              !!dataList.resultsDisplay ? dataList.resultsDisplay[0].status : ""
             }`}
             </Typography>
 
@@ -630,19 +764,35 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.brand_description
+                      ? resultDisplay.brand_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.colors_description
+                      ? resultDisplay.colors_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -754,15 +904,15 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>{"-"}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -976,6 +1126,7 @@ export default function ModalActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Lane_TS</TableCell>
                   <TableCell colSpan={2}>
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
@@ -1081,7 +1232,7 @@ export default function ModalActivity3(props) {
               />
             </div>
           </TabPanel2>
-          
+
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -1110,12 +1261,17 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>HQ_TS</TableCell>
                   <TableCell colSpan={2}>
-                    {!!resultDisplay.pk3_transactionId
-                      ? resultDisplay.pk3_transactionId
+                    {!!resultDisplay.refTransactionId
+                      ? resultDisplay.refTransactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1277,88 +1433,110 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภท</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_vehicleClass
+                      ? `C${resultDisplay.match_real_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ค่าธรรมเนียม</TableCell>
-                  <TableCell style={{ width: 20 }}>{audit_feeAmount}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.match_real_fee
+                      ? resultDisplay.match_real_fee
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ประเภทTS</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.status ? resultDisplay.status : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
 
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow
-                  className={classes.tableHead1}
-                  style={{ backgroundColor: "lightgreen" }}
-                >
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    การดำเนินการ
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      // disabled={}
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
-                        : []}
-                    </TextField>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              columnGap: "1rem",
-            }}
-          >
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "green",
-              }}
-              className={classes.btn}
-              onClick={handleUpdate}
-            >
-              บันทึก
-            </Button>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "red",
-              }}
-              className={classes.btn}
-              onClick={handleUpdate}
-            >
-              บันทึก
-            </Button>
+          {!!resultDisplay.state &&
+          (resultDisplay.state === 1 ||
+            resultDisplay.state === 2 ||
+            resultDisplay.state === 6) ? (
+            <TableContainer>
+              <table className={classes.table}>
+                <TableHead>
+                  <TableRow
+                    className={classes.tableHead1}
+                    style={{ backgroundColor: "lightgreen" }}
+                  >
+                    <TableCell colSpan={2} className={classes.headTable}>
+                      การดำเนินการ
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>ประเภท</TableCell>
+                    <TableCell>
+                      <TextField
+                        // disabled={}
+                        variant="outlined"
+                        select
+                        size="small"
+                        className={classes.textField2}
+                        name="vehicleClass"
+                        value={vehicleClass}
+                        onChange={handleOptionChange}
+                      >
+                        {!!dropdown.vehicle
+                          ? dropdown.vehicle
+                              .filter((item) => item.id !== 0)
+                              .map((item, index) => (
+                                <MenuItem key={index} value={item.id}>
+                                  {item.class}
+                                </MenuItem>
+                              ))
+                          : []}
+                      </TextField>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </table>
+            </TableContainer>
+          ) : (
+            ""
+          )}
+
+          <div>
+            {!!resultDisplay.state &&
+            (resultDisplay.state === 2 || resultDisplay.state === 6) ? (
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "green",
+                }}
+                className={classes.btn}
+                onClick={handleUpdate1}
+              >
+                ยืนยันตามฝ่ายจัดเก็บ
+              </Button>
+            ) : (
+              ""
+            )}
+            {(!!resultDisplay.state && resultDisplay.state === 1) ||
+            resultDisplay.state === 2 ? (
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "red",
+                }}
+                className={classes.btn}
+                onClick={handleUpdate2}
+              >
+                ส่งฝ่ายจัดเก็บเตรวจสอบ
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </Grid>
       </Grid>

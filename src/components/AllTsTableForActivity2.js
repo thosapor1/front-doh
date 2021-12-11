@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   makeStyles,
   Table,
   TableBody,
@@ -6,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -25,6 +28,18 @@ const apiURL = axios.create({
 });
 const useStyles = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     container: {
       maxHeight: 600,
     },
@@ -48,41 +63,77 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
     },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 35,
+      },
+      "& .MuiInputLabel-outlined": {
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+        transform: "translate(10px, 10px) scale(1)",
+      },
+      "& .MuiInputLabel-shrink": {
+        transform: "translate(14px, -6px) scale(0.75)",
+      },
+      width: 100,
+      [theme.breakpoints.down("lg")]: {
+        width: 100,
+        marginBottom: 10,
+      },
+    },
   };
 });
 
 const headerCells = [
   {
-    id: "status",
-    label: "สถานะ",
-  },
-  {
-    id: "transaction",
-    label: "transaction",
+    id: "checkpoint",
+    label: "ด่าน",
   },
   {
     id: "timeArrive",
     label: "เวลาเข้าด่าน",
   },
   {
+    id: "storedDate",
+    label: "วันจัดเก็บ",
+  },
+  {
     id: "typeCarAudit",
-    label: "ประเภทรถ(ระบบตรวจสอบ)",
+    label: "ประเภทรถ",
   },
   {
     id: "feeAudit",
-    label: "ค่าผ่านทาง(ระบบตรวจสอบ)",
+    label: "ค่าธรรมเนียมผ่านทาง",
   },
   {
-    id: "typeCarPK3",
-    label: "ประเภทรถ(PK3)",
+    id: "fine",
+    label: "ค่าปรับ",
   },
   {
-    id: "feePK3",
-    label: "ค่าผ่านทาง(PK3)",
+    id: "summary",
+    label: "ชำระรวม",
   },
   {
-    id: "carDetail",
-    label: "รายละเอียดรถ",
+    id: "plate",
+    label: "ทะเบียน",
+  },
+  {
+    id: "province",
+    label: "จังหวัด",
+  },
+  {
+    id: "period",
+    label: "ระยะเวลาชำระ (วัน)",
+  },
+  {
+    id: "condition",
+    label: "เงื่อนไขการชำระ",
   },
 ];
 
@@ -95,9 +146,11 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function AllTsTableForActivity2(props) {
+  const { onFetchData, countPage } = props;
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [selectedPage, setSelectedPage] = useState("");
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -151,18 +204,36 @@ export default function AllTsTableForActivity2(props) {
 
   return (
     <div>
-      <Pagination
-        count={dataList.totalPages}
-        color="primary"
-        page={page}
-        onChange={onChange}
-        style={{
-          display: "inline",
-          margin: "2rem",
-          position: "static",
-          top: 0,
-        }}
-      />
+      <Box style={{ marginTop: -5, display: "flex", marginBottom: 10 }}>
+        <Box>
+          <TextField
+            variant="outlined"
+            className={classes.input1}
+            style={{ margin: "0" }}
+            label="go to page"
+            value={selectedPage}
+            onChange={(e) => setSelectedPage(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ height: 35 }}
+            onClick={() => onFetchData(parseInt(selectedPage))}
+          >
+            Go
+          </Button>
+        </Box>
+        <Box>
+          {/* search page box */}
+          <Pagination
+            count={countPage}
+            color="primary"
+            page={page}
+            onChange={onChange}
+            className={classes.pagination}
+          />
+        </Box>
+      </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
           <TableHead>
@@ -179,56 +250,51 @@ export default function AllTsTableForActivity2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.ts_table
-              ? dataList.ts_table.map((data) => (
+            {!!dataList.detail
+              ? dataList.detail.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
-                    onClick={() => {
-                      fetchData(data.transactionId, data.state, data.timestamp);
-                    }}
+                    // onClick={() => {
+                    //   fetchData(data.transactionId, data.state, data.timestamp);
+                    // }}
                     className={classes.tableRow}
                   >
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        fontSize="small"
-                        style={{
-                          color:
-                            data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "yellow"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "pink"
-                              : data.state === 7
-                              ? "green"
-                              : "gray",
-                        }}
-                      />
+                      {data.check_point}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
+                      {!!data.datetime ? data.datetime.split(" ").pop() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.timestamp ? data.timestamp.split(" ").pop() : "-"}
+                      {`-`}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.class}
+                      {`C${data.vehicle_type}`}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.fee}
+                      {!!data.fee ? data.fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.fine ? data.fine : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.total_pay ? data.total_pay : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.plate ? data.plate : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.province ? data.province : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.fee ? data.fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.type && data.type === "member"
+                        ? "member"
+                        : !!data.type && data.type === "nonmember"
+                        ? "nonmember"
+                        : "-"}
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -240,12 +306,6 @@ export default function AllTsTableForActivity2(props) {
       <ModalActivity
         dataList={dataForActivity}
         open={open}
-        onClick={handleClose}
-        onFetchData={props.onFetchData}
-      />
-      <ModalReadOnly
-        dataList={dataForActivity}
-        open={open1}
         onClick={handleClose}
         onFetchData={props.onFetchData}
       />

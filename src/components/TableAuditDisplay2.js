@@ -18,7 +18,6 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalActivity2 from "./ModalActivity2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
 // import format from "date-fns/format";
@@ -65,6 +64,11 @@ const detailStatus = [
     state: 7,
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
+  },
+  {
+    state: 8,
+    color: "lightgreen",
+    label: "ตรวจสอบแล้ว",
   },
 ];
 const useStyles = makeStyles((theme) => {
@@ -188,7 +192,7 @@ export default function TableAuditDisplay2(props) {
     };
 
     apiURL
-      .post("/display-activity2", sendData)
+      .post("/expect-income-activity", sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);
@@ -333,15 +337,7 @@ export default function TableAuditDisplay2(props) {
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate && data.match_checkpoint === 1
-                        ? "ทับช้าง1"
-                        : !!data.match_gate && data.match_checkpoint === 2
-                        ? "ทับช้าง2"
-                        : !!data.match_gate && data.match_checkpoint === 3
-                        ? "ธัญบุรี1"
-                        : !!data.match_gate && data.match_checkpoint === 4
-                        ? "ธัญบุรี2"
-                        : "-"}
+                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
@@ -370,7 +366,7 @@ export default function TableAuditDisplay2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.type ? data.type : "-"}
+                      {!!data.status ? data.status : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
@@ -379,27 +375,35 @@ export default function TableAuditDisplay2(props) {
                       -
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
+                      {!!data.readFlag &&
+                      data.readFlag === 1 &&
+                      data.state === 2 ? (
+                        <VisibilityIcon style={{ color: "red" }} />
+                      ) : (
+                        <FiberManualRecordIcon
+                          style={{
+                            // fontSize: "0.8rem",
+                            color:
+                              data.state === 1
+                                ? "lightgray"
+                                : data.state === 2
+                                ? "#FF2400"
+                                : data.state === 3
+                                ? "blue"
+                                : data.state === 4
+                                ? "orange"
+                                : data.state === 5
+                                ? "black"
+                                : data.state === 6
+                                ? "darkviolet"
+                                : data.state === 7
+                                ? "lightblue"
+                                : data.state === 8
+                                ? "lightgreen"
+                                : "rgba(0,0,0,0)",
+                          }}
+                        />
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))

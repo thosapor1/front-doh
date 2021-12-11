@@ -194,8 +194,8 @@ export default function SuperAuditDisplay2() {
     // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
-      checkpoint_id: checkpoint,
-      gate_id: selectGate,
+      checkpoint: checkpoint,
+      gate: selectGate,
       state: status_select.toString(),
       vehicleClass: selectCarType,
       date: date,
@@ -206,7 +206,7 @@ export default function SuperAuditDisplay2() {
     console.log(sendData);
 
     apiURL
-      .post("/display-superaudit2", sendData)
+      .post("/display-super-audit", sendData)
       .then((res) => {
         Swal.close();
         setAllTsTable({
@@ -310,7 +310,7 @@ export default function SuperAuditDisplay2() {
 
   const dataCard = [
     {
-      value: !!summary.total ? summary.total : 0,
+      value: !!summary.ts_count ? summary.ts_count : 0,
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },
@@ -565,8 +565,8 @@ export default function SuperAuditDisplay2() {
                       {card.label}
                     </Typography>
                     <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}{" "}
-                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                      {card.value}
+                      {card.status === "revenue" ? ` บาท` : ` รายการ`}
                     </Typography>
                   </Grid>
                   <Grid>

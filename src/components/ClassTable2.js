@@ -12,8 +12,13 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
+    root: {
+      "& .MuiTableCell-root": {
+        padding: 10,
+      },
+    },
     container: {
-      maxHeight: 270,
+      maxHeight: 250,
     },
     header: {
       backgroundColor: "#7C85BFff;",
@@ -62,7 +67,7 @@ export default function ClassTable2(props) {
   return (
     <div>
       <TableContainer className={classes.container}>
-        <Table stickyHeader>
+        <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
               {headerCells.map((headerCell, index) => (
@@ -77,30 +82,24 @@ export default function ClassTable2(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
-                  <TableRow
-                    key={index}
-                    style={{ left: 0, bottom: 0, position: "sticky" }}
-                  >
-                    <TableCell align="center" className={classes.header}>
-                      {data.class}
+            {!!dataList.total
+              ? dataList.total.map((data, index) => (
+                  <TableRow key={index} style={{ left: 0, bottom: 0 }}>
+                    <TableCell align="center" className={classes.body}>
+                      {data.name}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_count}
+                    <TableCell align="center" className={classes.body}>
+                      {data.fee}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_reject}
+                    <TableCell align="center" className={classes.body}>
+                      {data.fine}
                     </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.ts_countState1}
-                    </TableCell>
-                    <TableCell align="center" className={classes.header}>
-                      {data.sumAmount}
+                    <TableCell align="center" className={classes.body}>
+                      {data.total}
                     </TableCell>
                   </TableRow>
                 ))
-              : dataList}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>
