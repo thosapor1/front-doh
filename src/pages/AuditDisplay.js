@@ -323,7 +323,7 @@ export default function AuditDisplay() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+          ตรวจสอบ (DOH) : รายได้รายวัน
         </Typography>
 
         {/* Filter Section */}
