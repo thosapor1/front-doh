@@ -347,12 +347,7 @@ export default function ModalPK3Activity2(props) {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
-    let setOperation = 0;
-    if (dataList.resultsDisplay[0].state === 3) {
-      setOperation = 6;
-    } else {
-      setOperation = 0;
-    }
+    let setOperation = 6;
 
     const sendData = {
       date: date,
@@ -363,9 +358,9 @@ export default function ModalPK3Activity2(props) {
       fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
+      pk3_comment: commentPK3,
       super_audit_comment: "",
-      ts_duplication: state.TransactionsPeat,
+      ts_duplication: TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
@@ -379,55 +374,49 @@ export default function ModalPK3Activity2(props) {
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
       zIndex: 1300,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURLv2
-            .post(endPointURL, sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
-            .catch((error) => {
-              // handleClose();
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv2
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
               Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
               });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+            props.onClick();
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
             });
-        }
-      })
-      .then(() => {
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 1500);
-        props.onClick();
-      });
+          });
+      }
+    });
   };
   const handleUpdate2 = () => {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
 
-    let setOperation = 0;
-    if (dataList.resultsDisplay[0].state === 3) {
-      setOperation = 7;
-    } else {
-      setOperation = 0;
-    }
+    let setOperation = 7;
 
     const sendData = {
       date: date,
@@ -438,9 +427,9 @@ export default function ModalPK3Activity2(props) {
       fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
+      pk3_comment: commentPK3,
       super_audit_comment: "",
-      ts_duplication: state.TransactionsPeat,
+      ts_duplication: TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
@@ -454,43 +443,42 @@ export default function ModalPK3Activity2(props) {
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
       zIndex: 1300,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURLv2
-            .post(endPointURL, sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
-            .catch((error) => {
-              // handleClose();
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv2
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
               Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
               });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+            props.onClick();
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
             });
-        }
-      })
-      .then(() => {
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 1500);
-        props.onClick();
-      });
+          });
+      }
+    });
   };
 
   useEffect(() => {
@@ -1205,7 +1193,7 @@ export default function ModalPK3Activity2(props) {
                       variant="outlined"
                       onChange={handleChange}
                       className={classes.smallText}
-                      value={state.TransactionsPeat}
+                      value={TransactionsPeat}
                     />
                   </TableCell>
                 </TableRow>
@@ -1218,7 +1206,7 @@ export default function ModalPK3Activity2(props) {
                       variant="outlined"
                       onChange={handleChange}
                       className={classes.smallText}
-                      value={state.commentPK3}
+                      value={commentPK3}
                     />
                   </TableCell>
                 </TableRow>
