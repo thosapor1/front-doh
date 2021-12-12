@@ -115,42 +115,6 @@ export default function ClassTable(props) {
                 ))
               : []}
           </TableBody>
-          <TableFooter>
-            <StyledTableRow>
-              <TableCell
-                className={classes.footer}
-                align="center"
-              >{`รวม`}</TableCell>
-              <TableCell className={classes.footer} align="center">
-                {!!dataList.result_vehicleClass
-                  ? dataList.result_vehicleClass[0].sum_all +
-                    dataList.result_vehicleClass[1].sum_all +
-                    dataList.result_vehicleClass[2].sum_all
-                  : 0}
-              </TableCell>
-              <TableCell className={classes.footer} align="center">
-                {!!dataList.result_vehicleClass
-                  ? dataList.result_vehicleClass[0].reject +
-                    dataList.result_vehicleClass[1].reject +
-                    dataList.result_vehicleClass[2].reject
-                  : 0}
-              </TableCell>
-              <TableCell className={classes.footer} align="center">
-                {!!dataList.result_vehicleClass
-                  ? dataList.result_vehicleClass[0].normal +
-                    dataList.result_vehicleClass[1].normal +
-                    dataList.result_vehicleClass[2].normal
-                  : 0}
-              </TableCell>
-              <TableCell className={classes.footer} align="center">
-                {!!dataList.result_vehicleClass
-                  ? dataList.result_vehicleClass[0].revenue +
-                    dataList.result_vehicleClass[1].revenue +
-                    dataList.result_vehicleClass[2].revenue
-                  : 0}
-              </TableCell>
-            </StyledTableRow>
-          </TableFooter>
         </Table>
       </TableContainer>
     </div>

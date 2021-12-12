@@ -354,8 +354,8 @@ export default function ModalSuperActivity2(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
@@ -364,7 +364,6 @@ export default function ModalSuperActivity2(props) {
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -436,8 +435,8 @@ export default function ModalSuperActivity2(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
@@ -446,7 +445,6 @@ export default function ModalSuperActivity2(props) {
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
