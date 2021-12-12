@@ -303,18 +303,16 @@ export default function ModalSuperActivity2(props) {
   };
 
   const mockPic = 0;
-  const [state, setState] = useState({
-    operation: "",
-    commentSuper: "",
-  });
-  const { commentSuper, operation } = state;
+  const [state, setState] = useState({});
 
+  const [commentSuper, setCommentSuper] = useState("");
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
+    console.log(state.commentSuper);
   };
 
   const handleOptionChange = (event) => {
@@ -335,36 +333,36 @@ export default function ModalSuperActivity2(props) {
 
     const date = format(checkDate, "yyyy-MM-dd");
 
-    let setOperation = 0;
+    let setOperation = 8;
 
-    if (
-      dataList.resultsDisplay[0].state === 4 &&
-      (dataList.resultsDisplay[0].match_transaction_type === 2 ||
-        dataList.resultsDisplay[0].match_transaction_type === 3 ||
-        dataList.resultsDisplay[0].match_transaction_type === 7 ||
-        dataList.resultsDisplay[0].match_transaction_type === 8)
-    ) {
-      setOperation = 8;
-    } else {
-      setOperation = 0;
-    }
+    // if (
+    //   dataList.resultsDisplay[0].state === 4 &&
+    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 8)
+    // ) {
+    //   setOperation = 8;
+    // } else {
+    //   setOperation = 8;
+    // }
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
-      super_audit_comment: "",
+      super_audit_comment: commentSuper,
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -374,43 +372,42 @@ export default function ModalSuperActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL
-            .post(endPointURL, sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
-            .catch((error) => {
-              // handleClose();
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
               Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
               });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            props.onClick();
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 1500);
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
             });
-        }
-      })
-      .then(() => {
-        props.onClick();
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 2000);
-      });
+          });
+      }
+    });
   };
 
   const handleUpdate2 = () => {
@@ -418,35 +415,36 @@ export default function ModalSuperActivity2(props) {
 
     const date = format(checkDate, "yyyy-MM-dd");
 
-    let setOperation = 0;
+    let setOperation = 9;
 
-    if (
-      dataList.resultsDisplay[0].state === 4 &&
-      (dataList.resultsDisplay[0].match_transaction_type === 3 ||
-        dataList.resultsDisplay[0].match_transaction_type === 7 ||
-        dataList.resultsDisplay[0].match_transaction_type === 8)
-    ) {
-      setOperation = 9;
-    } else {
-      setOperation = 0;
-    }
+    // if (
+    //   dataList.resultsDisplay[0].state === 4 &&
+    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
+    //     dataList.resultsDisplay[0].match_transaction_type === 8)
+    // ) {
+    //   setOperation = 9;
+    // } else {
+    //   setOperation = 0;
+    // }
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
-      super_audit_comment: "",
+      super_audit_comment: commentSuper,
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
 
     Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -457,43 +455,42 @@ export default function ModalSuperActivity2(props) {
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
       zIndex: 1300,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURL
-            .post(endPointURL, sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                  confirmButtonText: "OK",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              }
-            })
-            .catch((error) => {
-              // handleClose();
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
               Swal.fire({
-                icon: "error",
-                text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
               });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            props.onClick();
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
             });
-        }
-      })
-      .then(() => {
-        props.onClick();
-        setTimeout(() => {
-          props.onFetchData(page);
-        }, 2000);
-      });
+          });
+      }
+    });
   };
 
   useEffect(() => {
@@ -515,6 +512,7 @@ export default function ModalSuperActivity2(props) {
           ? dataList.resultsDisplay[0].match_real_fee
           : 0
       );
+      setCommentSuper("");
       console.log("dataList", dataList);
     }
   }, [dataList]);
@@ -1166,9 +1164,12 @@ export default function ModalSuperActivity2(props) {
                       id="outlined-basic"
                       name="commentSuper"
                       variant="outlined"
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        setCommentSuper(e.target.value);
+                        console.log(commentSuper);
+                      }}
                       className={classes.smallText}
-                      value={state.commentSuper}
+                      value={commentSuper}
                     />
                   </TableCell>
                 </TableRow>
@@ -1499,7 +1500,8 @@ export default function ModalSuperActivity2(props) {
             >
               ยืนยันการจับเก็บรายได้
             </Button>
-            {!!resultDisplay.state && resultDisplay.state !== 3 ? (
+            {!!resultDisplay.state &&
+            resultDisplay.match_transaction_type !== 3 ? (
               <Button
                 variant="contained"
                 style={{
