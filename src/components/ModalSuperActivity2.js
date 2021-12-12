@@ -1497,7 +1497,8 @@ export default function ModalSuperActivity2(props) {
             >
               ยืนยันการจับเก็บรายได้
             </Button>
-            {!!resultDisplay.state && resultDisplay.state !== 3 ? (
+            {!!resultDisplay.state &&
+            resultDisplay.match_transaction_type !== 3 ? (
               <Button
                 variant="contained"
                 style={{
