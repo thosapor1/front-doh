@@ -342,6 +342,7 @@ export default function ModalSuperActivity2(props) {
       (dataList.resultsDisplay[0].match_transaction_type === 2 ||
         dataList.resultsDisplay[0].match_transaction_type === 3 ||
         dataList.resultsDisplay[0].match_transaction_type === 7 ||
+        dataList.resultsDisplay[0].match_transaction_type === 6 ||
         dataList.resultsDisplay[0].match_transaction_type === 8)
     ) {
       setOperation = 8;
@@ -359,7 +360,7 @@ export default function ModalSuperActivity2(props) {
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
-      super_audit_comment: "",
+      super_audit_comment: commentSuper,
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
@@ -421,8 +422,10 @@ export default function ModalSuperActivity2(props) {
 
     if (
       dataList.resultsDisplay[0].state === 4 &&
-      (dataList.resultsDisplay[0].match_transaction_type === 3 ||
+      (dataList.resultsDisplay[0].match_transaction_type === 2 ||
+        dataList.resultsDisplay[0].match_transaction_type === 3 ||
         dataList.resultsDisplay[0].match_transaction_type === 7 ||
+        dataList.resultsDisplay[0].match_transaction_type === 6 ||
         dataList.resultsDisplay[0].match_transaction_type === 8)
     ) {
       setOperation = 9;
@@ -440,7 +443,7 @@ export default function ModalSuperActivity2(props) {
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
-      super_audit_comment: "",
+      super_audit_comment: commentSuper,
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
@@ -1166,7 +1169,7 @@ export default function ModalSuperActivity2(props) {
                       variant="outlined"
                       onChange={handleChange}
                       className={classes.smallText}
-                      value={state.commentSuper}
+                      value={commentSuper}
                     />
                   </TableCell>
                 </TableRow>

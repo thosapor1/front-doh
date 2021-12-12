@@ -199,6 +199,11 @@ export default function AuditDisplay() {
   };
 
   const download = () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
     const header = {
       "Content-Type": "application/pdf",
       responseType: "blob",
@@ -207,17 +212,27 @@ export default function AuditDisplay() {
       checkPoint: station.toString(),
       date: format(selectedDate, "yyyy-MM-dd"),
     };
-    apiURLv1.post("/daily-income/pdf", sendData, header).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "downloadFile.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      console.log(res.data);
-      console.log(url);
-    });
+    apiURLv1
+      .post("/daily-income/pdf", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "downloadFile.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+        Swal.close();
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   const fetchData = (pageId = 1) => {

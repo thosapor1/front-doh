@@ -268,7 +268,7 @@ export default function RawTransaction() {
             className={classes.input1}
             value={status}
             onChange={(event) => {
-              setStatus(event);
+              setStatus(event.target.value);
             }}
           >
             {!!dropdown.ts_status
