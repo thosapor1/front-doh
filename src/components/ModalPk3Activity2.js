@@ -411,10 +411,10 @@ export default function ModalPK3Activity2(props) {
         }
       })
       .then(() => {
-        props.onClick();
         setTimeout(() => {
           props.onFetchData(page);
-        }, 2000);
+        }, 1500);
+        props.onClick();
       });
   };
   const handleUpdate2 = () => {
@@ -486,10 +486,10 @@ export default function ModalPK3Activity2(props) {
         }
       })
       .then(() => {
-        props.onClick();
         setTimeout(() => {
           props.onFetchData(page);
-        }, 2000);
+        }, 1500);
+        props.onClick();
       });
   };
 

@@ -26,7 +26,6 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import HelpOutlineTwoToneIcon from "@material-ui/icons/HelpOutlineTwoTone";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURLv1 = axios.create({
@@ -403,10 +402,10 @@ export default function ModalActivity3(props) {
               }
             })
             .then(() => {
-              props.onClick();
               setTimeout(() => {
                 props.onFetchData(page);
-              }, 2000);
+              }, 1500);
+              props.onClick();
             });
         }
       })
@@ -491,10 +490,10 @@ export default function ModalActivity3(props) {
               }
             })
             .then(() => {
-              props.onClick();
               setTimeout(() => {
                 props.onFetchData(page);
-              }, 2000);
+              }, 1500);
+              props.onClick();
             });
         }
       })
