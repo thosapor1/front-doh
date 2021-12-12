@@ -26,7 +26,6 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import HelpOutlineTwoToneIcon from "@material-ui/icons/HelpOutlineTwoTone";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const apiURLv1 = axios.create({
@@ -362,8 +361,8 @@ export default function ModalActivity3(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
@@ -403,10 +402,10 @@ export default function ModalActivity3(props) {
               }
             })
             .then(() => {
-              props.onClick();
               setTimeout(() => {
                 props.onFetchData(page);
-              }, 2000);
+              }, 1500);
+              props.onClick();
             });
         }
       })
@@ -451,8 +450,8 @@ export default function ModalActivity3(props) {
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: dataList.resultsDisplay[0].match_real_vehicleClass,
-      fee: dataList.resultsDisplay[0].match_real_fee,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
       pk3_comment: state.commentPK3,
@@ -491,10 +490,10 @@ export default function ModalActivity3(props) {
               }
             })
             .then(() => {
-              props.onClick();
               setTimeout(() => {
                 props.onFetchData(page);
-              }, 2000);
+              }, 1500);
+              props.onClick();
             });
         }
       })

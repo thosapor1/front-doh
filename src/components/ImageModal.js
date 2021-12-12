@@ -35,7 +35,7 @@ const useStyle = makeStyles((theme) => {
     },
     imageWrap: {
       height: "0",
-      paddingBottom: "50%",
+      paddingBottom: "45%",
       position: "relative",
       overflow: "hidden",
     },

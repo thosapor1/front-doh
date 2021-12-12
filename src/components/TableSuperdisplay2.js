@@ -412,12 +412,6 @@ export default function TableSuperdisplay2(props) {
         checkDate={checkDate}
         page={page}
       />
-      <ModalReadOnly2
-        dataList={dataForActivity}
-        open={open1}
-        onClick={handleClose}
-        onFetchData={props.onFetchData}
-      />
     </div>
   );
 }
