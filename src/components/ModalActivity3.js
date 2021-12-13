@@ -136,7 +136,7 @@ const useStyle = makeStyles((theme) => {
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "90%",
+        marginTop: "100%",
       },
       [theme.breakpoints.only("sm")]: {
         marginTop: "120%",
@@ -507,18 +507,19 @@ export default function ModalActivity3(props) {
   };
 
   useEffect(() => {
-    if (dataList) {
+    if (!!dataList) {
       setState(dataList);
-      setVehicleClass(dataList.vehicleClass);
-      setAudit_feeAmount(dataList.audit_feeAmount);
+
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
       setVehicleClass(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_vehicleClass
-          : 0
+        !!dataList.resultsDisplay &&
+          dataList.resultsDisplay[0].match_transaction_type === 3
+          ? dataList.resultsDisplay[0].mf_lane_vehicleClass
+          : !!dataList.resultsDisplay &&
+              dataList.resultsDisplay[0].match_real_vehicleClass
       );
       setAudit_feeAmount(
         !!dataList.resultsDisplay
@@ -1210,8 +1211,8 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFile
-                    ? `data:image/png;base64, ${dataList.imageFile}`
+                  !!dataList.hp_picFull
+                    ? `data:image/png;base64, ${dataList.hp_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -1398,8 +1399,8 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFileCrop
-                    ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                  !!dataList.hq_picCrop
+                    ? `data:image/png;base64, ${dataList.hq_picCrop}`
                     : noImage
                 }
                 className={classes.image}
@@ -1516,7 +1517,12 @@ export default function ModalActivity3(props) {
                 className={classes.btn}
                 onClick={handleUpdate1}
               >
-                ยืนยันตามฝ่ายจัดเก็บ
+                {!!resultDisplay.state &&
+                resultDisplay.match_transaction_type === 2
+                  ? "ยืนยันการยกเลิกข้อมูล"
+                  : !!resultDisplay.state && resultDisplay.state === 6
+                  ? "รับทราบ"
+                  : "ยืนยันตามฝ่ายจัดเก็บ"}
               </Button>
             ) : (
               ""
@@ -1531,7 +1537,7 @@ export default function ModalActivity3(props) {
                 className={classes.btn}
                 onClick={handleUpdate2}
               >
-                ส่งฝ่ายจัดเก็บเตรวจสอบ
+                {`ส่งฝ่ายจัดเก็บเตรวจสอบ`}
               </Button>
             ) : (
               ""

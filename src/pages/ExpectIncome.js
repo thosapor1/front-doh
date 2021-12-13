@@ -500,13 +500,18 @@ export default function ExpectIncome() {
               endpoint="/audit-search"
             />
           </Box>
-          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
+          <Grid
+            container
+            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
+          >
             {dataCard.map((card, index) => (
               <Grid
                 item
                 component={Paper}
                 key={index}
                 lg
+                md={5}
+                sm={6}
                 className={classes.card}
                 style={{
                   borderLeft:
@@ -523,10 +528,10 @@ export default function ExpectIncome() {
               >
                 <Grid
                   container
-                  justifyContent="space-around"
+                  justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Grid item>
+                  <Grid item lg={10} md={12} sm={12}>
                     <Typography
                       style={{
                         color:
@@ -546,11 +551,11 @@ export default function ExpectIncome() {
                       {card.label}
                     </Typography>
                     <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}{" "}
-                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                      {card.value}
+                      {card.status === "revenue" ? " บาท" : " รายการ"}
                     </Typography>
                   </Grid>
-                  <Grid>
+                  <Grid item lg={2} md={12} sm={12}>
                     <DescriptionTwoToneIcon />
                   </Grid>
                 </Grid>
