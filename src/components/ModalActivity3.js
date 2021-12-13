@@ -27,6 +27,7 @@ import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import ModalExpandedImage from "./ModalExpandedImage";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -162,6 +163,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       position: "absolute",
       objectFit: "cover",
+      cursor: "pointer",
+      "&:hover": {
+        transition: "transform 1s, filter 2s ease-in-out",
+        filter: "blur(2px)",
+        transform: "scale(1.2)",
+      },
     },
     imageWrap: {
       height: "0",
@@ -249,6 +256,14 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalActivity3(props) {
   const classes = useStyle();
+
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+
   const { dataList, dropdown, checkDate, page } = props;
 
   const [value1, setValue1] = useState(2);
@@ -732,6 +747,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen1()}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open1}
+                onClose={() => setOpen1(false)}
               />
             </div>
           </TabPanel4>
@@ -875,6 +896,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen2()}
+              />
+              <ModalExpandedImage
+                dataList={noImage}
+                open={open2}
+                onClose={() => setOpen2(false)}
               />
             </div>
           </TabPanel4>
@@ -995,6 +1022,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen3(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picFull}
+                open={open3}
+                onClose={() => setOpen3(false)}
               />
             </div>
           </TabPanel4>
@@ -1072,12 +1105,12 @@ export default function ModalActivity3(props) {
                 component="img"
                 src={
                   mockPic !== 0
-                    ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                      Logo_doh
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
               />
+              {/* <ModalExpandedImage /> */}
             </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={2}>
@@ -1090,6 +1123,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen4(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open4}
+                onClose={() => setOpen4(false)}
               />
             </div>
           </TabPanel1>
@@ -1216,6 +1255,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen5(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hp_picFull}
+                open={open5}
+                onClose={() => setOpen5(false)}
               />
             </div>
           </TabPanel2>
@@ -1404,6 +1449,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen6(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hq_picCrop}
+                open={open6}
+                onClose={() => setOpen6(false)}
               />
             </div>
           </TabPanel3>
