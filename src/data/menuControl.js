@@ -49,11 +49,11 @@ export const menuItemsForSuperAdmin = [
   //   icon: "pending_actions",
   //   path: "/pk3Display",
   // },
-  {
-    text: "transactionMonitor",
-    icon: "preview",
-    path: "/transactionMonitorV1",
-  },
+  // {
+  //   text: "transactionMonitor",
+  //   icon: "preview",
+  //   path: "/transactionMonitorV1",
+  // },
   {
     text: "ปริมาณข้อมูล",
     icon: "data_saver_off",
