@@ -374,7 +374,9 @@ export default function TablePK3display(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag ? data.forceFlag : "-"}
+                      {!!data.forceFlag && data.forceFlag === 1
+                        ? "บังคับ"
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       <FiberManualRecordIcon
