@@ -17,6 +17,7 @@ import {
   Box,
   Paper,
   Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -27,19 +28,18 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
 const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 function TabPanel1(props) {
@@ -115,18 +115,6 @@ function a11yProps(index) {
 
 const useStyle = makeStyles((theme) => {
   return {
-    "@global": {
-      "*::-webkit-scrollbar": {
-        width: "0.3em",
-      },
-      "*::-webkit-scrollbar-track": {
-        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-      },
-      "*::-webkit-scrollbar-thumb": {
-        backgroundColor: "rgba(0,0,0,.1)",
-        outline: "1px  lightgray",
-      },
-    },
     root: {},
     bodyModal: {
       height: "auto",
@@ -136,8 +124,11 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+      [theme.breakpoints.only("md")]: {
+        marginTop: "90%",
+      },
+      [theme.breakpoints.only("sm")]: {
+        marginTop: "120%",
       },
     },
     head: {
@@ -241,16 +232,23 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
+    disableLabel2: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
     tableContainer: {
       height: "20vh",
       [theme.breakpoints.down("lg")]: {
-        height: "25vh",
+        height: "20vh",
       },
     },
   };
 });
 
-export default function ModalSuperActivity2(props) {
+export default function ModalPK3Activity2(props) {
   const classes = useStyle();
   const { dataList, dropdown, checkDate, page } = props;
 
@@ -280,39 +278,56 @@ export default function ModalSuperActivity2(props) {
     setValue6(newValue);
   };
 
-  const download = () => {
-    const header = {
-      "Content-Type": "application/pdf",
-      responseType: "blob",
-    };
-    const sendData = {
-      transactionId: resultDisplay.transactionId,
-      date: format(checkDate, "yyyy-MM-dd"),
-    };
-    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "M20210929000000014_PK3.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      console.log(res.data);
-      console.log(url);
-    });
-  };
-
   const mockPic = 0;
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    operation: "",
+    commentSuper: "",
+    commentPK3: "",
+    TransactionsPeat: "",
+  });
+  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
 
-  const [commentSuper, setCommentSuper] = useState("");
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-    console.log(state.commentSuper);
+  };
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const upload = () => {
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    if (fileName !== "") {
+      axios
+        .post(`${URL}/pk3-upload-file`, formData)
+        .then((res) => {
+          if (res.data.status === true) {
+            Swal.fire({
+              title: "Success",
+              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            Swal.fire({
+              title: "Fail",
+              text: "อัพโหลดข้อมูลไม่สำเร็จ",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .then(() => setFileName(""));
+    }
   };
 
   const handleOptionChange = (event) => {
@@ -332,21 +347,7 @@ export default function ModalSuperActivity2(props) {
     let endPointURL = "/operation";
 
     const date = format(checkDate, "yyyy-MM-dd");
-
-    let setOperation = 8;
-
-    // if (
-    //   dataList.resultsDisplay[0].state === 4 &&
-    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 8)
-    // ) {
-    //   setOperation = 8;
-    // } else {
-    //   setOperation = 8;
-    // }
+    let setOperation = 6;
 
     const sendData = {
       date: date,
@@ -357,91 +358,9 @@ export default function ModalSuperActivity2(props) {
       fee: audit_feeAmount,
       status: dataList.resultsDisplay[0].match_transaction_type,
       operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
-      super_audit_comment: commentSuper,
-      ts_duplication: state.TransactionsPeat,
-      match_transaction_type:
-        dataList.resultsDisplay[0].match_transaction_type.toString(),
-    };
-
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post(endPointURL, sendData)
-          .then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .then(() => {
-            props.onClick();
-            setTimeout(() => {
-              props.onFetchData(page);
-            }, 1500);
-          })
-          .catch((error) => {
-            // handleClose();
-            Swal.fire({
-              icon: "error",
-              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-            });
-          });
-      }
-    });
-  };
-
-  const handleUpdate2 = () => {
-    let endPointURL = "/operation";
-
-    const date = format(checkDate, "yyyy-MM-dd");
-
-    let setOperation = 9;
-
-    // if (
-    //   dataList.resultsDisplay[0].state === 4 &&
-    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 8)
-    // ) {
-    //   setOperation = 9;
-    // } else {
-    //   setOperation = 0;
-    // }
-
-    const sendData = {
-      date: date,
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
-      operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
-      super_audit_comment: commentSuper,
-      ts_duplication: state.TransactionsPeat,
+      pk3_comment: commentPK3,
+      super_audit_comment: "",
+      ts_duplication: TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
@@ -457,7 +376,7 @@ export default function ModalSuperActivity2(props) {
       zIndex: 1300,
     }).then((result) => {
       if (result.isConfirmed) {
-        apiURL
+        apiURLv2
           .post(endPointURL, sendData)
           .then((res) => {
             if (res.data.status === true) {
@@ -477,10 +396,79 @@ export default function ModalSuperActivity2(props) {
             }
           })
           .then(() => {
-            props.onClick();
             setTimeout(() => {
               props.onFetchData(page);
             }, 2000);
+            props.onClick();
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+            });
+          });
+      }
+    });
+  };
+  const handleUpdate2 = () => {
+    let endPointURL = "/operation";
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
+    let setOperation = 7;
+
+    const sendData = {
+      date: date,
+      user_id: Cookies.get("userId"),
+      transactionId: dataList.resultsDisplay[0].transactionId,
+      state: dataList.resultsDisplay[0].state,
+      vehicleClass: vehicleClass,
+      fee: audit_feeAmount,
+      status: dataList.resultsDisplay[0].match_transaction_type,
+      operation: setOperation.toString(),
+      pk3_comment: commentPK3,
+      super_audit_comment: "",
+      ts_duplication: TransactionsPeat,
+      match_transaction_type:
+        dataList.resultsDisplay[0].match_transaction_type.toString(),
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv2
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+            props.onClick();
           })
           .catch((error) => {
             // handleClose();
@@ -502,6 +490,13 @@ export default function ModalSuperActivity2(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
+      setState({
+        ...state,
+        TransactionsPeat: "",
+        commentPK3: "",
+        operation: "",
+      });
+      setFileName("");
       setVehicleClass(
         !!dataList.resultsDisplay
           ? dataList.resultsDisplay[0].match_real_vehicleClass
@@ -512,7 +507,7 @@ export default function ModalSuperActivity2(props) {
           ? dataList.resultsDisplay[0].match_real_fee
           : 0
       );
-      setCommentSuper("");
+
       console.log("dataList", dataList);
     }
   }, [dataList]);
@@ -888,15 +883,15 @@ export default function ModalSuperActivity2(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1090,7 +1085,6 @@ export default function ModalSuperActivity2(props) {
               />
             </div>
           </TabPanel1>
-
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -1134,44 +1128,91 @@ export default function ModalSuperActivity2(props) {
                 <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.pk3_upload_file ? (
-                      <Link onClick={download}>download</Link>
-                    ) : (
-                      "-"
-                    )}
+                    <Button
+                      style={{ marginLeft: -7.5 }}
+                      onClick={() =>
+                        document.getElementById("raised-button-file").click()
+                      }
+                    >
+                      <label htmlFor="raised-button-file">
+                        <TextField
+                          id="upload"
+                          disabled
+                          variant="outlined"
+                          className={classes.disableLabel2}
+                          label="choose file here"
+                          size="small"
+                          defaultValue="Small"
+                          value={fileName}
+                          InputLabelProps={{
+                            style: {
+                              fontSize: "0.65rem",
+                            },
+                          }}
+                        />
+                      </label>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      className={classes.btn}
+                      color="secondary"
+                      onClick={() => {
+                        upload();
+                      }}
+                      style={{
+                        fontSize: "0.7rem",
+                        marginTop: 1,
+                      }}
+                    >
+                      upload
+                    </Button>
+                    <input
+                      // accept="image/*"
+                      className={classes.input}
+                      style={{ display: "none" }}
+                      id="raised-button-file"
+                      // multiple
+                      type="file"
+                      onChange={(e) => {
+                        setFileName(
+                          !!e.target.files[0] ? e.target.files[0].name : ""
+                        );
+                        setSelectFile(e.target.files[0]);
+                        console.log(selectFile);
+                        // console.log(ref.current.value.split("\\").pop());
+                      }}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.ts_duplication
-                      ? resultDisplay.ts_duplication
-                      : "-"}
+                    <TextField
+                      id="outlined-basic"
+                      name="TransactionsPeat"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={TransactionsPeat}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.pk3_comment
-                      ? resultDisplay.pk3_comment
-                      : "-"}
+                    <TextField
+                      id="outlined-basic"
+                      name="commentPK3"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={commentPK3}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="commentSuper"
-                      variant="outlined"
-                      onChange={(e) => {
-                        setCommentSuper(e.target.value);
-                        console.log(commentSuper);
-                      }}
-                      className={classes.smallText}
-                      value={commentSuper}
-                    />
-                  </TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1448,6 +1489,7 @@ export default function ModalSuperActivity2(props) {
               </TableBody>
             </table>
           </TableContainer>
+
           <TableContainer>
             <table className={classes.table}>
               <TableHead>
@@ -1461,7 +1503,7 @@ export default function ModalSuperActivity2(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>ประเภท</TableCell>
                   <TableCell>
                     <TextField
@@ -1485,7 +1527,7 @@ export default function ModalSuperActivity2(props) {
                         : []}
                     </TextField>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableBody>
             </table>
           </TableContainer>
@@ -1498,23 +1540,18 @@ export default function ModalSuperActivity2(props) {
               className={classes.btn2}
               onClick={handleUpdate1}
             >
-              ยืนยันการจับเก็บรายได้
+              ยืนยันตามฝ่ายตรวจสอบ
             </Button>
-            {!!resultDisplay.state &&
-            resultDisplay.match_transaction_type !== 3 ? (
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "red",
-                }}
-                className={classes.btn2}
-                onClick={handleUpdate2}
-              >
-                เห็นควรตามฝ่ายจัดเก็บรายได้
-              </Button>
-            ) : (
-              ""
-            )}
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "red",
+              }}
+              className={classes.btn2}
+              onClick={handleUpdate2}
+            >
+              ชี้แจงรายระเอียดเพิ่มเติม
+            </Button>
           </div>
         </Grid>
       </Grid>

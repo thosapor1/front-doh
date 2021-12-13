@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -13,6 +12,18 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {
       "& .MuiTableCell-root": {
         padding: 10,
@@ -22,13 +33,7 @@ const useStyles = makeStyles((theme) => {
       maxHeight: 210,
     },
     header: {
-      backgroundColor: "#7C85BFff;",
-      border: "1px solid white",
-      color: "white",
-      fontSize: "0.8rem",
-    },
-    footer: {
-      backgroundColor: "darkgreen;",
+      backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
@@ -39,26 +44,14 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const headerCells = [
+const headCells = [
   {
-    id: "class",
-    label: "ประเภท",
+    id: "lane",
+    label: "ช่องจราจร",
   },
   {
-    id: "allCar",
-    label: "จำนวนรถทั้งหมด(คัน)",
-  },
-  {
-    id: "except",
-    label: "รถยกเว้น(คัน)",
-  },
-  {
-    id: "takeMoney",
-    label: "รถรับเงิน(คัน)",
-  },
-  {
-    id: "summary",
-    label: "รวมเงิน(บาท)",
+    id: "volume",
+    label: "ปริมาณรถ",
   },
 ];
 
@@ -70,9 +63,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function ClassTable(props) {
+export default function GateTable2(props) {
   const classes = useStyles();
-
   const { dataList } = props;
 
   return (
@@ -81,35 +73,26 @@ export default function ClassTable(props) {
         <Table stickyHeader className={classes.root}>
           <TableHead>
             <StyledTableRow>
-              {headerCells.map((headerCell, index) => (
+              {headCells.map((headCell, index) => (
                 <TableCell
                   key={index}
                   className={classes.header}
                   align="center"
                 >
-                  {headerCell.label}
+                  {headCell.label}
                 </TableCell>
               ))}
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.result_vehicleClass
-              ? dataList.result_vehicleClass.map((data, index) => (
+            {!!dataList.result_gate
+              ? dataList.result_gate.map((data, index) => (
                   <StyledTableRow key={index}>
                     <TableCell align="center" className={classes.body}>
-                      {`C${data.class}`}
+                      {data.match_gate}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.sum_all}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.reject}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.normal}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.revenue}
+                      {data.ts_count}
                     </TableCell>
                   </StyledTableRow>
                 ))

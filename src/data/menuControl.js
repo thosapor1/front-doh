@@ -6,18 +6,23 @@ export const menuItemsForSuperAdmin = [
   // },
   {
     text: "รายได้รายเดือน",
-    icon: "assessment",
+    icon: "leaderboard",
     path: "/dashboard2",
   },
-  // {
-  //   text: "รายได้รายวัน",
-  //   icon: "poll",
-  //   path: "/auditDisplay",
-  // },
+  {
+    text: "รายการฐานข้อมูล",
+    icon: "receipt_long",
+    path: "/rawTransaction",
+  },
+  {
+    text: "รายได้พึงได้รายวัน",
+    icon: "task",
+    path: "/expectIncome",
+  },
   {
     text: "รายได้รายวัน",
     icon: "poll",
-    path: "/auditDisplay2",
+    path: "/auditDisplay",
   },
   // {
   //   text: "super audit display",
@@ -26,7 +31,7 @@ export const menuItemsForSuperAdmin = [
   // },
   {
     text: "super audit",
-    icon: "remove_red_eye",
+    icon: "supervised_user_circle",
     path: "/superAuditDisplay2",
   },
   // {
@@ -36,18 +41,22 @@ export const menuItemsForSuperAdmin = [
   // },
   {
     text: "รายงาน",
-    icon: "file_present",
+    icon: "format_list_bulleted",
     path: "/report",
   },
-
+  {
+    text: "รายการรอตรวจสอบ",
+    icon: "pending_actions",
+    path: "/pk3Display",
+  },
   {
     text: "transactionMonitor",
-    icon: "file_present",
+    icon: "preview",
     path: "/transactionMonitorV1",
   },
   {
     text: "ปริมาณข้อมูล",
-    icon: "assessment",
+    icon: "data_saver_off",
     path: "/DataVolume",
   },
   // {
@@ -80,7 +89,7 @@ export const menuConfigForSuperAdmin = [
   },
   {
     text: "รายงานความเคลื่อนไหวผู้ใช้งาน",
-    icon: "text_snippet",
+    icon: "badge",
     path: "/userLogs",
   },
 ];
@@ -103,12 +112,12 @@ export const menuItemsForAdmin = [
   // },
   {
     text: "รายได้รายเดือน",
-    icon: "assessment",
+    icon: "leaderboard",
     path: "/dashboard2",
   },
   {
     text: "รายได้รายวัน",
-    icon: "poll",
+    icon: "task",
     path: "/auditDisplay2",
   },
   // {
@@ -118,7 +127,7 @@ export const menuItemsForAdmin = [
   // },
   {
     text: "รายงาน",
-    icon: "file_present",
+    icon: "format_list_bulleted",
     path: "/report",
   },
 ];
@@ -141,7 +150,7 @@ export const menuConfigForAdmin = [
   },
   {
     text: "รายงานความเคลื่อนไหวผู้ใช้งาน",
-    icon: "text_snippet",
+    icon: "badge",
     path: "/userLogs",
   },
 ];
@@ -164,12 +173,12 @@ export const menuItemsForMember = [
   // },
   {
     text: "รายได้รายเดือน",
-    icon: "assessment",
+    icon: "leaderboard",
     path: "/dashboard2",
   },
   {
     text: "รายได้รายวัน",
-    icon: "poll",
+    icon: "task",
     path: "/auditDisplay2",
   },
   // {
@@ -179,7 +188,7 @@ export const menuItemsForMember = [
   // },
   {
     text: "รายงาน",
-    icon: "file_present",
+    icon: "format_list_bulleted",
     path: "/report",
   },
   // {
@@ -194,7 +203,7 @@ export const menuConfigForMember = [];
 export const menuItemsForPk3 = [
   {
     text: "รายการรอตรวจสอบ",
-    icon: "playlist_add_check",
+    icon: "pending_actions",
     path: "/pk3Display",
   },
   {
@@ -204,7 +213,7 @@ export const menuItemsForPk3 = [
   },
   {
     text: "ปริมาณข้อมูล",
-    icon: "assessment",
+    icon: "data_saver_off",
     path: "/DataVolume",
   },
 ];

@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => {
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      zIndex: 1,
+      zIndex: 2,
     },
     drawerPaper: {
       width: drawerWidth,
@@ -255,6 +255,7 @@ export default function Layout({ children }) {
                   button
                   onClick={() => history.push(item.path)}
                 >
+                
                   <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
                   <ListItemText
                     primary={item.text}

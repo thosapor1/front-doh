@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
 } from "@material-ui/core";
@@ -19,16 +18,10 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: 210,
+      maxHeight: 250,
     },
     header: {
       backgroundColor: "#7C85BFff;",
-      border: "1px solid white",
-      color: "white",
-      fontSize: "0.8rem",
-    },
-    footer: {
-      backgroundColor: "darkgreen;",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
@@ -41,24 +34,20 @@ const useStyles = makeStyles((theme) => {
 
 const headerCells = [
   {
-    id: "class",
-    label: "ประเภท",
+    id: "checkpoint",
+    label: "ด่าน",
   },
   {
-    id: "allCar",
-    label: "จำนวนรถทั้งหมด(คัน)",
+    id: "fee",
+    label: "ค่าธรรมเนียม",
   },
   {
-    id: "except",
-    label: "รถยกเว้น(คัน)",
-  },
-  {
-    id: "takeMoney",
-    label: "รถรับเงิน(คัน)",
+    id: "fine",
+    label: "ค่าปรับ",
   },
   {
     id: "summary",
-    label: "รวมเงิน(บาท)",
+    label: "รวมเงิน",
   },
 ];
 
@@ -70,7 +59,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function ClassTable(props) {
+export default function ClassTable2(props) {
   const classes = useStyles();
 
   const { dataList } = props;
@@ -93,25 +82,22 @@ export default function ClassTable(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.result_vehicleClass
-              ? dataList.result_vehicleClass.map((data, index) => (
-                  <StyledTableRow key={index}>
+            {!!dataList.total
+              ? dataList.total.map((data, index) => (
+                  <TableRow key={index} style={{ left: 0, bottom: 0 }}>
                     <TableCell align="center" className={classes.body}>
-                      {`C${data.class}`}
+                      {data.name}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.sum_all}
+                      {data.fee}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.reject}
+                      {data.fine}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.normal}
+                      {data.total}
                     </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.revenue}
-                    </TableCell>
-                  </StyledTableRow>
+                  </TableRow>
                 ))
               : []}
           </TableBody>

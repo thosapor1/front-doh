@@ -13,8 +13,8 @@ import Swal from "sweetalert2";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const useStyle = makeStyles((theme) => {
@@ -111,7 +111,7 @@ export default function SearchComponent(props) {
           style={{ display: "block", marginLeft: 120 }}
           onClick={onClickHandle}
         >
-          Search{" "}
+          {`Search`}
         </Button>
       </Paper>
     </>
