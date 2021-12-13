@@ -44,11 +44,11 @@ export const menuItemsForSuperAdmin = [
     icon: "format_list_bulleted",
     path: "/report",
   },
-  {
-    text: "รายการรอตรวจสอบ",
-    icon: "pending_actions",
-    path: "/pk3Display",
-  },
+  // {
+  //   text: "รายการรอตรวจสอบ",
+  //   icon: "pending_actions",
+  //   path: "/pk3Display",
+  // },
   {
     text: "transactionMonitor",
     icon: "preview",
