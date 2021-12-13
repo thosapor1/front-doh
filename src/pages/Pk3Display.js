@@ -134,8 +134,6 @@ const valueStatus = [
   },
 ];
 
-
-
 export default function PK3Display() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -194,7 +192,7 @@ export default function PK3Display() {
     // console.log(selectCarType);
     // console.log(status_select);
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       checkpoint: checkpoint,
       gate: selectGate,
       state: status_select,
@@ -265,7 +263,7 @@ export default function PK3Display() {
     );
 
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       checkpoint_id: "0",
       datetime: date,
       startTime: timeStart,
