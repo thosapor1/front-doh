@@ -60,6 +60,16 @@ const detailStatus = [
     color: "darkviolet",
     label: "รอตรวจสอบรับทราบ",
   },
+  {
+    state: 7,
+    color: "lightblue",
+    label: "รอจัดเก็บยืนยัน",
+  },
+  {
+    state: 8,
+    color: "lightgreen",
+    label: "ตรวจสอบแล้ว",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {

@@ -111,6 +111,11 @@ export const menuItemsForAdmin = [
   //   path: "/auditDisplay",
   // },
   {
+    text: "รายได้พึงได้รายวัน",
+    icon: "task",
+    path: "/expectIncome",
+  },
+  {
     text: "รายได้รายเดือน",
     icon: "leaderboard",
     path: "/dashboard2",
@@ -175,6 +180,11 @@ export const menuItemsForMember = [
     text: "รายได้รายเดือน",
     icon: "leaderboard",
     path: "/dashboard2",
+  },
+  {
+    text: "รายได้พึงได้รายวัน",
+    icon: "task",
+    path: "/expectIncome",
   },
   {
     text: "รายได้รายวัน",

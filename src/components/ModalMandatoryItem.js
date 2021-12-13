@@ -544,7 +544,7 @@ export default function ModalMandatoryItem(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
@@ -556,7 +556,7 @@ export default function ModalMandatoryItem(props) {
             <CardMedia
               component="img"
               src={
-                dataList.mf_lane_picFull !== 0
+                !!mockPic
                   ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                   : noImage
               }
@@ -568,7 +568,7 @@ export default function ModalMandatoryItem(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
@@ -649,7 +649,7 @@ export default function ModalMandatoryItem(props) {
               <CardMedia
                 component="img"
                 src={
-                  dataList.mf_lane_picFull !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
@@ -662,7 +662,7 @@ export default function ModalMandatoryItem(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }

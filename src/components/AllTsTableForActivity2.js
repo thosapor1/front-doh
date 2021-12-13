@@ -266,7 +266,7 @@ export default function AllTsTableForActivity2(props) {
                       {!!data.datetime ? data.datetime.split(" ").pop() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {`-`}
+                      {"-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {`C${data.vehicle_type}`}
@@ -290,10 +290,10 @@ export default function AllTsTableForActivity2(props) {
                       {!!data.fee ? data.fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.type && data.type === "member"
-                        ? "member"
-                        : !!data.type && data.type === "nonmember"
-                        ? "nonmember"
+                      {!!data.type && data.type === "MEMBER"
+                        ? "MEMBER"
+                        : !!data.type && data.type === "NONMEMBER"
+                        ? "NONMEMBER"
                         : "-"}
                     </TableCell>
                   </StyledTableRow>

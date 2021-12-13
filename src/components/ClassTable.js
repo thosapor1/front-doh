@@ -94,27 +94,63 @@ export default function ClassTable(props) {
           </TableHead>
           <TableBody>
             {!!dataList.result_vehicleClass
-              ? dataList.result_vehicleClass.map((data, index) => (
-                  <StyledTableRow key={index}>
-                    <TableCell align="center" className={classes.body}>
-                      {`C${data.class}`}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.sum_all}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.reject}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.normal}
-                    </TableCell>
-                    <TableCell align="center" className={classes.body}>
-                      {data.revenue}
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+              ? dataList.result_vehicleClass
+                  .filter((item) => item.class !== "total")
+                  .map((data, index) => (
+                    <StyledTableRow key={index}>
+                      <TableCell align="center" className={classes.body}>
+                        {`C${data.class}`}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.sum_all}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.reject}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.normal}
+                      </TableCell>
+                      <TableCell align="center" className={classes.body}>
+                        {data.revenue}
+                      </TableCell>
+                    </StyledTableRow>
+                  ))
               : []}
           </TableBody>
+          <TableFooter>
+            <StyledTableRow>
+              <TableCell align="center" className={classes.footer}>
+                {!!dataList.result_vehicleClass &&
+                !!dataList.result_vehicleClass[3]
+                  ? dataList.result_vehicleClass[3].class
+                  : `total`}
+              </TableCell>
+              <TableCell align="center" className={classes.footer}>
+                {!!dataList.result_vehicleClass &&
+                !!dataList.result_vehicleClass[3]
+                  ? dataList.result_vehicleClass[3].sum_all
+                  : 0}
+              </TableCell>
+              <TableCell align="center" className={classes.footer}>
+                {!!dataList.result_vehicleClass &&
+                !!dataList.result_vehicleClass[3]
+                  ? dataList.result_vehicleClass[3].reject
+                  : 0}
+              </TableCell>
+              <TableCell align="center" className={classes.footer}>
+                {!!dataList.result_vehicleClass &&
+                !!dataList.result_vehicleClass[3]
+                  ? dataList.result_vehicleClass[3].normal
+                  : 0}
+              </TableCell>
+              <TableCell align="center" className={classes.footer}>
+                {!!dataList.result_vehicleClass &&
+                !!dataList.result_vehicleClass[3]
+                  ? dataList.result_vehicleClass[3].revenue
+                  : 0}
+              </TableCell>
+            </StyledTableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </div>
