@@ -1292,8 +1292,8 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFile
-                    ? `data:image/png;base64, ${dataList.imageFile}`
+                  !!dataList.hp_picFull
+                    ? `data:image/png;base64, ${dataList.hp_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -1423,7 +1423,7 @@ export default function ModalPK3Activity2(props) {
                     ? `data:image/png;base64, ${dataList.audit_pic}`
                     : noImage
                 }
-                className={classes.image}
+                className={classes.image} 
               />
             </div>
           </TabPanel3>
@@ -1432,8 +1432,8 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFileCrop
-                    ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                  !!dataList.hq_picCrop
+                    ? `data:image/png;base64, ${dataList.hq_picCrop}`
                     : noImage
                 }
                 className={classes.image}

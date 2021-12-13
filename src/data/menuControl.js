@@ -111,14 +111,19 @@ export const menuItemsForAdmin = [
   //   path: "/auditDisplay",
   // },
   {
+    text: "รายได้พึงได้รายวัน",
+    icon: "task",
+    path: "/expectIncome",
+  },
+  {
     text: "รายได้รายเดือน",
     icon: "leaderboard",
     path: "/dashboard2",
   },
   {
     text: "รายได้รายวัน",
-    icon: "task",
-    path: "/auditDisplay2",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",
@@ -177,9 +182,14 @@ export const menuItemsForMember = [
     path: "/dashboard2",
   },
   {
-    text: "รายได้รายวัน",
+    text: "รายได้พึงได้รายวัน",
     icon: "task",
-    path: "/auditDisplay2",
+    path: "/expectIncome",
+  },
+  {
+    text: "รายได้รายวัน",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",
