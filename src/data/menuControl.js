@@ -122,8 +122,8 @@ export const menuItemsForAdmin = [
   },
   {
     text: "รายได้รายวัน",
-    icon: "task",
-    path: "/auditDisplay2",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",
@@ -188,8 +188,8 @@ export const menuItemsForMember = [
   },
   {
     text: "รายได้รายวัน",
-    icon: "task",
-    path: "/auditDisplay2",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",

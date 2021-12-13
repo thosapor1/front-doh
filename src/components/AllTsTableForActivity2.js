@@ -53,11 +53,17 @@ const useStyles = makeStyles((theme) => {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
       },
-      pagination: {
-        "$ .MuiPagination-root": {
-          position: "fixed",
+    },
+    pagination: {
+      "& .MuiPaginationItem-root": {
+        height: 25,
+        minWidth: 25,
+        fontSize: "0.8rem",
+        [theme.breakpoints.down("lg")]: {
+          fontSize: "0.7rem",
         },
       },
+      paddingTop: 5,
     },
     tableCell: {
       cursor: "pointer",
