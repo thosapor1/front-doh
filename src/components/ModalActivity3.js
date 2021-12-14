@@ -656,7 +656,7 @@ export default function ModalActivity3(props) {
             </Typography>
           </Box>
         </div>
-        <div>
+        <div style={{ position: "absolute", right: 35 }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
               onClick={props.onClick}
@@ -664,7 +664,7 @@ export default function ModalActivity3(props) {
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: "red",
+                color: "white",
               }}
             />
           </Tooltip>
