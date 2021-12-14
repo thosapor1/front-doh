@@ -274,6 +274,14 @@ export default function ModalActivity3(props) {
   const [open14, setOpen14] = useState(false);
   const [open15, setOpen15] = useState(false);
   const [open16, setOpen16] = useState(false);
+  const [open17, setOpen17] = useState(false);
+  const [open18, setOpen18] = useState(false);
+  const [open19, setOpen19] = useState(false);
+  const [open20, setOpen20] = useState(false);
+  const [open21, setOpen21] = useState(false);
+  const [open22, setOpen22] = useState(false);
+  const [open23, setOpen23] = useState(false);
+  const [open24, setOpen24] = useState(false);
 
   const { dataList, dropdown, checkDate, page } = props;
 
@@ -1038,15 +1046,15 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.mf_lane_picFull_2
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull_2}`
                     : noImage
                 }
                 className={classes.image}
                 onClick={() => setOpen9(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.mf_lane_picFull}
+                dataList={dataList.mf_lane_picFull_2}
                 open={open9}
                 onClose={() => setOpen9(false)}
               />
@@ -1057,17 +1065,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.mf_lane_picFull_1
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull_1}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen3(true)}
+                onClick={() => setOpen10(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.mf_lane_picFull}
-                open={open3}
-                onClose={() => setOpen3(false)}
+                dataList={dataList.mf_lane_picFull_1}
+                open={open10}
+                onClose={() => setOpen10(false)}
               />
             </div>
           </TabPanel4>
@@ -1081,12 +1089,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen3(true)}
+                onClick={() => setOpen11(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.mf_lane_picFull}
-                open={open3}
-                onClose={() => setOpen3(false)}
+                open={open11}
+                onClose={() => setOpen11(false)}
               />
             </div>
           </TabPanel4>
@@ -1095,17 +1103,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen3(true)}
+                onClick={() => setOpen12(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.mf_lane_picFull}
-                open={open3}
-                onClose={() => setOpen3(false)}
+                dataList={dataList.audit_pic_full}
+                open={open12}
+                onClose={() => setOpen12(false)}
               />
             </div>
           </TabPanel4>
@@ -1156,11 +1164,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.mf_lane_picCrop_2
+                    ? `data:image/png;base64, ${dataList.mf_lane_picCrop_2}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen13(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop_2}
+                open={open13}
+                onClose={() => setOpen13(false)}
               />
             </div>
           </TabPanel1>
@@ -1169,13 +1183,18 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.mf_lane_picCrop_1
+                    ? `data:image/png;base64, ${dataList.mf_lane_picCrop_1}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen14(true)}
               />
-              {/* <ModalExpandedImage /> */}
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop_1}
+                open={open14}
+                onClose={() => setOpen14(false)}
+              />
             </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={2}>
@@ -1188,12 +1207,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen4(true)}
+                onClick={() => setOpen15(true)}
               />
               <ModalExpandedImage
                 dataList={dataList.mf_lane_picCrop}
-                open={open4}
-                onClose={() => setOpen4(false)}
+                open={open15}
+                onClose={() => setOpen15(false)}
               />
             </div>
           </TabPanel1>
@@ -1202,11 +1221,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen16(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.audit_pic_crop}
+                open={open16}
+                onClose={() => setOpen16(false)}
               />
             </div>
           </TabPanel1>
@@ -1294,6 +1319,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen17(true)}
+              />
+              <ModalExpandedImage2
+                dataList={dataList.hp_picFull_2}
+                open={open17}
+                onClose={() => setOpen17(false)}
               />
             </div>
           </TabPanel2>
@@ -1307,6 +1338,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen18(true)}
+              />
+              <ModalExpandedImage2
+                dataList={dataList.hp_picFull_1}
+                open={open18}
+                onClose={() => setOpen18(false)}
               />
             </div>
           </TabPanel2>
@@ -1320,12 +1357,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen5(true)}
+                onClick={() => setOpen19(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.hp_picFull}
-                open={open5}
-                onClose={() => setOpen5(false)}
+                open={open19}
+                onClose={() => setOpen19(false)}
               />
             </div>
           </TabPanel2>
@@ -1335,10 +1372,16 @@ export default function ModalActivity3(props) {
                 component="img"
                 src={
                   mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.mf_pic}`
+                    ? `data:image/png;base64, ${dataList.audi_pic_full}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen20(true)}
+              />
+              <ModalExpandedImage2
+                dataList={dataList.audi_pic_full}
+                open={open20}
+                onClose={() => setOpen20(false)}
               />
             </div>
           </TabPanel2>
@@ -1488,6 +1531,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen21(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hq_picCrop_2}
+                open={open21}
+                onClose={() => setOpen21(false)}
               />
             </div>
           </TabPanel3>
@@ -1501,6 +1550,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen22(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hq_picCrop_1}
+                open={open22}
+                onClose={() => setOpen22(false)}
               />
             </div>
           </TabPanel3>
@@ -1514,12 +1569,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen6(true)}
+                onClick={() => setOpen23(true)}
               />
               <ModalExpandedImage
                 dataList={dataList.hq_picCrop}
-                open={open6}
-                onClose={() => setOpen6(false)}
+                open={open23}
+                onClose={() => setOpen23(false)}
               />
             </div>
           </TabPanel3>
@@ -1528,11 +1583,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen24(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.audit_pic}
+                open={open24}
+                onClose={() => setOpen24(false)}
               />
             </div>
           </TabPanel3>
