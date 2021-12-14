@@ -422,7 +422,7 @@ export default function ModalPK3Activity2(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId.toString(),
-      state: dataList.resultsDisplay[0].state,
+      state: dataList.resultsDisplay[0].state.toString(),
       vehicleClass: vehicleClass.toString(),
       fee: audit_feeAmount.toString(),
       status: dataList.resultsDisplay[0].match_transaction_type.toString(),
