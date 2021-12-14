@@ -28,6 +28,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
+import ModalExpandedImage2 from "./ModalExpandedImage2";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -655,7 +656,7 @@ export default function ModalActivity3(props) {
             </Typography>
           </Box>
         </div>
-        <div>
+        <div style={{ position: "absolute", right: 35 }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
               onClick={props.onClick}
@@ -663,7 +664,7 @@ export default function ModalActivity3(props) {
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: "red",
+                color: "white",
               }}
             />
           </Tooltip>
@@ -1024,7 +1025,7 @@ export default function ModalActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen3(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.mf_lane_picFull}
                 open={open3}
                 onClose={() => setOpen3(false)}
@@ -1166,7 +1167,7 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>Lane_TS</TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={2} style={{ fontSize: "0.75rem" }}>
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}
@@ -1257,7 +1258,7 @@ export default function ModalActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen5(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.hp_picFull}
                 open={open5}
                 onClose={() => setOpen5(false)}
@@ -1314,7 +1315,7 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>HQ_TS</TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={2} style={{ fontSize: "0.75rem" }}>
                     {!!resultDisplay.refTransactionId
                       ? resultDisplay.refTransactionId
                       : "-"}

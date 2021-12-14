@@ -36,7 +36,7 @@ const useStyle = makeStyles((theme) => {
     },
     imageWrap: {
       height: "0",
-      paddingBottom: "40%",
+      paddingBottom: "75%",
       position: "relative",
       overflow: "hidden",
     },
@@ -50,7 +50,7 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-export default function ModalExpandedImage(props) {
+export default function ModalExpandedImage2(props) {
   const classes = useStyle();
   const { open, onClose, dataList } = props;
 

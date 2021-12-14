@@ -28,6 +28,8 @@ import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
+import ModalExpandedImage from "./ModalExpandedImage";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -115,6 +117,18 @@ function a11yProps(index) {
 
 const useStyle = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     root: {},
     bodyModal: {
       height: "auto",
@@ -125,10 +139,10 @@ const useStyle = makeStyles((theme) => {
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "110%",
+        marginTop: "100%",
       },
       [theme.breakpoints.only("sm")]: {
-        marginTop: "140%",
+        marginTop: "120%",
       },
     },
     head: {
@@ -143,6 +157,7 @@ const useStyle = makeStyles((theme) => {
     cardItem: {
       paddingLeft: "0.5rem",
       paddingRight: "0.5rem",
+      overflow: "hidden",
     },
     image: {
       height: "100%",
@@ -150,6 +165,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       position: "absolute",
       objectFit: "cover",
+      cursor: "pointer",
+      "&:hover": {
+        transition: "transform 1s, filter 2s ease-in-out",
+        filter: "blur(2px)",
+        transform: "scale(1.2)",
+      },
     },
     imageWrap: {
       height: "0",
@@ -175,14 +196,17 @@ const useStyle = makeStyles((theme) => {
     table: {
       width: "100%",
       paddingTop: "1rem",
-
       "& .MuiTableCell-root": {
         paddingTop: "0.2rem",
         paddingBottom: "0.2rem",
         fontSize: "0.8rem",
       },
     },
-    btn: { marginTop: 10 },
+    btn: {
+      color: "white",
+      width: "100%",
+      marginTop: 5,
+    },
     textField: {
       height: 20,
       bottom: 5,
@@ -190,20 +214,18 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInput-input": { fontSize: "0.8rem" },
       float: "right",
     },
-    btn2: {
-      color: "white",
-      width: "100%",
-      marginTop: 8,
-    },
     textField2: {
       height: 20,
       bottom: 5,
-      width: 100,
+      width: "100px",
       "& .MuiInput-input": { fontSize: "0.75rem" },
       float: "right",
       "& .MuiOutlinedInput-inputMarginDense": {
         padding: "5px 5px",
       },
+      // [theme.breakpoints.down('lg')]: {
+      //   width: '300%'
+      // }
       // "& .MuiInputBase-root": {
       //   width: 50,
       // },
@@ -225,11 +247,10 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "red",
       },
     },
-    smallText: {
-      "& .MuiOutlinedInput-input": {
-        height: "30px",
-        fontSize: "0.75rem",
-        padding: "0px 5px",
+    tableContainer: {
+      height: "20vh",
+      [theme.breakpoints.down("lg")]: {
+        height: "20vh",
       },
     },
     disableLabel2: {
@@ -239,17 +260,34 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
-    tableContainer: {
-      height: "20vh",
-      [theme.breakpoints.down("lg")]: {
-        height: "20vh",
+
+    smallText: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
       },
+    },
+
+    progressNone: {
+      display: "none",
+    },
+    progressShow: {
+      display: "show",
     },
   };
 });
 
 export default function ModalPK3Activity2(props) {
   const classes = useStyle();
+
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+
   const { dataList, dropdown, checkDate, page } = props;
 
   const [value1, setValue1] = useState(2);
@@ -291,6 +329,7 @@ export default function ModalPK3Activity2(props) {
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
+  const [progress, setProgress] = useState(0);
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
@@ -298,6 +337,8 @@ export default function ModalPK3Activity2(props) {
   const [fileName, setFileName] = useState("");
 
   const upload = () => {
+    setProgress(1);
+
     const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
     const getDate = format(checkDate, "yyyy-MM-dd");
     console.log(getDate);
@@ -306,27 +347,34 @@ export default function ModalPK3Activity2(props) {
     formData.append("date", getDate);
     formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
 
+    console.log(fileName);
     if (fileName !== "") {
-      axios
-        .post(`${URL}/pk3-upload-file`, formData)
-        .then((res) => {
-          if (res.data.status === true) {
-            Swal.fire({
-              title: "Success",
-              text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Fail",
-              text: "อัพโหลดข้อมูลไม่สำเร็จ",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        })
-        .then(() => setFileName(""));
+      axios.post(`${URL}/pk3-upload-file`, formData).then((res) => {
+        setProgress(0);
+        if (res.data.status === true) {
+          Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Fail",
+            text: "อัพโหลดข้อมูลไม่สำเร็จ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      setProgress(0);
+      Swal.fire({
+        title: "Fail",
+        text: "อัพโหลด File ไม่สำเร็จ",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -422,7 +470,7 @@ export default function ModalPK3Activity2(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId.toString(),
-      state: dataList.resultsDisplay[0].state,
+      state: dataList.resultsDisplay[0].state.toString(),
       vehicleClass: vehicleClass.toString(),
       fee: audit_feeAmount.toString(),
       status: dataList.resultsDisplay[0].match_transaction_type.toString(),
@@ -706,11 +754,17 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!mockPic
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen1()}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open1}
+                onClose={() => setOpen1(false)}
               />
             </div>
           </TabPanel4>
@@ -849,11 +903,17 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!mockPic
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
+                  !!dataList.audit_pic_crop
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen2()}
+              />
+              <ModalExpandedImage
+                dataList={noImage}
+                open={open2}
+                onClose={() => setOpen2(false)}
               />
             </div>
           </TabPanel4>
@@ -974,6 +1034,12 @@ export default function ModalPK3Activity2(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen3(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picFull}
+                open={open3}
+                onClose={() => setOpen3(false)}
               />
             </div>
           </TabPanel4>
@@ -1069,6 +1135,12 @@ export default function ModalPK3Activity2(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen4(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open4}
+                onClose={() => setOpen4(false)}
               />
             </div>
           </TabPanel1>
@@ -1154,7 +1226,7 @@ export default function ModalPK3Activity2(props) {
                     </Button>
                     <Button
                       variant="contained"
-                      className={classes.btn}
+                      className={classes.btn2}
                       color="secondary"
                       onClick={() => {
                         upload();
@@ -1166,6 +1238,18 @@ export default function ModalPK3Activity2(props) {
                     >
                       upload
                     </Button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <CircularProgress
+                      style={{
+                        margin: "auto",
+                      }}
+                      className={
+                        progress === 0
+                          ? classes.progressNone
+                          : classes.progressShow
+                      }
+                      size={20}
+                    />
                     <input
                       // accept="image/*"
                       className={classes.input}
@@ -1297,6 +1381,12 @@ export default function ModalPK3Activity2(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen5(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hp_picFull}
+                open={open5}
+                onClose={() => setOpen5(false)}
               />
             </div>
           </TabPanel2>
@@ -1437,6 +1527,12 @@ export default function ModalPK3Activity2(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen6(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hq_picCrop}
+                open={open6}
+                onClose={() => setOpen6(false)}
               />
             </div>
           </TabPanel3>
@@ -1537,7 +1633,7 @@ export default function ModalPK3Activity2(props) {
               style={{
                 backgroundColor: "green",
               }}
-              className={classes.btn2}
+              className={classes.btn}
               onClick={handleUpdate1}
             >
               ยืนยันตามฝ่ายตรวจสอบ
@@ -1547,7 +1643,7 @@ export default function ModalPK3Activity2(props) {
               style={{
                 backgroundColor: "red",
               }}
-              className={classes.btn2}
+              className={classes.btn}
               onClick={handleUpdate2}
             >
               ชี้แจงรายระเอียดเพิ่มเติม
