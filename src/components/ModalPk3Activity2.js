@@ -29,6 +29,7 @@ import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
 import ModalExpandedImage from "./ModalExpandedImage";
+import ModalExpandedImage2 from "./ModalExpandedImage2";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const apiURLv1 = axios.create({
@@ -665,7 +666,7 @@ export default function ModalPK3Activity2(props) {
             </Typography>
           </Box>
         </div>
-        <div>
+        <div style={{ position: "absolute", right: 35 }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
               fontSize="small"
@@ -675,7 +676,7 @@ export default function ModalPK3Activity2(props) {
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: "red",
+                color: "white",
               }}
             />
           </Tooltip>
@@ -1036,7 +1037,7 @@ export default function ModalPK3Activity2(props) {
                 className={classes.image}
                 onClick={() => setOpen3(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.mf_lane_picFull}
                 open={open3}
                 onClose={() => setOpen3(false)}
@@ -1383,7 +1384,7 @@ export default function ModalPK3Activity2(props) {
                 className={classes.image}
                 onClick={() => setOpen5(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.hp_picFull}
                 open={open5}
                 onClose={() => setOpen5(false)}
