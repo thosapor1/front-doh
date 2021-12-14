@@ -28,6 +28,12 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const detailStatus = [
   {
@@ -193,11 +199,11 @@ export default function TableAuditDisplay2(props) {
       index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "";
 
     const sendData = {
-      transactionId: [ts],
+      transactionId: [ts, tsBefore1, tsBefore2],
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    apiURL
+    apiURLv2
       .post("/expect-income-activity", sendData)
       .then((res) => {
         Swal.close();
@@ -331,7 +337,7 @@ export default function TableAuditDisplay2(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, index-1, index-2);
+                      fetchData(data.transactionId, index - 1, index - 2);
                     }}
                     className={classes.tableRow}
                   >
