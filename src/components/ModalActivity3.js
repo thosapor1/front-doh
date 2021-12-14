@@ -27,6 +27,7 @@ import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import ModalExpandedImage from "./ModalExpandedImage";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -136,7 +137,7 @@ const useStyle = makeStyles((theme) => {
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "90%",
+        marginTop: "100%",
       },
       [theme.breakpoints.only("sm")]: {
         marginTop: "120%",
@@ -162,6 +163,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       position: "absolute",
       objectFit: "cover",
+      cursor: "pointer",
+      "&:hover": {
+        transition: "transform 1s, filter 2s ease-in-out",
+        filter: "blur(2px)",
+        transform: "scale(1.2)",
+      },
     },
     imageWrap: {
       height: "0",
@@ -249,6 +256,14 @@ const useStyle = makeStyles((theme) => {
 
 export default function ModalActivity3(props) {
   const classes = useStyle();
+
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+
   const { dataList, dropdown, checkDate, page } = props;
 
   const [value1, setValue1] = useState(2);
@@ -507,18 +522,19 @@ export default function ModalActivity3(props) {
   };
 
   useEffect(() => {
-    if (dataList) {
+    if (!!dataList) {
       setState(dataList);
-      setVehicleClass(dataList.vehicleClass);
-      setAudit_feeAmount(dataList.audit_feeAmount);
+
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
       setVehicleClass(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_vehicleClass
-          : 0
+        !!dataList.resultsDisplay &&
+          dataList.resultsDisplay[0].match_transaction_type === 3
+          ? dataList.resultsDisplay[0].mf_lane_vehicleClass
+          : !!dataList.resultsDisplay &&
+              dataList.resultsDisplay[0].match_real_vehicleClass
       );
       setAudit_feeAmount(
         !!dataList.resultsDisplay
@@ -731,6 +747,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen1()}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open1}
+                onClose={() => setOpen1(false)}
               />
             </div>
           </TabPanel4>
@@ -874,6 +896,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen2()}
+              />
+              <ModalExpandedImage
+                dataList={noImage}
+                open={open2}
+                onClose={() => setOpen2(false)}
               />
             </div>
           </TabPanel4>
@@ -994,6 +1022,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen3(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picFull}
+                open={open3}
+                onClose={() => setOpen3(false)}
               />
             </div>
           </TabPanel4>
@@ -1071,12 +1105,12 @@ export default function ModalActivity3(props) {
                 component="img"
                 src={
                   mockPic !== 0
-                    ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
-                      Logo_doh
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
               />
+              {/* <ModalExpandedImage /> */}
             </div>
           </TabPanel1>
           <TabPanel1 value={value1} index={2}>
@@ -1089,6 +1123,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen4(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.mf_lane_picCrop}
+                open={open4}
+                onClose={() => setOpen4(false)}
               />
             </div>
           </TabPanel1>
@@ -1210,11 +1250,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFile
-                    ? `data:image/png;base64, ${dataList.imageFile}`
+                  !!dataList.hp_picFull
+                    ? `data:image/png;base64, ${dataList.hp_picFull}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen5(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hp_picFull}
+                open={open5}
+                onClose={() => setOpen5(false)}
               />
             </div>
           </TabPanel2>
@@ -1398,11 +1444,17 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFileCrop
-                    ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                  !!dataList.hq_picCrop
+                    ? `data:image/png;base64, ${dataList.hq_picCrop}`
                     : noImage
                 }
                 className={classes.image}
+                onClick={() => setOpen6(true)}
+              />
+              <ModalExpandedImage
+                dataList={dataList.hq_picCrop}
+                open={open6}
+                onClose={() => setOpen6(false)}
               />
             </div>
           </TabPanel3>
@@ -1516,7 +1568,12 @@ export default function ModalActivity3(props) {
                 className={classes.btn}
                 onClick={handleUpdate1}
               >
-                ยืนยันตามฝ่ายจัดเก็บ
+                {!!resultDisplay.state &&
+                resultDisplay.match_transaction_type === 2
+                  ? "ยืนยันการยกเลิกข้อมูล"
+                  : !!resultDisplay.state && resultDisplay.state === 6
+                  ? "รับทราบ"
+                  : "ยืนยันตามฝ่ายจัดเก็บ"}
               </Button>
             ) : (
               ""
@@ -1531,7 +1588,7 @@ export default function ModalActivity3(props) {
                 className={classes.btn}
                 onClick={handleUpdate2}
               >
-                ส่งฝ่ายจัดเก็บเตรวจสอบ
+                {`ส่งฝ่ายจัดเก็บเตรวจสอบ`}
               </Button>
             ) : (
               ""

@@ -65,6 +65,11 @@ const detailStatus = [
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
   },
+  {
+    state: 8,
+    color: "lightgreen",
+    label: "ตรวจสอบแล้ว",
+  },
 ];
 const useStyles = makeStyles((theme) => {
   return {

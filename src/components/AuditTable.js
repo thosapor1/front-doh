@@ -465,7 +465,7 @@ export default function AuditTable(props) {
                       {!!data.transactionId ? data.transactionId : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
-                      {!!data.match_gate ? [...data.match_gate].pop : "-"}
+                      {!!data.match_gate ? [...data.match_gate].pop() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       -

@@ -353,10 +353,10 @@ export default function ModalPK3Activity2(props) {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: vehicleClass.toString(),
+      fee: audit_feeAmount.toString(),
+      status: dataList.resultsDisplay[0].match_transaction_type.toString(),
       operation: setOperation.toString(),
       pk3_comment: commentPK3,
       super_audit_comment: "",
@@ -421,11 +421,11 @@ export default function ModalPK3Activity2(props) {
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
-      transactionId: dataList.resultsDisplay[0].transactionId,
+      transactionId: dataList.resultsDisplay[0].transactionId.toString(),
       state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
+      vehicleClass: vehicleClass.toString(),
+      fee: audit_feeAmount.toString(),
+      status: dataList.resultsDisplay[0].match_transaction_type.toString(),
       operation: setOperation.toString(),
       pk3_comment: commentPK3,
       super_audit_comment: "",
@@ -1292,8 +1292,8 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFile
-                    ? `data:image/png;base64, ${dataList.imageFile}`
+                  !!dataList.hp_picFull
+                    ? `data:image/png;base64, ${dataList.hp_picFull}`
                     : noImage
                 }
                 className={classes.image}
@@ -1432,8 +1432,8 @@ export default function ModalPK3Activity2(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.imageFileCrop
-                    ? `data:image/png;base64, ${dataList.imageFileCrop}`
+                  !!dataList.hq_picCrop
+                    ? `data:image/png;base64, ${dataList.hq_picCrop}`
                     : noImage
                 }
                 className={classes.image}
