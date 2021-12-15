@@ -19,13 +19,14 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity2 from "./ModalSuperActivity2";
+import { format } from "date-fns";
 // import format from "date-fns/format";
 
-const apiURL = axios.create({
+const apiURLv2 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const detailStatus = [
@@ -177,30 +178,31 @@ export default function TableSuperdisplay2(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
 
-  const fetchData = async (ts, State, timeStamp) => {
+  const fetchData = async (ts, index1, index2) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    console.log(timeStamp);
-    let date = timeStamp.split(" ").shift();
+
+    console.log(index1, index2);
+    const tsBefore1 =
+      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
+    const tsBefore2 =
+      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
 
     const sendData = {
-      transactionId: ts,
-      date: date,
+      transactionId: [ts, tsBefore1, tsBefore2],
+      date: format(checkDate, "yyyy-MM-dd"),
     };
-    let endpoint = "";
 
-    endpoint = "/display-super-audit-activity";
-    setOpen(true);
-
-    apiURL
-      .post(endpoint, sendData)
+    apiURLv2
+      .post("/display-super-audit-activity", sendData)
       .then((res) => {
         Swal.close();
         SetDataForActivity(res.data);
         console.log("res2:", res.data);
+        setOpen(true);
       })
       .catch((error) => {
         handleClose();
@@ -325,15 +327,11 @@ export default function TableSuperdisplay2(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data) => (
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
+                      fetchData(data.transactionId, index - 1, index - 2);
                     }}
                     className={classes.tableRow}
                   >

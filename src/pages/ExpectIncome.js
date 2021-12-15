@@ -25,11 +25,11 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
 
-const apiURL = axios.create({
+const apiURLv2 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
-      : `${process.env.REACT_APP_BASE_URL_V3}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 const apiURLv1 = axios.create({
   baseURL:
