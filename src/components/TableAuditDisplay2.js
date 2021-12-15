@@ -28,6 +28,12 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const detailStatus = [
   {
@@ -50,11 +56,11 @@ const detailStatus = [
     color: "orange",
     label: "รอ super audit ตรวจสอบ",
   },
-  {
-    state: 5,
-    color: "black",
-    label: "รอพิจารณาพิเศษ",
-  },
+  // {
+  //   state: 5,
+  //   color: "black",
+  //   label: "รอพิจารณาพิเศษ",
+  // },
   {
     state: 6,
     color: "darkviolet",
@@ -178,7 +184,7 @@ export default function TableAuditDisplay2(props) {
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
 
-  const fetchData = async (ts, State, timeStamp) => {
+  const fetchData = async (ts, index1, index2) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -186,12 +192,18 @@ export default function TableAuditDisplay2(props) {
       // background: 'rgba(0,0,0,0.80)'
     });
 
+    console.log(index1, index2);
+    const tsBefore1 =
+      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
+    const tsBefore2 =
+      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
+
     const sendData = {
-      transactionId: ts,
+      transactionId: [ts, tsBefore1, tsBefore2],
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    apiURL
+    apiURLv2
       .post("/expect-income-activity", sendData)
       .then((res) => {
         Swal.close();
@@ -321,15 +333,11 @@ export default function TableAuditDisplay2(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data) => (
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
+                      fetchData(data.transactionId, index - 1, index - 2);
                     }}
                     className={classes.tableRow}
                   >
