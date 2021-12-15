@@ -194,9 +194,9 @@ export default function TableAuditDisplay2(props) {
 
     console.log(index1, index2);
     const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "";
+      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
     const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "";
+      index2 > -2 ? dataList.resultsDisplay[index2].transactionId : "0";
 
     const sendData = {
       transactionId: [ts, tsBefore1, tsBefore2],

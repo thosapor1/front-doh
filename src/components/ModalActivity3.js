@@ -682,7 +682,7 @@ export default function ModalActivity3(props) {
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: "white",
+                color: !!dataList.resultsDisplay ? "white" : "red",
               }}
             />
           </Tooltip>
