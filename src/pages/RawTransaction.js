@@ -272,7 +272,7 @@ export default function RawTransaction() {
             }}
           >
             {!!dropdown.ts_status
-              ? dropdown.ts_status.map((item, index) => (
+              ? dropdown.state.map((item, index) => (
                   <MenuItem key={index} value={item.id}>
                     {item.name}
                   </MenuItem>
