@@ -7,6 +7,7 @@ import {
   Icon,
   IconButton,
   makeStyles,
+  SvgIcon,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -35,6 +36,18 @@ import Cookies from "js-cookie";
 import axios from "axios";
 // import Login from "../pages/Login";
 import { Redirect } from "react-router-dom";
+import EventRoundedIcon from "@material-ui/icons/EventRounded";
+import ReceiptRoundedIcon from "@material-ui/icons/ReceiptRounded";
+import SupervisedUserCircleRoundedIcon from "@material-ui/icons/SupervisedUserCircleRounded";
+import DataUsageRoundedIcon from "@material-ui/icons/DataUsageRounded";
+import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
+import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
+import SettingsApplicationsRoundedIcon from "@material-ui/icons/SettingsApplicationsRounded";
+import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalendarRounded";
+import ListAltRoundedIcon from "@material-ui/icons/ListAltRounded";
+import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRounded";
+import ListRoundedIcon from "@material-ui/icons/ListRounded";
+import HourglassEmptyRoundedIcon from '@material-ui/icons/HourglassEmptyRounded';
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -255,8 +268,30 @@ export default function Layout({ children }) {
                   button
                   onClick={() => history.push(item.path)}
                 >
-                
-                  <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+                  <Icon style={{ marginRight: 15 }}>
+                    {item.path === "/dashboard2" ? (
+                      <EventRoundedIcon />
+                    ) : item.path === "/rawTransaction" ? (
+                      <ListAltRoundedIcon />
+                    ) : item.path === "/expectIncome" ? (
+                      <ListRoundedIcon />
+                    ) : item.path === "/auditDisplay" ? (
+                      <PlaylistAddCheckRoundedIcon />
+                    ) : item.path === "/superAuditDisplay2" ? (
+                      <SupervisedUserCircleRoundedIcon />
+                    ) : item.path === "/report" ? (
+                      <ReceiptRoundedIcon />
+                    ) : item.path === "/DataVolume" ? (
+                      <DataUsageRoundedIcon />
+                    ) : item.path === "/MandatoryItem" ? (
+                      <ReceiptRoundedIcon />
+                    ) : item.path === "/pk3Display" ? (
+                      <HourglassEmptyRoundedIcon />
+                    ) : (
+                      ""
+                    )}
+                  </Icon>
+
                   <ListItemText
                     primary={item.text}
                     classes={{ primary: classes.listItemText }}
@@ -278,7 +313,20 @@ export default function Layout({ children }) {
               button
               onClick={() => history.push(item.path)}
             >
-              <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+              <Icon style={{ marginRight: 15 }}>
+                {item.path === "/user" ? (
+                  <AccountCircleRoundedIcon />
+                ) : item.path === "/5" ? (
+                  <BackupRoundedIcon />
+                ) : item.path === "/config" ? (
+                  <SettingsApplicationsRoundedIcon />
+                ) : item.path === "/userLogs" ? (
+                  <PermContactCalendarRoundedIcon />
+                ) : (
+                  ""
+                )}
+              </Icon>
+
               <ListItemText
                 primary={item.text}
                 classes={{ primary: classes.listItemText }}
