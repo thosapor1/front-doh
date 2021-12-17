@@ -168,6 +168,15 @@ const useStyles = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
+    selected: {
+      "&.Mui-selected, &.Mui-selected:hover": {
+        backgroundColor: "purple",
+        "& > .MuiTableCell-root": {
+          color: "yellow",
+          backgroundColor: "purple",
+        },
+      },
+    },
   };
 });
 
@@ -180,9 +189,14 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function TableAuditDisplay2(props) {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [flagStatus, setFlagStatus] = useState([]);
+  const [rowID, setRowID] = useState("");
+
+  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -230,9 +244,6 @@ export default function TableAuditDisplay2(props) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
@@ -338,8 +349,11 @@ export default function TableAuditDisplay2(props) {
                     key={data.transactionId}
                     onClick={() => {
                       fetchData(data.transactionId, index - 1, index - 2);
+                      setRowID(index);
                     }}
-                    className={classes.tableRow}
+                    // className={classes.tableRow}
+                    selected={rowID === index}
+                    className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
