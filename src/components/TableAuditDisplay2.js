@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => {
         maxHeight: "50vh",
       },
       marginTop: 10,
+      display: "flex",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -124,6 +125,7 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
+      height: 20,
     },
     detailStatus: {
       display: "inline",
@@ -193,10 +195,18 @@ export default function TableAuditDisplay2(props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
-  const [flagStatus, setFlagStatus] = useState([]);
   const [rowID, setRowID] = useState("");
 
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -243,6 +253,11 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus([...eyesStatus, (eyesStatus[index].readFlag = 1)]);
+    console.log(eyesStatus);
   };
 
   return (
@@ -350,6 +365,7 @@ export default function TableAuditDisplay2(props) {
                     onClick={() => {
                       fetchData(data.transactionId, index - 1, index - 2);
                       setRowID(index);
+                      ChangeEyeStatus(index);
                     }}
                     // className={classes.tableRow}
                     selected={rowID === index}
@@ -399,30 +415,30 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.readFlag &&
-                      data.readFlag === 1 &&
-                      data.state === 2 ? (
+                      {!!eyesStatus &&
+                      eyesStatus[index].readFlag === 1 &&
+                      eyesStatus[index].state === 2 ? (
                         <VisibilityIcon style={{ color: "red" }} />
                       ) : (
                         <FiberManualRecordIcon
                           style={{
                             // fontSize: "0.8rem",
                             color:
-                              data.state === 1
+                              eyesStatus[index].state === 1
                                 ? "lightgray"
-                                : data.state === 2
+                                : eyesStatus[index].state === 2
                                 ? "#FF2400"
-                                : data.state === 3
+                                : eyesStatus[index].state === 3
                                 ? "blue"
-                                : data.state === 4
+                                : eyesStatus[index].state === 4
                                 ? "orange"
-                                : data.state === 5
+                                : eyesStatus[index].state === 5
                                 ? "black"
-                                : data.state === 6
+                                : eyesStatus[index].state === 6
                                 ? "darkviolet"
-                                : data.state === 7
+                                : eyesStatus[index].state === 7
                                 ? "lightblue"
-                                : data.state === 8
+                                : eyesStatus[index].state === 8
                                 ? "lightgreen"
                                 : "rgba(0,0,0,0)",
                           }}
