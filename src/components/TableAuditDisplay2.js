@@ -125,8 +125,14 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
-      height: 20,
+      height: 28,
     },
+    // tableCell2: {
+    //   cursor: "pointer",
+    //   fontSize: "0.75rem",
+    //   padding: "6px",
+    //   // height: 10,
+    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -415,7 +421,7 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!eyesStatus &&
+                      {!!eyesStatus[index] &&
                       eyesStatus[index].readFlag === 1 &&
                       eyesStatus[index].state === 2 ? (
                         <VisibilityIcon style={{ color: "red" }} />
@@ -424,21 +430,21 @@ export default function TableAuditDisplay2(props) {
                           style={{
                             // fontSize: "0.8rem",
                             color:
-                              eyesStatus[index].state === 1
+                              data.state === 1
                                 ? "lightgray"
-                                : eyesStatus[index].state === 2
+                                : data.state === 2
                                 ? "#FF2400"
-                                : eyesStatus[index].state === 3
+                                : data.state === 3
                                 ? "blue"
-                                : eyesStatus[index].state === 4
+                                : data.state === 4
                                 ? "orange"
-                                : eyesStatus[index].state === 5
+                                : data.state === 5
                                 ? "black"
-                                : eyesStatus[index].state === 6
+                                : data.state === 6
                                 ? "darkviolet"
-                                : eyesStatus[index].state === 7
+                                : data.state === 7
                                 ? "lightblue"
-                                : eyesStatus[index].state === 8
+                                : data.state === 8
                                 ? "lightgreen"
                                 : "rgba(0,0,0,0)",
                           }}

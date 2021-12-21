@@ -213,12 +213,14 @@ export default function ExpectIncome() {
         );
         setAllTsTable(!!res.data.status ? res.data : []);
         setSummary(!!res.data.summary ? res.data.summary : summary);
-        for (let i = 0; i < res.data.resultsDisplay.length; i++) {
-          eyes.push({
-            state: res.data.resultsDisplay[i].state,
-            readFlag: res.data.resultsDisplay[i].readFlag,
-            transactionId: res.data.resultsDisplay[i].transactionId,
-          });
+        for (let i = 0; i <= res.data.resultsDisplay.length-1; i++) {
+          eyes.push(
+            {
+              state: res.data.resultsDisplay[i].state,
+              readFlag: res.data.resultsDisplay[i].readFlag,
+              transactionId:res.data.resultsDisplay[i].transactionId
+            },
+          );
         }
         setEyesStatus(eyes);
         console.log(eyesStatus);
