@@ -11,13 +11,11 @@ import {
   TextField,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalActivity from "./ModalActivity";
 import Swal from "sweetalert2";
-import ModalReadOnly from "./ModalReadOnly";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({

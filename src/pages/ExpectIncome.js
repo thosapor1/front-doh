@@ -139,6 +139,7 @@ export default function ExpectIncome() {
   const [selectGate, setSelectGate] = useState(0);
   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
+  const [eyesStatus, setEyesStatus] = useState([]);
 
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
@@ -169,6 +170,7 @@ export default function ExpectIncome() {
   };
 
   const fetchData = (pageId = 1) => {
+    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -209,9 +211,19 @@ export default function ExpectIncome() {
           "Summary: ",
           res.data.summary
         );
-
         setAllTsTable(!!res.data.status ? res.data : []);
         setSummary(!!res.data.summary ? res.data.summary : summary);
+        for (let i = 0; i <= res.data.resultsDisplay.length-1; i++) {
+          eyes.push(
+            {
+              state: res.data.resultsDisplay[i].state,
+              readFlag: res.data.resultsDisplay[i].readFlag,
+              transactionId:res.data.resultsDisplay[i].transactionId
+            },
+          );
+        }
+        setEyesStatus(eyes);
+        console.log(eyesStatus);
       })
       .catch((error) => {
         // handleClose();
@@ -585,6 +597,8 @@ export default function ExpectIncome() {
             onFetchData={fetchData}
             dropdown={dropdown}
             checkDate={selectedDate}
+            eyesStatus={eyesStatus}
+            setEyesStatus={setEyesStatus}
           />
         </Grid>
       </Container>
