@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => {
         maxHeight: "50vh",
       },
       marginTop: 10,
+      display: "flex",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -124,7 +125,14 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
+      height: 28,
     },
+    // tableCell2: {
+    //   cursor: "pointer",
+    //   fontSize: "0.75rem",
+    //   padding: "6px",
+    //   // height: 10,
+    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -168,6 +176,15 @@ const useStyles = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
+    selected: {
+      "&.Mui-selected, &.Mui-selected:hover": {
+        backgroundColor: "purple",
+        "& > .MuiTableCell-root": {
+          color: "yellow",
+          backgroundColor: "purple",
+        },
+      },
+    },
   };
 });
 
@@ -180,9 +197,22 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function TableAuditDisplay2(props) {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [rowID, setRowID] = useState("");
+
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -231,8 +261,10 @@ export default function TableAuditDisplay2(props) {
     setOpen(false);
   };
 
-  const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus([...eyesStatus, (eyesStatus[index].readFlag = 1)]);
+    console.log(eyesStatus);
+  };
 
   return (
     <div>
@@ -338,8 +370,12 @@ export default function TableAuditDisplay2(props) {
                     key={data.transactionId}
                     onClick={() => {
                       fetchData(data.transactionId, index - 1, index - 2);
+                      setRowID(index);
+                      ChangeEyeStatus(index);
                     }}
-                    className={classes.tableRow}
+                    // className={classes.tableRow}
+                    selected={rowID === index}
+                    className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
@@ -385,9 +421,9 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.readFlag &&
-                      data.readFlag === 1 &&
-                      data.state === 2 ? (
+                      {!!eyesStatus[index] &&
+                      eyesStatus[index].readFlag === 1 &&
+                      eyesStatus[index].state === 2 ? (
                         <VisibilityIcon style={{ color: "red" }} />
                       ) : (
                         <FiberManualRecordIcon
