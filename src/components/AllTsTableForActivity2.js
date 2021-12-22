@@ -279,10 +279,10 @@ export default function AllTsTableForActivity2(props) {
                       {!!data.fee ? data.fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
+                      {!!data.fine ? data.fine.toLocaleString() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.total_pay ? data.total_pay : "-"}
+                      {!!data.total_pay ? data.total_pay.toLocaleString() : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.plate ? data.plate : "-"}

@@ -329,7 +329,8 @@ export default function RawTransaction() {
                     {card.label}
                   </Typography>
                   <Typography style={{ fontSize: "1rem" }}>
-                    {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
+                    {card.value.toLocaleString()}
+                    {card.status === "revenue" ? " บาท" : " รายการ"}
                   </Typography>
                 </Grid>
                 <Grid>
