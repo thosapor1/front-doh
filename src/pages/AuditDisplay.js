@@ -464,7 +464,8 @@ export default function AuditDisplay() {
                     {card.label}
                   </Typography>
                   <Typography style={{ fontSize: "1rem" }}>
-                    {`${card.value} บาท`}
+                    {`${card.value.toLocaleString()}`}
+                    {card.label === "รายการทั้งหมด" ? " รายการ" : " บาท"}
                   </Typography>
                 </Grid>
                 <Grid>

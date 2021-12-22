@@ -92,7 +92,7 @@ export default function GateTable2(props) {
                       {data.match_gate}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.ts_count}
+                      {data.ts_count.toLocaleString()}
                     </TableCell>
                   </StyledTableRow>
                 ))

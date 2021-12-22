@@ -86,7 +86,6 @@ const useStyles = makeStyles((theme) => {
         maxHeight: "50vh",
       },
       marginTop: 10,
-      display: "flex",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -94,6 +93,7 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
+      zIndex: 1,
     },
     header2: {
       backgroundColor: "#7C85BFff",
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 38,
-      // zIndex: 10,
+      zIndex: 1,
     },
     tableRow: {
       "&:hover": {

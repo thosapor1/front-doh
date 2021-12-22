@@ -561,6 +561,12 @@ export default function ModalActivity3(props) {
           : 0
       );
       console.log("dataList", dataList);
+      setValue1(2)
+      setValue2(2)
+      setValue3(2)
+      setValue4(2)
+      setValue5(2)
+      setValue6(2)
     }
   }, [dataList]);
 

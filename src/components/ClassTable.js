@@ -102,16 +102,16 @@ export default function ClassTable(props) {
                         {`C${data.class}`}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.sum_all}
+                        {data.sum_all.toLocaleString()}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.reject}
+                        {data.reject.toLocaleString()}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.normal}
+                        {data.normal.toLocaleString()}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.revenue}
+                        {data.revenue.toLocaleString()}
                       </TableCell>
                     </StyledTableRow>
                   ))
@@ -128,25 +128,25 @@ export default function ClassTable(props) {
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].sum_all
+                  ? dataList.result_vehicleClass[3].sum_all.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].reject
+                  ? dataList.result_vehicleClass[3].reject.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].normal
+                  ? dataList.result_vehicleClass[3].normal.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].revenue
+                  ? dataList.result_vehicleClass[3].revenue.toLocaleString()
                   : 0}
               </TableCell>
             </StyledTableRow>
