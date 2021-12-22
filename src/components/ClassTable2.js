@@ -89,13 +89,13 @@ export default function ClassTable2(props) {
                       {data.name}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.fee}
+                      {data.fee.toLocaleString()}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.fine}
+                      {data.fine.toLocaleString()}
                     </TableCell>
                     <TableCell align="center" className={classes.body}>
-                      {data.total}
+                      {data.total.toLocaleString()}
                     </TableCell>
                   </TableRow>
                 ))

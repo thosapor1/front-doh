@@ -21,7 +21,7 @@ const apiURL = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: 860,
+      maxHeight: "74vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
