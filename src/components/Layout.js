@@ -47,7 +47,8 @@ import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalend
 import ListAltRoundedIcon from "@material-ui/icons/ListAltRounded";
 import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRounded";
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
-import HourglassEmptyRoundedIcon from '@material-ui/icons/HourglassEmptyRounded';
+import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
+import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -287,6 +288,8 @@ export default function Layout({ children }) {
                       <ReceiptRoundedIcon />
                     ) : item.path === "/pk3Display" ? (
                       <HourglassEmptyRoundedIcon />
+                    ) : item.path === "/collectFromPk3" ? (
+                      <MonetizationOnRoundedIcon />
                     ) : (
                       ""
                     )}

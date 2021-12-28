@@ -73,3 +73,13 @@ export const getDataExpectIncomeActivity = (sendData) => {
     });
   return response;
 };
+
+export const getDataCollectFromPk3 = (sendData) => {
+  const response = apiURLv1.post("/", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+  return response;
+};
