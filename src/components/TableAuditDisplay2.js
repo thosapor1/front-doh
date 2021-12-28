@@ -256,9 +256,7 @@ export default function TableAuditDisplay2(props) {
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
-      !!eyesStatus[index]
-        ? [...eyesStatus, (eyesStatus[index].readFlag = 1)]
-        : []
+      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
     );
 
     console.log(eyesStatus);

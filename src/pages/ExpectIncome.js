@@ -200,7 +200,7 @@ export default function ExpectIncome() {
     const res = await getDataExpectIncome(sendData);
     setAllTsTable(!!res ? res.data : []);
     setSummary(!!res ? res.data.summary : summary);
-    if (!!res.state) {
+    if (!!res) {
       for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
@@ -209,7 +209,7 @@ export default function ExpectIncome() {
         });
       }
       setEyesStatus(eyes);
-    } 
+    }
 
     if (!!res) {
       Swal.close();
