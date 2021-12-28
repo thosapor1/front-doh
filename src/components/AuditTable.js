@@ -506,7 +506,7 @@ export default function AuditTable(props) {
                       {!!data.brand_description ? data.brand_description : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
-                      {!!data.color_description ? data.color_description : "-"}
+                      {!!data.colors_description ? data.colors_description : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       {!!data.mf_lane_tranDatetime

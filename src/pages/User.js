@@ -36,10 +36,22 @@ const tableHeader = [
 
 const useStyles = makeStyles((theme) => {
   return {
-    root: { backgroundColor: "#f9f9f9", paddingTop: "2rem" },
-    paper: { marginTop: "1rem", padding: theme.spacing() },
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
+    root: { backgroundColor: "#f9f9f9", paddingTop: "1rem" },
+    paper: { padding: theme.spacing(1) },
     btn: {
-      marginTop: "2rem",
+      marginTop: "1rem",
       marginBottom: "1rem",
       backgroundColor: "#46005E",
       "&:hover": {
@@ -228,8 +240,8 @@ export default function User() {
           </div>
 
           {/* Table */}
-          <TableContainer component={Paper}>
-            <Table stickyHeader aria-label="sticky table">
+          <TableContainer component={Paper} style={{ height: "80vh" }}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   {tableHeader.map((header) => (

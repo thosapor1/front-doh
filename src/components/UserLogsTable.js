@@ -14,7 +14,7 @@ import { Pagination } from "@material-ui/lab";
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "72vh",
+      maxHeight: "67vh",
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -69,7 +69,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 export default function UserLogsTAble(props) {
   const classes = useStyles();
-  const { dataList, page } = props;
+  const { dataList, page, onChange } = props;
 
   return (
     <div>
@@ -81,6 +81,7 @@ export default function UserLogsTAble(props) {
           display: "inline",
           margin: "2rem",
         }}
+        onChange={onChange}
       />
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -121,7 +122,7 @@ export default function UserLogsTAble(props) {
                     </TableCell>
                   </StyledTableRow>
                 ))
-              : dataList.log_record}
+              :[]}
           </TableBody>
         </Table>
       </TableContainer>
