@@ -16,26 +16,12 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
-import axios from "axios";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
 import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
 // import format from "date-fns/format";
-
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
-const apiURLv2 = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
 
 const detailStatus = [
   {
@@ -198,7 +184,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay2(props) {
+export default function TableCollectFromPk3(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
@@ -298,7 +284,7 @@ export default function TableAuditDisplay2(props) {
         </Box>
 
         {/* detail box */}
-        <Box style={{ display: "flex", paddingTop: 4 }}>
+        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon
@@ -310,58 +296,47 @@ export default function TableAuditDisplay2(props) {
               </Typography>
             </Box>
           ))}
-        </Box>
+        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                transaction
+              <TableCell align="center" className={classes.header}>
+                ลำดับ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ด่าน
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ช่อง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                เวลาเข้าด่าน
-              </TableCell>
-              <TableCell colSpan={4} align="center" className={classes.header}>
-                ประเภทรถ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ประเภท TS
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                ค่าผ่านทาง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header}>
                 เลขที่ใบแจ้งหนี้
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
+              <TableCell align="center" className={classes.header}>
+                ประเภทบัญชี
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าธรรมเนียมทั้งหมด
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าปรับทั้งหมด
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าดำเนินการทั้งหมด
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                ค่าชำระเงินทั้งหมด
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
+                วันแจ้งหนี้
+              </TableCell>
+              <TableCell align="center" className={classes.header}>
                 การชำระ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                หมายเหตุ
+              <TableCell align="center" className={classes.header}>
+                จำนวนเงินที่จ่าย
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                สถานะ
+              <TableCell align="center" className={classes.header}>
+                วันที่จ่าย
               </TableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-              <TableCell align="center" className={classes.header2}>
-                จริง
-              </TableCell>
-              <TableCell align="center" className={classes.header2}>
-                AD
-              </TableCell>
-              <TableCell align="center" className={classes.header2}>
-                Lane
-              </TableCell>
-              <TableCell align="center" className={classes.header2}>
-                HQ
+              <TableCell align="center" className={classes.header}>
+                ช่องทางการจ่าย
               </TableCell>
             </StyledTableRow>
           </TableHead>
@@ -371,16 +346,16 @@ export default function TableAuditDisplay2(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, index - 1, index - 2);
+                      // fetchData(data.transactionId, index - 1, index - 2);
                       setRowID(index);
-                      ChangeEyeStatus(index);
+                      // ChangeEyeStatus(index);
                     }}
                     // className={classes.tableRow}
                     selected={rowID === index}
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
+                      {data.order}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_checkpoint ? data.match_checkpoint : "-"}

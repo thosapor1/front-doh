@@ -22,9 +22,8 @@ import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
-import Test from "./pages/Test";
-
 import ExpectIncome from "./pages/ExpectIncome";
+import CollectFromPk3 from "./pages/CollectFromPk3";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -52,6 +51,7 @@ function App() {
             <Route path="/dashboard" component={DashBoard} />
             <Route path="/dashboard2" component={DashBoard2} />
             <Route path="/rawTransaction" component={RawTransaction} />
+            <Route path="/collectFromPk3" component={CollectFromPk3} />
             <Route path="/expectIncome" component={ExpectIncome} />
             <Route path="/auditDisplay" component={AuditDisplay} />
             <Route path="/pk3Display" component={Pk3Display} />
@@ -67,10 +67,6 @@ function App() {
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}
             />
-            {/* <Route
-              path="/test"
-              component={Test}
-            /> */}
           </Layout>
         </Switch>
       </HashRouter>
