@@ -5,9 +5,7 @@ import {
   Container,
   Grid,
   makeStyles,
-  MenuItem,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import {
@@ -16,7 +14,6 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import SearchComponent from "../components/SearchComponent";
@@ -120,15 +117,15 @@ export default function CollectFromPk3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(1);
-  const [status_select, setStatus_select] = useState(0);
-  const [selectGate, setSelectGate] = useState(0);
-  const [selectCarType, setSelectCarType] = useState(0);
+  //   const [checkpoint, setCheckpoint] = useState(1);
+  //   const [status_select, setStatus_select] = useState(0);
+  //   const [selectGate, setSelectGate] = useState(0);
+  //   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
 
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0);
+  //   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
@@ -149,7 +146,6 @@ export default function CollectFromPk3() {
   // };
 
   const fetchData = async (pageId = 1) => {
-    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -167,22 +163,28 @@ export default function CollectFromPk3() {
 
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint.toString() || "0",
-      gate: selectGate.toString() || "0",
-      state: status_select.toString() || "0",
-      vehicleClass: selectCarType.toString() || "0",
+      //   checkpoint: checkpoint.toString() || "0",
+      //   gate: selectGate.toString() || "0",
+      //   state: status_select.toString() || "0",
+      //   vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      //   status: tsType.toString(),
     };
     console.log(sendData);
 
     const res = await getDataCollectFromPk3(sendData);
     setAllTsTable(!!res ? res.data : []);
     setSummary(!!res ? res.data.summary : summary);
-
-    if (!!res) {
+    if (!!res && res.data.status === false) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      console.log("test");
+    }
+    if (!!res && res.data.status !== false) {
       Swal.close();
     }
 
@@ -255,25 +257,25 @@ export default function CollectFromPk3() {
 
   const dataCard = [
     {
-      value: !!summary ? summary.ts_total : 0,
+      value: !!summary ? summary.count_billing : 0,
       status: "total",
       label: "จำนวนรายการแจ้งหนี้",
       type: "label",
     },
     {
-      value: !!summary ? summary.ts_normal : 0,
+      value: !!summary ? summary.total_amount : 0,
       status: "normal",
       label: "จำนวนเงินแจ้งหนี้",
       type: "money",
     },
     {
-      value: !!summary ? summary.ts_not_normal : 0,
+      value: !!summary ? summary.payment_totalAmount : 0,
       status: "not_normal",
       label: "จำนวนเงินจ่ายแล้ว",
       type: "money",
     },
     {
-      value: !!summary ? summary.revenue : 0,
+      value: !!summary ? summary.overdue : 0,
       status: "revenue",
       label: "ค้างจ่าย",
       type: "money",
