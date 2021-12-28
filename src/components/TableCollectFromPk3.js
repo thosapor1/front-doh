@@ -12,16 +12,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
-import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
-// import format from "date-fns/format";
 
 const detailStatus = [
   {
@@ -68,7 +64,7 @@ const detailStatus = [
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "60vh",
+      maxHeight: "62vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "50vh",
@@ -80,7 +76,7 @@ const useStyles = makeStyles((theme) => {
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
-      padding: "6px",
+      // padding: "6px",
       zIndex: 1,
     },
     header2: {
@@ -207,7 +203,6 @@ export default function TableCollectFromPk3(props) {
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
-      // background: 'rgba(0,0,0,0.80)'
     });
 
     console.log(index1, index2);
@@ -355,84 +350,44 @@ export default function TableCollectFromPk3(props) {
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.order}
+                      {(page - 1) * 100 + (index + 1)}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
+                      {!!data.invoiceNo ? data.invoiceNo : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate ? data.match_gate : "-"}
+                      {!!data.transactionType ? data.transactionType : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp
-                        ? data.match_timestamp.split(" ").pop()
+                      {!!data.feeAmount ? data.feeAmount : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.fineAmount ? data.fineAmount : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.collectionAmount ? data.collectionAmount : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.totalAmount ? data.totalAmount : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {data.issueDate ? data.issueDate : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.payment_flag ? data.payment_flag : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.payment_totalAmount
+                        ? data.payment_totalAmount
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_vehicleClass
-                        ? `C${data.match_real_vehicleClass}`
+                      {!!data.payment_date ? data.payment_date : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.payment_channel_code
+                        ? data.payment_channel_code
                         : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.mf_lane_vehicleClass
-                        ? `C${data.mf_lane_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!eyesStatus[index] &&
-                      eyesStatus[index].readFlag === 1 &&
-                      eyesStatus[index].state === 2 ? (
-                        <VisibilityIcon style={{ color: "red" }} />
-                      ) : (
-                        <FiberManualRecordIcon
-                          style={{
-                            // fontSize: "0.8rem",
-                            color:
-                              data.state === 1
-                                ? "lightgray"
-                                : data.state === 2
-                                ? "#FF2400"
-                                : data.state === 3
-                                ? "blue"
-                                : data.state === 4
-                                ? "orange"
-                                : data.state === 5
-                                ? "black"
-                                : data.state === 6
-                                ? "darkviolet"
-                                : data.state === 7
-                                ? "lightblue"
-                                : data.state === 8
-                                ? "lightgreen"
-                                : "rgba(0,0,0,0)",
-                          }}
-                        />
-                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))

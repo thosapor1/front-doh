@@ -181,9 +181,16 @@ export default function ExpectIncome() {
     console.log(sendData);
 
     const res = await getDataExpectIncome(sendData);
+    if (!!res && res.data.status === false) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      console.log("test");
+    }
     setAllTsTable(!!res ? res.data : []);
     setSummary(!!res ? res.data.summary : summary);
-    if (!!res) {
+    if (!!res && !!res.data.resultsDisplay) {
       for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
@@ -194,7 +201,7 @@ export default function ExpectIncome() {
       setEyesStatus(eyes);
     }
 
-    if (!!res) {
+    if (!!res && res.data.status !== false) {
       Swal.close();
     }
 
