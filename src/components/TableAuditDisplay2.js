@@ -20,6 +20,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
+import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
+import { getDataExpectIncomeActivity } from "../service/allService";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -233,21 +235,12 @@ export default function TableAuditDisplay2(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    apiURLv2
-      .post("/expect-income-activity", sendData)
-      .then((res) => {
-        Swal.close();
-        SetDataForActivity(res.data);
-        console.log("res2:", res.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
+    const res = await getDataExpectIncomeActivity(sendData);
+    SetDataForActivity(!!res ? res.data : []);
+    if (!!res && !!res.status) {
+      Swal.close();
+      setOpen(true);
+    }
   };
 
   // const handleOpen = (state) => {
@@ -262,7 +255,12 @@ export default function TableAuditDisplay2(props) {
   };
 
   const ChangeEyeStatus = (index) => {
-    setEyesStatus([...eyesStatus, (eyesStatus[index].readFlag = 1)]);
+    setEyesStatus(
+      !!eyesStatus[index]
+        ? [...eyesStatus, (eyesStatus[index].readFlag = 1)]
+        : []
+    );
+
     console.log(eyesStatus);
   };
 
@@ -342,6 +340,12 @@ export default function TableAuditDisplay2(props) {
                 ค่าผ่านทาง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
+                เลขที่ใบแจ้งหนี้
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                การชำระ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -414,6 +418,12 @@ export default function TableAuditDisplay2(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.forceFlag && data.forceFlag === 1

@@ -22,7 +22,6 @@ import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
-import Test from "./pages/Test";
 
 import ExpectIncome from "./pages/ExpectIncome";
 
@@ -67,10 +66,6 @@ function App() {
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}
             />
-            {/* <Route
-              path="/test"
-              component={Test}
-            /> */}
           </Layout>
         </Switch>
       </HashRouter>

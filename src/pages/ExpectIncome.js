@@ -24,6 +24,11 @@ import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
+import {
+  getDataExpectIncome,
+  getDataRawTransaction,
+  getDropdown,
+} from "../service/allService";
 
 const apiURLv2 = axios.create({
   baseURL:
@@ -162,14 +167,7 @@ export default function ExpectIncome() {
   //   setOpen(true);
   // };
 
-  const getDropdown = () => {
-    apiURLv1.post("/dropdown").then((res) => {
-      console.log(res.data);
-      setDropdown(res.data);
-    });
-  };
-
-  const fetchData = (pageId = 1) => {
+  const fetchData = async (pageId = 1) => {
     let eyes = [];
     Swal.fire({
       title: "Loading",
@@ -199,37 +197,25 @@ export default function ExpectIncome() {
     };
     console.log(sendData);
 
-    apiURLv1
-      .post("/expect-income", sendData)
-      .then((res) => {
-        Swal.close();
-        console.log(
-          "res: ",
-          res.data,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
-        setAllTsTable(!!res.data.status ? res.data : []);
-        setSummary(!!res.data.summary ? res.data.summary : summary);
-        for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
-          eyes.push({
-            state: res.data.resultsDisplay[i].state,
-            readFlag: res.data.resultsDisplay[i].readFlag,
-            transactionId: res.data.resultsDisplay[i].transactionId,
-          });
-        }
-        setEyesStatus(eyes);
-        console.log(eyesStatus);
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    const res = await getDataExpectIncome(sendData);
+    setAllTsTable(!!res ? res.data : []);
+    setSummary(!!res ? res.data.summary : summary);
+    if (!!res.state) {
+      for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+        eyes.push({
+          state: res.data.resultsDisplay[i].state,
+          readFlag: res.data.resultsDisplay[i].readFlag,
+          transactionId: res.data.resultsDisplay[i].transactionId,
         });
-      });
+      }
+      setEyesStatus(eyes);
+    } 
+
+    if (!!res) {
+      Swal.close();
+    }
+
+    console.log(eyesStatus);
   };
 
   const refresh = (pageId = 1) => {
@@ -298,22 +284,22 @@ export default function ExpectIncome() {
 
   const dataCard = [
     {
-      value: !!summary.ts_total ? summary.ts_total : 0,
+      value: !!summary ? summary.ts_total : 0,
       status: "total",
       label: "จำนวนรายการทั้งหมดของวัน",
     },
     {
-      value: !!summary.ts_normal ? summary.ts_normal : 0,
+      value: !!summary ? summary.ts_normal : 0,
       status: "normal",
       label: "จำนวนรายการรถปกติ",
     },
     {
-      value: !!summary.ts_not_normal ? summary.ts_not_normal : 0,
+      value: !!summary ? summary.ts_not_normal : 0,
       status: "not_normal",
       label: "จำนวนรายการตรวจสอบ",
     },
     {
-      value: !!summary.revenue ? summary.revenue : 0,
+      value: !!summary ? summary.revenue : 0,
       status: "revenue",
       label: "รายได้พึงได้รายวัน",
     },
@@ -321,7 +307,11 @@ export default function ExpectIncome() {
 
   useEffect(() => {
     // fetchData();
-    getDropdown();
+    async function fetchDropdown() {
+      const res = await getDropdown();
+      setDropdown(res.data);
+    }
+    fetchDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -561,7 +551,7 @@ export default function ExpectIncome() {
                       {card.label}
                     </Typography>
                     <Typography style={{ fontSize: "1rem" }}>
-                      {card.value.toLocaleString()}
+                      {!!card.value ? card.value.toLocaleString() : []}
                       {card.status === "revenue" ? " บาท" : " รายการ"}
                     </Typography>
                   </Grid>
