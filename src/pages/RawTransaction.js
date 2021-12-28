@@ -21,19 +21,8 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import { getDataRawTransaction, getDropdown } from "../service/allService";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
-      : `${process.env.REACT_APP_BASE_URL_V3}`,
-});
-const apiURLv1 = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
 const useStyle = makeStyles((theme) => {
   return {
     "@global": {
@@ -141,37 +130,29 @@ export default function RawTransaction() {
 
   const dataCard = [
     {
-      value: !!summary.ts_total ? summary.ts_total : 0,
+      value: !!summary ? summary.ts_total : 0,
       status: "total",
       label: "รายการทั้งหมด",
     },
     {
-      value: !!summary.ts_normal ? summary.ts_normal : 0,
+      value: !!summary ? summary.ts_normal : 0,
       status: "normal",
       label: "รายการปกติ",
     },
     {
-      value: !!summary.ts_not_normal ? summary.ts_not_normal : 0,
+      value: !!summary ? summary.ts_not_normal : 0,
       status: "unMatch",
       label: "รายการข้อมูลไม่ตรงกัน",
     },
     {
-      value: !!summary.ts_miss ? summary.ts_miss : 0,
+      value: !!summary ? summary.ts_miss : 0,
       status: "miss",
       label: "รายการสูญหาย",
     },
   ];
 
-  const getDropdown = () => {
-    apiURLv1.post("/dropdown").then((res) => {
-      console.log(res.data);
-      setDropdown(res.data);
-    });
-  };
-
-  async function fetchData(pageId = 1) {
+  const fetchData = async (pageId = 1) => {
     const date = format(selectedDate, "yyyy-MM-dd");
-    // const date = "2021-08-10";
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -191,29 +172,21 @@ export default function RawTransaction() {
       state: status.toString(),
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
-    await apiURLv1
-      .post("/raw-data", sendData)
-      .then((res) => {
-        console.log(sendData);
-        Swal.close();
-        setState(res.data);
-        setSummary(!!res.data.summary ? res.data.summary : summary);
-        console.log(res.data.dropdown_Checkpoint);
-        // console.log(`state_length: ${state.record.length}`);
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
-  }
+    const res = await getDataRawTransaction(sendData);
+    setState(!!res ? res.data : []);
+    setSummary(!!res ? res.data.summary : []);
+    // console.log(res.data.dropdown_Checkpoint);
+    if (!!res) {
+      Swal.close();
+    }
+  };
 
   useEffect(() => {
-    // fetchData();
-    getDropdown();
-    // console.log('hello test')
+    async function fetchDropdown() {
+      const res = await getDropdown();
+      setDropdown(res.data);
+    }
+    fetchDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -329,7 +302,7 @@ export default function RawTransaction() {
                     {card.label}
                   </Typography>
                   <Typography style={{ fontSize: "1rem" }}>
-                    {card.value.toLocaleString()}
+                    {!!card.value ? card.value.toLocaleString() : "0"}
                     {card.status === "revenue" ? " บาท" : " รายการ"}
                   </Typography>
                 </Grid>

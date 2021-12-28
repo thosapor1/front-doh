@@ -15,6 +15,11 @@ export const menuItemsForSuperAdmin = [
     path: "/rawTransaction",
   },
   {
+    text: "รายการจัดเก็บจาก PK3",
+    icon: "MonetizationOnIcon",
+    path: "/collectFromPk3",
+  },
+  {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
     path: "/expectIncome",
