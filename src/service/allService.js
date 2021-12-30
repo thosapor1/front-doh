@@ -52,6 +52,18 @@ export const getDataRawTransaction = (sendData) => {
   return response;
 };
 
+export const getDataRawTransactionActivity = (sendData) => {
+  const response = apiURLv1
+    .post("/display-activity2", sendData)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+  return response;
+};
+
 export const getDataExpectIncome = (sendData) => {
   const response = apiURLv1.post("/expect-income", sendData).catch((error) => {
     Swal.fire({
@@ -78,12 +90,22 @@ export const getDataCollectFromPk3 = (sendData) => {
   const response = apiURLv1
     .post("/display-pk3-storage_list", sendData)
     .catch((error) => {
-      console.log("error", error);
       Swal.fire({
         icon: "error",
         text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
       });
     });
+
+  return response;
+};
+
+export const getDataAuditDisplay = (sendData) => {
+  const response = apiURLv1.post("/daily-income", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
 
   return response;
 };

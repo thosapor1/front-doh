@@ -63,11 +63,23 @@ const detailStatus = [
 ];
 const useStyles = makeStyles((theme) => {
   return {
+    "@global": {
+      "*::-webkit-scrollbar": {
+        width: "0.3em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: "1px  lightgray",
+      },
+    },
     container: {
-      maxHeight: "62vh",
+      maxHeight: "59vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
-        maxHeight: "50vh",
+        maxHeight: "58vh",
       },
       marginTop: 10,
     },
@@ -187,16 +199,7 @@ export default function TableCollectFromPk3(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
 
-  const {
-    dataList,
-    page,
-    onChange,
-    dropdown,
-    checkDate,
-    onFetchData,
-    eyesStatus,
-    setEyesStatus,
-  } = props;
+  const { dataList, page, onChange, checkDate, onFetchData } = props;
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -235,14 +238,6 @@ export default function TableCollectFromPk3(props) {
     setOpen(false);
   };
 
-  const ChangeEyeStatus = (index) => {
-    setEyesStatus(
-      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
-    );
-
-    console.log(eyesStatus);
-  };
-
   return (
     <div>
       <Box className={classes.box}>
@@ -261,7 +256,10 @@ export default function TableCollectFromPk3(props) {
               variant="contained"
               color="secondary"
               style={{ height: 35 }}
-              onClick={() => onFetchData(parseInt(selectedPage))}
+              onClick={() => {
+                onFetchData(parseInt(selectedPage));
+                setSelectedPage("");
+              }}
             >
               Go
             </Button>
@@ -342,11 +340,11 @@ export default function TableCollectFromPk3(props) {
                     key={data.transactionId}
                     onClick={() => {
                       // fetchData(data.transactionId, index - 1, index - 2);
-                      setRowID(index);
+                      // setRowID(index);
                       // ChangeEyeStatus(index);
                     }}
                     // className={classes.tableRow}
-                    selected={rowID === index}
+                    // selected={rowID === index}
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -396,7 +394,7 @@ export default function TableCollectFromPk3(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity3
+      {/* <ModalActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
@@ -404,7 +402,7 @@ export default function TableCollectFromPk3(props) {
         dropdown={dropdown}
         checkDate={checkDate}
         page={page}
-      />
+      /> */}
     </div>
   );
 }
