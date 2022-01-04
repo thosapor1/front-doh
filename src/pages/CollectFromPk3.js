@@ -5,9 +5,7 @@ import {
   Container,
   Grid,
   makeStyles,
-  MenuItem,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import {
@@ -16,15 +14,12 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import GateTable2 from "../components/GateTable2";
-import ClassTable from "../components/ClassTable";
-import { getDataExpectIncome, getDropdown } from "../service/allService";
+import { getDataCollectFromPk3, getDropdown } from "../service/allService";
+import TableCollectFromPk3 from "../components/TableCollectFromPk3";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -118,19 +113,19 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ExpectIncome() {
+export default function CollectFromPk3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(1);
-  const [status_select, setStatus_select] = useState(0);
-  const [selectGate, setSelectGate] = useState(0);
-  const [selectCarType, setSelectCarType] = useState(0);
+  //   const [checkpoint, setCheckpoint] = useState(1);
+  //   const [status_select, setStatus_select] = useState(0);
+  //   const [selectGate, setSelectGate] = useState(0);
+  //   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
 
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0);
+  //   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
@@ -151,7 +146,6 @@ export default function ExpectIncome() {
   // };
 
   const fetchData = async (pageId = 1) => {
-    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -169,18 +163,20 @@ export default function ExpectIncome() {
 
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint.toString() || "0",
-      gate: selectGate.toString() || "0",
-      state: status_select.toString() || "0",
-      vehicleClass: selectCarType.toString() || "0",
+      //   checkpoint: checkpoint.toString() || "0",
+      //   gate: selectGate.toString() || "0",
+      //   state: status_select.toString() || "0",
+      //   vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      //   status: tsType.toString(),
     };
     console.log(sendData);
 
-    const res = await getDataExpectIncome(sendData);
+    const res = await getDataCollectFromPk3(sendData);
+    setAllTsTable(!!res ? res.data : []);
+    setSummary(!!res ? res.data.summary : summary);
     if (!!res && res.data.status === false) {
       Swal.fire({
         icon: "error",
@@ -188,19 +184,6 @@ export default function ExpectIncome() {
       });
       console.log("test");
     }
-    setAllTsTable(!!res ? res.data : []);
-    setSummary(!!res ? res.data.summary : summary);
-    if (!!res && !!res.data.resultsDisplay) {
-      for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
-        eyes.push({
-          state: res.data.resultsDisplay[i].state,
-          readFlag: res.data.resultsDisplay[i].readFlag,
-          transactionId: res.data.resultsDisplay[i].transactionId,
-        });
-      }
-      setEyesStatus(eyes);
-    }
-
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
@@ -274,24 +257,28 @@ export default function ExpectIncome() {
 
   const dataCard = [
     {
-      value: !!summary ? summary.ts_total : 0,
+      value: !!summary ? summary.count_billing : 0,
       status: "total",
-      label: "จำนวนรายการทั้งหมดของวัน",
+      label: "จำนวนรายการแจ้งหนี้",
+      type: "label",
     },
     {
-      value: !!summary ? summary.ts_normal : 0,
+      value: !!summary ? summary.total_amount : 0,
       status: "normal",
-      label: "จำนวนรายการรถปกติ",
+      label: "จำนวนเงินแจ้งหนี้",
+      type: "money",
     },
     {
-      value: !!summary ? summary.ts_not_normal : 0,
+      value: !!summary ? summary.payment_totalAmount : 0,
       status: "not_normal",
-      label: "จำนวนรายการตรวจสอบ",
+      label: "จำนวนเงินจ่ายแล้ว",
+      type: "money",
     },
     {
-      value: !!summary ? summary.revenue : 0,
+      value: !!summary ? summary.overdue : 0,
       status: "revenue",
-      label: "รายได้พึงได้รายวัน",
+      label: "ค้างจ่าย",
+      type: "money",
     },
   ];
 
@@ -309,12 +296,12 @@ export default function ExpectIncome() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+          ตรวจสอบ (DOH) : รายการจัดเก็บจาก PK3
         </Typography>
 
         {/* Filter Section */}
         <Grid container component={Paper} className={classes.filterSection}>
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="ด่าน"
@@ -350,7 +337,7 @@ export default function ExpectIncome() {
                   </MenuItem>
                 ))
               : []}
-          </TextField>
+          </TextField> */}
 
           {/* <TextField
             select
@@ -370,7 +357,7 @@ export default function ExpectIncome() {
               : []}
           </TextField> */}
 
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="สถานะ"
@@ -408,7 +395,7 @@ export default function ExpectIncome() {
                   </MenuItem>
                 ))
               : []}
-          </TextField>
+          </TextField> */}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -542,7 +529,7 @@ export default function ExpectIncome() {
                     </Typography>
                     <Typography style={{ fontSize: "1rem" }}>
                       {!!card.value ? card.value.toLocaleString() : []}
-                      {card.status === "revenue" ? " บาท" : " รายการ"}
+                      {card.type === "money" ? " บาท" : " รายการ"}
                     </Typography>
                   </Grid>
                   <Grid item lg={2} md={12} sm={12}>
@@ -555,20 +542,9 @@ export default function ExpectIncome() {
         </Box>
 
         {/* Table Section */}
-        <Grid
-          container
-          component={Paper}
-          className={classes.gateAndClassSection}
-        >
-          <Grid item md={12} sm={12} lg={4} className={classes.gateTable}>
-            <GateTable2 dataList={allTsTable} />
-          </Grid>
-          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
-            <ClassTable dataList={allTsTable} />
-          </Grid>
-        </Grid>
+
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-          <TableAuditDisplay2
+          <TableCollectFromPk3
             dataList={allTsTable}
             page={page}
             onChange={handlePageChange}
