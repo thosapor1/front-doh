@@ -18,11 +18,14 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import AllTsTableForActivity from "../components/AllTsTableForActivity";
 import Swal from "sweetalert2";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ClassTable2 from "../components/ClassTable2";
 import AllTsTableForActivity2 from "../components/AllTsTableForActivity2";
+import {
+  downLoadFileAuditDisplay,
+  getDataAuditDisplay,
+} from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -198,7 +201,7 @@ export default function AuditDisplay() {
     });
   };
 
-  const download = () => {
+  const download = async () => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -212,30 +215,25 @@ export default function AuditDisplay() {
       checkPoint: station.toString(),
       date: format(selectedDate, "yyyy-MM-dd"),
     };
-    apiURLv1
-      .post("/daily-income/pdf", sendData, header)
-      .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "downloadFile.pdf");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-        console.log(res.data);
-        console.log(url);
-        Swal.close();
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
+
+    const res = await downLoadFileAuditDisplay(sendData, header);
+
+    if (!!res) {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "downloadFile.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    }
+
+    Swal.close();
   };
 
-  const fetchData = (pageId = 1) => {
+  const fetchData = async (pageId = 1) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -258,12 +256,10 @@ export default function AuditDisplay() {
     };
     console.log(sendData);
 
-    apiURLv1
-      .post("/daily-income", sendData)
-      .then((res) => {
-        Swal.close();
-        console.log(
-          "res: ",
+    const res = await getDataAuditDisplay(sendData);
+    console.log(
+      !!res
+        ? ("res: ",
           res.data,
           "tsClass:",
           res.data.ts_class,
@@ -272,21 +268,24 @@ export default function AuditDisplay() {
           "ts_Table:",
           res.data.ts_table,
           "Summary: ",
-          res.data.summary
-        );
-        setCountPage(!!res.data.status ? res.data.total_page : 0);
-        setSummary(!!res.data.status ? res.data.data.card : []);
-        // setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
-        // setClassTable(res.data.status !== false ? res.data : []);
-        setAllTsTable(!!res.data.status ? res.data.data : []);
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+          res.data.summary)
+        : ""
+    );
+    if (!!res) {
+      setCountPage(!!res.data.status ? res.data.total_page : 0);
+      setSummary(!!res.data.status ? res.data.data.card : []);
+      setAllTsTable(!!res.data.status ? res.data.data : []);
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
       });
+      console.log("test");
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
   const refresh = (pageId = 1) => {
