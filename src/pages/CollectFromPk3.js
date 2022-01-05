@@ -175,9 +175,11 @@ export default function CollectFromPk3() {
     console.log(sendData);
 
     const res = await getDataCollectFromPk3(sendData);
-    setAllTsTable(!!res ? res.data : []);
-    setSummary(!!res ? res.data.summary : summary);
-    if (!!res && res.data.status === false) {
+    if (!!res) {
+      setAllTsTable(!!res ? res.data : []);
+      setSummary(!!res ? res.data.summary : summary);
+    }
+    if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
@@ -257,25 +259,37 @@ export default function CollectFromPk3() {
 
   const dataCard = [
     {
-      value: !!summary ? summary.count_billing : 0,
+      value:
+        !!summary && !!summary.count_billing
+          ? summary.count_billing.toLocaleString().toString()
+          : "0",
       status: "total",
       label: "จำนวนรายการแจ้งหนี้",
       type: "label",
     },
     {
-      value: !!summary ? summary.total_amount : 0,
+      value:
+        !!summary && !!summary.total_amount
+          ? summary.total_amount.toLocaleString().toString()
+          : "0",
       status: "normal",
       label: "จำนวนเงินแจ้งหนี้",
       type: "money",
     },
     {
-      value: !!summary ? summary.payment_totalAmount : 0,
+      value:
+        !!summary && !!summary.payment_totalAmount
+          ? summary.payment_totalAmount.toLocaleString().toString()
+          : "0",
       status: "not_normal",
       label: "จำนวนเงินจ่ายแล้ว",
       type: "money",
     },
     {
-      value: !!summary ? summary.overdue : 0,
+      value:
+        !!summary && !!summary.overdue
+          ? summary.overdue.toLocaleString().toString()
+          : "0",
       status: "revenue",
       label: "ค้างจ่าย",
       type: "money",

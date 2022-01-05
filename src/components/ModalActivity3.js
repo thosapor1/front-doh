@@ -20,7 +20,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
-import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
@@ -29,6 +28,7 @@ import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
+import { operationExpectIncome } from "../service/allService";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -324,7 +324,7 @@ export default function ModalActivity3(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "downloadFile.pdf");
+      link.setAttribute("download", "downloadFile");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -334,20 +334,11 @@ export default function ModalActivity3(props) {
   };
 
   const mockPic = 0;
-  const [state, setState] = useState({
-    tsType: "",
-    operation: "",
-  });
-  const { tsType, operation } = state;
+  const [state, setState] = useState({});
   const [vehicleClass, setVehicleClass] = useState("");
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.value });
-    if (event.target.value === 0 || event.target.value === 2) {
-    }
-  };
 
   const handleOptionChange = (event) => {
     const index = event.target.value;
@@ -362,7 +353,7 @@ export default function ModalActivity3(props) {
     );
   };
 
-  const handleUpdate1 = () => {
+  const handleUpdate1 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
     let setOperation = 0;
 
@@ -406,7 +397,7 @@ export default function ModalActivity3(props) {
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    Swal.fire({
+    const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -414,44 +405,31 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex: 99999,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURLv2
-            .post("/operation", sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                });
-              }
-            })
-            .then(() => {
-              setTimeout(() => {
-                props.onFetchData(page);
-              }, 1500);
-              props.onClick();
-            });
-        }
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+
+    const res = await operationExpectIncome(sendData);
+    if (result.isConfirmed) {
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
         });
-      });
+        await props.onClick();
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
   };
-  const handleUpdate2 = () => {
+
+  const handleUpdate2 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
     let setOperation = 0;
 
@@ -495,7 +473,7 @@ export default function ModalActivity3(props) {
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    Swal.fire({
+    const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -503,41 +481,28 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          apiURLv2
-            .post("/operation", sendData)
-            .then((res) => {
-              if (res.data.status === true) {
-                Swal.fire({
-                  title: "Success",
-                  text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                  icon: "success",
-                });
-              } else {
-                Swal.fire({
-                  title: "Fail",
-                  text: "บันทึกข้อมูลไม่สำเร็จ",
-                  icon: "error",
-                });
-              }
-            })
-            .then(() => {
-              setTimeout(() => {
-                props.onFetchData(page);
-              }, 1500);
-              props.onClick();
-            });
-        }
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+
+    const res = await operationExpectIncome(sendData);
+    if (result.isConfirmed) {
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
         });
-      });
+        await props.onClick();
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -561,12 +526,12 @@ export default function ModalActivity3(props) {
           : 0
       );
       console.log("dataList", dataList);
-      setValue1(2)
-      setValue2(2)
-      setValue3(2)
-      setValue4(2)
-      setValue5(2)
-      setValue6(2)
+      setValue1(2);
+      setValue2(2);
+      setValue3(2);
+      setValue4(2);
+      setValue5(2);
+      setValue6(2);
     }
   }, [dataList]);
 
@@ -1720,7 +1685,7 @@ export default function ModalActivity3(props) {
                 className={classes.btn}
                 onClick={handleUpdate2}
               >
-                {`ส่งฝ่ายจัดเก็บเตรวจสอบ`}
+                {`ส่งฝ่ายจัดเก็บตรวจสอบ`}
               </Button>
             ) : (
               ""

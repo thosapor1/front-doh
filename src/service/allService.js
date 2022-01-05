@@ -52,6 +52,18 @@ export const getDataRawTransaction = (sendData) => {
   return response;
 };
 
+export const getDataRawTransactionActivity = (sendData) => {
+  const response = apiURLv1
+    .post("/display-activity2", sendData)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+  return response;
+};
+
 export const getDataExpectIncome = (sendData) => {
   const response = apiURLv1.post("/expect-income", sendData).catch((error) => {
     Swal.fire({
@@ -74,11 +86,68 @@ export const getDataExpectIncomeActivity = (sendData) => {
   return response;
 };
 
+export const operationExpectIncome = (sendData) => {
+  const response = apiURLv2.post("/operation", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+  return response;
+};
+
 export const getDataCollectFromPk3 = (sendData) => {
   const response = apiURLv1
     .post("/display-pk3-storage_list", sendData)
     .catch((error) => {
-      console.log("error", error);
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+
+  return response;
+};
+
+export const downLoadFileAuditDisplay = (sendData, header) => {
+  const response = apiURLv1
+    .post("/daily-income/pdf", sendData, header)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+
+  return response;
+};
+export const getDataAuditDisplay = (sendData) => {
+  const response = apiURLv1.post("/daily-income", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const getDataSuperaudit = (sendData) => {
+  const response = apiURLv1
+    .post("/display-super-audit", sendData)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+
+  return response;
+};
+export const getDataSuperauditActivity = (sendData) => {
+  const response = apiURLv1
+    .post("/display-superaudit-activity2", sendData)
+    .catch((error) => {
       Swal.fire({
         icon: "error",
         text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
