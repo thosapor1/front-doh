@@ -22,6 +22,9 @@ import Swal from "sweetalert2";
 import TableSuperdisplay2 from "../components/TableSuperdisplay2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
+import {
+  getDataSuperaudit,
+} from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -172,7 +175,7 @@ export default function SuperAuditDisplay2() {
     });
   };
 
-  const fetchData = (pageId = 1) => {
+  const fetchData = async (pageId = 1) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -188,13 +191,9 @@ export default function SuperAuditDisplay2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    // console.log(checkpoint);
-    // console.log(selectGate);
-    // console.log(selectCarType);
-    // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint,
+      checkpoint: checkpoint.toString(),
       gate: selectGate,
       state: status_select.toString(),
       vehicleClass: selectCarType,
@@ -205,38 +204,21 @@ export default function SuperAuditDisplay2() {
     };
     console.log(sendData);
 
-    apiURL
-      .post("/display-super-audit", sendData)
-      .then((res) => {
-        Swal.close();
-        setAllTsTable({
-          summary: {
-            total: 0,
-            normal: 0,
-            unMatch: 0,
-            miss: 0,
-          },
-          ts_table: [],
-        });
-        console.log(
-          "res: ",
-          res.data,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
-
-        setAllTsTable(res.data.status !== false ? res.data : []);
-        setSummary(res.data.status !== false ? res.data.summary : []);
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+    const res = await getDataSuperaudit(sendData);
+    if (!!res) {
+      setAllTsTable(!!res ? res.data : []);
+      setSummary(!!res ? res.data.summary : []);
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
       });
+      console.log("test");
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
   const refresh = (pageId = 1) => {
@@ -310,7 +292,9 @@ export default function SuperAuditDisplay2() {
 
   const dataCard = [
     {
-      value: !!summary.ts_count ? summary.ts_count : 0,
+      value: !!summary.ts_count
+        ? summary.ts_count.toLocaleString().toString()
+        : "0",
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },

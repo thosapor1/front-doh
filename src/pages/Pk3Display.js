@@ -146,6 +146,7 @@ export default function PK3Display() {
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [eyesStatus, setEyesStatus] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -172,6 +173,7 @@ export default function PK3Display() {
   };
 
   const fetchData = (pageId = 1) => {
+    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -228,6 +230,16 @@ export default function PK3Display() {
 
         setAllTsTable(res.data.status !== false ? res.data : []);
         setSummary(res.data.status !== false ? res.data.summary : []);
+        if (!!res && !!res.data.resultsDisplay) {
+          for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+            eyes.push({
+              state: res.data.resultsDisplay[i].state,
+              readFlag: res.data.resultsDisplay[i].pk3_readFlag,
+              transactionId: res.data.resultsDisplay[i].transactionId,
+            });
+          }
+          setEyesStatus(eyes);
+        }
       })
       .catch((error) => {
         // handleClose();
@@ -592,6 +604,8 @@ export default function PK3Display() {
               onFetchData={fetchData}
               dropdown={dropdown}
               checkDate={selectedDate}
+              eyesStatus={eyesStatus}
+              setEyesStatus={setEyesStatus}
             />
           </Grid>
         </Grid>

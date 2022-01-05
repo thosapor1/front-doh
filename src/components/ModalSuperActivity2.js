@@ -315,8 +315,10 @@ export default function ModalSuperActivity2(props) {
   };
 
   const download = () => {
+    let fileType = resultDisplay.pk3_upload_file.split("/")[4];
+    console.log(fileType);
     const header = {
-      "Content-Type": "application/pdf",
+      "Content-Type": "application",
       responseType: "blob",
     };
     const sendData = {
@@ -327,7 +329,7 @@ export default function ModalSuperActivity2(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "M20210929000000014_PK3.pdf");
+      link.setAttribute("download", `${fileType}`);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -558,7 +560,7 @@ export default function ModalSuperActivity2(props) {
           <Box
             style={{
               backgroundColor:
-              !!dataList.resultsDisplay &&
+                !!dataList.resultsDisplay &&
                 dataList.resultsDisplay[0].state === 1
                   ? "lightgray"
                   : !!dataList.resultsDisplay &&

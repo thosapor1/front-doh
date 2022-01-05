@@ -22,7 +22,10 @@ import Swal from "sweetalert2";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ClassTable2 from "../components/ClassTable2";
 import AllTsTableForActivity2 from "../components/AllTsTableForActivity2";
-import { getDataAuditDisplay } from "../service/allService";
+import {
+  downLoadFileAuditDisplay,
+  getDataAuditDisplay,
+} from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -198,7 +201,7 @@ export default function AuditDisplay() {
     });
   };
 
-  const download = () => {
+  const download = async () => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -212,27 +215,22 @@ export default function AuditDisplay() {
       checkPoint: station.toString(),
       date: format(selectedDate, "yyyy-MM-dd"),
     };
-    apiURLv1
-      .post("/daily-income/pdf", sendData, header)
-      .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "downloadFile.pdf");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-        console.log(res.data);
-        console.log(url);
-        Swal.close();
-      })
-      .catch((error) => {
-        // handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
+
+    const res = await downLoadFileAuditDisplay(sendData, header);
+
+    if (!!res) {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "downloadFile.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    }
+
+    Swal.close();
   };
 
   const fetchData = async (pageId = 1) => {
@@ -276,8 +274,6 @@ export default function AuditDisplay() {
     if (!!res) {
       setCountPage(!!res.data.status ? res.data.total_page : 0);
       setSummary(!!res.data.status ? res.data.data.card : []);
-      // setGateTable(res.data.status !== false ? res.data.ts_gate_table : []);
-      // setClassTable(res.data.status !== false ? res.data : []);
       setAllTsTable(!!res.data.status ? res.data.data : []);
     }
     if (!!res && !res.data.status) {
