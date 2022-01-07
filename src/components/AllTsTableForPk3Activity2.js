@@ -13,12 +13,11 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalReadOnly2 from "./ModalReadOnly2";
-import ModalPK3Activity from "./ModalPk3Activity";
 import ModalPK3Activity2 from "./ModalPk3Activity2";
 
 // import format from "date-fns/format";
@@ -179,6 +178,16 @@ export default function TablePK3display2(props) {
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -226,8 +235,18 @@ export default function TablePK3display2(props) {
     setOpen1(false);
   };
 
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus(
+      !!eyesStatus[index] && [
+        ...eyesStatus,
+        (eyesStatus[index].pk3_readFlag = 1),
+      ]
+    );
+
+    console.log(eyesStatus);
+  };
+
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
@@ -328,7 +347,7 @@ export default function TablePK3display2(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data) => (
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
@@ -337,6 +356,7 @@ export default function TablePK3display2(props) {
                         data.state,
                         data.match_timestamp
                       );
+                      ChangeEyeStatus(index);
                     }}
                     className={classes.tableRow}
                   >
@@ -384,27 +404,35 @@ export default function TablePK3display2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
+                      {!!eyesStatus[index] &&
+                      eyesStatus[index].pk3_readFlag === 1 &&
+                      eyesStatus[index].state === 3 ? (
+                        <VisibilityIcon style={{ color: "blue" }} />
+                      ) : (
+                        <FiberManualRecordIcon
+                          style={{
+                            // fontSize: "0.8rem",
+                            color:
+                              data.state === 1
+                                ? "lightgray"
+                                : data.state === 2
+                                ? "#FF2400"
+                                : data.state === 3
+                                ? "blue"
+                                : data.state === 4
+                                ? "orange"
+                                : data.state === 5
+                                ? "black"
+                                : data.state === 6
+                                ? "darkviolet"
+                                : data.state === 7
+                                ? "lightblue"
+                                : data.state === 8
+                                ? "lightgreen"
+                                : "rgba(0,0,0,0)",
+                          }}
+                        />
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))

@@ -4,7 +4,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Paper,
   TableBody,
   makeStyles,
   Box,
@@ -19,15 +18,8 @@ import { Pagination } from "@material-ui/lab";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
-import axios from "axios";
 import format from "date-fns/format";
-
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
+import { getDataRawTransactionActivity } from "../service/allService";
 
 const detailStatus = [
   {
@@ -220,7 +212,7 @@ export default function AuditTable(props) {
     setOpen(false);
   };
 
-  const fetchData = (ts, path) => {
+  const fetchData = async (ts, path) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -232,33 +224,26 @@ export default function AuditTable(props) {
       transactionId: ts,
     };
 
-    apiURL
-      .post("/display-activity2", sendData)
-      .then((res) => {
-        Swal.close();
-        SetDataForActivity(
-          path === 2
-            ? {
-                picCrop: res.data.mf_lane_picCrop,
-                picFull: res.data.mf_lane_picFull,
-              }
-            : path === 3
-            ? {
-                picCrop: res.data.imageFileCrop,
-                picFull: res.data.imageFile,
-              }
-            : { picCrop: "", picFull: "" }
-        );
-        console.log("res2:", res.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
+    const res = await getDataRawTransactionActivity(sendData);
+    Swal.close();
+
+    if (!!res) {
+      SetDataForActivity(
+        path === 2
+          ? {
+              picCrop: res.data.mf_lane_picCrop,
+              picFull: res.data.mf_lane_picFull,
+            }
+          : path === 3
+          ? {
+              picCrop: res.data.imageFileCrop,
+              picFull: res.data.imageFile,
+            }
+          : { picCrop: "", picFull: "" }
+      );
+    }
+    // console.log("res2:", res.data);
+    setOpen(true);
   };
   return (
     <div>
@@ -506,7 +491,9 @@ export default function AuditTable(props) {
                       {!!data.brand_description ? data.brand_description : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
-                      {!!data.colors_description ? data.colors_description : "-"}
+                      {!!data.colors_description
+                        ? data.colors_description
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.bodyData}>
                       {!!data.mf_lane_tranDatetime
