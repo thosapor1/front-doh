@@ -22,6 +22,7 @@ import axios from "axios";
 import ModalEdit from "../components/ModalEdit";
 import ModalAdd from "../components/ModalAdd";
 import Swal from "sweetalert2";
+import { deleteUsers, getDataUsers, updateUsers } from "../service/allService";
 
 const tableHeader = [
   { id: "user_id", label: "user_id" },
@@ -90,6 +91,10 @@ const useStyles = makeStyles((theme) => {
       color: "red",
       fontSize: 11,
     },
+    tableCell: {
+      padding: "6px",
+      height: 28,
+    },
   };
 });
 
@@ -129,7 +134,7 @@ export default function User() {
     setOpenModalEdit(false);
   };
 
-  const handleChangeSwitch = (event, index) => {
+  const handleChangeSwitch = async (event, index) => {
     const status = event.target.checked;
     let status1 = 1;
     if (status === false) {
@@ -144,19 +149,19 @@ export default function User() {
     items[index].status = status;
     setState(items);
 
-    apiURL.post("/update-user-status", sendData).then((res) => {
-      if (res.data.status === true) {
-        fetchData();
-      }
-    });
+    const res = await updateUsers(sendData);
+    if (!!res) {
+      fetchData();
+    }
 
     console.log("click", sendData, typeof status1);
   };
 
-  const handleDelete = (item) => {
-    const userId = item.user_id;
+  const handleDelete = async (item) => {
+    const userId = item.id;
+    const sendData = { user_id: userId };
 
-    Swal.fire({
+    const result = await Swal.fire({
       title: "ต้องการลบข้อมูลนี้?",
       text: "ไม่สามารถเรียกข้อมูลคืนได้หากยืนยันแล้ว",
       icon: "warning",
@@ -165,35 +170,21 @@ export default function User() {
       cancelButtonColor: "#d33",
       confirmButtonText: "ลบข้อมูล",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "ขอมูลของคุณถูกลบแล้ว.", "success").then(() => {
-          apiURL
-            .post("/delete-user", { user_id: userId })
-            .then((res) =>
-              setProgressStatus({ progressStatus: res.data.status })
-            );
-          if (progressStatus === true) {
-            Swal.fire({
-              title: "Success!",
-              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          }
-          window.location.reload();
-          if (progressStatus === false) {
-            Swal.fire({
-              icon: "error",
-              text: "ตรวจสอบข้อมูลของท่าน",
-            });
-            console.log("no");
-          }
-        });
-      } else {
-        console.log();
-      }
     });
+
+    const res = await deleteUsers(sendData);
+    console.log(res);
+    if (result.isConfirmed) {
+      if (!!res && res.data.stauts === true) {
+        // Swal.close();
+        await Swal.fire({
+          title: "Success!",
+          text: "ข้อมูลของท่านถูกลบแล้ว",
+          icon: "success",
+        });
+      }
+      await fetchData();
+    }
   };
 
   const handlegetDataForEdit = (item) => {
@@ -201,17 +192,24 @@ export default function User() {
     console.log(item);
   };
 
-  const fetchData = () => {
+  const fetchData = async () => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-    apiURL.post("/user-list").then((res) => {
+
+    const res = await getDataUsers();
+
+    if (!!res) {
       Swal.close();
       setState(res.data);
-      console.log(res.data);
-    });
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
   };
 
   useEffect(() => {
@@ -259,13 +257,25 @@ export default function User() {
                 {!!state.user_list
                   ? state.user_list.map((item, index) => (
                       <TableRow key={item.id}>
-                        <TableCell align="center">{item.id} </TableCell>
-                        <TableCell align="center">{item.username} </TableCell>
-                        <TableCell align="center">{item.fname} </TableCell>
-                        <TableCell align="center">{item.lname} </TableCell>
-                        <TableCell align="center">{item.position} </TableCell>
-                        <TableCell align="center">{item.department} </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.id}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.username}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.fname}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.lname}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.position}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
+                          {item.department}
+                        </TableCell>
+                        <TableCell align="center" className={classes.tableCell}>
                           <Tooltip title="edit">
                             <IconButton
                               onClick={() => {
@@ -285,7 +295,7 @@ export default function User() {
                             </IconButton>
                           </Tooltip>
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="center" className={classes.tableCell}>
                           {item.status === 1 ? (
                             <Switch
                               checked={true}
