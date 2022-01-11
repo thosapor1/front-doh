@@ -28,7 +28,7 @@ import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
-import { operationExpectIncome } from "../service/allService";
+import { operation } from "../service/allService";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -407,7 +407,7 @@ export default function ModalActivity3(props) {
       cancelButtonText: "ยกเลิก",
     });
 
-    const res = await operationExpectIncome(sendData);
+    const res = await operation(sendData);
     if (result.isConfirmed) {
       if (!!res && res.data.status === true) {
         Swal.close();
@@ -483,7 +483,7 @@ export default function ModalActivity3(props) {
       cancelButtonText: "ยกเลิก",
     });
 
-    const res = await operationExpectIncome(sendData);
+    const res = await operation(sendData);
     if (result.isConfirmed) {
       if (!!res && res.data.status === true) {
         Swal.close();
