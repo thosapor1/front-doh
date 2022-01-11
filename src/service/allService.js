@@ -86,7 +86,17 @@ export const getDataExpectIncomeActivity = (sendData) => {
   return response;
 };
 
-export const operationExpectIncome = (sendData) => {
+export const searchOnExpectIncome = (endpoint, sendData) => {
+  const response = apiURLv2.post(`${endpoint}`, sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+  return response;
+};
+
+export const operation = (sendData) => {
   const response = apiURLv2.post("/operation", sendData).catch((error) => {
     Swal.fire({
       icon: "error",
@@ -144,15 +154,106 @@ export const getDataSuperaudit = (sendData) => {
 
   return response;
 };
+
 export const getDataSuperauditActivity = (sendData) => {
-  const response = apiURLv1
-    .post("/display-superaudit-activity2", sendData)
+  const response = apiURLv2
+    .post("/display-super-audit-activity", sendData)
     .catch((error) => {
       Swal.fire({
         icon: "error",
         text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
       });
     });
+
+  return response;
+};
+
+export const getDataVolume = (sendData) => {
+  const response = apiURLv3.post("/data-monitor", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const updateUsers = (sendData) => {
+  const response = apiURLv2
+    .post("/update-user-status", sendData)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+
+  return response;
+};
+
+export const getDataUsers = () => {
+  const response = apiURLv2.post("/user-list").catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const deleteUsers = (sendData) => {
+  const response = apiURLv2.post("/delete-user", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const getDataConfig = (sendData) => {
+  const response = apiURLv1.post("/system-config", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const deleteHighway = (sendData) => {
+  const response = apiURLv1.post("/delete-highway", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const addHighway = (sendData) => {
+  const response = apiURLv1.post("/add-highway", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
+
+  return response;
+};
+
+export const updateHighway = (sendData) => {
+  const response = apiURLv1.post("/update-highway", sendData).catch((error) => {
+    Swal.fire({
+      icon: "error",
+      text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+    });
+  });
 
   return response;
 };

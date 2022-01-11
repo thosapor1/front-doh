@@ -16,7 +16,6 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
@@ -490,6 +489,8 @@ export default function ExpectIncome() {
               label="transaction id"
               setTable={setAllTsTable}
               endpoint="/audit-search"
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
             />
           </Box>
           <Grid
