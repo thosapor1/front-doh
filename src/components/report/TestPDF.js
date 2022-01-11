@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { image } from "../../image/logo_base64";
+import axios from "axios";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -13,9 +14,38 @@ pdfMake.fonts = {
   },
 };
 
-export default function PdfDaily() {
+export default function TestPDF(selectCount) {
+  const url = "http://1d32-45-117-208-162.ap.ngrok.io/selectall-2";
+  let sendData = { date: "2022-01-01" };
+  let getData = [];
+  let getDataitem = []
+  axios.post(url, sendData).then((res) => {
+   for(let i = 0; i < 20 ; i++){
+     
+   } 
+    for (let j = 0; j < 20; j++) {
+    getDataitem.push(
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status,
+      res.data[j].status
+    );
+    }
+    console.log(getData);
+    
+    pdfMake.createPdf(docDefinition).open({}, win);
+  });
+
   let win = window.open("", "_blank");
-  const date = format(new Date(), "dd MMMM yyyy", { localize: "th" });
+  const date = format(new Date(), "dd MMMM yyyy");
 
   let docDefinition = {
     footer: function (currentPage, pageCount) {
@@ -844,20 +874,21 @@ export default function PdfDaily() {
               {},
               {},
             ],
-            [
-              { text: "ทับช้าง1" },
-              { text: "M202109010000000001" },
-              { text: "27/12/2020" },
-              { text: "13.24น." },
-              { text: "C1" },
-              { text: "30" },
-              { text: "60" },
-              { text: "29/12/2020" },
-              { text: "14.14น." },
-              { text: "90" },
-              { text: "กข3210" },
-              { text: "กรุงเทพมหานคร" },
-            ],
+            // [
+            //   "ทับช้าง1",
+            //   "M202109010000000001",
+            //   "27/12/2020",
+            //   "13.24น.",
+            //   "C1",
+            //   "30",
+            //   "60",
+            //   "29/12/2020",
+            //   "14.14น.",
+            //   "90",
+            //   "กข3210",
+            //   "สมุทรปราการ",
+            // ],
+            getData,
           ],
         },
       },
@@ -869,5 +900,4 @@ export default function PdfDaily() {
     defaultStyle: { font: "THSarabun" },
   };
   // pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
-  pdfMake.createPdf(docDefinition).open({}, win);
 }
