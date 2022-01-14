@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity2 from "./ModalSuperActivity2";
 import { format } from "date-fns";
+import { getDataSuperauditActivity } from "../service/allService";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -196,21 +197,20 @@ export default function TableSuperdisplay2(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    apiURLv2
-      .post("/display-super-audit-activity", sendData)
-      .then((res) => {
-        Swal.close();
-        SetDataForActivity(res.data);
-        console.log("res2:", res.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
+    const res = await getDataSuperauditActivity(sendData);
+
+    if (!!res && !!res.data.status) {
+      Swal.close();
+      SetDataForActivity(res.data);
+      console.log("res2:", res.data);
+      setOpen(true);
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: "เกิดข้อผิดพลาดกับเซิฟเวอร์ ติดต่อผู้ดูแลระบบ",
       });
+      console.log("test");
+    }
   };
 
   // const handleOpen = (state) => {

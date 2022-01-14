@@ -30,6 +30,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
+import { operation } from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -364,9 +365,7 @@ export default function ModalSuperActivity2(props) {
     );
   };
 
-  const handleUpdate1 = () => {
-    let endPointURL = "/operation";
-
+  const handleUpdate1 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
 
     let setOperation = 8;
@@ -400,7 +399,7 @@ export default function ModalSuperActivity2(props) {
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    Swal.fire({
+    const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -408,47 +407,31 @@ export default function ModalSuperActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post(endPointURL, sendData)
-          .then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .then(() => {
-            props.onClick();
-            setTimeout(() => {
-              props.onFetchData(page);
-            }, 1500);
-          })
-          .catch((error) => {
-            // handleClose();
-            Swal.fire({
-              icon: "error",
-              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-            });
-          });
-      }
     });
+
+    const res = await operation(sendData);
+    if (result.isConfirmed) {
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+        });
+        await props.onClick();
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
   };
 
-  const handleUpdate2 = () => {
-    let endPointURL = "/operation";
-
+  const handleUpdate2 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
 
     let setOperation = 9;
@@ -482,7 +465,7 @@ export default function ModalSuperActivity2(props) {
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    Swal.fire({
+    const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -490,43 +473,28 @@ export default function ModalSuperActivity2(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-      zIndex: 1300,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post(endPointURL, sendData)
-          .then((res) => {
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .then(() => {
-            props.onClick();
-            setTimeout(() => {
-              props.onFetchData(page);
-            }, 2000);
-          })
-          .catch((error) => {
-            // handleClose();
-            Swal.fire({
-              icon: "error",
-              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-            });
-          });
-      }
     });
+
+    const res = await operation(sendData);
+    if (result.isConfirmed) {
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+        });
+        await props.onClick();
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
   };
 
   useEffect(() => {
