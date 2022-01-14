@@ -3,6 +3,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { image } from "../../image/logo_base64";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -14,47 +15,218 @@ pdfMake.fonts = {
   },
 };
 
-export default function TestPDF(selectCount) {
+export default function TestPDF() {
   const url = "http://1d32-45-117-208-162.ap.ngrok.io/selectall-2";
   let sendData = { date: "2022-01-01" };
-  let getData = [];
-  let getDataitem = []
-  axios.post(url, sendData).then((res) => {
-   for(let i = 0; i < 20 ; i++){
-     
-   } 
-    for (let j = 0; j < 20; j++) {
-    getDataitem.push(
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status,
-      res.data[j].status
-    );
-    }
-    console.log(getData);
-    
-    pdfMake.createPdf(docDefinition).open({}, win);
+
+  let body = [
+    // [
+    //   { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
+    //   { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
+    //   { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
+    // ],
+    // [
+    //   {},
+    //   {},
+    //   {},
+    //   {},
+    //   { text: "จริง" },
+    //   { text: "AD" },
+    //   { text: "Lane" },
+    //   { text: "HQ" },
+    //   {},
+    //   {},
+    //   {},
+    // ],
+  ];
+
+  // for (let i = 0; i < 100; i++) {
+  //   body.push([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+  // }
+
+  const pdfGen = (docDefinition, win) => {
+    return new Promise((resolve, reject) => {
+      try {
+        pdfMake.createPdf(docDefinition).open({ resolve }, win);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+  const pdfGendownload = (docDefinition) => {
+    return new Promise((resolve, reject) => {
+      try {
+        pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf", () => {
+          resolve();
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  Swal.fire({
+    title: "ขั้นตอนนี้อาจใช้เวลานาน",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
   });
 
-  let win = window.open("", "_blank");
+  // axios
+  //   .post(url, sendData, {
+  //     onDownloadProgress: (ProgressEvent) => {
+  //       console.log(ProgressEvent);
+  //     },
+  //   })
+  //   .then(async (res) => {
+  //     const limit = 100;
+  //     console.log(res.headers);
+  //     console.log(res.data);
+  //     let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
+  //     for (let round = 1; round <= remainData; round++) {
+  //       let index = 0;
+  //       if (round > 1) {
+  //         index = (round - 1) * limit + 1;
+  //       }
+  //       for (index; index < limit + 1; index++) {
+  //         if (round > 1) {
+  //         }
+  //         body.push([
+  //           !!res.data[index].readFlag ? res.data[index].transactionId : "-",
+  //           !!res.data[index].readFlag ? res.data[index].readFlag : "-",
+  //           res.data[index].match_timestamp.split(" ")[0],
+  //           res.data[index].match_timestamp.split(" ")[1],
+  //           `C${res.data[index].mf_lane_vehicleClass}`,
+  //           res.data[index].match_real_fee,
+  //           0,
+  //           res.data[index].match_timestamp.split(" ")[0],
+  //           res.data[index].match_timestamp.split(" ")[1],
+  //           res.data[index].hasPayment,
+  //           res.data[index].readFlag,
+  //         ]);
+  //       }
+  //       console.log("round : ", round);
+  //       // pdfMake.createPdf(docDefinition).open({}, win);
+  //       await pdfGen(docDefinition, win);
+  //     }
+  //     Swal.close();
+  //   });
+
+  axios
+    .post(url, sendData, {
+      onDownloadProgress: (ProgressEvent) => {
+        console.log(ProgressEvent);
+      },
+    })
+    .then(async (res) => {
+      const limit = 10000;
+      console.log(res.headers);
+      console.log(res.data);
+      // let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
+      let index = 0;
+      let headerFlag = 0;
+      let fileIndex = 0;
+      let round = 0;
+      for (round; round < res.data.length - 1; round++) {
+        if (index < limit) {
+          // console.log("first if");
+          // console.log(headerFlag);
+          if (headerFlag === 0) {
+            body.push(
+              [
+                { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
+                { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
+                { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
+              ],
+              [
+                {},
+                {},
+                {},
+                {},
+                { text: "จริง" },
+                { text: "AD" },
+                { text: "Lane" },
+                { text: "HQ" },
+                {},
+                {},
+                {},
+              ]
+            );
+            headerFlag = 1;
+          } else {
+            // console.log("else");
+            body.push([
+              !!res.data[round].transactionId
+                ? res.data[round].transactionId
+                : "-",
+              !!res.data[round].readFlag ? res.data[round].readFlag : "-",
+              res.data[round].match_timestamp.split(" ")[0],
+              res.data[round].match_timestamp.split(" ")[1],
+              `C${res.data[round].mf_lane_vehicleClass}`,
+              res.data[round].match_real_fee,
+              0,
+              res.data[round].match_timestamp.split(" ")[0],
+              res.data[round].match_timestamp.split(" ")[1],
+              res.data[round].hasPayment,
+              res.data[round].readFlag,
+            ]);
+          }
+          index++;
+          // console.log(index);
+        } else {
+          index = 1;
+          headerFlag = 0;
+          await pdfGendownload(docDefinition);
+          console.log("fileIndex", fileIndex++);
+        }
+
+        // console.log("round : ", round);
+        // let index = 0;
+
+        // if (round > 1) {
+        //   index = (round - 1) * limit + 1;
+        // }
+
+        // for (index; index < round * limit; index++) {
+        //   console.log(index);
+        //   if (round > 1) {
+        //   }
+        // }
+        // // pdfMake.createPdf(docDefinition).open({}, win);
+        // // await pdfGen(docDefinition, win);
+        // body = [];
+      }
+      Swal.close();
+    });
+
+  // let win = window.open("", "_blank");
+
   const date = format(new Date(), "dd MMMM yyyy");
 
   let docDefinition = {
     footer: function (currentPage, pageCount) {
+      pageCount = 1;
       return [
         {
           columns: [
             {},
             {
-              text: `หน้า ${currentPage.toString()}`,
+              text: `หน้า ${currentPage.toString()} / ชุดที่ ${pageCount.toString()}`,
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 10],
@@ -67,7 +239,7 @@ export default function TestPDF(selectCount) {
               type: "line",
               x1: 40,
               y1: -5,
-              x2: 555,
+              x2: 805,
               y2: -5,
               lineWidth: 1,
             },
@@ -93,377 +265,8 @@ export default function TestPDF(selectCount) {
     },
 
     //page1
+    pageOrientation: "landscape",
     content: [
-      {
-        columns: [
-          { image: `data:image/png;base64,${image}`, width: 60 },
-          //   { text: `test`, width: 60 },
-          {
-            width: "auto",
-            stack: [
-              {
-                text: "ฝ่ายตรวจสอบรายได้",
-                fontSize: 20,
-                bold: true,
-                margin: [20, 5, 0, 0],
-              },
-              {
-                canvas: [
-                  {
-                    type: "line",
-                    x1: 20,
-                    y1: 2,
-                    x2: 455,
-                    y2: 2,
-                    lineWidth: 1,
-                  },
-                ],
-              },
-              {
-                text: "กองทางหลวงพิเศษระหว่างเมือง กรมทางหลวง",
-                fontSize: 14,
-                margin: [20, 0, 0, 0],
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        text: "รายงานประจำวัน",
-        alignment: "center",
-        fontSize: 20,
-        bold: true,
-        margin: [0, 10, 0, 0],
-      },
-      { text: `${date}`, alignment: "center", fontSize: 14 },
-      {
-        text: "หน่วยงานรับการตรวจสอบ 902 - ทับช้าง 1",
-        fontSize: 14,
-        margin: [0, 10, 0, 0],
-      },
-      {
-        text: "เอกสาร ตรวจสอบความถูกต้องของการตรวจรายได้ประจำวัน",
-        fontSize: 14,
-      },
-      {
-        margin: [55, 20, 0, 0],
-        fontSize: 11,
-        style: "table",
-        table: {
-          widths: [70, 70, 70, 70, 70],
-          body: [
-            [
-              {
-                text: "ประเภทรถ",
-                rowSpan: 2,
-                border: [true, true, true, true],
-                margin: [0, 5, 0, 0],
-              },
-              { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
-              {
-                text: "จำนวนรถที่ผิดพลาด",
-                border: [true, true, true, false],
-              },
-              { text: "รถยกเว้น", border: [true, true, true, false] },
-              { text: "รถที่คงค้าง", border: [true, true, true, false] },
-            ],
-            [
-              {},
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-            ],
-            [
-              { text: "C1" },
-              { text: "15" },
-              { text: "5" },
-              { text: "4" },
-              { text: "3" },
-            ],
-            [
-              { text: "C2" },
-              { text: "20" },
-              { text: "9" },
-              { text: "0" },
-              { text: "1" },
-            ],
-            [
-              { text: "C3" },
-              { text: "15" },
-              { text: "5" },
-              { text: "4" },
-              { text: "3" },
-            ],
-            ["รวมทั้งหมด", "15", "5", "4", "3"],
-          ],
-        },
-      },
-      {
-        fontSize: 11,
-        style: "table",
-        margin: [35, 20, 0, 450],
-        table: {
-          widths: [50, 40, 15, 70, 40, 15, 80, 30, 15],
-          body: [
-            [
-              {
-                text: "รายได้ด่านทับช้าง 1",
-                border: [true, true, true, false],
-                colSpan: 3,
-                bold: true,
-                alignment: "left",
-              },
-              {},
-              {},
-              {
-                text: "ค่าปรับด่านทับช้าง 1",
-                border: [true, true, true, false],
-                colSpan: 3,
-                bold: true,
-                alignment: "left",
-              },
-              {},
-              {},
-              {
-                text: "สรุปข้อมูล",
-                border: [true, true, true, false],
-                colSpan: 3,
-                bold: true,
-                alignment: "left",
-              },
-              {},
-              {},
-            ],
-            [
-              {
-                text: "รายได้ที่พึงได้",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "1,000,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "ค่าปรับที่เกิดขึ้น",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "300,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "จำนวนรถทั้งหมด",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "40",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "คัน",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-            ],
-            [
-              {
-                text: "รายได้ที่ได้รับ",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "500,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "เรทค่าปรับ",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "300,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "จำนวนที่มีข้อยกเว้นพิเศษ",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "30",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "คัน",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-            ],
-            [
-              {
-                text: "รวมทั้งสิ้น",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "500,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "ค่าปรับที่ทำการชำระ",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "200,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "(จำนวนรถที่ผิดพลาด,รถเว้น,รถที่คงค้าง)",
-                border: [true, false, true, true],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-                colSpan: 3,
-                rowSpan: 3,
-              },
-              {},
-              {},
-            ],
-            [
-              {
-                text: "คงค้าง",
-                border: [true, false, false, true],
-                alignment: "left",
-                margin: [0, -2, 0, 5],
-                rowSpan: 2,
-              },
-              {
-                text: "500,000",
-                border: [false, false, false, true],
-                margin: [0, -2, 0, 5],
-                rowSpan: 2,
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, true],
-                margin: [0, -2, 0, 5],
-                rowSpan: 2,
-              },
-              {
-                text: "รวมทั้งสิ้น",
-                border: [true, false, false, false],
-                alignment: "left",
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "200,000",
-                border: [false, false, false, false],
-                margin: [0, -2, 0, 0],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, false],
-                margin: [0, -2, 0, 0],
-              },
-              {},
-              {},
-              {},
-            ],
-            [
-              {},
-              {},
-              {},
-              {
-                text: "คงค้าง",
-                border: [true, false, false, true],
-                alignment: "left",
-                margin: [0, -2, 0, 3],
-              },
-              {
-                text: "100,000",
-                border: [false, false, false, true],
-                margin: [0, -2, 0, 3],
-              },
-              {
-                text: "บาท",
-                border: [false, false, true, true],
-                margin: [0, -2, 0, 3],
-              },
-              {},
-              {},
-              {},
-            ],
-          ],
-        },
-      },
-
       //page2
       {
         columns: [
@@ -484,7 +287,7 @@ export default function TestPDF(selectCount) {
                     type: "line",
                     x1: 20,
                     y1: 2,
-                    x2: 455,
+                    x2: 700,
                     y2: 2,
                     lineWidth: 1,
                   },
@@ -517,387 +320,27 @@ export default function TestPDF(selectCount) {
         text: "เอกสาร ตรวจสอบความถูกต้องของการตรวจรายได้ประจำวัน",
         fontSize: 14,
       },
-      {
-        columns: [
-          {
-            width: "auto",
-            style: "table",
-            table: {
-              body: [
-                [
-                  {
-                    text: "ประเภทรถ",
-                    rowSpan: 2,
-                    border: [true, true, true, true],
-                    margin: [0, 5, 0, 0],
-                  },
-                  { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
-                  {
-                    text: "จำนวนรถที่ผิดพลาด",
-                    border: [true, true, true, false],
-                  },
-                  { text: "รถยกเว้น", border: [true, true, true, false] },
-                  { text: "รถที่คงค้าง", border: [true, true, true, false] },
-                ],
-                [
-                  {},
-                  {
-                    text: "(คัน)",
-                    border: [true, false, true, true],
-                    margin: [0, -5, 0, 0],
-                  },
-                  {
-                    text: "(คัน)",
-                    border: [true, false, true, true],
-                    margin: [0, -5, 0, 0],
-                  },
-                  {
-                    text: "(คัน)",
-                    border: [true, false, true, true],
-                    margin: [0, -5, 0, 0],
-                  },
-                  {
-                    text: "(คัน)",
-                    border: [true, false, true, true],
-                    margin: [0, -5, 0, 0],
-                  },
-                ],
-                [
-                  { text: "C1" },
-                  { text: "15" },
-                  { text: "5" },
-                  { text: "4" },
-                  { text: "3" },
-                ],
-                [
-                  { text: "C2" },
-                  { text: "20" },
-                  { text: "9" },
-                  { text: "0" },
-                  { text: "1" },
-                ],
-                [
-                  { text: "C3" },
-                  { text: "15" },
-                  { text: "5" },
-                  { text: "4" },
-                  { text: "3" },
-                ],
-                ["รวมทั้งหมด", "15", "5", "4", "3"],
-              ],
-            },
-          },
-          {
-            width: "*",
-            style: "table",
-            table: {
-              body: [
-                [
-                  {
-                    text: "รายได้ด่านทับช้าง 1",
-                    border: [true, true, true, false],
-                    colSpan: 3,
-                    bold: true,
-                  },
-                  {},
-                  {},
-                  {
-                    text: "ค่าปรับด่านทับช้าง 1",
-                    border: [true, true, true, false],
-                    colSpan: 3,
-                    bold: true,
-                  },
-                  {},
-                  {},
-                  {
-                    text: "สรุปข้อมูล",
-                    border: [true, true, true, false],
-                    colSpan: 3,
-                    bold: true,
-                  },
-                  {},
-                  {},
-                ],
-                [
-                  {
-                    text: "รายได้ที่พึงได้",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "1,000,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "ค่าปรับที่เกิดขึ้น",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "300,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "จำนวนรถทั้งหมด",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "4444",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "คัน",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                ],
-                [
-                  {
-                    text: "รายได้ที่ได้รับ",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "500,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "เรทค่าปรับ",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "300,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "จำนวนที่มีข้อยกเว้นพิเศษ",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "30",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "คัน",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                ],
-                [
-                  {
-                    text: "รวมทั้งสิ้น",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "500,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "ค่าปรับที่ทำการชำระ",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "200,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "(จำนวนรถที่ผิดพลาด,รถเว้น,รถที่คงค้าง)",
-                    border: [true, false, true, true],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                    colSpan: 3,
-                    rowSpan: 3,
-                  },
-                  {},
-                  {},
-                ],
-                [
-                  {
-                    text: "คงค้าง",
-                    border: [true, false, false, true],
-                    alignment: "left",
-                    margin: [0, -2, 0, 5],
-                    rowSpan: 2,
-                  },
-                  {
-                    text: "500,000",
-                    border: [false, false, false, true],
-                    margin: [0, -2, 0, 5],
-                    rowSpan: 2,
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, true],
-                    margin: [0, -2, 0, 5],
-                    rowSpan: 2,
-                  },
-                  {
-                    text: "รวมทั้งสิ้น",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "200,000",
-                    border: [false, false, false, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                    margin: [0, -2, 0, 0],
-                  },
-                  {},
-                  {},
-                  {},
-                ],
-                [
-                  {},
-                  {},
-                  {},
-                  {
-                    text: "คงค้าง",
-                    border: [true, false, false, true],
-                    alignment: "left",
-                    margin: [0, -2, 0, 3],
-                  },
-                  {
-                    text: "100,000",
-                    border: [false, false, false, true],
-                    margin: [0, -2, 0, 3],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, true],
-                    margin: [0, -2, 0, 3],
-                  },
-                  {},
-                  {},
-                  {},
-                ],
-              ],
-            },
-          },
-        ],
-        columnGap: 5,
-      },
+
       {
         style: "table2",
         table: {
+          widths: [90, 50, 40, 60, 50, 50, 50, 50, 60, 60, 70],
           headerRows: 2,
-          body: [
-            [
-              { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-              { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
-              { text: "เข้าด่าน", colSpan: 2 },
-              {},
-              { text: "ประเภทรถ", rowSpan: 2, margin: [0, 5, 0, 0] },
-              { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-              { text: "ค่าปรับ", border: [true, true, true, false] },
-              { text: "จัดเก็บ", colSpan: 2 },
-              {},
-              { text: "ชำระแล้ว", border: [true, true, true, false] },
-              { text: "ทะเบียน", rowSpan: 2, margin: [0, 5, 0, 0] },
-              { text: "จังหวัด", rowSpan: 2, margin: [0, 5, 0, 0] },
-            ],
-            [
-              {},
-              {},
-              { text: "วันที่" },
-              { text: "เวลา" },
-              {},
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-              },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-              },
-              { text: "วันที่" },
-              { text: "เวลา" },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-              },
-              {},
-              {},
-            ],
-            // [
-            //   "ทับช้าง1",
-            //   "M202109010000000001",
-            //   "27/12/2020",
-            //   "13.24น.",
-            //   "C1",
-            //   "30",
-            //   "60",
-            //   "29/12/2020",
-            //   "14.14น.",
-            //   "90",
-            //   "กข3210",
-            //   "สมุทรปราการ",
-            // ],
-            getData,
-          ],
+          body: body,
         },
       },
     ],
     styles: {
       table: { marginTop: 20, alignment: "center", fontSize: 9 },
-      table2: { marginTop: 20, alignment: "center", fontSize: 11 },
+      table2: {
+        marginLeft: 12,
+        marginTop: 20,
+        alignment: "center",
+        fontSize: 11,
+      },
     },
     defaultStyle: { font: "THSarabun" },
   };
   // pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
+  // pdfMake.createPdf(docDefinition).open({}, win);
 }
