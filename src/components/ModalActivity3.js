@@ -313,7 +313,7 @@ export default function ModalActivity3(props) {
 
   const download = () => {
     const header = {
-      "Content-Type": "application/pdf",
+      "Content-Type": "application",
       responseType: "blob",
     };
     const sendData = {
