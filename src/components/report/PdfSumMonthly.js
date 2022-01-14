@@ -5,16 +5,16 @@ import { image } from "../../image/logo_base64";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   THSarabun: {
-    normal: "THSarabun.ttf",
-    bold: "THSarabun Bold.ttf",
-    italics: "THSarabun Italic.ttf",
-    bolditalics: "THSarabun Bold Italic.ttf",
+    normal: "THSarabunNew.ttf",
+    bold: "THSarabunNew Bold.ttf",
+    italics: "THSarabunNew Italic.ttf",
+    bolditalics: "THSarabunNew Bold Italic.ttf",
   },
 };
 
 export default function PdfSumMonthly() {
   // console.log(report1);
-  const date = "วันอังคารที่ 29 ธันวาคม 2563";
+  const date = new Date();
   let docDefinition = {
     footer: function () {
       return [
@@ -115,7 +115,7 @@ export default function PdfSumMonthly() {
                 colSpan: 3,
                 bold: true,
                 alignment: "left",
-                fontSize:11
+                fontSize: 11,
               },
               {},
               {},
@@ -125,7 +125,7 @@ export default function PdfSumMonthly() {
                 colSpan: 3,
                 bold: true,
                 alignment: "left",
-                fontSize:11
+                fontSize: 11,
               },
               {},
               {},
@@ -135,7 +135,7 @@ export default function PdfSumMonthly() {
                 colSpan: 3,
                 bold: true,
                 alignment: "left",
-                fontSize:11
+                fontSize: 11,
               },
               {},
               {},
@@ -949,7 +949,7 @@ export default function PdfSumMonthly() {
       table: { marginTop: 20, alignment: "center", fontSize: 9 },
       table2: { marginTop: 10, alignment: "center", fontSize: 9 },
     },
-    defaultStyle: { font: "THSarabun" },
+    defaultStyle: { font: "THSarabunNew" },
   };
   pdfMake.createPdf(docDefinition).download("สรุปใบนำฝากประจำเดือน.pdf");
 }
