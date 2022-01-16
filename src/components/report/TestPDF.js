@@ -20,32 +20,32 @@ export default function TestPDF() {
   let sendData = { date: "2022-01-01" };
 
   let body = [
-    // [
-    //   { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
-    //   { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
-    //   { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
-    // ],
-    // [
-    //   {},
-    //   {},
-    //   {},
-    //   {},
-    //   { text: "จริง" },
-    //   { text: "AD" },
-    //   { text: "Lane" },
-    //   { text: "HQ" },
-    //   {},
-    //   {},
-    //   {},
-    // ],
+    [
+      { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
+      { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
+    ],
+    [
+      {},
+      {},
+      {},
+      {},
+      { text: "จริง" },
+      { text: "AD" },
+      { text: "Lane" },
+      { text: "HQ" },
+      {},
+      {},
+      {},
+    ],
   ];
 
   // for (let i = 0; i < 100; i++) {
@@ -61,7 +61,7 @@ export default function TestPDF() {
       }
     });
   };
-  const pdfGendownload = (docDefinition) => {
+  const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
       try {
         pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf", () => {
@@ -79,46 +79,6 @@ export default function TestPDF() {
     didOpen: () => Swal.showLoading(),
   });
 
-  // axios
-  //   .post(url, sendData, {
-  //     onDownloadProgress: (ProgressEvent) => {
-  //       console.log(ProgressEvent);
-  //     },
-  //   })
-  //   .then(async (res) => {
-  //     const limit = 100;
-  //     console.log(res.headers);
-  //     console.log(res.data);
-  //     let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
-  //     for (let round = 1; round <= remainData; round++) {
-  //       let index = 0;
-  //       if (round > 1) {
-  //         index = (round - 1) * limit + 1;
-  //       }
-  //       for (index; index < limit + 1; index++) {
-  //         if (round > 1) {
-  //         }
-  //         body.push([
-  //           !!res.data[index].readFlag ? res.data[index].transactionId : "-",
-  //           !!res.data[index].readFlag ? res.data[index].readFlag : "-",
-  //           res.data[index].match_timestamp.split(" ")[0],
-  //           res.data[index].match_timestamp.split(" ")[1],
-  //           `C${res.data[index].mf_lane_vehicleClass}`,
-  //           res.data[index].match_real_fee,
-  //           0,
-  //           res.data[index].match_timestamp.split(" ")[0],
-  //           res.data[index].match_timestamp.split(" ")[1],
-  //           res.data[index].hasPayment,
-  //           res.data[index].readFlag,
-  //         ]);
-  //       }
-  //       console.log("round : ", round);
-  //       // pdfMake.createPdf(docDefinition).open({}, win);
-  //       await pdfGen(docDefinition, win);
-  //     }
-  //     Swal.close();
-  //   });
-
   axios
     .post(url, sendData, {
       onDownloadProgress: (ProgressEvent) => {
@@ -126,93 +86,151 @@ export default function TestPDF() {
       },
     })
     .then(async (res) => {
-      const limit = 10000;
+      const limit = 20000;
       console.log(res.headers);
       console.log(res.data);
-      // let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
-      let index = 0;
-      let headerFlag = 0;
-      let fileIndex = 0;
-      let round = 0;
-      for (round; round < res.data.length - 1; round++) {
-        if (index < limit) {
-          // console.log("first if");
-          // console.log(headerFlag);
-          if (headerFlag === 0) {
-            body.push(
-              [
-                { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
-                { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
-                { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
-              ],
-              [
-                {},
-                {},
-                {},
-                {},
-                { text: "จริง" },
-                { text: "AD" },
-                { text: "Lane" },
-                { text: "HQ" },
-                {},
-                {},
-                {},
-              ]
-            );
-            headerFlag = 1;
-          } else {
-            // console.log("else");
-            body.push([
-              !!res.data[round].transactionId
-                ? res.data[round].transactionId
-                : "-",
-              !!res.data[round].readFlag ? res.data[round].readFlag : "-",
-              res.data[round].match_timestamp.split(" ")[0],
-              res.data[round].match_timestamp.split(" ")[1],
-              `C${res.data[round].mf_lane_vehicleClass}`,
-              res.data[round].match_real_fee,
-              0,
-              res.data[round].match_timestamp.split(" ")[0],
-              res.data[round].match_timestamp.split(" ")[1],
-              res.data[round].hasPayment,
-              res.data[round].readFlag,
-            ]);
-          }
-          index++;
-          // console.log(index);
-        } else {
-          index = 1;
-          headerFlag = 0;
-          await pdfGendownload(docDefinition);
-          console.log("fileIndex", fileIndex++);
+      let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
+      for (let round = 1; round <= remainData; round++) {
+        let index = 0;
+        if (round > 1) {
+          index = (round - 1) * limit + 1;
         }
-
-        // console.log("round : ", round);
-        // let index = 0;
-
-        // if (round > 1) {
-        //   index = (round - 1) * limit + 1;
-        // }
-
-        // for (index; index < round * limit; index++) {
-        //   console.log(index);
-        //   if (round > 1) {
-        //   }
-        // }
-        // // pdfMake.createPdf(docDefinition).open({}, win);
-        // // await pdfGen(docDefinition, win);
-        // body = [];
+        for (index; index < limit + 1; index++) {
+          if (round > 1) {
+          }
+          body.push([
+            !!res.data[index].readFlag ? res.data[index].transactionId : "-",
+            !!res.data[index].readFlag ? res.data[index].readFlag : "-",
+            !!res.data[index].match_timestamp
+              ? res.data[index].match_timestamp.split(" ")[0]
+              : "-",
+            !!res.data[index].match_timestamp
+              ? res.data[index].match_timestamp.split(" ")[1]
+              : "-",
+            `C${res.data[index].mf_lane_vehicleClass}`,
+            !!res.data[index].match_real_fee
+              ? res.data[index].match_real_fee
+              : "-",
+            !!res.data[index].match_real_fee
+              ? res.data[index].match_real_fee
+              : "-",
+            !!res.data[index].match_timestamp
+              ? res.data[index].match_timestamp.split(" ")[0]
+              : "-",
+            !!res.data[index].match_timestamp
+              ? res.data[index].match_timestamp.split(" ")[1]
+              : "-",
+            !!res.data[index].hasPayment ? res.data[index].hasPayment : "-",
+            !!res.data[index].readFlag ? res.data[index].readFlag : "-",
+          ]);
+        }
+        console.log("round : ", round);
+        // pdfMake.createPdf(docDefinition).open({}, win);
+        await pdfGenDownload(docDefinition);
       }
       Swal.close();
     });
+
+  // axios
+  //   .post(url, sendData, {
+  //     onDownloadProgress: (ProgressEvent) => {
+  //       let progress = Math.round(
+  //         (ProgressEvent.loaded / ProgressEvent.total) * 100
+  //       );
+  //       console.log(progress);
+  //     },
+  //   })
+  //   .then((res) => {
+  //     // console.log(res.headers);
+  //     // console.log(typeof res.data);
+  //     let response = res.data ? JSON.stringify(res.data) : [];
+  //     let response1 = res.data ? JSON.parse(response) : [];
+  //     console.log(response1);
+  //     return response1;
+  //   })
+  //   .then(async (response) => {
+  //     const limit = 10000;
+  //     let index = 0;
+  //     let headerFlag = 0;
+  //     let fileIndex = 0;
+  //     let round = 0;
+  //     for (round; round < response.length - 1; round++) {
+  //       if (index < limit) {
+  //         // console.log("first if");
+  //         // console.log(headerFlag);
+  //         if (headerFlag === 0) {
+  //           body.push(
+  //             [
+  //               { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
+  //               { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               {
+  //                 text: "เลขที่ใบแจ้งหนี้",
+  //                 rowSpan: 2,
+  //                 margin: [0, 5, 0, 0],
+  //               },
+  //               { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //               { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
+  //             ],
+  //             [
+  //               {},
+  //               {},
+  //               {},
+  //               {},
+  //               { text: "จริง" },
+  //               { text: "AD" },
+  //               { text: "Lane" },
+  //               { text: "HQ" },
+  //               {},
+  //               {},
+  //               {},
+  //             ]
+  //           );
+  //           headerFlag = 1;
+  //         } else {
+  //           body.push([
+  //             // !!response[round].transactionId
+  //             //   ? response[round].transactionId
+  //             //   : "-",
+  //             round,
+  //             !!response[round].readFlag ? response[round].readFlag : "-",
+  //             !!response[round].match_timestamp
+  //               ? response[round].match_timestamp.split(" ")[0]
+  //               : "-",
+  //             !!response[round].match_timestamp
+  //               ? response[round].match_timestamp.split(" ")[1]
+  //               : "-",
+  //             `C${response[round].mf_lane_vehicleClass}`,
+  //             !!response[round].match_real_fee
+  //               ? response[round].match_real_fee
+  //               : "-",
+  //             0,
+  //             !!response[round].match_timestamp
+  //               ? response[round].match_timestamp.split(" ")[0]
+  //               : "-",
+  //             !!response[round].match_timestamp
+  //               ? response[round].match_timestamp.split(" ")[1]
+  //               : "-",
+  //             !!response[round].hasPayment ? response[round].hasPayment : "-",
+  //             !!response[round].readFlag ? response[round].readFlag : "-",
+  //           ]);
+  //         }
+  //         index++;
+  //         // console.log(index);
+  //       } else {
+  //         index = 0;
+  //         headerFlag = 0;
+  //         await pdfGenDownload(docDefinition);
+  //         console.log("fileIndex", fileIndex++);
+  //       }
+  //     }
+  //     Swal.close();
+  //   });
 
   // let win = window.open("", "_blank");
 
@@ -226,7 +244,7 @@ export default function TestPDF() {
           columns: [
             {},
             {
-              text: `หน้า ${currentPage.toString()} / ชุดที่ ${pageCount.toString()}`,
+              text: `หน้า ${currentPage.toString()}`,
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 10],
@@ -281,18 +299,19 @@ export default function TestPDF() {
                 bold: true,
                 margin: [20, 5, 0, 0],
               },
-              {
-                canvas: [
-                  {
-                    type: "line",
-                    x1: 20,
-                    y1: 2,
-                    x2: 700,
-                    y2: 2,
-                    lineWidth: 1,
-                  },
-                ],
-              },
+              // {
+              //   absolutePosition: { x: 30, y: 20 },
+              //   canvas: [
+              //     {
+              //       type: "line",
+              //       x1: 20,
+              //       y1: 2,
+              //       x2: 700,
+              //       y2: 2,
+              //       lineWidth: 1,
+              //     },
+              //   ],
+              // },
               {
                 text: "กองทางหลวงพิเศษระหว่างเมือง กรมทางหลวง",
                 fontSize: 14,
