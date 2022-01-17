@@ -72,7 +72,7 @@ const detailStatus = [
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: "60vh",
+      maxHeight: "61.5vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "50vh",
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => {
     },
     header: {
       backgroundColor: "#7C85BFff",
-      border: "1px solid white",
+      border: "0.5px solid white",
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
@@ -96,6 +96,13 @@ const useStyles = makeStyles((theme) => {
       top: 38,
       // zIndex: 10,
     },
+    tablesColor: {
+      backgroundColor: "#FF968A",
+    },
+    tablesColor2: {
+      backgroundColor: "#FFC5BF",
+    },
+
     tableRow: {
       "&:hover": {
         backgroundColor: "#e8eaf6 !important",
@@ -162,18 +169,9 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-function createData(name, Data1, Data2, Data3) {
-  return { name, Data1, Data2, Data3 };
-}
-
-const rows = [
-  createData("1", 159, 6.0, 24, 4.0),
-  createData("2", 237, 9.0, 37, 4.3),
-  createData("3", 262, 16.0, 24, 6.0),
-];
-
 export default function TableMonitor(props) {
   const classes = useStyles();
+  const { data } = props;
 
   return (
     <div>
@@ -257,82 +255,95 @@ export default function TableMonitor(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
+            {data.map((row) => (
+              <TableRow
+                key={row.name}
+                className={
+                  row.name === "ผลต่างข้อมูล"
+                    ? classes.tablesColor
+                    : row.name === "Illegal"
+                    ? classes.tablesColor
+                    : row.name === "ป้ายแดง"
+                    ? classes.tablesColor2
+                    : row.name === "อ่านทะเบียนไม่ได้"
+                    ? classes.tablesColor2
+                    : "rgba(0,0,0,0)"
+                }
+              >
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["00:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["01:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["02:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["03:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["04:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["05:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["06:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["07:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["08:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["09:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["10:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["11:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["12:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["13:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["14:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["15:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["16:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["17:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["18:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["19:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["20:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data1}
+                  {row["21:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data2}
+                  {row["22:00"]}
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
-                  {row.Data3}
+                  {row["23:00"]}
                 </TableCell>
               </TableRow>
             ))}

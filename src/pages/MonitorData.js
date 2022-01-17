@@ -55,9 +55,9 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     card: {
-      padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      padding: "0.5rem",
+      height: 80,
+      paddingTop: 20,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -119,40 +119,673 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function MonitorData() {
+  const creactObject = (name) => {
+    return {
+      name: `${name}`,
+      "00:00": 0,
+      "01:00": 0,
+      "02:00": 0,
+      "03:00": 0,
+      "04:00": 0,
+      "05:00": 0,
+      "06:00": 0,
+      "07:00": 0,
+      "08:00": 0,
+      "09:00": 0,
+      "10:00": 0,
+      "11:00": 0,
+      "12:00": 0,
+      "13:00": 0,
+      "14:00": 0,
+      "15:00": 0,
+      "16:00": 0,
+      "17:00": 0,
+      "18:00": 0,
+      "19:00": 0,
+      "20:00": 0,
+      "21:00": 0,
+      "22:00": 0,
+      "23:00": 0,
+    };
+  };
+
+  let TableDataHQ = creactObject("MFLane");
+  let TableDataHQ2 = creactObject("HQ");
+  let TableDataHQ3 = creactObject("ผลต่างข้อมูล");
+  let TableDataTypeHQ = creactObject("Member");
+  let TableDataTypeHQ2 = creactObject("Non-Member");
+  let TableDataTypeHQ3 = creactObject("Non-Charge");
+  let TableDataTypeHQ4 = creactObject("Illegal");
+  let TableDataTypeHQ5 = creactObject("ป้ายแดง");
+  let TableDataTypeHQ6 = creactObject("อ่านทะเบียนไม่ได้");
+  let TableDataTSFull = creactObject("TS Full Audit");
+
+  const [TableHQ, setTableHQ] = useState([
+    TableDataHQ,
+    TableDataHQ2,
+    TableDataHQ3,
+    TableDataTSFull,
+    TableDataTypeHQ,
+    TableDataTypeHQ2,
+    TableDataTypeHQ3,
+    TableDataTypeHQ4,
+    TableDataTypeHQ5,
+    TableDataTypeHQ6,
+  ]);
+
   const [summary, setSummary] = useState([]);
-  const [hqAndLane, setHqAndLane] = useState([]);
-  const [typeHq, setTypeHq] = useState([]);
-  const [TSAudit, setTSAudit] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate())
   );
   const fetchData = async () => {
-    // Swal.fire({
-    //   title: "Loading",
-    //   allowOutsideClick: false,
-    //   didOpen: () => Swal.showLoading(),
-    // });
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
-    const data1 = 0;
+    const date = format(selectedDate, "yyyy-MM-dd");
 
-    const data2 = 0;
+    const sendData = {
+      date: date,
+    };
 
-    const data3 = 0;
+    apiURL
+      .post("/daily-data-monitor", sendData)
+      .then((res) => {
+        Swal.close();
+        console.log(res.data);
+        // setHqAndLane(res.data.status !== false ? res.data.sql : []);
+        // console.log("res :", Object.keys(res.data.sql[0]));
+        // setTableTSFull(TableTSFull[0] = {});
+        let dataHQ1 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataHQ2 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataHQ3 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ1 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ2 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ3 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ4 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ5 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTypeHQ6 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
 
-    setHqAndLane(data1);
-    setTypeHq(data2);
-    setTSAudit(data3);
+        for (let index = 0; index < res.data.sql.length; index++) {
+          if ("00:00" === res.data.sql[index].date_time.substring(11, 16)) {
+            dataHQ1[0] = res.data.sql[index].hq;
+            dataHQ2[0] = res.data.sql[index].lane;
+            dataHQ3[0] = res.data.sql[index].dif_count;
+            dataTypeHQ1[0] = res.data.sql[index].mem;
+            dataTypeHQ2[0] = res.data.sql[index].non_mem;
+            dataTypeHQ3[0] = res.data.sql[index].non_charge;
+            dataTypeHQ4[0] = res.data.sql[index].illegal;
+            dataTypeHQ5[0] = res.data.sql[index].red_plate;
+            dataTypeHQ6[0] = res.data.sql[index].ver;
+          } else if (
+            "01:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[1] = res.data.sql[index].hq;
+            dataHQ2[1] = res.data.sql[index].lane;
+            dataHQ3[1] = res.data.sql[index].dif_count;
+            dataTypeHQ1[1] = res.data.sql[index].mem;
+            dataTypeHQ2[1] = res.data.sql[index].non_mem;
+            dataTypeHQ3[1] = res.data.sql[index].non_charge;
+            dataTypeHQ4[1] = res.data.sql[index].illegal;
+            dataTypeHQ5[1] = res.data.sql[index].red_plate;
+            dataTypeHQ6[1] = res.data.sql[index].ver;
+          } else if (
+            "02:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[2] = res.data.sql[index].hq;
+            dataHQ2[2] = res.data.sql[index].lane;
+            dataHQ3[2] = res.data.sql[index].dif_count;
+            dataTypeHQ1[2] = res.data.sql[index].mem;
+            dataTypeHQ2[2] = res.data.sql[index].non_mem;
+            dataTypeHQ3[2] = res.data.sql[index].non_charge;
+            dataTypeHQ4[2] = res.data.sql[index].illegal;
+            dataTypeHQ5[2] = res.data.sql[index].red_plate;
+            dataTypeHQ6[2] = res.data.sql[index].ver;
+          } else if (
+            "03:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[3] = res.data.sql[index].hq;
+            dataHQ2[3] = res.data.sql[index].lane;
+            dataHQ3[3] = res.data.sql[index].dif_count;
+            dataTypeHQ1[4] = res.data.sql[index].mem;
+            dataTypeHQ2[4] = res.data.sql[index].non_mem;
+            dataTypeHQ3[4] = res.data.sql[index].non_charge;
+            dataTypeHQ4[4] = res.data.sql[index].illegal;
+            dataTypeHQ5[4] = res.data.sql[index].red_plate;
+            dataTypeHQ6[4] = res.data.sql[index].ver;
+          } else if (
+            "04:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[4] = res.data.sql[index].hq;
+            dataHQ2[4] = res.data.sql[index].lane;
+            dataHQ3[4] = res.data.sql[index].dif_count;
+            dataTypeHQ1[4] = res.data.sql[index].mem;
+            dataTypeHQ2[4] = res.data.sql[index].non_mem;
+            dataTypeHQ3[4] = res.data.sql[index].non_charge;
+            dataTypeHQ4[4] = res.data.sql[index].illegal;
+            dataTypeHQ5[4] = res.data.sql[index].red_plate;
+            dataTypeHQ6[4] = res.data.sql[index].ver;
+          } else if (
+            "05:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[5] = res.data.sql[index].hq;
+            dataHQ2[5] = res.data.sql[index].lane;
+            dataHQ3[5] = res.data.sql[index].dif_count;
+            dataTypeHQ1[5] = res.data.sql[index].mem;
+            dataTypeHQ2[5] = res.data.sql[index].non_mem;
+            dataTypeHQ3[5] = res.data.sql[index].non_charge;
+            dataTypeHQ4[5] = res.data.sql[index].illegal;
+            dataTypeHQ5[5] = res.data.sql[index].red_plate;
+            dataTypeHQ6[5] = res.data.sql[index].ver;
+          } else if (
+            "06:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[6] = res.data.sql[index].hq;
+            dataHQ2[6] = res.data.sql[index].lane;
+            dataHQ3[6] = res.data.sql[index].dif_count;
+            dataTypeHQ1[6] = res.data.sql[index].mem;
+            dataTypeHQ2[6] = res.data.sql[index].non_mem;
+            dataTypeHQ3[6] = res.data.sql[index].non_charge;
+            dataTypeHQ4[6] = res.data.sql[index].illegal;
+            dataTypeHQ5[6] = res.data.sql[index].red_plate;
+            dataTypeHQ6[6] = res.data.sql[index].ver;
+          } else if (
+            "07:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[7] = res.data.sql[index].hq;
+            dataHQ2[7] = res.data.sql[index].lane;
+            dataHQ3[7] = res.data.sql[index].dif_count;
+            dataTypeHQ1[7] = res.data.sql[index].mem;
+            dataTypeHQ2[7] = res.data.sql[index].non_mem;
+            dataTypeHQ3[7] = res.data.sql[index].non_charge;
+            dataTypeHQ4[7] = res.data.sql[index].illegal;
+            dataTypeHQ5[7] = res.data.sql[index].red_plate;
+            dataTypeHQ6[7] = res.data.sql[index].ver;
+          } else if (
+            "08:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[8] = res.data.sql[index].hq;
+            dataHQ2[8] = res.data.sql[index].lane;
+            dataHQ3[8] = res.data.sql[index].dif_count;
+            dataTypeHQ1[8] = res.data.sql[index].mem;
+            dataTypeHQ2[8] = res.data.sql[index].non_mem;
+            dataTypeHQ3[8] = res.data.sql[index].non_charge;
+            dataTypeHQ4[8] = res.data.sql[index].illegal;
+            dataTypeHQ5[8] = res.data.sql[index].red_plate;
+            dataTypeHQ6[8] = res.data.sql[index].ver;
+          } else if (
+            "09:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[9] = res.data.sql[index].hq;
+            dataHQ2[9] = res.data.sql[index].lane;
+            dataHQ3[9] = res.data.sql[index].dif_count;
+            dataTypeHQ1[9] = res.data.sql[index].mem;
+            dataTypeHQ2[9] = res.data.sql[index].non_mem;
+            dataTypeHQ3[9] = res.data.sql[index].non_charge;
+            dataTypeHQ4[9] = res.data.sql[index].illegal;
+            dataTypeHQ5[9] = res.data.sql[index].red_plate;
+            dataTypeHQ6[9] = res.data.sql[index].ver;
+          } else if (
+            "10:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[10] = res.data.sql[index].hq;
+            dataHQ2[10] = res.data.sql[index].lane;
+            dataHQ3[10] = res.data.sql[index].dif_count;
+            dataTypeHQ1[10] = res.data.sql[index].mem;
+            dataTypeHQ2[10] = res.data.sql[index].non_mem;
+            dataTypeHQ3[10] = res.data.sql[index].non_charge;
+            dataTypeHQ4[10] = res.data.sql[index].illegal;
+            dataTypeHQ5[10] = res.data.sql[index].red_plate;
+            dataTypeHQ6[10] = res.data.sql[index].ver;
+          } else if (
+            "11:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[11] = res.data.sql[index].hq;
+            dataHQ2[11] = res.data.sql[index].lane;
+            dataHQ3[11] = res.data.sql[index].dif_count;
+            dataTypeHQ1[11] = res.data.sql[index].mem;
+            dataTypeHQ2[11] = res.data.sql[index].non_mem;
+            dataTypeHQ3[11] = res.data.sql[index].non_charge;
+            dataTypeHQ4[11] = res.data.sql[index].illegal;
+            dataTypeHQ5[11] = res.data.sql[index].red_plate;
+            dataTypeHQ6[11] = res.data.sql[index].ver;
+          } else if (
+            "12:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[12] = res.data.sql[index].hq;
+            dataHQ2[12] = res.data.sql[index].lane;
+            dataHQ3[12] = res.data.sql[index].dif_count;
+            dataTypeHQ1[12] = res.data.sql[index].mem;
+            dataTypeHQ2[12] = res.data.sql[index].non_mem;
+            dataTypeHQ3[12] = res.data.sql[index].non_charge;
+            dataTypeHQ4[12] = res.data.sql[index].illegal;
+            dataTypeHQ5[12] = res.data.sql[index].red_plate;
+            dataTypeHQ6[12] = res.data.sql[index].ver;
+          } else if (
+            "13:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[13] = res.data.sql[index].hq;
+            dataHQ2[13] = res.data.sql[index].lane;
+            dataHQ3[13] = res.data.sql[index].dif_count;
+            dataTypeHQ1[13] = res.data.sql[index].mem;
+            dataTypeHQ2[13] = res.data.sql[index].non_mem;
+            dataTypeHQ3[13] = res.data.sql[index].non_charge;
+            dataTypeHQ4[13] = res.data.sql[index].illegal;
+            dataTypeHQ5[13] = res.data.sql[index].red_plate;
+            dataTypeHQ6[13] = res.data.sql[index].ver;
+          } else if (
+            "14:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[14] = res.data.sql[index].hq;
+            dataHQ2[14] = res.data.sql[index].lane;
+            dataHQ3[14] = res.data.sql[index].dif_count;
+            dataTypeHQ1[14] = res.data.sql[index].mem;
+            dataTypeHQ2[14] = res.data.sql[index].non_mem;
+            dataTypeHQ3[14] = res.data.sql[index].non_charge;
+            dataTypeHQ4[14] = res.data.sql[index].illegal;
+            dataTypeHQ5[14] = res.data.sql[index].red_plate;
+            dataTypeHQ6[14] = res.data.sql[index].ver;
+          } else if (
+            "15:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[15] = res.data.sql[index].hq;
+            dataHQ2[15] = res.data.sql[index].lane;
+            dataHQ3[15] = res.data.sql[index].dif_count;
+            dataTypeHQ1[15] = res.data.sql[index].mem;
+            dataTypeHQ2[15] = res.data.sql[index].non_mem;
+            dataTypeHQ3[15] = res.data.sql[index].non_charge;
+            dataTypeHQ4[15] = res.data.sql[index].illegal;
+            dataTypeHQ5[15] = res.data.sql[index].red_plate;
+            dataTypeHQ6[15] = res.data.sql[index].ver;
+          } else if (
+            "16:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[16] = res.data.sql[index].hq;
+            dataHQ2[16] = res.data.sql[index].lane;
+            dataHQ3[16] = res.data.sql[index].dif_count;
+            dataTypeHQ1[16] = res.data.sql[index].mem;
+            dataTypeHQ2[16] = res.data.sql[index].non_mem;
+            dataTypeHQ3[16] = res.data.sql[index].non_charge;
+            dataTypeHQ4[16] = res.data.sql[index].illegal;
+            dataTypeHQ5[16] = res.data.sql[index].red_plate;
+            dataTypeHQ6[16] = res.data.sql[index].ver;
+          } else if (
+            "17:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[17] = res.data.sql[index].hq;
+            dataHQ2[17] = res.data.sql[index].lane;
+            dataHQ3[17] = res.data.sql[index].dif_count;
+            dataTypeHQ1[17] = res.data.sql[index].mem;
+            dataTypeHQ2[17] = res.data.sql[index].non_mem;
+            dataTypeHQ3[17] = res.data.sql[index].non_charge;
+            dataTypeHQ4[17] = res.data.sql[index].illegal;
+            dataTypeHQ5[17] = res.data.sql[index].red_plate;
+            dataTypeHQ6[17] = res.data.sql[index].ver;
+          } else if (
+            "18:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[18] = res.data.sql[index].hq;
+            dataHQ2[18] = res.data.sql[index].lane;
+            dataHQ3[18] = res.data.sql[index].dif_count;
+            dataTypeHQ1[18] = res.data.sql[index].mem;
+            dataTypeHQ2[18] = res.data.sql[index].non_mem;
+            dataTypeHQ3[18] = res.data.sql[index].non_charge;
+            dataTypeHQ4[18] = res.data.sql[index].illegal;
+            dataTypeHQ5[18] = res.data.sql[index].red_plate;
+            dataTypeHQ6[18] = res.data.sql[index].ver;
+          } else if (
+            "19:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[19] = res.data.sql[index].hq;
+            dataHQ2[19] = res.data.sql[index].lane;
+            dataHQ3[19] = res.data.sql[index].dif_count;
+            dataTypeHQ1[19] = res.data.sql[index].mem;
+            dataTypeHQ2[19] = res.data.sql[index].non_mem;
+            dataTypeHQ3[19] = res.data.sql[index].non_charge;
+            dataTypeHQ4[19] = res.data.sql[index].illegal;
+            dataTypeHQ5[19] = res.data.sql[index].red_plate;
+            dataTypeHQ6[19] = res.data.sql[index].ver;
+          } else if (
+            "20:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[20] = res.data.sql[index].hq;
+            dataHQ2[20] = res.data.sql[index].lane;
+            dataHQ3[20] = res.data.sql[index].dif_count;
+            dataTypeHQ1[20] = res.data.sql[index].mem;
+            dataTypeHQ2[20] = res.data.sql[index].non_mem;
+            dataTypeHQ3[20] = res.data.sql[index].non_charge;
+            dataTypeHQ4[20] = res.data.sql[index].illegal;
+            dataTypeHQ5[20] = res.data.sql[index].red_plate;
+            dataTypeHQ6[20] = res.data.sql[index].ver;
+          } else if (
+            "21:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[21] = res.data.sql[index].hq;
+            dataHQ2[21] = res.data.sql[index].lane;
+            dataHQ3[21] = res.data.sql[index].dif_count;
+            dataTypeHQ1[21] = res.data.sql[index].mem;
+            dataTypeHQ2[21] = res.data.sql[index].non_mem;
+            dataTypeHQ3[21] = res.data.sql[index].non_charge;
+            dataTypeHQ4[21] = res.data.sql[index].illegal;
+            dataTypeHQ5[21] = res.data.sql[index].red_plate;
+            dataTypeHQ6[21] = res.data.sql[index].ver;
+          } else if (
+            "22:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[22] = res.data.sql[index].hq;
+            dataHQ2[22] = res.data.sql[index].lane;
+            dataHQ3[22] = res.data.sql[index].dif_count;
+            dataTypeHQ1[22] = res.data.sql[index].mem;
+            dataTypeHQ2[22] = res.data.sql[index].non_mem;
+            dataTypeHQ3[22] = res.data.sql[index].non_charge;
+            dataTypeHQ4[22] = res.data.sql[index].illegal;
+            dataTypeHQ5[22] = res.data.sql[index].red_plate;
+            dataTypeHQ6[22] = res.data.sql[index].ver;
+          } else if (
+            "23:00" === res.data.sql[index].date_time.substring(11, 16)
+          ) {
+            dataHQ1[23] = res.data.sql[index].hq;
+            dataHQ2[23] = res.data.sql[index].lane;
+            dataHQ3[23] = res.data.sql[index].dif_count;
+            dataTypeHQ1[23] = res.data.sql[index].mem;
+            dataTypeHQ2[23] = res.data.sql[index].non_mem;
+            dataTypeHQ3[23] = res.data.sql[index].non_charge;
+            dataTypeHQ4[23] = res.data.sql[index].illegal;
+            dataTypeHQ5[23] = res.data.sql[index].red_plate;
+            dataTypeHQ6[23] = res.data.sql[index].ver;
+          }
+        }
+        setTableHQ([
+          {
+            ...TableDataHQ,
+            "00:00": dataHQ1[0],
+            "01:00": dataHQ1[1],
+            "02:00": dataHQ1[2],
+            "03:00": dataHQ1[3],
+            "04:00": dataHQ1[4],
+            "05:00": dataHQ1[5],
+            "06:00": dataHQ1[6],
+            "07:00": dataHQ1[7],
+            "08:00": dataHQ1[8],
+            "09:00": dataHQ1[9],
+            "10:00": dataHQ1[10],
+            "11:00": dataHQ1[11],
+            "12:00": dataHQ1[12],
+            "13:00": dataHQ1[13],
+            "14:00": dataHQ1[14],
+            "15:00": dataHQ1[15],
+            "16:00": dataHQ1[16],
+            "17:00": dataHQ1[17],
+            "18:00": dataHQ1[18],
+            "19:00": dataHQ1[19],
+            "20:00": dataHQ1[20],
+            "21:00": dataHQ1[21],
+            "22:00": dataHQ1[22],
+            "23:00": dataHQ1[23],
+          },
+          {
+            ...TableDataHQ2,
+            "00:00": dataHQ2[0],
+            "01:00": dataHQ2[1],
+            "02:00": dataHQ2[2],
+            "03:00": dataHQ2[3],
+            "04:00": dataHQ2[4],
+            "05:00": dataHQ2[5],
+            "06:00": dataHQ2[6],
+            "07:00": dataHQ2[7],
+            "08:00": dataHQ2[8],
+            "09:00": dataHQ2[9],
+            "10:00": dataHQ2[10],
+            "11:00": dataHQ2[11],
+            "12:00": dataHQ2[12],
+            "13:00": dataHQ2[13],
+            "14:00": dataHQ2[14],
+            "15:00": dataHQ2[15],
+            "16:00": dataHQ2[16],
+            "17:00": dataHQ2[17],
+            "18:00": dataHQ2[18],
+            "19:00": dataHQ2[19],
+            "20:00": dataHQ2[20],
+            "21:00": dataHQ2[21],
+            "22:00": dataHQ2[22],
+            "23:00": dataHQ2[23],
+          },
+          {
+            ...TableDataHQ3,
+            "00:00": dataHQ3[0],
+            "01:00": dataHQ3[1],
+            "02:00": dataHQ3[2],
+            "03:00": dataHQ3[3],
+            "04:00": dataHQ3[4],
+            "05:00": dataHQ3[5],
+            "06:00": dataHQ3[6],
+            "07:00": dataHQ3[7],
+            "08:00": dataHQ3[8],
+            "09:00": dataHQ3[9],
+            "10:00": dataHQ3[10],
+            "11:00": dataHQ3[11],
+            "12:00": dataHQ3[12],
+            "13:00": dataHQ3[13],
+            "14:00": dataHQ3[14],
+            "15:00": dataHQ3[15],
+            "16:00": dataHQ3[16],
+            "17:00": dataHQ3[17],
+            "18:00": dataHQ3[18],
+            "19:00": dataHQ3[19],
+            "20:00": dataHQ3[20],
+            "21:00": dataHQ3[21],
+            "22:00": dataHQ3[22],
+            "23:00": dataHQ3[23],
+          },
+          TableDataTSFull,
+          {
+            ...TableDataTypeHQ,
+            "00:00": dataTypeHQ1[0],
+            "01:00": dataTypeHQ1[1],
+            "02:00": dataTypeHQ1[2],
+            "03:00": dataTypeHQ1[3],
+            "04:00": dataTypeHQ1[4],
+            "05:00": dataTypeHQ1[5],
+            "06:00": dataTypeHQ1[6],
+            "07:00": dataTypeHQ1[7],
+            "08:00": dataTypeHQ1[8],
+            "09:00": dataTypeHQ1[9],
+            "10:00": dataTypeHQ1[10],
+            "11:00": dataTypeHQ1[11],
+            "12:00": dataTypeHQ1[12],
+            "13:00": dataTypeHQ1[13],
+            "14:00": dataTypeHQ1[14],
+            "15:00": dataTypeHQ1[15],
+            "16:00": dataTypeHQ1[16],
+            "17:00": dataTypeHQ1[17],
+            "18:00": dataTypeHQ1[18],
+            "19:00": dataTypeHQ1[19],
+            "20:00": dataTypeHQ1[20],
+            "21:00": dataTypeHQ1[21],
+            "22:00": dataTypeHQ1[22],
+            "23:00": dataTypeHQ1[23],
+          },
+          {
+            ...TableDataTypeHQ2,
+            "00:00": dataTypeHQ2[0],
+            "01:00": dataTypeHQ2[1],
+            "02:00": dataTypeHQ2[2],
+            "03:00": dataTypeHQ2[3],
+            "04:00": dataTypeHQ2[4],
+            "05:00": dataTypeHQ2[5],
+            "06:00": dataTypeHQ2[6],
+            "07:00": dataTypeHQ2[7],
+            "08:00": dataTypeHQ2[8],
+            "09:00": dataTypeHQ2[9],
+            "10:00": dataTypeHQ2[10],
+            "11:00": dataTypeHQ2[11],
+            "12:00": dataTypeHQ2[12],
+            "13:00": dataTypeHQ2[13],
+            "14:00": dataTypeHQ2[14],
+            "15:00": dataTypeHQ2[15],
+            "16:00": dataTypeHQ2[16],
+            "17:00": dataTypeHQ2[17],
+            "18:00": dataTypeHQ2[18],
+            "19:00": dataTypeHQ2[19],
+            "20:00": dataTypeHQ2[20],
+            "21:00": dataTypeHQ2[21],
+            "22:00": dataTypeHQ2[22],
+            "23:00": dataTypeHQ2[23],
+          },
+          {
+            ...TableDataTypeHQ3,
+            "00:00": dataTypeHQ3[0],
+            "01:00": dataTypeHQ3[1],
+            "02:00": dataTypeHQ3[2],
+            "03:00": dataTypeHQ3[3],
+            "04:00": dataTypeHQ3[4],
+            "05:00": dataTypeHQ3[5],
+            "06:00": dataTypeHQ3[6],
+            "07:00": dataTypeHQ3[7],
+            "08:00": dataTypeHQ3[8],
+            "09:00": dataTypeHQ3[9],
+            "10:00": dataTypeHQ3[10],
+            "11:00": dataTypeHQ3[11],
+            "12:00": dataTypeHQ3[12],
+            "13:00": dataTypeHQ3[13],
+            "14:00": dataTypeHQ3[14],
+            "15:00": dataTypeHQ3[15],
+            "16:00": dataTypeHQ3[16],
+            "17:00": dataTypeHQ3[17],
+            "18:00": dataTypeHQ3[18],
+            "19:00": dataTypeHQ3[19],
+            "20:00": dataTypeHQ3[20],
+            "21:00": dataTypeHQ3[21],
+            "22:00": dataTypeHQ3[22],
+            "23:00": dataTypeHQ3[23],
+          },
+          {
+            ...TableDataTypeHQ4,
+            "00:00": dataTypeHQ4[0],
+            "01:00": dataTypeHQ4[1],
+            "02:00": dataTypeHQ4[2],
+            "03:00": dataTypeHQ4[3],
+            "04:00": dataTypeHQ4[4],
+            "05:00": dataTypeHQ4[5],
+            "06:00": dataTypeHQ4[6],
+            "07:00": dataTypeHQ4[7],
+            "08:00": dataTypeHQ4[8],
+            "09:00": dataTypeHQ4[9],
+            "10:00": dataTypeHQ4[10],
+            "11:00": dataTypeHQ4[11],
+            "12:00": dataTypeHQ4[12],
+            "13:00": dataTypeHQ4[13],
+            "14:00": dataTypeHQ4[14],
+            "15:00": dataTypeHQ4[15],
+            "16:00": dataTypeHQ4[16],
+            "17:00": dataTypeHQ4[17],
+            "18:00": dataTypeHQ4[18],
+            "19:00": dataTypeHQ4[19],
+            "20:00": dataTypeHQ4[20],
+            "21:00": dataTypeHQ4[21],
+            "22:00": dataTypeHQ4[22],
+            "23:00": dataTypeHQ4[23],
+          },
+          {
+            ...TableDataTypeHQ5,
+            "00:00": dataTypeHQ5[0],
+            "01:00": dataTypeHQ5[1],
+            "02:00": dataTypeHQ5[2],
+            "03:00": dataTypeHQ5[3],
+            "04:00": dataTypeHQ5[4],
+            "05:00": dataTypeHQ5[5],
+            "06:00": dataTypeHQ5[6],
+            "07:00": dataTypeHQ5[7],
+            "08:00": dataTypeHQ5[8],
+            "09:00": dataTypeHQ5[9],
+            "10:00": dataTypeHQ5[10],
+            "11:00": dataTypeHQ5[11],
+            "12:00": dataTypeHQ5[12],
+            "13:00": dataTypeHQ5[13],
+            "14:00": dataTypeHQ5[14],
+            "15:00": dataTypeHQ5[15],
+            "16:00": dataTypeHQ5[16],
+            "17:00": dataTypeHQ5[17],
+            "18:00": dataTypeHQ5[18],
+            "19:00": dataTypeHQ5[19],
+            "20:00": dataTypeHQ5[20],
+            "21:00": dataTypeHQ5[21],
+            "22:00": dataTypeHQ5[22],
+            "23:00": dataTypeHQ5[23],
+          },
+          {
+            ...TableDataTypeHQ6,
+            "00:00": dataTypeHQ6[0],
+            "01:00": dataTypeHQ6[1],
+            "02:00": dataTypeHQ6[2],
+            "03:00": dataTypeHQ6[3],
+            "04:00": dataTypeHQ6[4],
+            "05:00": dataTypeHQ6[5],
+            "06:00": dataTypeHQ6[6],
+            "07:00": dataTypeHQ6[7],
+            "08:00": dataTypeHQ6[8],
+            "09:00": dataTypeHQ6[9],
+            "10:00": dataTypeHQ6[10],
+            "11:00": dataTypeHQ6[11],
+            "12:00": dataTypeHQ6[12],
+            "13:00": dataTypeHQ6[13],
+            "14:00": dataTypeHQ6[14],
+            "15:00": dataTypeHQ6[15],
+            "16:00": dataTypeHQ6[16],
+            "17:00": dataTypeHQ6[17],
+            "18:00": dataTypeHQ6[18],
+            "19:00": dataTypeHQ6[19],
+            "20:00": dataTypeHQ6[20],
+            "21:00": dataTypeHQ6[21],
+            "22:00": dataTypeHQ6[22],
+            "23:00": dataTypeHQ6[23],
+          },
+        ]);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
-
-  const date = format(selectedDate, "yyyy-MM-dd");
-
+  // console.log(TableTSFull);
   const dataCard = [
     {
       value: !!summary.ts_count
         ? summary.ts_count.toLocaleString().toString()
         : "0",
       status: "checklist",
-      label: "จำนวนรถ",
+      label: "MFLane",
       color: "red",
     },
     {
@@ -160,7 +793,7 @@ export default function MonitorData() {
         ? summary.ts_count.toLocaleString().toString()
         : "0",
       status: "checklist",
-      label: "จำนวน HQ Type",
+      label: "HQ",
       color: "green",
     },
     {
@@ -168,7 +801,7 @@ export default function MonitorData() {
         ? summary.ts_count.toLocaleString().toString()
         : "0",
       status: "checklist",
-      label: "จำนวน TS Full Audit",
+      label: "TS Full Audit",
       color: "blue",
     },
   ];
@@ -265,13 +898,7 @@ export default function MonitorData() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableMonitor data={hqAndLane} />
-          </Grid>
-          <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableMonitor data={typeHq} />
-          </Grid>
-          <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableMonitor data={TSAudit} />
+            <TableMonitor data={TableHQ} />
           </Grid>
         </Grid>
       </Container>
