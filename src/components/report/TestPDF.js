@@ -4,6 +4,8 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { image } from "../../image/logo_base64";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ModalProgress from "../ModalProgress";
+import React, { useState } from "react";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -16,6 +18,8 @@ pdfMake.fonts = {
 };
 
 export default function TestPDF() {
+  // const [open, setOpen] = useState(false);
+  // const handleClose = setOpen(false);
   const url = "http://1d32-45-117-208-162.ap.ngrok.io/selectall-2";
   let sendData = { date: "2022-01-01" };
 
@@ -73,23 +77,42 @@ export default function TestPDF() {
     });
   };
 
-  Swal.fire({
-    title: "ขั้นตอนนี้อาจใช้เวลานาน",
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-  });
+  // Swal.fire({
+  //   title: "ขั้นตอนนี้อาจใช้เวลานาน",
+  //   allowOutsideClick: false,
+  //   didOpen: () => Swal.showLoading(),
+  // });
 
   axios
     .post(url, sendData, {
       onDownloadProgress: (ProgressEvent) => {
-        console.log(ProgressEvent);
+        // console.log(ProgressEvent);
       },
     })
     .then(async (res) => {
-      const limit = 20000;
-      console.log(res.headers);
+      // console.log(res.headers);
+      // setOpen(true);
       console.log(res.data);
-      let remainData = Math.ceil((res.data.length - 1) / (limit - 1));
+      let longString = res.data.slice(1, -1);
+      console.log("longString : ", longString);
+      let result = [];
+      longString
+        // .split("\n")
+        .split("},")
+        .map((item) => {
+          // JSON.parse(item);
+          // item.toString().replace("\\", "");
+          // let tranformItem = JSON.parse(item);
+          console.log(item);
+          result.push(item);
+          return result;
+        });
+      console.log("result :", result);
+      // JSON.parse(result);
+      // console.log("res :", result[1].readFlag);
+
+      const limit = 20000;
+      let remainData = Math.ceil((res.length - 1) / (limit - 1));
       for (let round = 1; round <= remainData; round++) {
         let index = 0;
         if (round > 1) {
@@ -99,37 +122,34 @@ export default function TestPDF() {
           if (round > 1) {
           }
           body.push([
-            !!res.data[index].readFlag ? res.data[index].transactionId : "-",
-            !!res.data[index].readFlag ? res.data[index].readFlag : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[0]
+            !!res[index].transactionId ? res[index].transactionId : "-",
+            !!res[index].readFlag ? res[index].readFlag : "-",
+            !!res[index].match_timestamp
+              ? res[index].match_timestamp.split(" ")[0]
               : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[1]
+            !!res[index].match_timestamp
+              ? res[index].match_timestamp.split(" ")[1]
               : "-",
-            `C${res.data[index].mf_lane_vehicleClass}`,
-            !!res.data[index].match_real_fee
-              ? res.data[index].match_real_fee
+            `C${res[index].mf_lane_vehicleClass}`,
+            !!res[index].match_real_fee ? res[index].match_real_fee : "-",
+            !!res[index].match_real_fee ? res[index].match_real_fee : "-",
+            !!res[index].match_timestamp
+              ? res[index].match_timestamp.split(" ")[0]
               : "-",
-            !!res.data[index].match_real_fee
-              ? res.data[index].match_real_fee
+            !!res[index].match_timestamp
+              ? res[index].match_timestamp.split(" ")[1]
               : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[0]
-              : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[1]
-              : "-",
-            !!res.data[index].hasPayment ? res.data[index].hasPayment : "-",
-            !!res.data[index].readFlag ? res.data[index].readFlag : "-",
+            !!res[index].hasPayment ? res[index].hasPayment : "-",
+            !!res[index].readFlag ? res[index].readFlag : "-",
           ]);
         }
         console.log("round : ", round);
+        console.log(body);
         // pdfMake.createPdf(docDefinition).open({}, win);
         await pdfGenDownload(docDefinition);
       }
-      Swal.close();
     });
+  // Swal.close();
 
   // axios
   //   .post(url, sendData, {
@@ -362,4 +382,10 @@ export default function TestPDF() {
   };
   // pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
   // pdfMake.createPdf(docDefinition).open({}, win);
+
+  return (
+    <div>
+      {/* <ModalProgress open={open} onClose={handleClose} /> */}
+    </div>
+  );
 }
