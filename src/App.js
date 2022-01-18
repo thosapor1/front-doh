@@ -24,6 +24,8 @@ import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
 import ExpectIncome from "./pages/ExpectIncome";
 import CollectFromPk3 from "./pages/CollectFromPk3";
+import MenuDataMonitor from "./pages/MenuDataMonitor";
+import MonitorData from "./pages/MonitorData";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -63,6 +65,8 @@ function App() {
             <Route path="/report" component={Report} />
             <Route path="/dataVolume" component={DataVolume} />
             <Route path="/mandatoryItem" component={MandatoryItem} />
+            <Route path="/MonitorData" component={MonitorData} />
+            <Route path="/MenuDataMonitor" component={MenuDataMonitor} />
             <Route
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}

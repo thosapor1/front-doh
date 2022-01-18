@@ -290,6 +290,8 @@ export default function Layout({ children }) {
                       <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (
                       <MonetizationOnRoundedIcon />
+                    ) : item.path === "/MonitorData" ? (
+                      <ListAltRoundedIcon />
                     ) : (
                       ""
                     )}
