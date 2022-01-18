@@ -257,3 +257,16 @@ export const updateHighway = (sendData) => {
 
   return response;
 };
+
+export const exportExcel = (sendData) => {
+  const response = apiURLv1
+    .post("/export-csv", sendData)
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+      });
+    });
+
+  return response;
+};
