@@ -64,6 +64,11 @@ export const menuItemsForSuperAdmin = [
     icon: "data_saver_off",
     path: "/DataVolume",
   },
+  {
+    text: "Monitor Control",
+    icon: "receipt_long",
+    path: "/MonitorData",
+  },
   // {
   //   text: "รายการบังคับ",
   //   icon: "playlist_add_check",
