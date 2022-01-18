@@ -180,77 +180,78 @@ export default function TableMonitor(props) {
           <TableHead>
             <TableRow>
               <TableCell>จำนวนรถในแต่ละวัน</TableCell>
+
               <TableCell align="center" className={classes.header}>
-                00:00
+                00-01
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                01:00
+                01-02
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                02:00
+                02-03
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                03:00
+                03-04
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                04:00
+                04-05
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                05:00
+                05-06
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                06:00
+                06-07
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                07:00
+                07-08
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                08:00
+                08-09
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                09:00
+                09-10
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                10:00
+                10-11
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                11:00
+                11-12
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                12:00
+                12-13
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                13:00
+                13-14
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                14:00
+                14-15
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                15:00
+                15-16
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                16:00
+                16-17
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                17:00
+                17-18
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                18:00
+                18-19
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                19:00
+                19-20
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                20:00
+                20-21
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                21:00
+                21-22
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                22:00
+                22-23
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                23:00
+                23-24
               </TableCell>
             </TableRow>
           </TableHead>
@@ -259,7 +260,7 @@ export default function TableMonitor(props) {
               <TableRow
                 key={row.name}
                 className={
-                  row.name === "ผลต่างข้อมูล"
+                  row.name === "ผลต่างข้อมูล(MF-HQ)"
                     ? classes.tablesColor
                     : row.name === "Illegal"
                     ? classes.tablesColor
@@ -273,9 +274,7 @@ export default function TableMonitor(props) {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell align="center" className={classes.tableCell}>
-                  {row["00:00"]}
-                </TableCell>
+
                 <TableCell align="center" className={classes.tableCell}>
                   {row["01:00"]}
                 </TableCell>
@@ -344,6 +343,9 @@ export default function TableMonitor(props) {
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
                   {row["23:00"]}
+                </TableCell>
+                <TableCell align="center" className={classes.tableCell}>
+                  {row["00:00"]}
                 </TableCell>
               </TableRow>
             ))}
