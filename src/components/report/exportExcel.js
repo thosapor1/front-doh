@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import React from "react";
 import XLSX from "xlsx";
 
-export default async function exportExcel(props) {
+export default function exportExcel(props) {
   const { ts, selectDate } = props;
   //   console.log(fileType);
   let endpoint =
@@ -27,13 +27,14 @@ export default async function exportExcel(props) {
     // link.click();
     // link.parentNode.removeChild(link);
 
-    const ws = XLSX.utils.json_to_sheet(res.data);
+    console.log(res.data.results);
+    // console.log(url);
+
+    const ws = XLSX.utils.json_to_sheet(res.data.results);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    XLSX.utils.book_append_sheet(wb, ws, "รายงานประจำวัน");
     /* generate XLSX file and send to client */
     XLSX.writeFile(wb, "sheetjs.xlsx");
-    console.log(res.data);
-    // console.log(url);
   });
 
   return <></>;

@@ -4,8 +4,6 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { image } from "../../image/logo_base64";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalProgress from "../ModalProgress";
-import React, { useState } from "react";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -18,10 +16,8 @@ pdfMake.fonts = {
 };
 
 export default function TestPDF() {
-  // const [open, setOpen] = useState(false);
-  // const handleClose = setOpen(false);
-  const url = "http://1d32-45-117-208-162.ap.ngrok.io/selectall-3";
-  let sendData = { date: "2022-01-01" };
+  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
+  let sendData = { date: "2022-01-01", checkpoint: "1" };
 
   let body = [
     [
@@ -52,22 +48,10 @@ export default function TestPDF() {
     ],
   ];
 
-  // for (let i = 0; i < 100; i++) {
-  //   body.push([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-  // }
-
-  const pdfGen = (docDefinition, win) => {
-    return new Promise((resolve, reject) => {
-      try {
-        pdfMake.createPdf(docDefinition).open({ resolve }, win);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
   const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
       try {
+        console.log("generate");
         pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf", () => {
           resolve();
         });
@@ -78,167 +62,92 @@ export default function TestPDF() {
   };
 
   Swal.fire({
-    title: "ขั้นตอนนี้อาจใช้เวลานาน",
+    title: `กำลังดาวน์โหลดข้อมูล`,
     allowOutsideClick: false,
     didOpen: () => Swal.showLoading(),
+    willClose: () => {
+      Swal.update({
+        title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
+      });
+    },
   });
+
+  const popupT = (popupT) => {
+    return new Promise((resolve, reject) => {
+      try {
+        popupT.innerHTML = `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`;
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  let popup = document.getElementById("swal2-title");
 
   axios
     .post(url, sendData, {
       onDownloadProgress: (ProgressEvent) => {
-        // console.log(ProgressEvent);
+        popup.innerHTML = `กำลังดาวน์โหลดข้อมูล ${Math.ceil(
+          (ProgressEvent.loaded / ProgressEvent.total) * 100
+        )}%`;
       },
     })
     .then(async (res) => {
-      // console.log(res.headers);
-      // setOpen(true);
       console.log(res.data);
-      // const limit = 20000;
-      // let remainData = Math.ceil((res.length - 1) / (limit - 1));
-      // for (let round = 1; round <= remainData; round++) {
-      //   let index = 0;
-      //   if (round > 1) {
-      //     index = (round - 1) * limit + 1;
-      //   }
-      for (let index = 0; index < res.data.length - 1; index++) {
-        // if (round > 1) {
-        // }
-        body.push([
-          !!res.data[index].transactionId ? res.data[index].transactionId : "-",
-          !!res.data[index].readFlag ? res.data[index].readFlag : "-",
-          !!res.data[index].match_timestamp
-            ? res.data[index].match_timestamp.split(" ")[0]
-            : "-",
-          !!res.data[index].match_timestamp
-            ? res.data[index].match_timestamp.split(" ")[1]
-            : "-",
-          `C${res.data[index].mf_lane_vehicleClass}`,
-          !!res.data[index].match_real_fee
-            ? res.data[index].match_real_fee
-            : "-",
-          !!res.data[index].match_real_fee
-            ? res.data[index].match_real_fee
-            : "-",
-          !!res.data[index].match_timestamp
-            ? res.data[index].match_timestamp.split(" ")[0]
-            : "-",
-          !!res.data[index].match_timestamp
-            ? res.data[index].match_timestamp.split(" ")[1]
-            : "-",
-          !!res.data[index].hasPayment ? res.data[index].hasPayment : "-",
-          !!res.data[index].readFlag ? res.data[index].readFlag : "-",
-        ]);
-      }
-      // console.log("round : ", round);
-      console.log(body);
-      // pdfMake.createPdf(docDefinition).open({}, win);
-      await pdfGenDownload(docDefinition);
-      // }
       Swal.close();
+
+      await pushToBody(res);
+      await pdfGenDownload(docDefinition);
+
+      // await Swal.fire({
+      //   title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
+      //   allowOutsideClick: false,
+      //   didOpen: async () => {
+      //     Swal.showLoading();
+      //   },
+      // });
+      // await pushToBody(res);
+      // await pdfGenDownload(docDefinition);
+      // await popupT(popup);
+
+      console.log(body);
+      console.log("end");
     });
 
-  // axios
-  //   .post(url, sendData, {
-  //     onDownloadProgress: (ProgressEvent) => {
-  //       let progress = Math.round(
-  //         (ProgressEvent.loaded / ProgressEvent.total) * 100
-  //       );
-  //       console.log(progress);
-  //     },
-  //   })
-  //   .then((res) => {
-  // console.log(res.headers);
-  // console.log(typeof res.data);
-  //     let response = res.data ? JSON.stringify(res.data) : [];
-  //     let response1 = res.data ? JSON.parse(response) : [];
-  //     console.log(response1);
-  //     return response1;
-  //   })
-  //   .then(async (response) => {
-  //     const limit = 10000;
-  //     let index = 0;
-  //     let headerFlag = 0;
-  //     let fileIndex = 0;
-  //     let round = 0;
-  //     for (round; round < response.length - 1; round++) {
-  //       if (index < limit) {
-  // console.log("first if");
-  // console.log(headerFlag);
-  //         if (headerFlag === 0) {
-  //           body.push(
-  //             [
-  //               { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
-  //               { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               {
-  //                 text: "เลขที่ใบแจ้งหนี้",
-  //                 rowSpan: 2,
-  //                 margin: [0, 5, 0, 0],
-  //               },
-  //               { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //               { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
-  //             ],
-  //             [
-  //               {},
-  //               {},
-  //               {},
-  //               {},
-  //               { text: "จริง" },
-  //               { text: "AD" },
-  //               { text: "Lane" },
-  //               { text: "HQ" },
-  //               {},
-  //               {},
-  //               {},
-  //             ]
-  //           );
-  //           headerFlag = 1;
-  //         } else {
-  //           body.push([
-  //             // !!response[round].transactionId
-  //             //   ? response[round].transactionId
-  //             //   : "-",
-  //             round,
-  //             !!response[round].readFlag ? response[round].readFlag : "-",
-  //             !!response[round].match_timestamp
-  //               ? response[round].match_timestamp.split(" ")[0]
-  //               : "-",
-  //             !!response[round].match_timestamp
-  //               ? response[round].match_timestamp.split(" ")[1]
-  //               : "-",
-  //             `C${response[round].mf_lane_vehicleClass}`,
-  //             !!response[round].match_real_fee
-  //               ? response[round].match_real_fee
-  //               : "-",
-  //             0,
-  //             !!response[round].match_timestamp
-  //               ? response[round].match_timestamp.split(" ")[0]
-  //               : "-",
-  //             !!response[round].match_timestamp
-  //               ? response[round].match_timestamp.split(" ")[1]
-  //               : "-",
-  //             !!response[round].hasPayment ? response[round].hasPayment : "-",
-  //             !!response[round].readFlag ? response[round].readFlag : "-",
-  //           ]);
-  //         }
-  //         index++;
-  //         // console.log(index);
-  //       } else {
-  //         index = 0;
-  //         headerFlag = 0;
-  //         await pdfGenDownload(docDefinition);
-  //         console.log("fileIndex", fileIndex++);
-  //       }
-  //     }
-  //     Swal.close();
-  //   });
-
-  // let win = window.open("", "_blank");
+  const pushToBody = (res) => {
+    // popup.innerHTML = `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`;
+    return new Promise((resolve, reject) => {
+      try {
+        for (let index = 0; index < res.data.length; index++) {
+          // console.log(index);
+          body.push([
+            !!res.data[index].transactionId
+              ? res.data[index].transactionId
+              : "-",
+            !!res.data[index].match_checkpoint
+              ? res.data[index].match_checkpoint
+              : "-",
+            !!res.data[index].match_gate ? res.data[index].match_gate : "-",
+            !!res.data[index].match_timestamp
+              ? res.data[index].match_timestamp.split(" ")[1]
+              : "-",
+            `C${res.data[index].match_real_vehicleClass}`,
+            !!res.data[index].AD ? `C${res.data[index].AD}` : "-",
+            `C${res.data[index].mf_lane_vehicleClass}`,
+            `C${res.data[index].vehicleClass}`,
+            !!res.data[index].hasPayment ? res.data[index].hasPayment : "-",
+            !!res.data[index].forceFlag ? res.data[index].forceFlag : "-",
+            !!res.data[index].status ? res.data[index].status : "-",
+          ]);
+        }
+        console.log("loop");
+        return resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
 
   const date = format(new Date(), "dd MMMM yyyy");
 
@@ -295,7 +204,6 @@ export default function TestPDF() {
       {
         columns: [
           { image: `data:image/png;base64,${image}`, width: 60 },
-          //   { text: `test`, width: 60 },
           {
             width: "auto",
             stack: [
@@ -306,7 +214,6 @@ export default function TestPDF() {
                 margin: [20, 5, 0, 0],
               },
               {
-                //   absolutePosition: { x: 30, y: 20 },
                 canvas: [
                   {
                     type: "line",
@@ -366,8 +273,6 @@ export default function TestPDF() {
     },
     defaultStyle: { font: "THSarabun" },
   };
-  // pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf");
-  // pdfMake.createPdf(docDefinition).open({}, win);
 
-  return <div>{/* <ModalProgress open={open} onClose={handleClose} /> */}</div>;
+  return <></>;
 }
