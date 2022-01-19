@@ -5,6 +5,7 @@ import {
   MenuItem,
   Paper,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
@@ -157,6 +158,7 @@ export default function FilterSection2(props) {
         >
           excel
         </Button>
+        <Typography id="load"></Typography>
       </Grid>
     </>
   );
