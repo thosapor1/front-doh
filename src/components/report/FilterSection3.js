@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => {
 });
 
 const valueMenuItem = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกด่าน",
-  },
+  // {
+  //   id: 0,
+  //   value: 0,
+  //   label: "ทุกด่าน",
+  // },
   {
     id: 1,
     value: 1,
@@ -81,7 +81,7 @@ export default function FilterSection3(props) {
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
-  const [checkpoint, setCheckpoint] = useState(0);
+  const [checkpoint, setCheckpoint] = useState(1);
 
   useEffect(() => {}, []);
   return (
