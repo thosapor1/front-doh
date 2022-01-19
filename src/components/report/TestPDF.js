@@ -15,7 +15,7 @@ pdfMake.fonts = {
   },
 };
 
-export default async function TestPDF() {
+export default function TestPDF() {
   const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
   let sendData = { date: "2022-01-01", checkpoint: "1" };
 
@@ -62,7 +62,6 @@ export default async function TestPDF() {
   };
 
   const pushToBody = (res) => {
-    // popup.innerHTML = `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`;
     return new Promise((resolve, reject) => {
       try {
         for (let index = 0; index < res.data.length; index++) {
@@ -94,39 +93,6 @@ export default async function TestPDF() {
       }
     });
   };
-
-  Swal.fire({
-    title: `กำลังดาวน์โหลดข้อมูล`,
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-  }).then(()=>{
-    
-  })
-
-  let popup = document.getElementById("swal2-title");
-
-  const res = await axios.post(url, sendData, {
-    onDownloadProgress: (ProgressEvent) => {
-      popup.innerHTML = `กำลังดาวน์โหลดข้อมูล ${Math.ceil(
-        (ProgressEvent.loaded / ProgressEvent.total) * 100
-      )}%`;
-    },
-  });
-
-  console.log(res.data);
-  Swal.close();
-
-  Swal.fire({
-    title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-  });
-
-  await pushToBody(res);
-
-  console.log(body);
-  console.log("end");
-
   const date = format(new Date(), "dd MMMM yyyy");
 
   let docDefinition = {
@@ -251,7 +217,43 @@ export default async function TestPDF() {
     },
     defaultStyle: { font: "THSarabun" },
   };
-  await pdfGenDownload(docDefinition);
-  Swal.close();
+
+  Swal.fire({
+    title: `กำลังดาวน์โหลดข้อมูล`,
+    allowOutsideClick: false,
+    didOpen: async () => {
+      Swal.showLoading();
+      return axios
+        .post(url, sendData, {
+          onDownloadProgress: (ProgressEvent) => {
+            document.getElementById(
+              "swal2-title"
+            ).innerHTML = `กำลังดาวน์โหลดข้อมูล ${Math.ceil(
+              (ProgressEvent.loaded / ProgressEvent.total) * 100
+            )}%`;
+          },
+        })
+        .then((res) => {
+          Swal.close();
+          return res;
+        })
+        .then(async (res) => {
+          Swal.fire({
+            title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
+            allowOutsideClick: false,
+            didOpen: async () => {
+              Swal.showLoading();
+              await pushToBody(res);
+
+              setTimeout(async () => {
+                await pdfGenDownload(docDefinition);
+                Swal.close();
+              }, 1000);
+            },
+          });
+        });
+    },
+  });
+
   return <></>;
 }
