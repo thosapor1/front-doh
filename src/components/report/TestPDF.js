@@ -15,7 +15,10 @@ pdfMake.fonts = {
   },
 };
 
-export default function TestPDF() {
+export default function TestPDF(selectedDate, checkpoint) {
+  const getDate = selectedDate;
+  const ck = checkpoint;
+  console.log(getDate, ck);
   const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
   let sendData = { date: "2022-01-01", checkpoint: "1" };
 
@@ -236,22 +239,22 @@ export default function TestPDF() {
         .then((res) => {
           Swal.close();
           return res;
-        })
-        .then(async (res) => {
-          Swal.fire({
-            title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
-            allowOutsideClick: false,
-            didOpen: async () => {
-              Swal.showLoading();
-              await pushToBody(res);
-
-              setTimeout(async () => {
-                await pdfGenDownload(docDefinition);
-                Swal.close();
-              }, 1000);
-            },
-          });
         });
+      // .then(async (res) => {
+      //   Swal.fire({
+      //     title: `กำลังสร้างรายงาน ขั้นตอนนี้อาจใช้เวลานาน`,
+      //     allowOutsideClick: false,
+      //     didOpen: async () => {
+      //       Swal.showLoading();
+      //       await pushToBody(res);
+
+      //       setTimeout(async () => {
+      //         await pdfGenDownload(docDefinition);
+      //         Swal.close();
+      //       }, 1000);
+      //     },
+      //   });
+      // });
     },
   });
 
