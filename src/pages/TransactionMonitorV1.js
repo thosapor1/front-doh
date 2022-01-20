@@ -24,6 +24,15 @@ import ImageSearchAudit from "../components/ImageSearchAudit";
 import MatchTable from "../components/MatchTable";
 import TableBillingMonitorPage from "../components/TableBillingMonitorV1";
 import TableFETC from "../components/TableFETC";
+import {
+  getDataFullAudit,
+  getDataHQ,
+  getDataLane,
+  getImageFullAudit,
+  getImageHQ,
+  getImageLane,
+} from "../service/allService";
+import Swal from "sweetalert2";
 
 const apiURL = axios.create({
   baseURL:
@@ -81,8 +90,8 @@ export default function TransactionMonitorV1() {
     tableHeaderData: [
       { id: "0", label: "No." },
       { id: "1", label: "trg_id" },
-      { id: "2", label: "em_record_ts" },
       { id: "3", label: "ts_timestamp" },
+      { id: "2", label: "em_record_ts" },
     ],
     tableBodyData: [],
     gateValue: "0",
@@ -210,12 +219,17 @@ export default function TransactionMonitorV1() {
     });
   };
 
-  const filter = (pageId = 1, selectDate, checkpoint, gate) => {
+  const filter = async (pageId = 1, selectDate, checkpoint, gate) => {
     if (pageId === 1) {
       setPagination1({ ...pagination1, page: 1 });
     } else {
       setPagination1({ ...pagination1, page: pageId });
     }
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
@@ -226,7 +240,8 @@ export default function TransactionMonitorV1() {
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/fullaudit-monitor", sendData).then((res) => {
+    const res = await getDataFullAudit(sendData);
+    if (!!res) {
       setDataAudit({
         ...dataAudit,
         checkpointList: res.data.dropdown_Checkpoint,
@@ -237,15 +252,31 @@ export default function TransactionMonitorV1() {
         countPage: res.data.totalPages,
         page: res.data.currentPage,
       });
-    });
+      Swal.close();
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
-  const filter2 = (pageId = 1, selectDate, checkpoint, gate) => {
+  const filter2 = async (pageId = 1, selectDate, checkpoint, gate) => {
     if (pageId === 1) {
       setPagination2({ ...pagination2, page: 1 });
     } else {
       setPagination2({ ...pagination2, page: pageId });
     }
+
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     const date = format(selectDate, "yyyy-MM-dd");
 
@@ -257,7 +288,8 @@ export default function TransactionMonitorV1() {
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/hq-transaction-monitor", sendData).then((res) => {
+    const res = await getDataHQ(sendData);
+    if (!!res) {
       setDataAW({
         ...dataAW,
         checkpointList: dataAW.checkpointList,
@@ -268,15 +300,32 @@ export default function TransactionMonitorV1() {
         countPage: res.data.totalPages,
         page: res.data.currentPage,
       });
-    });
+      Swal.close();
+    }
+
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
-  const filter3 = (pageId = 1, selectDate, checkpoint, gate) => {
+  const filter3 = async (pageId = 1, selectDate, checkpoint, gate) => {
     if (pageId === 1) {
       setPagination3({ ...pagination3, page: 1 });
     } else {
       setPagination3({ ...pagination3, page: pageId });
     }
+
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     const date = format(selectDate, "yyyy-MM-dd");
 
@@ -288,7 +337,8 @@ export default function TransactionMonitorV1() {
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/lane-transaction-monitor", sendData).then((res) => {
+    const res = await getDataLane(sendData);
+    if (!!res) {
       setDataFETC({
         ...dataFetc,
         checkpointList: res.data.dropdown_Checkpoint,
@@ -300,7 +350,17 @@ export default function TransactionMonitorV1() {
         countPage: res.data.totalPages,
         page: res.data.currentPage,
       });
-    });
+    }
+    Swal.close();
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
   const filterMatchTab = (pageId = 1, selectDate, checkpoint, gate) => {
@@ -422,54 +482,117 @@ export default function TransactionMonitorV1() {
     console.log(`${paginationBilling.page}`);
   };
 
-  const getImage1 = (item) => {
+  const getImage1 = async (item) => {
     const date = item.em_record_ts.split(" ").shift();
     const sendData = {
       id: item.id.toString(),
       date: date,
     };
 
-    console.log(sendData);
-    apiURL.post("/fullaudit-monitor-activity", sendData).then((res) => {
-      console.log(res.data);
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const res = await getImageFullAudit(sendData);
+    if (!!res) {
       setDataAudit({
         ...dataAudit,
         imageCrop: res.data.imgBW,
         imageFull: res.data.imgRGB,
       });
-    });
+      Swal.close();
+    }
+    if (!!res && res.data.imgBW === 0 && res.data.imgRGB === 0) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่พบรูป",
+      });
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    // if (!!res && res.data.status !== false) {
+    //   Swal.close();
+    // }
   };
-  const getImage2 = (item) => {
+  const getImage2 = async (item) => {
     const date = item.cameras_cameraTimestamp.split(" ").shift().split("/");
     const date2 = `${date[2]}-${date[1]}-${date[0]}`;
     const sendData = {
       headerTransactionId: item.headerTransactionId,
       date: date2,
     };
-    console.log("sendData:", sendData);
-    apiURL.post("/hq-transaction-monitor-activity", sendData).then((res) => {
-      console.log(res.data);
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const res = await getImageHQ(sendData);
+    if (!!res) {
       setDataAW({
         ...dataAW,
         imageCrop: res.data.imageFileCrop,
         imageFull: res.data.imageFile,
       });
-    });
+      Swal.close();
+    }
+    if (!!res && res.data.imageFile === 0 && res.data.imageFileCrop === 0) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่พบรูป",
+      });
+    }
+
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
   };
-  const getImage3 = (item) => {
+  const getImage3 = async (item) => {
     const sendData = {
       tranId: item.tranId,
       date: format(dataFetc.date, "yyyy-MM-dd"),
     };
-    console.log("sendData:", sendData);
-    apiURL.post("/lane-transaction-monitor-activity", sendData).then((res) => {
-      console.log(res.data);
+
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const res = await getImageLane(sendData);
+    if (!!res) {
       setDataFETC({
         ...dataFetc,
         imageCrop: res.data.mf_lane_picFull,
         imageFull: res.data.mf_lane_picCrop,
       });
-    });
+      Swal.close();
+    }
+    if (
+      !!res &&
+      res.data.mf_lane_picCrop === 0 &&
+      res.data.mf_lane_picFull === 0
+    ) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่พบรูป",
+      });
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
   };
 
   const MatchTabGetImage = (
@@ -609,7 +732,7 @@ export default function TransactionMonitorV1() {
                   }}
                   buttonOnClick={() => {
                     filter(
-                      pagination1.page,
+                      1,
                       dataAudit.date,
                       dataAudit.checkpointValue,
                       dataAudit.gateValue
@@ -663,7 +786,7 @@ export default function TransactionMonitorV1() {
                   }}
                   buttonOnClick={() => {
                     filter2(
-                      pagination2.page,
+                      1,
                       dataAW.date,
                       dataAW.checkpointValue,
                       dataAW.gateValue
@@ -721,7 +844,7 @@ export default function TransactionMonitorV1() {
                   }}
                   buttonOnClick={() => {
                     filter3(
-                      pagination3.page,
+                      1,
                       dataFetc.date,
                       dataFetc.checkpointValue,
                       dataFetc.gateValue

@@ -113,14 +113,15 @@ export default function TableAWMonitorPage(props) {
             variant="contained"
             color="secondary"
             style={{ height: 35, backgroundColor: "darkgreen" }}
-            onClick={() =>
+            onClick={() => {
               onFetchData(
                 parseInt(selectedPage),
                 selectedDate,
                 checkpoint,
                 gate
-              )
-            }
+              );
+              setSelectedPage("");
+            }}
           >
             Go
           </Button>

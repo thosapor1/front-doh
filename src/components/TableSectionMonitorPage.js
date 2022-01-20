@@ -119,14 +119,15 @@ export default function TableSectionMonitorPage(props) {
             variant="contained"
             color="secondary"
             style={{ height: 35 }}
-            onClick={() =>
+            onClick={() => {
               onFetchData(
                 parseInt(selectedPage),
                 selectedDate,
                 checkpoint,
                 gate
-              )
-            }
+              );
+              setSelectedPage("");
+            }}
           >
             Go
           </Button>
@@ -174,10 +175,10 @@ export default function TableSectionMonitorPage(props) {
                   >
                     <TableCell>{item.id}</TableCell>
                     <TableCell>{item.trg_id}</TableCell>
-                    <TableCell>{item.em_record_ts.split(" ").pop()}</TableCell>
                     <TableCell>{`${item.ts_timestamp.split(" ").pop()}:${
                       item.ts_millisecond
                     }`}</TableCell>
+                    <TableCell>{item.em_record_ts.split(" ").pop()}</TableCell>
                   </StyledTableRow>
                 ))
               : []}

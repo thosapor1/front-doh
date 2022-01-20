@@ -32,6 +32,14 @@ export const getDropdown = () => {
   return response;
 };
 
+export const operation = (sendData) => {
+  const response = apiURLv2.post("/operation", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+//DashBoard page
 export const getDataDashBoard = (sendData) => {
   const response = apiURLv3
     .post("/dashboard-month", sendData)
@@ -41,6 +49,7 @@ export const getDataDashBoard = (sendData) => {
   return response;
 };
 
+//RawData page
 export const getDataRawTransaction = (sendData) => {
   const response = apiURLv1.post("/raw-data", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
@@ -57,6 +66,7 @@ export const getDataRawTransactionActivity = (sendData) => {
   return response;
 };
 
+//ExpertIncome page
 export const getDataExpectIncome = (sendData) => {
   const response = apiURLv1.post("/expect-income", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
@@ -80,13 +90,7 @@ export const searchOnExpectIncome = (endpoint, sendData) => {
   return response;
 };
 
-export const operation = (sendData) => {
-  const response = apiURLv2.post("/operation", sendData).catch((error) => {
-    Swal.fire(cannotConnectNetWork);
-  });
-  return response;
-};
-
+//CollectFromPK3 page
 export const getDataCollectFromPk3 = (sendData) => {
   const response = apiURLv1
     .post("/display-pk3-storage_list", sendData)
@@ -97,6 +101,7 @@ export const getDataCollectFromPk3 = (sendData) => {
   return response;
 };
 
+//SuperAuditDisplay page
 export const downLoadFileAuditDisplay = (sendData, header) => {
   const response = apiURLv1
     .post("/daily-income/pdf", sendData, header)
@@ -134,6 +139,7 @@ export const getDataSuperauditActivity = (sendData) => {
   return response;
 };
 
+//DataVolume page
 export const getDataVolume = (sendData) => {
   const response = apiURLv3.post("/data-monitor", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
@@ -142,6 +148,7 @@ export const getDataVolume = (sendData) => {
   return response;
 };
 
+//User page
 export const updateUsers = (sendData) => {
   const response = apiURLv2
     .post("/update-user-status", sendData)
@@ -168,6 +175,7 @@ export const deleteUsers = (sendData) => {
   return response;
 };
 
+//Config page
 export const getDataConfig = (sendData) => {
   const response = apiURLv1.post("/system-config", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
@@ -204,6 +212,67 @@ export const exportExcel = (sendData) => {
   const response = apiURLv1.post("/export-csv", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
+
+  return response;
+};
+
+//TransactionMonitor page
+export const getDataFullAudit = (sendData) => {
+  const response = apiURLv1
+    .post("/fullaudit-monitor", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const getImageFullAudit = (sendData) => {
+  const response = apiURLv1
+    .post("/fullaudit-monitor-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const getDataHQ = (sendData) => {
+  const response = apiURLv1
+    .post("/hq-transaction-monitor", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const getImageHQ = (sendData) => {
+  const response = apiURLv1
+    .post("/hq-transaction-monitor-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const getDataLane = (sendData) => {
+  const response = apiURLv1
+    .post("/lane-transaction-monitor", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const getImageLane = (sendData) => {
+  const response = apiURLv1
+    .post("/lane-transaction-monitor-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
 
   return response;
 };
