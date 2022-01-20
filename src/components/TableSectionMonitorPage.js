@@ -98,10 +98,12 @@ export default function TableSectionMonitorPage(props) {
                     selected={rowID === index}
                     className={classes.selected}
                   >
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.audit_transactionId}</TableCell>
-                    <TableCell>{item.timestamp.split(" ").pop()}</TableCell>
-                    <TableCell>-</TableCell>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.trg_id}</TableCell>
+                    <TableCell>{item.em_record_ts.split(" ").pop()}</TableCell>
+                    <TableCell>{`${item.ts_timestamp.split(" ").pop()}:${
+                      item.ts_millisecond
+                    }`}</TableCell>
                   </StyledTableRow>
                 ))
               : []}

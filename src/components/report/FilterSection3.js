@@ -11,7 +11,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme) => {
@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => {
 });
 
 const valueMenuItem = [
-  {
-    id: 0,
-    value: 0,
-    label: "ทุกด่าน",
-  },
+  // {
+  //   id: 0,
+  //   value: 0,
+  //   label: "ทุกด่าน",
+  // },
   {
     id: 1,
     value: 1,
@@ -75,13 +75,13 @@ const valueMenuItem = [
   },
 ];
 
-export default function FilterSection2(props) {
+export default function FilterSection3(props) {
   const { onFetchData, report, exportExcel } = props;
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
-  const [checkpoint, setCheckpoint] = useState(0);
+  const [checkpoint, setCheckpoint] = useState(1);
 
   useEffect(() => {}, []);
   return (
@@ -97,9 +97,8 @@ export default function FilterSection2(props) {
             inputVariant="outlined"
             className={classes.input}
             disableToolbar
-            views={["year", "month"]}
             variant="inlined"
-            format="MM/yyyy"
+            format="dd/MM/yyyy"
             margin="normal"
             id="date"
             label="เดือน"
@@ -117,7 +116,9 @@ export default function FilterSection2(props) {
           select
           label="ด่าน"
           value={checkpoint}
-          onChange={(e) => setCheckpoint(e.target.value)}
+          onChange={(e) => {
+            setCheckpoint(e.target.value);
+          }}
           name="gate_select"
         >
           {valueMenuItem.map((item) => (
@@ -142,7 +143,7 @@ export default function FilterSection2(props) {
           className={classes.btn}
           style={{ backgroundColor: "lightpink" }}
           onClick={() => {
-            report(selectedDate);
+            report(selectedDate, checkpoint);
           }}
         >
           pdf
@@ -153,7 +154,7 @@ export default function FilterSection2(props) {
           className={classes.btn}
           style={{ backgroundColor: "lightgreen" }}
           onClick={() => {
-            exportExcel(selectedDate);
+            exportExcel(selectedDate, checkpoint);
           }}
         >
           excel

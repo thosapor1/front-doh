@@ -29,6 +29,7 @@ import PdfTraffic from "../components/report/PdfTraffic";
 import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
+import FilterSection3 from "../components/report/FilterSection3";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -324,7 +325,7 @@ export default function Report() {
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2
+              <FilterSection3
                 onFetchData={fetchData}
                 report={TestPDF}
                 exportExcel={exportExcel}
