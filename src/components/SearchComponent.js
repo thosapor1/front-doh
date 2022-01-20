@@ -1,9 +1,21 @@
 import { Button, Paper, TextField } from "@material-ui/core";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
+import DateFnsUtils from "@date-io/date-fns";
+import axios from "axios";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchOnExpectIncome } from "../service/allService";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -52,23 +64,14 @@ const useStyle = makeStyles((theme) => {
 
 export default function SearchComponent(props) {
   const classes = useStyle();
-  const {
-    date,
-    label,
-    value,
-    name,
-    handleOnChange,
-    setTable,
-    endpoint,
-    setEyesStatus,
-  } = props;
+  const { date, label, value, name, handleOnChange, setTable, endpoint } =
+    props;
 
-  const onClickHandle = async () => {
+  const onClickHandle = () => {
     const sendData = {
       date: format(date, "yyyy-MM-dd"),
       transactionId: value,
     };
-    let eye = [];
 
     Swal.fire({
       title: "Loading",
@@ -76,25 +79,19 @@ export default function SearchComponent(props) {
       didOpen: () => Swal.showLoading(),
     });
 
-    const res = await searchOnExpectIncome(endpoint, sendData);
-
-    if (!!res && !!res.data.status) {
-      eye.push({
-        state: res.data.resultsDisplay[0].state,
-        readFlag: res.data.resultsDisplay[0].readFlag,
-        transactionId: res.data.resultsDisplay[0].transactionId,
+    apiURL
+      .post(endpoint, sendData)
+      .then((res) => {
+        Swal.close();
+        setTable(!!res.data.status ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      setEyesStatus(eye);
-      setTable(!!res.data.status ? res.data : []);
-      Swal.close();
-    }
-    if (!!res && !res.data.status) {
-      Swal.fire({
-        title: "Fail",
-        text: "โปรดใส่ transaction",
-        icon: "warning",
-      });
-    }
   };
 
   return (
@@ -114,7 +111,7 @@ export default function SearchComponent(props) {
           style={{ display: "block", marginLeft: 120 }}
           onClick={onClickHandle}
         >
-          {`Search`}
+          Search{" "}
         </Button>
       </Paper>
     </>

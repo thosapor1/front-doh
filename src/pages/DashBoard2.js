@@ -19,7 +19,6 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getDataDashBoard } from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -249,20 +248,32 @@ export default function DashBoard2() {
     }
   };
 
-  const fetchData = async (month = format(new Date(), "yyyy-MM")) => {
+  const fetchData = (month = format(new Date(), "yyyy-MM")) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
-    const res = await getDataDashBoard(sendData);
-    setDataTable(!!res ? res.data : []);
-    getChartData(!!res ? res.data.month : []);
-    getPopUpData(!!res ? res.data : []);
-    Swal.close();
+    apiURL
+      .post("/dashboard-month", sendData)
+      .then((res) => {
+        Swal.close();
+        const allData = res.data;
+        const dataInMonth = res.data.month;
+        console.log("dataInMonth", dataInMonth);
+        setDataTable(allData);
+        getChartData(dataInMonth);
+        getPopUpData(allData);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   useEffect(() => {

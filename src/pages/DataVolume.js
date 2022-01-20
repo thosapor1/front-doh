@@ -17,7 +17,13 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getDataVolume } from "../service/allService";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
+      : `${process.env.REACT_APP_BASE_URL_V3}`,
+});
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -143,12 +149,13 @@ export default function DataVolume() {
   const classes = useStyle();
 
   // const [monthChart, setMonthChart] = useState("");
+  const [dateCalendar, setDateCalendar] = useState(new Date());
   const [dataTable, setDataTable] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
 
-  const fetchData = async (month = format(new Date(), "yyyy-MM")) => {
+  const fetchData = (month = format(new Date(), "yyyy-MM")) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -156,12 +163,20 @@ export default function DataVolume() {
     });
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
-
-    const res = await getDataVolume(sendData);
-    if (!!res) {
-      Swal.close();
-      setDataTable(res);
-    }
+    apiURL
+      .post("/data-monitor", sendData)
+      .then((res) => {
+        Swal.close();
+        const allData = res;
+        setDataTable(allData);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   useEffect(() => {
@@ -175,6 +190,7 @@ export default function DataVolume() {
         <Grid item lg={12} md={12} sm={12}>
           <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
             ปริมาณข้อมูลประจำเดือน
+            {format(selectedDate, "MMMM yyyy", { locale: th })}
           </Typography>
         </Grid>
         <Grid item lg={12} md={12} sm={12}>

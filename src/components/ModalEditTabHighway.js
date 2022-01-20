@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { updateHighway } from "../service/allService";
 
 const apiURL = axios.create({
   baseURL:
@@ -52,6 +51,7 @@ export default function ModalEditTabHighway(props) {
     highway_name: "",
   });
 
+
   const { id, highway_name } = inputModal;
 
   const handleChange = (event) => {
@@ -66,7 +66,7 @@ export default function ModalEditTabHighway(props) {
     };
     console.log(sendData);
 
-    const result = await Swal.fire({
+    Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -74,27 +74,32 @@ export default function ModalEditTabHighway(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    });
-    if (result.isConfirmed) {
-      const res = updateHighway(sendData);
-      if (res.data.status === true) {
-        Swal.fire({
-          title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        props.onClick();
-        props.onFetchData();
-      } else {
-        Swal.fire({
-          title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURL
+          .post("/update-highway", sendData)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => props.onClick())
+          .then(() => props.onFetchData());
       }
-    }
+    });
   };
 
   useEffect(() => {

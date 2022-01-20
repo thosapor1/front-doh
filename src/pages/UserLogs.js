@@ -87,7 +87,7 @@ export default function UserLogs() {
   const [page, setPage] = useState(1);
   const [dataForTable, setDataForTable] = useState([]);
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (value) => {
     fetchData(value);
   };
 
@@ -124,7 +124,6 @@ export default function UserLogs() {
     });
     //   .then((res) => setDataForTable(res.data));
   };
-  
   useEffect(() => {
     fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

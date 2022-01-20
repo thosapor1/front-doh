@@ -80,9 +80,9 @@ export default function TransactionMonitorV1() {
     imageFull: 0,
     tableHeaderData: [
       { id: "0", label: "No." },
-      { id: "1", label: "trg_id" },
-      { id: "2", label: "em_record_ts" },
-      { id: "3", label: "ts_timestamp" },
+      { id: "1", label: "transactionId" },
+      { id: "2", label: "เวลาเข้าด่าน" },
+      { id: "3", label: "เวลามาถึงด่าน" },
     ],
     tableBodyData: [],
     gateValue: "0",
@@ -219,14 +219,14 @@ export default function TransactionMonitorV1() {
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
-      page: pageId.toString(),
+      page: pageId,
       date: date,
-      checkpoint: checkpoint.toString(),
-      gate: gate.toString(),
+      checkpoint_id: checkpoint.toString(),
+      gate_id: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/fullaudit-monitor", sendData).then((res) => {
+    apiURL.post("/audit-transaction-monitor", sendData).then((res) => {
       setDataAudit({
         ...dataAudit,
         checkpointList: res.data.dropdown_Checkpoint,
@@ -248,7 +248,7 @@ export default function TransactionMonitorV1() {
     }
 
     const date = format(selectDate, "yyyy-MM-dd");
-
+    
     const sendData = {
       page: pageId,
       date: date,
@@ -423,19 +423,18 @@ export default function TransactionMonitorV1() {
   };
 
   const getImage1 = (item) => {
-    const date = item.em_record_ts.split(" ").shift();
+    const date = item.timestamp.split(" ").shift();
     const sendData = {
-      id: item.id.toString(),
+      audit_transactionId: item.audit_transactionId,
       date: date,
     };
-
     console.log(sendData);
-    apiURL.post("/fullaudit-monitor-activity", sendData).then((res) => {
+    apiURL.post("/audit-transaction-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setDataAudit({
         ...dataAudit,
-        imageCrop: res.data.imgBW,
-        imageFull: res.data.imgRGB,
+        imageCrop: res.data.imageCrop,
+        imageFull: res.data.imageFull,
       });
     });
   };

@@ -281,7 +281,7 @@ export default function ModalActivity2(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "downloadFile");
+      link.setAttribute("download", "downloadFile.pdf");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);

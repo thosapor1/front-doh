@@ -19,15 +19,13 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity2 from "./ModalSuperActivity2";
-import { format } from "date-fns";
-import { getDataSuperauditActivity } from "../service/allService";
 // import format from "date-fns/format";
 
-const apiURLv2 = axios.create({
+const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
 const detailStatus = [
@@ -65,11 +63,6 @@ const detailStatus = [
     state: 7,
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
-  },
-  {
-    state: 8,
-    color: "lightgreen",
-    label: "ตรวจสอบแล้ว",
   },
 ];
 const useStyles = makeStyles((theme) => {
@@ -179,38 +172,38 @@ export default function TableSuperdisplay2(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
 
-  const fetchData = async (ts, index1, index2) => {
+  const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
-
-    console.log(index1, index2);
-    const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
-    const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
+    console.log(timeStamp);
+    let date = timeStamp.split(" ").shift();
 
     const sendData = {
-      transactionId: [ts, tsBefore1, tsBefore2],
-      date: format(checkDate, "yyyy-MM-dd"),
+      transactionId: ts,
+      date: date,
     };
+    let endpoint = "";
 
-    const res = await getDataSuperauditActivity(sendData);
+    endpoint = "/display-superaudit-activity2";
+    setOpen(true);
 
-    if (!!res && !!res.data.status) {
-      Swal.close();
-      SetDataForActivity(res.data);
-      console.log("res2:", res.data);
-      setOpen(true);
-    } else {
-      Swal.fire({
-        icon: "error",
-        text: "เกิดข้อผิดพลาดกับเซิฟเวอร์ ติดต่อผู้ดูแลระบบ",
+    apiURL
+      .post(endpoint, sendData)
+      .then((res) => {
+        Swal.close();
+        SetDataForActivity(res.data);
+        console.log("res2:", res.data);
+      })
+      .catch((error) => {
+        handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
       });
-      console.log("test");
-    }
   };
 
   // const handleOpen = (state) => {
@@ -283,6 +276,9 @@ export default function TableSuperdisplay2(props) {
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
+                สถานะ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -301,13 +297,21 @@ export default function TableSuperdisplay2(props) {
                 ประเภท TS
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                ค่าผ่านทาง
+                member
+              </TableCell>
+              <TableCell colSpan={3} align="center" className={classes.header}>
+                ตรวจสอบ
+              </TableCell>
+              <TableCell
+                colSpan={2}
+                align="center"
+                className={classes.header}
+                style={{ backgroundColor: "orange" }}
+              >
+                จัดเก็บ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                สถานะ
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
@@ -323,23 +327,73 @@ export default function TableSuperdisplay2(props) {
               <TableCell align="center" className={classes.header2}>
                 HQ
               </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
+                ค่าผ่านทาง
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
+                ค่าปรับ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
+                รวม
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
+                เรียกเก็บ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header2}>
+                ชำระ
+              </TableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
+              ? dataList.resultsDisplay.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, index - 1, index - 2);
+                      fetchData(
+                        data.transactionId,
+                        data.state,
+                        data.match_timestamp
+                      );
                     }}
                     className={classes.tableRow}
                   >
                     <TableCell align="center" className={classes.tableCell}>
+                      <FiberManualRecordIcon
+                        style={{
+                          // fontSize: "0.8rem",
+                          color:
+                            data.state === 2
+                              ? "#FF2400"
+                              : data.state === 3
+                              ? "blue"
+                              : data.state === 4
+                              ? "orange"
+                              : data.state === 5
+                              ? "black"
+                              : data.state === 6
+                              ? "##46005E"
+                              : data.state === 7
+                              ? "green"
+                              : data.state === 8
+                              ? "#FF2400"
+                              : "lightgray",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
+                      {!!data.match_gate && data.match_checkpoint === 1
+                        ? "ทับช้าง1"
+                        : !!data.match_gate && data.match_checkpoint === 2
+                        ? "ทับช้าง2"
+                        : !!data.match_gate && data.match_checkpoint === 3
+                        ? "ธัญบุรี1"
+                        : !!data.match_gate && data.match_checkpoint === 4
+                        ? "ธัญบุรี2"
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
@@ -368,36 +422,30 @@ export default function TableSuperdisplay2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
+                      {!!data.match_transaction_type
+                        ? data.match_transaction_type_name
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.type ? data.type : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {`-`}
+                      {!!data.fine ? data.fine : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
+                      {!!data.match_total_cost ? data.match_total_cost : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      -
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -414,6 +462,12 @@ export default function TableSuperdisplay2(props) {
         dropdown={dropdown}
         checkDate={checkDate}
         page={page}
+      />
+      <ModalReadOnly2
+        dataList={dataForActivity}
+        open={open1}
+        onClick={handleClose}
+        onFetchData={props.onFetchData}
       />
     </div>
   );

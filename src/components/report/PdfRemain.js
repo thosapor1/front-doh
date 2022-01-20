@@ -5,16 +5,15 @@ import { image } from "../../image/logo_base64";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
   THSarabun: {
-    normal: "THSarabunNew.ttf",
-    bold: "THSarabunNew Bold.ttf",
-    italics: "THSarabunNew Italic.ttf",
-    bolditalics: "THSarabunNew Bold Italic.ttf",
+    normal: "THSarabun.ttf",
+    bold: "THSarabun Bold.ttf",
+    italics: "THSarabun Italic.ttf",
+    bolditalics: "THSarabun Bold Italic.ttf",
   },
 };
 
 export default function PdfRemain() {
-  let win = window.open("", "_blank");
-  const date = new Date();
+  const date = "วันอังคารที่ 29 ธันวาคม 2563";
   let docDefinition = {
     footer: function (currentPage, pageCount) {
       return [
