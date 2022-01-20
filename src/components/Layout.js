@@ -292,6 +292,8 @@ export default function Layout({ children }) {
                       <MonetizationOnRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
                       <ListAltRoundedIcon />
+                    ) : item.path === "/Payment" ? (
+                      <MonetizationOnRoundedIcon />
                     ) : (
                       ""
                     )}
