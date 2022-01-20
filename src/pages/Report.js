@@ -26,6 +26,10 @@ import BlockTrafficReport from "../components/report/BlockTrafficReport";
 import PdfSumMonthly from "../components/report/PdfSumMonthly";
 import PdfRemain from "../components/report/PdfRemain";
 import PdfTraffic from "../components/report/PdfTraffic";
+import BlockTestPDF from "../components/report/BlockTestPDF";
+import TestPDF from "../components/report/TestPDF";
+import exportExcel from "../components/report/exportExcel";
+import FilterSection3 from "../components/report/FilterSection3";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -174,6 +178,7 @@ export default function Report() {
               {...a11yProps(3)}
               className={classes.tab}
             />
+            <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -315,6 +320,40 @@ export default function Report() {
                 <BlockTrafficReport />
 
                 <TableReportTrafficMonthly dataList={allTsTable3} />
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection3
+                onFetchData={fetchData}
+                report={TestPDF}
+                exportExcel={exportExcel}
+              />
+              <Paper style={{ marginTop: 20 }}>
+                <Typography
+                  style={{
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  ทับช้าง1
+                </Typography>
+                <Typography
+                  style={{
+                    paddingLeft: 20,
+                    fontWeight: 600,
+                    fontFamily: "sarabun",
+                  }}
+                >
+                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
+                </Typography>
+
+                <BlockTestPDF />
+
+                {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>

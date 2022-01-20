@@ -17,18 +17,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import AuditTable from "../components/AuditTable";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import SearchTwoToneIcon from "@material-ui/icons/SearchTwoTone";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import { getDataRawTransaction, getDropdown } from "../service/allService";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V3}`
-      : `${process.env.REACT_APP_BASE_URL_V3}`,
-});
 const useStyle = makeStyles((theme) => {
   return {
     "@global": {
@@ -53,12 +47,12 @@ const useStyle = makeStyles((theme) => {
     },
     containedSelect: {},
     btn: {
-      // width: 120,
       backgroundColor: "#46005E",
+      color: "white",
+      margin: theme.spacing(1),
       "&:hover": {
         backgroundColor: "#6a008f",
       },
-      marginTop: 15,
     },
     textField: {
       width: 150,
@@ -74,52 +68,54 @@ const useStyle = makeStyles((theme) => {
       width: "100%",
       height: 100,
       display: "flex",
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(1),
     },
     cardSection: {
       display: "flex",
       justifyContent: "space-between",
       marginTop: 10,
+      columnGap: 10,
     },
     filterSection: {
-      display: "flex",
-      padding: theme.spacing(2),
-      width: "auto",
+      padding: theme.spacing(1),
       marginTop: 10,
+      justifyContent: "center",
+      alignItems: "center",
     },
     searchButton: {
       textAlign: "right",
       [theme.breakpoints.down("md")]: {},
     },
+    input1: {
+      "& .MuiInputBase-input": {
+        fontSize: "0.8rem",
+      },
+      "& .MuiSelect-selectMenu": {
+        height: 15,
+      },
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
+        fontSize: "0.8rem",
+      },
+      width: 150,
+      margin: theme.spacing(1),
+      [theme.breakpoints.down("lg")]: {
+        width: 150,
+      },
+    },
   };
 });
 
-const statusValue = [
-  { id: 0, value: "0", label: "ทุกสถานะ" },
-  { id: 1, value: "1", label: "รายการปกติ" },
-  { id: 2, value: "2", label: "รายการข้อมูลไม่ตรงกัน" },
-  { id: 3, value: "3", label: "รายการสูญหาย" },
-];
-
 export default function RawTransaction() {
-  const [state, setState] = useState({
-    summary: {
-      total: 0,
-      normal: 0,
-      unMatch: 0,
-      miss: 0,
-    },
-    record: [{}],
-  });
-
+  const [state, setState] = useState([]);
   const [summary, setSummary] = useState([]);
   const [page, setPage] = useState(1);
-  const [station, setStation] = useState("");
-  const [id, setId] = useState(0);
+  const [station, setStation] = useState(0);
   const [status, setStatus] = useState(0);
-  const [subState, setSubState] = useState(0);
-  const [stations, setStations] = useState([]);
+  const [dropdown, setDropdown] = useState([]);
   const classes = useStyle();
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -134,50 +130,29 @@ export default function RawTransaction() {
 
   const dataCard = [
     {
-      value: summary.total,
+      value: !!summary ? summary.ts_total : 0,
       status: "total",
       label: "รายการทั้งหมด",
     },
     {
-      value: summary.normal,
+      value: !!summary ? summary.ts_normal : 0,
       status: "normal",
       label: "รายการปกติ",
     },
     {
-      value: summary.unMatch,
+      value: !!summary ? summary.ts_not_normal : 0,
       status: "unMatch",
       label: "รายการข้อมูลไม่ตรงกัน",
     },
     {
-      value: summary.miss,
+      value: !!summary ? summary.ts_miss : 0,
       status: "miss",
       label: "รายการสูญหาย",
     },
   ];
 
-  const handleStatusChange = (event) => {
-    setId(event.target.value);
-    setStatus(event.target.value);
-    if (event.target.value === 3) {
-      setStatus(2);
-      setSubState(2);
-    } else if (event.target.value === 2) {
-      setStatus(2);
-      setSubState(1);
-    } else if (event.target.value === 1) {
-      setStatus(1);
-      setSubState(1);
-    } else if (event.target.value === 0) {
-      setStatus(0);
-      setSubState(0);
-    }
-    console.log(`subState: ${subState}`);
-    console.log(`status: ${status}`);
-  };
-
-  async function fetchData(pageId = 1) {
+  const fetchData = async (pageId = 1) => {
     const date = format(selectedDate, "yyyy-MM-dd");
-    // const date = "2021-08-10";
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -191,37 +166,27 @@ export default function RawTransaction() {
     }
 
     const sendData = {
-      page: pageId,
-      checkpoint_id: station,
-      datetime: date,
-      transactionStatus: status,
-      subState: subState,
+      page: pageId.toString(),
+      checkpoint: station.toString(),
+      date: date,
+      state: status.toString(),
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
-    await apiURL.post("/rawdata", sendData).then((res) => {
+    const res = await getDataRawTransaction(sendData);
+    setState(!!res ? res.data : []);
+    setSummary(!!res ? res.data.summary : []);
+    // console.log(res.data.dropdown_Checkpoint);
+    if (!!res) {
       Swal.close();
-      setState({
-        summary: {
-          total: 0,
-          normal: 0,
-          unMatch: 0,
-          miss: 0,
-        },
-        record: [],
-      });
-      setState(res.data);
-      setSummary(!!res.data.summary ? res.data.summary : summary);
-      setStations(
-        !!res.data.dropdown_Checkpoint ? res.data.dropdown_Checkpoint : stations
-      );
-      console.log(res.data.dropdown_Checkpoint);
-      // console.log(`state_length: ${state.record.length}`);
-    });
-  }
+    }
+  };
 
   useEffect(() => {
-    fetchData();
-    // console.log('hello test')
+    async function fetchDropdown() {
+      const res = await getDropdown();
+      setDropdown(res.data);
+    }
+    fetchDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -232,88 +197,73 @@ export default function RawTransaction() {
         </Typography>
         {/* Search Block */}
         <Grid container component={Paper} className={classes.filterSection}>
-          <Grid item className={classes.containedSelect} xl={8} lg={8} md={8}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className={classes.textField}
-                style={{ fontSize: "0.8rem" }}
-                disableToolbar
-                variant="inline"
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
-                margin="normal"
-                // minDate={selectedDate}
-                id="date"
-                label="วันที่เข้าด่าน"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-            <TextField
-              select
-              variant="outlined"
-              label="ด่าน"
-              className={classes.textField}
-              onChange={(event) => setStation(event.target.value)}
-              name="station"
-              value={station}
-            >
-              {stations.map((station) => (
-                <MenuItem key={station.id} value={station.id}>
-                  {station.checkpoint_name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              name="status"
-              select
-              variant="outlined"
-              label="สถานะ"
-              className={classes.textField}
-              value={id}
-              onChange={(event) => {
-                handleStatusChange(event);
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              className={classes.input1}
+              style={{ width: 200 }}
+              disableToolbar
+              variant="inline"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              margin="normal"
+              // minDate={selectedDate}
+              id="date"
+              label="วันที่เข้าด่าน"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
               }}
-            >
-              {statusValue.map((item) => (
-                <MenuItem key={item.label} value={item.id}>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </TextField>
+            />
+          </MuiPickersUtilsProvider>
+          <TextField
+            select
+            variant="outlined"
+            label="ด่าน"
+            className={classes.input1}
+            onChange={(event) => setStation(event.target.value)}
+            name="station"
+            value={station}
+          >
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+          <TextField
+            name="status"
+            select
+            variant="outlined"
+            label="สถานะ"
+            className={classes.input1}
+            value={status}
+            onChange={(event) => {
+              setStatus(event.target.value);
+            }}
+          >
+            {!!dropdown.ts_status
+              ? dropdown.state.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
 
-            <Button
-              className={classes.btn}
-              color="primary"
-              variant="contained"
-              startIcon={<FilterListIcon />}
-              onClick={() => {
-                fetchData(1);
-              }}
-            >
-              กรองข้อมูล
-            </Button>
-          </Grid>
-          <Grid item xl={4} lg={4} md={4} className={classes.searchButton}>
-            <TextField
-              className={classes.textField}
-              variant="outlined"
-              id="search"
-              label="ค้นหา"
-              autoComplete="off"
-            ></TextField>
-            <Button
-              className={classes.btn}
-              color="primary"
-              variant="contained"
-              startIcon={<SearchTwoToneIcon />}
-            >
-              ค้นหา
-            </Button>
-          </Grid>
+          <Button
+            className={classes.btn}
+            color="primary"
+            variant="contained"
+            startIcon={<FilterListIcon />}
+            onClick={() => {
+              fetchData(1);
+            }}
+          >
+            กรองข้อมูล
+          </Button>
         </Grid>
 
         {/* Card Section */}
@@ -345,13 +295,15 @@ export default function RawTransaction() {
                           : card.status === "unMatch"
                           ? "orange"
                           : "red",
-                      fontSize: "0.8rem",
+                      fontSize: "1rem",
+                      fontWeight: 700,
                     }}
                   >
                     {card.label}
                   </Typography>
-                  <Typography style={{ fontSize: "0.8rem" }}>
-                    {card.value} {card.status === "revenue" ? "บาท" : "รายการ"}
+                  <Typography style={{ fontSize: "1rem" }}>
+                    {!!card.value ? card.value.toLocaleString() : "0"}
+                    {card.status === "revenue" ? " บาท" : " รายการ"}
                   </Typography>
                 </Grid>
                 <Grid>
@@ -365,9 +317,11 @@ export default function RawTransaction() {
         {/* Table Blcok */}
         <Paper style={{ marginTop: 10, padding: "0px 10px" }}>
           <AuditTable
-            datalist={state}
+            dataList={state}
             page={page}
             onChange={handlePageChange}
+            onFetchData={fetchData}
+            checkDate={selectedDate}
           />
         </Paper>
       </Container>

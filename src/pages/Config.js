@@ -13,13 +13,7 @@ import TableCheckpointTab from "../components/TableCheckpointTab";
 import TableFeeTab from "../components/TableFeeTab";
 import TableGateTab from "../components/TableGateTab";
 import TableHighwayTAb from "../components/TableHighwayTab";
-
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
+import { getDataConfig } from "../service/allService";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,10 +79,10 @@ export default function Config() {
 
   const handlePageChange = (event, value) => {
     fetchData(value);
-    console.log(page)
+    console.log(page);
   };
 
-  const fetchData = (pageId = 1) => {
+  const fetchData = async (pageId = 1) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -100,11 +94,13 @@ export default function Config() {
       setPage1(pageId);
     }
 
-    apiURL.post("/system-config").then((res) => {
+    const res = await getDataConfig();
+
+    if (!!res) {
       Swal.close();
       setAllTsTable(res.data);
       console.log("res: ", res.data);
-    });
+    }
   };
 
   useEffect(() => {

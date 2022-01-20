@@ -5,6 +5,7 @@ import {
   MenuItem,
   Paper,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
@@ -75,7 +76,7 @@ const valueMenuItem = [
 ];
 
 export default function FilterSection2(props) {
-  const { onFetchData, report } = props;
+  const { onFetchData, report, exportExcel } = props;
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -135,16 +136,29 @@ export default function FilterSection2(props) {
         >
           ดูข้อมูล
         </Button>
+
         <Button
           variant="contained"
           className={classes.btn}
           style={{ backgroundColor: "lightpink" }}
           onClick={() => {
-            report();
+            report(selectedDate);
           }}
         >
           pdf
         </Button>
+
+        <Button
+          variant="contained"
+          className={classes.btn}
+          style={{ backgroundColor: "lightgreen" }}
+          onClick={() => {
+            exportExcel(selectedDate);
+          }}
+        >
+          excel
+        </Button>
+        <Typography id="load"></Typography>
       </Grid>
     </>
   );

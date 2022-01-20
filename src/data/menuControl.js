@@ -34,11 +34,6 @@ export const menuItemsForSuperAdmin = [
     icon: "poll",
     path: "/auditDisplay",
   },
-  {
-    text: "รายได้รายวัน",
-    icon: "task",
-    path: "/auditDisplay2",
-  },
   // {
   //   text: "super audit display",
   //   icon: "remove_red_eye",
@@ -59,16 +54,25 @@ export const menuItemsForSuperAdmin = [
     icon: "format_list_bulleted",
     path: "/report",
   },
-
-  {
-    text: "transactionMonitor",
-    icon: "preview",
-    path: "/transactionMonitorV1",
-  },
+  // {
+  //   text: "รายการรอตรวจสอบ",
+  //   icon: "pending_actions",
+  //   path: "/pk3Display",
+  // },
+  // {
+  //   text: "transactionMonitor",
+  //   icon: "preview",
+  //   path: "/transactionMonitorV1",
+  // },
   {
     text: "ปริมาณข้อมูล",
     icon: "data_saver_off",
     path: "/DataVolume",
+  },
+  {
+    text: "Monitor Control",
+    icon: "receipt_long",
+    path: "/MonitorData",
   },
   // {
   //   text: "รายการบังคับ",
@@ -127,9 +131,14 @@ export const menuItemsForAdmin = [
     path: "/dashboard2",
   },
   {
-    text: "รายได้รายวัน",
+    text: "รายได้พึงได้รายวัน",
     icon: "task",
-    path: "/auditDisplay2",
+    path: "/expectIncome",
+  },
+  {
+    text: "รายได้รายวัน",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",
@@ -188,9 +197,14 @@ export const menuItemsForMember = [
     path: "/dashboard2",
   },
   {
-    text: "รายได้รายวัน",
+    text: "รายได้พึงได้รายวัน",
     icon: "task",
-    path: "/auditDisplay2",
+    path: "/expectIncome",
+  },
+  {
+    text: "รายได้รายวัน",
+    icon: "poll",
+    path: "/auditDisplay",
   },
   // {
   //   text: "รายได้คงค้าง",

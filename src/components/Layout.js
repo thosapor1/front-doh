@@ -7,6 +7,7 @@ import {
   Icon,
   IconButton,
   makeStyles,
+  SvgIcon,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -35,6 +36,19 @@ import Cookies from "js-cookie";
 import axios from "axios";
 // import Login from "../pages/Login";
 import { Redirect } from "react-router-dom";
+import EventRoundedIcon from "@material-ui/icons/EventRounded";
+import ReceiptRoundedIcon from "@material-ui/icons/ReceiptRounded";
+import SupervisedUserCircleRoundedIcon from "@material-ui/icons/SupervisedUserCircleRounded";
+import DataUsageRoundedIcon from "@material-ui/icons/DataUsageRounded";
+import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
+import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
+import SettingsApplicationsRoundedIcon from "@material-ui/icons/SettingsApplicationsRounded";
+import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalendarRounded";
+import ListAltRoundedIcon from "@material-ui/icons/ListAltRounded";
+import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRounded";
+import ListRoundedIcon from "@material-ui/icons/ListRounded";
+import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
+import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
 
 const drawerWidth = 220;
 const drawerColor = "#46005E";
@@ -55,7 +69,7 @@ const useStyles = makeStyles((theme) => {
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      zIndex: 1,
+      zIndex: 2,
     },
     drawerPaper: {
       width: drawerWidth,
@@ -85,7 +99,7 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "#9A0049",
-      zIndex: 2,
+      // zIndex: 1,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
@@ -306,7 +320,20 @@ export default function Layout({ children }) {
               button
               onClick={() => history.push(item.path)}
             >
-              <Icon style={{ marginRight: 15 }}>{item.icon}</Icon>
+              <Icon style={{ marginRight: 15 }}>
+                {item.path === "/user" ? (
+                  <AccountCircleRoundedIcon />
+                ) : item.path === "/5" ? (
+                  <BackupRoundedIcon />
+                ) : item.path === "/config" ? (
+                  <SettingsApplicationsRoundedIcon />
+                ) : item.path === "/userLogs" ? (
+                  <PermContactCalendarRoundedIcon />
+                ) : (
+                  ""
+                )}
+              </Icon>
+
               <ListItemText
                 primary={item.text}
                 classes={{ primary: classes.listItemText }}
