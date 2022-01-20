@@ -80,9 +80,9 @@ export default function TransactionMonitorV1() {
     imageFull: 0,
     tableHeaderData: [
       { id: "0", label: "No." },
-      { id: "1", label: "transactionId" },
-      { id: "2", label: "เวลาเข้าด่าน" },
-      { id: "3", label: "เวลามาถึงด่าน" },
+      { id: "1", label: "trg_id" },
+      { id: "2", label: "em_record_ts" },
+      { id: "3", label: "ts_timestamp" },
     ],
     tableBodyData: [],
     gateValue: "0",
