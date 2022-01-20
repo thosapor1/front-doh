@@ -276,6 +276,8 @@ export default function Layout({ children }) {
                       <ListAltRoundedIcon />
                     ) : item.path === "/expectIncome" ? (
                       <ListRoundedIcon />
+                    ) : item.path === "/expectIncomeV2" ? (
+                      <ListRoundedIcon />
                     ) : item.path === "/auditDisplay" ? (
                       <PlaylistAddCheckRoundedIcon />
                     ) : item.path === "/superAuditDisplay2" ? (

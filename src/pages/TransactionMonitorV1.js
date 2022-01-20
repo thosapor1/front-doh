@@ -630,6 +630,10 @@ export default function TransactionMonitorV1() {
                   pageOnChange={pageOnChange1}
                   // style={?inActiveAudit:activeAudit}
                   color={"red"}
+                  onFetchData={filter}
+                  selectedDate={dataAudit.date}
+                  checkpoint={dataAudit.checkpointValue}
+                  gate={dataAudit.gateValue}
                 />
               </Grid>
 
@@ -681,6 +685,10 @@ export default function TransactionMonitorV1() {
                   page={pagination2.page}
                   pageOnChange={pageOnChange2}
                   color={"green"}
+                  onFetchData={filter2}
+                  selectedDate={dataAW.date}
+                  checkpoint={dataAW.checkpointValue}
+                  gate={dataAW.gateValue}
                 />
               </Grid>
 
@@ -735,6 +743,10 @@ export default function TransactionMonitorV1() {
                   page={pagination3.page}
                   pageOnChange={pageOnChange3}
                   color={"blue"}
+                  onFetchData={filter3}
+                  selectedDate={dataFetc.date}
+                  checkpoint={dataFetc.checkpointValue}
+                  gate={dataFetc.gateValue}
                 />
               </Grid>
             </Grid>
