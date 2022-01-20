@@ -80,10 +80,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 155,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 155,
       },
     },
     input1: {
