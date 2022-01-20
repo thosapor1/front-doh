@@ -154,7 +154,7 @@ export default function FilterSection3(props) {
           className={classes.btn}
           style={{ backgroundColor: "lightgreen" }}
           onClick={() => {
-            exportExcel(selectedDate);
+            exportExcel(selectedDate, checkpoint);
           }}
         >
           excel

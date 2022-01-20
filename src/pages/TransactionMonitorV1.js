@@ -219,14 +219,14 @@ export default function TransactionMonitorV1() {
 
     const date = format(selectDate, "yyyy-MM-dd");
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       date: date,
-      checkpoint_id: checkpoint.toString(),
-      gate_id: gate.toString(),
+      checkpoint: checkpoint.toString(),
+      gate: gate.toString(),
     };
     console.log(`sendData:${JSON.stringify(sendData)}`);
 
-    apiURL.post("/audit-transaction-monitor", sendData).then((res) => {
+    apiURL.post("/fullaudit-monitor", sendData).then((res) => {
       setDataAudit({
         ...dataAudit,
         checkpointList: res.data.dropdown_Checkpoint,
@@ -248,7 +248,7 @@ export default function TransactionMonitorV1() {
     }
 
     const date = format(selectDate, "yyyy-MM-dd");
-    
+
     const sendData = {
       page: pageId,
       date: date,
@@ -423,18 +423,19 @@ export default function TransactionMonitorV1() {
   };
 
   const getImage1 = (item) => {
-    const date = item.timestamp.split(" ").shift();
+    const date = item.em_record_ts.split(" ").shift();
     const sendData = {
-      audit_transactionId: item.audit_transactionId,
+      id: item.id.toString(),
       date: date,
     };
+
     console.log(sendData);
-    apiURL.post("/audit-transaction-monitor-activity", sendData).then((res) => {
+    apiURL.post("/fullaudit-monitor-activity", sendData).then((res) => {
       console.log(res.data);
       setDataAudit({
         ...dataAudit,
-        imageCrop: res.data.imageCrop,
-        imageFull: res.data.imageFull,
+        imageCrop: res.data.imgBW,
+        imageFull: res.data.imgRGB,
       });
     });
   };

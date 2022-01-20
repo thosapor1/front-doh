@@ -254,6 +254,12 @@ export default function TestPDF(selectedDate, checkpoint) {
               }, 1000);
             },
           });
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+          });
         });
     },
   });
