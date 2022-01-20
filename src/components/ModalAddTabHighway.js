@@ -10,13 +10,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
+import { addHighway } from "../service/allService";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -59,13 +53,13 @@ export default function ModalAddTabHighway(props) {
     console.log(inputModal);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const sendData = {
       highway_name: highway_name,
     };
     console.log(sendData);
 
-    Swal.fire({
+    const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -73,32 +67,28 @@ export default function ModalAddTabHighway(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        apiURL
-          .post("/add-highway", sendData)
-          .then((res) => {
-            console.log(res.data);
-            if (res.data.status === true) {
-              Swal.fire({
-                title: "Success",
-                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Fail",
-                text: "บันทึกข้อมูลไม่สำเร็จ",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .then(() => props.onClick())
-          .then(() => props.onFetchData());
-      }
     });
+
+    if (result.isConfirmed) {
+      const res = await addHighway(sendData);
+      if (!!res && !!res.data.status) {
+        Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        props.onClick();
+        props.onFetchData();
+      } else {
+        Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    }
   };
 
   const body = (

@@ -18,13 +18,14 @@ import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
 import Report from "./pages/Report";
 import TransactionMonitorV1 from "./pages/TransactionMonitorV1";
-
-import AuditDisplay2 from "./pages/AuditDisplay2";
 import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
-import Test from "./pages/Test";
+import ExpectIncome from "./pages/ExpectIncome";
+import CollectFromPk3 from "./pages/CollectFromPk3";
+import MenuDataMonitor from "./pages/MenuDataMonitor";
+import MonitorData from "./pages/MonitorData";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -49,11 +50,12 @@ function App() {
           <Route exact path="/" component={Login} />
           <Route path="/audit_dev" component={Login} />
           <Layout>
-            <Route path="/rawTransaction" component={RawTransaction} />
             <Route path="/dashboard" component={DashBoard} />
             <Route path="/dashboard2" component={DashBoard2} />
+            <Route path="/rawTransaction" component={RawTransaction} />
+            <Route path="/collectFromPk3" component={CollectFromPk3} />
+            <Route path="/expectIncome" component={ExpectIncome} />
             <Route path="/auditDisplay" component={AuditDisplay} />
-            <Route path="/auditDisplay2" component={AuditDisplay2} />
             <Route path="/pk3Display" component={Pk3Display} />
             <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
             <Route path="/superAuditDisplay2" component={SuperAuditDisplay2} />
@@ -63,14 +65,12 @@ function App() {
             <Route path="/report" component={Report} />
             <Route path="/dataVolume" component={DataVolume} />
             <Route path="/mandatoryItem" component={MandatoryItem} />
+            <Route path="/MonitorData" component={MonitorData} />
+            <Route path="/MenuDataMonitor" component={MenuDataMonitor} />
             <Route
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}
             />
-            {/* <Route
-              path="/test"
-              component={Test}
-            /> */}
           </Layout>
         </Switch>
       </HashRouter>

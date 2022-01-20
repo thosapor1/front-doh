@@ -19,14 +19,21 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TablePK3display from "../components/AllTsTableForPk3Activity";
+import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
+import TablePK3display2 from "../components/AllTsTableForPk3Activity2";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -54,11 +61,11 @@ const useStyles = makeStyles((theme) => {
     allTsTable: {
       padding: theme.spacing(1),
       backgroundColor: "white",
-      
     },
     card: {
       padding: "1rem",
-      height: 80,
+      height: 112,
+      paddingTop: 30,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -127,28 +134,19 @@ const valueStatus = [
   },
 ];
 
-const valueTransaction = [
-  {
-    id: 1,
-    value: 3,
-    label: "รอจัดเก็บตรวจสอบ",
-  },
-];
-
 export default function PK3Display() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
   const [status_select, setStatus_select] = useState("3");
-  // const [status, setStatus] = useState(0);
-  // const [subState, setSubState] = useState(0);
+  const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
-  const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [eyesStatus, setEyesStatus] = useState([]);
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -175,6 +173,7 @@ export default function PK3Display() {
   };
 
   const fetchData = (pageId = 1) => {
+    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -195,9 +194,9 @@ export default function PK3Display() {
     // console.log(selectCarType);
     // console.log(status_select);
     const sendData = {
-      page: pageId,
-      checkpoint_id: checkpoint,
-      gate_id: selectGate,
+      page: pageId.toString(),
+      checkpoint: checkpoint,
+      gate: selectGate,
       state: status_select,
       vehicleClass: selectCarType,
       date: date,
@@ -207,7 +206,7 @@ export default function PK3Display() {
     };
     console.log(sendData);
 
-    apiURL
+    apiURLv2
       .post("/display-pk3", sendData)
       .then((res) => {
         Swal.close();
@@ -230,7 +229,17 @@ export default function PK3Display() {
         );
 
         setAllTsTable(res.data.status !== false ? res.data : []);
-        setCardData(res.data.status !== false ? res.data.summary : []);
+        setSummary(res.data.status !== false ? res.data.summary : []);
+        if (!!res && !!res.data.resultsDisplay) {
+          for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+            eyes.push({
+              state: res.data.resultsDisplay[i].state,
+              readFlag: res.data.resultsDisplay[i].pk3_readFlag,
+              transactionId: res.data.resultsDisplay[i].transactionId,
+            });
+          }
+          setEyesStatus(eyes);
+        }
       })
       .catch((error) => {
         // handleClose();
@@ -266,7 +275,7 @@ export default function PK3Display() {
     );
 
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       checkpoint_id: "0",
       datetime: date,
       startTime: timeStart,
@@ -309,6 +318,29 @@ export default function PK3Display() {
         });
       });
   };
+
+  const dataCard = [
+    {
+      value: !!summary.ts_count ? summary.ts_count : 0,
+      status: "checklist",
+      label: "จำนวนรายการตรวจสอบ",
+    },
+    // {
+    //   value: !!summary.normal ? summary.normal : 0,
+    //   status: "normal",
+    //   label: "รายการปกติ",
+    // },
+    // {
+    //   value: !!summary.unMatch ? summary.unMatch : 0,
+    //   status: "unMatch",
+    //   label: "รายการข้อมูลไม่ตรงกัน",
+    // },
+    // {
+    //   value: !!summary.miss ? summary.miss : 0,
+    //   status: "miss",
+    //   label: "รายการสูญหาย",
+    // },
+  ];
 
   useEffect(() => {
     // fetchData();
@@ -489,7 +521,7 @@ export default function PK3Display() {
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
-          <Box>
+          <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
               value={transactionId}
               date={selectedDate}
@@ -503,46 +535,60 @@ export default function PK3Display() {
               endpoint="/audit-search"
             />
           </Box>
-          <Box style={{ display: "flex" }}>
-            <Paper className={classes.card}>
-              <Typography className={classes.typography}>
-                {`รายการทั้งหมด : ${
-                  !!cardData.ts_total ? cardData.ts_total.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`ปกติ : ${
-                  !!cardData.ts_normal ? cardData.ts_normal.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`ไม่ตรงกัน : ${
-                  !!cardData.ts_not_normal
-                    ? cardData.ts_not_normal.toLocaleString()
-                    : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                {`สูญหาย : ${
-                  !!cardData.ts_miss ? cardData.ts_miss.toLocaleString() : 0
-                }`}
-              </Typography>
-            </Paper>
 
-            <Paper className={classes.card} style={{ marginLeft: 10 }}>
-              <Typography className={classes.typography}>
-                {`รายได้ประมาณการ : ${
-                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                ชำระแล้ว : 0
-              </Typography>
-              <Typography className={classes.typography}>
-                ค้างชำระ : 0
-              </Typography>
-            </Paper>
-          </Box>
+          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
+            {dataCard.map((card, index) => (
+              <Grid
+                item
+                component={Paper}
+                key={index}
+                lg={4}
+                className={classes.card}
+                style={{
+                  borderLeft:
+                    card.status === "total"
+                      ? "3px solid gray"
+                      : card.status === "normal"
+                      ? "3px solid green"
+                      : card.status === "unMatch"
+                      ? "3px solid orange"
+                      : "3px solid red",
+                }}
+              >
+                <Grid
+                  container
+                  justifyContent="space-around"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color:
+                          card.status === "total"
+                            ? "gray"
+                            : card.status === "normal"
+                            ? "green"
+                            : card.status === "unMatch"
+                            ? "orange"
+                            : "red",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography style={{ fontSize: "1rem" }}>
+                      {card.value}{" "}
+                      {card.status === "revenue" ? "บาท" : "รายการ"}
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <DescriptionTwoToneIcon />
+                  </Grid>
+                </Grid>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
         {/* Table Section */}
         <Grid
@@ -551,13 +597,15 @@ export default function PK3Display() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TablePK3display
+            <TablePK3display2
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
               dropdown={dropdown}
               checkDate={selectedDate}
+              eyesStatus={eyesStatus}
+              setEyesStatus={setEyesStatus}
             />
           </Grid>
         </Grid>

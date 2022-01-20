@@ -13,20 +13,16 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalActivity2 from "./ModalActivity2";
 import format from "date-fns/format";
+import ModalActivity3 from "./ModalActivity3";
+import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
+import { getDataExpectIncomeActivity } from "../service/allService";
 // import format from "date-fns/format";
-
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
 
 const detailStatus = [
   {
@@ -49,11 +45,11 @@ const detailStatus = [
     color: "orange",
     label: "รอ super audit ตรวจสอบ",
   },
-  {
-    state: 5,
-    color: "black",
-    label: "รอพิจารณาพิเศษ",
-  },
+  // {
+  //   state: 5,
+  //   color: "black",
+  //   label: "รอพิจารณาพิเศษ",
+  // },
   {
     state: 6,
     color: "darkviolet",
@@ -63,6 +59,11 @@ const detailStatus = [
     state: 7,
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
+  },
+  {
+    state: 8,
+    color: "lightgreen",
+    label: "ตรวจสอบแล้ว",
   },
 ];
 const useStyles = makeStyles((theme) => {
@@ -81,6 +82,7 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
+      zIndex: 1,
     },
     header2: {
       backgroundColor: "#7C85BFff",
@@ -90,7 +92,7 @@ const useStyles = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 38,
-      // zIndex: 10,
+      zIndex: 1,
     },
     tableRow: {
       "&:hover": {
@@ -112,7 +114,14 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
+      height: 28,
     },
+    // tableCell2: {
+    //   cursor: "pointer",
+    //   fontSize: "0.75rem",
+    //   padding: "6px",
+    //   // height: 10,
+    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -130,6 +139,7 @@ const useStyles = makeStyles((theme) => {
         display: "block",
       },
       justifyItems: "center",
+      marginTop: "0.5rem",
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -155,6 +165,15 @@ const useStyles = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
+    selected: {
+      "&.Mui-selected, &.Mui-selected:hover": {
+        backgroundColor: "purple",
+        "& > .MuiTableCell-root": {
+          color: "yellow",
+          backgroundColor: "purple",
+        },
+      },
+    },
   };
 });
 
@@ -167,11 +186,24 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 export default function TableAuditDisplay2(props) {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
+  const [rowID, setRowID] = useState("");
 
-  const fetchData = async (ts, State, timeStamp) => {
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
+
+  const fetchData = async (ts, index1, index2) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -179,26 +211,23 @@ export default function TableAuditDisplay2(props) {
       // background: 'rgba(0,0,0,0.80)'
     });
 
+    console.log(index1, index2);
+    const tsBefore1 =
+      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
+    const tsBefore2 =
+      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
+
     const sendData = {
-      transactionId: ts,
+      transactionId: [ts, tsBefore1, tsBefore2],
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    apiURL
-      .post("/display-activity2", sendData)
-      .then((res) => {
-        Swal.close();
-        SetDataForActivity(res.data);
-        console.log("res2:", res.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        handleClose();
-        Swal.fire({
-          icon: "error",
-          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
-        });
-      });
+    const res = await getDataExpectIncomeActivity(sendData);
+    SetDataForActivity(!!res ? res.data : []);
+    if (!!res && !!res.status) {
+      Swal.close();
+      setOpen(true);
+    }
   };
 
   // const handleOpen = (state) => {
@@ -212,8 +241,13 @@ export default function TableAuditDisplay2(props) {
     setOpen(false);
   };
 
-  const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus(
+      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
+    );
+
+    console.log(eyesStatus);
+  };
 
   return (
     <div>
@@ -270,9 +304,6 @@ export default function TableAuditDisplay2(props) {
           <TableHead>
             <StyledTableRow>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                สถานะ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
@@ -291,21 +322,19 @@ export default function TableAuditDisplay2(props) {
                 ประเภท TS
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                member
+                ค่าผ่านทาง
               </TableCell>
-              <TableCell colSpan={3} align="center" className={classes.header}>
-                ตรวจสอบ
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                เลขที่ใบแจ้งหนี้
               </TableCell>
-              <TableCell
-                colSpan={2}
-                align="center"
-                className={classes.header}
-                style={{ backgroundColor: "orange" }}
-              >
-                จัดเก็บ
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                การชำระ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                สถานะ
               </TableCell>
             </StyledTableRow>
             <StyledTableRow>
@@ -321,73 +350,27 @@ export default function TableAuditDisplay2(props) {
               <TableCell align="center" className={classes.header2}>
                 HQ
               </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ค่าผ่านทาง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ค่าปรับ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                รวม
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                เรียกเก็บ
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header2}>
-                ชำระ
-              </TableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data) => (
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
+                      fetchData(data.transactionId, index - 1, index - 2);
+                      setRowID(index);
+                      ChangeEyeStatus(index);
                     }}
-                    className={classes.tableRow}
+                    // className={classes.tableRow}
+                    selected={rowID === index}
+                    className={classes.selected}
                   >
-                    <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
-                    </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate && data.match_checkpoint === 1
-                        ? "ทับช้าง1"
-                        : !!data.match_gate && data.match_checkpoint === 2
-                        ? "ทับช้าง2"
-                        : !!data.match_gate && data.match_checkpoint === 3
-                        ? "ธัญบุรี1"
-                        : !!data.match_gate && data.match_checkpoint === 4
-                        ? "ธัญบุรี2"
-                        : "-"}
+                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
@@ -416,30 +399,52 @@ export default function TableAuditDisplay2(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_transaction_type
-                        ? data.match_transaction_type_name
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.type ? data.type : "-"}
+                      {!!data.status ? data.status : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fine ? data.fine : "-"}
+                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_total_cost ? data.match_total_cost : "-"}
+                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.forceFlag && data.forceFlag === 1
+                        ? "บังคับ"
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag ? "บังคับ" : "-"}
+                      {!!eyesStatus[index] &&
+                      eyesStatus[index].readFlag === 1 &&
+                      eyesStatus[index].state === 2 ? (
+                        <VisibilityIcon style={{ color: "red" }} />
+                      ) : (
+                        <FiberManualRecordIcon
+                          style={{
+                            // fontSize: "0.8rem",
+                            color:
+                              data.state === 1
+                                ? "lightgray"
+                                : data.state === 2
+                                ? "#FF2400"
+                                : data.state === 3
+                                ? "blue"
+                                : data.state === 4
+                                ? "orange"
+                                : data.state === 5
+                                ? "black"
+                                : data.state === 6
+                                ? "darkviolet"
+                                : data.state === 7
+                                ? "lightblue"
+                                : data.state === 8
+                                ? "lightgreen"
+                                : "rgba(0,0,0,0)",
+                          }}
+                        />
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -448,7 +453,7 @@ export default function TableAuditDisplay2(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity2
+      <ModalActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
