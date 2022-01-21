@@ -706,7 +706,7 @@ export default function TransactionMonitorV1() {
             >
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  audit sensor
+                  Full Audit
                 </Typography>
                 <FilterSectionMonitorPage
                   dateValue={dataAudit.date}
@@ -763,7 +763,7 @@ export default function TransactionMonitorV1() {
               {/* transaction block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  transaction
+                  HQ Transaction
                 </Typography>
                 <FilterAWMonitorPage
                   dateValue={dataAW.date}
@@ -818,7 +818,7 @@ export default function TransactionMonitorV1() {
               {/* lane block */}
               <Grid item xl={4} lg={6} md={12} sm={12} xs={12}>
                 <Typography variant="h6" align="center">
-                  lane (FETC)
+                  Lane Transaction
                 </Typography>
                 <FilterSectionMonitorPage
                   dateValue={dataFetc.date}

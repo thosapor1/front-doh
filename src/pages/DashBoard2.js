@@ -259,14 +259,27 @@ export default function DashBoard2() {
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
     const res = await getDataDashBoard(sendData);
-    setDataTable(!!res ? res.data : []);
-    getChartData(!!res ? res.data.month : []);
-    getPopUpData(!!res ? res.data : []);
+    if (!!res) {
+      setDataTable(!!res ? res.data : []);
+      getChartData(!!res ? res.data.month : []);
+      getPopUpData(!!res ? res.data : []);
+    }
     Swal.close();
+
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
   useEffect(() => {
     fetchData();
+    console.log(new Date().toLocaleDateString("th-TH"));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

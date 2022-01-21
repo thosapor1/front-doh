@@ -23,7 +23,11 @@ import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
-import { getDataExpectIncome, getDropdown } from "../service/allService";
+import {
+  getDataExpectIncome,
+  getDataExpectIncomeV2,
+  getDropdown,
+} from "../service/allService";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -179,7 +183,7 @@ export default function ExpectIncomeV2() {
     };
     console.log(sendData);
 
-    const res = await getDataExpectIncome(sendData);
+    const res = await getDataExpectIncomeV2(sendData);
     if (!!res && res.data.status === false) {
       Swal.fire({
         icon: "error",

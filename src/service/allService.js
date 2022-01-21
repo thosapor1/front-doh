@@ -90,6 +90,23 @@ export const searchOnExpectIncome = (endpoint, sendData) => {
   return response;
 };
 
+//ExpertIncomeV2 page
+export const getDataExpectIncomeV2 = (sendData) => {
+  const response = apiURLv2.post("/expect-income", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataExpectIncomeActivityV2 = (sendData) => {
+  const response = apiURLv3
+    .post("/expect-income-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //CollectFromPK3 page
 export const getDataCollectFromPk3 = (sendData) => {
   const response = apiURLv1
@@ -115,7 +132,6 @@ export const getDataAuditDisplay = (sendData) => {
   const response = apiURLv1.post("/daily-income", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -125,7 +141,6 @@ export const getDataSuperaudit = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -135,7 +150,6 @@ export const getDataSuperauditActivity = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -144,7 +158,6 @@ export const getDataVolume = (sendData) => {
   const response = apiURLv3.post("/data-monitor", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -155,7 +168,6 @@ export const updateUsers = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -163,7 +175,6 @@ export const getDataUsers = () => {
   const response = apiURLv2.post("/user-list").catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -171,7 +182,6 @@ export const deleteUsers = (sendData) => {
   const response = apiURLv2.post("/delete-user", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -180,7 +190,6 @@ export const getDataConfig = (sendData) => {
   const response = apiURLv1.post("/system-config", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -188,7 +197,6 @@ export const deleteHighway = (sendData) => {
   const response = apiURLv1.post("/delete-highway", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -196,7 +204,6 @@ export const addHighway = (sendData) => {
   const response = apiURLv1.post("/add-highway", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -204,7 +211,6 @@ export const updateHighway = (sendData) => {
   const response = apiURLv1.post("/update-highway", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -212,7 +218,6 @@ export const exportExcel = (sendData) => {
   const response = apiURLv1.post("/export-csv", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
-
   return response;
 };
 
@@ -223,7 +228,6 @@ export const getDataFullAudit = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -233,7 +237,6 @@ export const getImageFullAudit = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -243,7 +246,6 @@ export const getDataHQ = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -253,7 +255,6 @@ export const getImageHQ = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -263,7 +264,6 @@ export const getDataLane = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };
 
@@ -273,6 +273,5 @@ export const getImageLane = (sendData) => {
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
-
   return response;
 };

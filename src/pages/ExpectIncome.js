@@ -205,8 +205,6 @@ export default function ExpectIncome() {
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
-
-    console.log(eyesStatus);
   };
 
   // const refresh = (pageId = 1) => {

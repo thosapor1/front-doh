@@ -525,7 +525,6 @@ export default function ModalActivity3(props) {
           ? dataList.resultsDisplay[0].match_real_fee
           : 0
       );
-      console.log("dataList", dataList);
       setValue1(2);
       setValue2(2);
       setValue3(2);
@@ -1227,7 +1226,10 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>Lane_TS</TableCell>
-                  <TableCell colSpan={2} style={{ fontSize: "0.75rem" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}
@@ -1393,7 +1395,10 @@ export default function ModalActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>HQ_TS</TableCell>
-                  <TableCell colSpan={2} style={{ fontSize: "0.75rem" }}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
                     {!!resultDisplay.refTransactionId
                       ? resultDisplay.refTransactionId
                       : "-"}
