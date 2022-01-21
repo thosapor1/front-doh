@@ -274,7 +274,9 @@ export default function TableMonitor(props) {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-
+                <TableCell align="center" className={classes.tableCell}>
+                  {row["00:00"]}
+                </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
                   {row["01:00"]}
                 </TableCell>
@@ -343,9 +345,6 @@ export default function TableMonitor(props) {
                 </TableCell>
                 <TableCell align="center" className={classes.tableCell}>
                   {row["23:00"]}
-                </TableCell>
-                <TableCell align="center" className={classes.tableCell}>
-                  {row["00:00"]}
                 </TableCell>
               </TableRow>
             ))}

@@ -23,7 +23,11 @@ import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
-import { getDataExpectIncome, getDropdown } from "../service/allService";
+import {
+  getDataExpectIncome,
+  getDataExpectIncomeV2,
+  getDropdown,
+} from "../service/allService";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -117,7 +121,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ExpectIncome() {
+export default function ExpectIncomeV2() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
@@ -179,8 +183,8 @@ export default function ExpectIncome() {
     };
     console.log(sendData);
 
-    const res = await getDataExpectIncome(sendData);
-    if (!!res && res.data.status === false) {
+    const res = await getDataExpectIncomeV2(sendData);
+    if (!!res && !res.data.resultsDisplay) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
@@ -205,6 +209,8 @@ export default function ExpectIncome() {
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
+
+    console.log(eyesStatus);
   };
 
   // const refresh = (pageId = 1) => {
