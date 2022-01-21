@@ -184,7 +184,7 @@ export default function ExpectIncomeV2() {
     console.log(sendData);
 
     const res = await getDataExpectIncomeV2(sendData);
-    if (!!res && res.data.status === false) {
+    if (!!res && !res.data.resultsDisplay) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",

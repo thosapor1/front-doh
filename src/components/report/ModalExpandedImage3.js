@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import React from "react";
-import noImage from "../image/noImageFound.jpg";
+import noImage from "../../image/noImageFound.jpg";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -50,7 +50,7 @@ const useStyle = makeStyles((theme) => {
   };
 });
 
-export default function ModalExpandedImage2(props) {
+export default function ModalExpandedImage3(props) {
   const classes = useStyle();
   const { open, onClose, dataList } = props;
 

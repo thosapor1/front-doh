@@ -1,7 +1,7 @@
 import { CardMedia, Grid, Paper } from "@material-ui/core";
 import React, { useState } from "react";
 import noImage from "../image/noImageFound.jpg";
-import ModalExpandedImage2 from "./ModalExpandedImage2";
+import ModalExpandedImage3 from "./report/ModalExpandedImage3";
 
 export default function ImageSectionMonitorPage(props) {
   const { imageCrop, imageFull } = props;
@@ -46,12 +46,12 @@ export default function ImageSectionMonitorPage(props) {
           />
         </Grid>
       </Grid>
-      <ModalExpandedImage2
+      <ModalExpandedImage3
         dataList={imageFull}
         open={open2}
         onClose={() => setOpen2(false)}
       />
-      <ModalExpandedImage2
+      <ModalExpandedImage3
         dataList={imageCrop}
         open={open1}
         onClose={() => setOpen1(false)}

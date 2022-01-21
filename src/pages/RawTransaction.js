@@ -184,7 +184,7 @@ export default function RawTransaction() {
   useEffect(() => {
     async function fetchDropdown() {
       const res = await getDropdown();
-      setDropdown(res.data);
+      setDropdown(!!res ? res.data : []);
     }
     fetchDropdown();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

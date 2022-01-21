@@ -266,7 +266,7 @@ export default function DashBoard2() {
     }
     Swal.close();
 
-    if (!!res && !res.data.status) {
+    if (!!res && res.data.status === false) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
