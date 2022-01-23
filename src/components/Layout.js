@@ -71,6 +71,11 @@ const useStyles = makeStyles((theme) => {
       flexShrink: 0,
       zIndex: 2,
     },
+    swipableDrawer: {
+      width: 20,
+      flexShrink: 0,
+      zIndex: 2,
+    },
     drawerPaper: {
       width: drawerWidth,
       backgroundColor: drawerColor,
@@ -276,6 +281,8 @@ export default function Layout({ children }) {
                       <ListAltRoundedIcon />
                     ) : item.path === "/expectIncome" ? (
                       <ListRoundedIcon />
+                    ) : item.path === "/expectIncomeV2" ? (
+                      <ListRoundedIcon />
                     ) : item.path === "/auditDisplay" ? (
                       <PlaylistAddCheckRoundedIcon />
                     ) : item.path === "/superAuditDisplay2" ? (
@@ -354,6 +361,20 @@ export default function Layout({ children }) {
           }}
         >
           ออกจากระบบ
+        </Button>
+
+        <Button
+          style={{
+            backgroundColor: "lightblue",
+            borderRadius: "50%",
+            width: 10,
+            margin: "10px 10px ",
+          }}
+          onClick={() => {
+            alert("test");
+          }}
+        >
+          test
         </Button>
       </Drawer>
       <div className={classes.page}>

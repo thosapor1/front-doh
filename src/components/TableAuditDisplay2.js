@@ -22,6 +22,8 @@ import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
 import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
+import { getDataExpectIncomeActivityV2 } from "../service/allService";
+import { useLocation } from "react-router-dom";
 // import format from "date-fns/format";
 
 const detailStatus = [
@@ -191,6 +193,7 @@ export default function TableAuditDisplay2(props) {
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
+  const location = useLocation();
 
   const {
     dataList,
@@ -211,7 +214,6 @@ export default function TableAuditDisplay2(props) {
       // background: 'rgba(0,0,0,0.80)'
     });
 
-    console.log(index1, index2);
     const tsBefore1 =
       index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
     const tsBefore2 =
@@ -222,11 +224,20 @@ export default function TableAuditDisplay2(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    const res = await getDataExpectIncomeActivity(sendData);
-    SetDataForActivity(!!res ? res.data : []);
-    if (!!res && !!res.status) {
-      Swal.close();
-      setOpen(true);
+    if (location.pathname === "/expectIncome") {
+      const res = await getDataExpectIncomeActivity(sendData);
+      SetDataForActivity(!!res ? res.data : []);
+      if (!!res && !!res.status) {
+        Swal.close();
+        setOpen(true);
+      }
+    } else {
+      const res = await getDataExpectIncomeActivityV2(sendData);
+      SetDataForActivity(!!res ? res.data : []);
+      if (!!res && !!res.status) {
+        Swal.close();
+        setOpen(true);
+      }
     }
   };
 
@@ -245,8 +256,6 @@ export default function TableAuditDisplay2(props) {
     setEyesStatus(
       !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
     );
-
-    console.log(eyesStatus);
   };
 
   return (
@@ -267,7 +276,10 @@ export default function TableAuditDisplay2(props) {
               variant="contained"
               color="secondary"
               style={{ height: 35 }}
-              onClick={() => onFetchData(parseInt(selectedPage))}
+              onClick={() => {
+                onFetchData(parseInt(selectedPage));
+                setSelectedPage("");
+              }}
             >
               Go
             </Button>
@@ -386,9 +398,7 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
-                        : "-"}
+                      {!!data.audit_class ? `C${data.audit_class}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.mf_lane_vehicleClass

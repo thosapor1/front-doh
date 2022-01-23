@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => {
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
+      zindex: 1,
     },
     body: {
       fontSize: "0.8rem",
