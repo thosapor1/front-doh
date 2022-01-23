@@ -30,6 +30,12 @@ import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
 import FilterSection3 from "../components/report/FilterSection3";
+import TableNumberOfCar from "../components/report/TableNumberOfCar";
+import axios from "axios";
+import { getDataReportTS } from "../service/allService";
+import format from "date-fns/format";
+import Swal from "sweetalert2";
+import TransactionDaily from "../components/report/TransactionDaily";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -120,7 +126,7 @@ const data1 = [
 export default function Report() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [allTsTable, setAllTsTable] = useState("");
+  const [dailyTransaction, setDailyTransaction] = useState([]);
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -132,19 +138,32 @@ export default function Report() {
     setValue(newValue);
   };
 
-  const fetchData = () => {
-    // apiURL.post("/system-config").then((res) => {
-    //   setAllTsTable(res.data);
-    //   console.log("res: ", res.data);
-    // });
+  const fetchData = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
-    setAllTsTable(data1);
-    setAllTsTable2(report1);
-    setAllTsTable3(report2);
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+    };
+    const res = await getDataReportTS(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDailyTransaction(res.data);
+      setAllTsTable2(report1);
+      setAllTsTable3(report2);
+    }
+    Swal.close();
+
+    console.log(res.data);
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   return (
@@ -189,23 +208,58 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection
                 onFetchData={fetchData}
-                report={PdfDaily}
+                report={TransactionDaily}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
                 setCheckpoint={setCheckpoint}
               />
               <Paper style={{ marginTop: 20 }}>
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingTop: 20,
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {checkpoint === 0
+                        ? "ทุกด่าน"
+                        : checkpoint === 1
+                        ? "ด่านทับช้าง1"
+                        : checkpoint === 2
+                        ? "ด่านทับช้าง2"
+                        : checkpoint === 3
+                        ? "ด่านธัญบุรี1"
+                        : checkpoint === 4
+                        ? "ด่านธัญบุรี2"
+                        : ""}
+                    </Typography>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร สรุป Transaction ประจำวันที่ ${format(
+                        selectedDate,
+                        "yyyy-MM-dd"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
                 <div style={{ display: "flex", marginTop: 20 }}>
                   <div>
-                    <TableReportDaily
-                      dataList={allTsTable}
-                      selectedDate={selectedDate}
-                      checkpoint={checkpoint}
-                    />
+                    <TableNumberOfCar dataList={dailyTransaction} />
                   </div>
                   <div>
-                    <BlockDailyReport />
+                    <TableReportDaily dataList={dailyTransaction} />
+                  </div>
+                  <div>
+                    <BlockDailyReport dataList={dailyTransaction} />
                   </div>
                 </div>
 
@@ -287,7 +341,7 @@ export default function Report() {
                     <BlockRemainReport />
                   </div>
                   <div>
-                    <TableReportDaily dataList={allTsTable} />
+                    <TableReportDaily dataList={allTsTable2} />
                   </div>
                 </div>
 

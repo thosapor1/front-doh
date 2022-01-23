@@ -275,3 +275,11 @@ export const getImageLane = (sendData) => {
     });
   return response;
 };
+
+//Report page
+export const getDataReportTS = (sendData) => {
+  const response = apiURLv1.post("/expect-pdf-ts", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};

@@ -65,7 +65,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function BlockDailyReport() {
+export default function BlockDailyReport(props) {
+  const { dataList } = props;
   const classes = useStyles();
   return (
     <>
@@ -75,25 +76,57 @@ export default function BlockDailyReport() {
             <th className={classes.th} colSpan="3">
               รายได้ด่านทับช้าง 1
             </th>
-            <th className={classes.th} colSpan="3">
+            {/* <th className={classes.th} colSpan="3">
               ค่าปรับด่านทับช้าง 1
             </th>
             <th className={classes.th} colSpan="3">
               สรุปข้อมูลรถ
-            </th>
+            </th> */}
           </tr>
           <tr>
             <td className={classes.td2}>รายได้ที่พึงได้</td>
-            <td className={classes.td4}>1,000,000</td>
+            <td className={classes.td4}>
+              {!!dataList.result_revenue
+                ? dataList.result_revenue[0].revenue.toLocaleString()
+                : ""}
+            </td>
             <td className={classes.td3}>บาท</td>
-            <td className={classes.td2}>ค่าปรับที่เกิดขึ้น</td>
+            {/* <td className={classes.td2}>ค่าปรับที่เกิดขึ้น</td>
             <td className={classes.td4}>300,000</td>
             <td className={classes.td3}>บาท</td>
             <td className={classes.td2}>จำนวนรถทั้งหมด</td>
             <td className={classes.td4}>40</td>
-            <td className={classes.td3}>คัน</td>
+            <td className={classes.td3}>คัน</td> */}
           </tr>
-          <tr className={classes.tr}>
+          <tr>
+            <td
+              className={classes.td2}
+              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+            >
+              รายได้ที่พึงได้ (HQ)
+            </td>
+            <td
+              className={classes.td4}
+              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+            >
+              {!!dataList.result_revenue
+                ? dataList.result_revenue[0].revenue_mFlow.toLocaleString()
+                : ""}
+            </td>
+            <td
+              className={classes.td3}
+              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+            >
+              บาท
+            </td>
+            {/* <td className={classes.td2}>ค่าปรับที่เกิดขึ้น</td>
+            <td className={classes.td4}>300,000</td>
+            <td className={classes.td3}>บาท</td>
+            <td className={classes.td2}>จำนวนรถทั้งหมด</td>
+            <td className={classes.td4}>40</td>
+            <td className={classes.td3}>คัน</td> */}
+          </tr>
+          {/* <tr className={classes.tr}>
             <td className={classes.td2}>รายได้ที่ได้รับ</td>
             <td className={classes.td4}>500,000</td>
             <td className={classes.td3}>บาท</td>
@@ -105,8 +138,8 @@ export default function BlockDailyReport() {
             </td>
             <td className={classes.td4}>30</td>
             <td className={classes.td3}>คัน</td>
-          </tr>
-          <tr className={classes.tr}>
+          </tr> */}
+          {/* <tr className={classes.tr}>
             <td className={classes.td2}>รวมทั้งสิ้น</td>
             <td className={classes.td4}>500,000</td>
             <td className={classes.td3}>บาท</td>
@@ -122,8 +155,8 @@ export default function BlockDailyReport() {
             >
               (จำนวนรถที่ผิดพลาด,รถยกเว้น,รถที่คงค้าง)
             </td>
-          </tr>
-          <tr className={classes.tr}>
+          </tr> */}
+          {/* <tr className={classes.tr}>
             <td className={classes.td2}>คงค้าง</td>
             <td className={classes.td4}>500,000</td>
             <td className={classes.td3}>บาท</td>
@@ -135,8 +168,8 @@ export default function BlockDailyReport() {
               colSpan="3"
               style={{ borderRight: "1px solid black" }}
             ></td>
-          </tr>
-          <tr className={classes.tr}>
+          </tr> */}
+          {/* <tr className={classes.tr}>
             <td
               className={classes.td2}
               colSpan="3"
@@ -177,7 +210,7 @@ export default function BlockDailyReport() {
                 borderBottom: "1px solid black",
               }}
             ></td>
-          </tr>
+          </tr> */}
         </table>
       </div>
     </>

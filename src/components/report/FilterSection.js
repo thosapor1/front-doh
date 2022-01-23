@@ -142,7 +142,7 @@ export default function FilterSection(props) {
           className={classes.btn}
           style={{ backgroundColor: "lightpink" }}
           onClick={() => {
-            report();
+            report(selectedDate, checkpoint);
           }}
         >
           pdf
