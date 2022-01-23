@@ -258,22 +258,22 @@ export default function Payment() {
   // };
 
   const dataCard = [
-    {
-      value:
-        !!summary && !!summary.count_billing
-          ? summary.count_billing.toLocaleString().toString()
-          : "0",
-      status: "total",
-      label: "จำนวนรายการแจ้งหนี้",
-      type: "label",
-    },
+    // {
+    //   value:
+    //     !!summary && !!summary.count_billing
+    //       ? summary.count_billing.toLocaleString().toString()
+    //       : "0",
+    //   status: "total",
+    //   label: "จำนวนรายการแจ้งหนี้",
+    //   type: "label",
+    // },
     {
       value:
         !!summary && !!summary.total_amount
           ? summary.total_amount.toLocaleString().toString()
           : "0",
       status: "normal",
-      label: "จำนวนเงินแจ้งหนี้",
+      label: "จำนวนรายการ",
       type: "money",
     },
     {
@@ -282,18 +282,18 @@ export default function Payment() {
           ? summary.payment_totalAmount.toLocaleString().toString()
           : "0",
       status: "not_normal",
-      label: "จำนวนเงินจ่ายแล้ว",
+      label: "จำนวนเงิน",
       type: "money",
     },
-    {
-      value:
-        !!summary && !!summary.overdue
-          ? summary.overdue.toLocaleString().toString()
-          : "0",
-      status: "revenue",
-      label: "ค้างจ่าย",
-      type: "money",
-    },
+    // {
+    //   value:
+    //     !!summary && !!summary.overdue
+    //       ? summary.overdue.toLocaleString().toString()
+    //       : "0",
+    //   status: "revenue",
+    //   label: "ค้างจ่าย",
+    //   type: "money",
+    // },
   ];
 
   useEffect(() => {
@@ -500,9 +500,7 @@ export default function Payment() {
                 item
                 component={Paper}
                 key={index}
-                lg
-                md={5}
-                sm={6}
+                lg={2}
                 className={classes.card}
                 style={{
                   borderLeft:

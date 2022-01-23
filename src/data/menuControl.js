@@ -75,7 +75,7 @@ export const menuItemsForSuperAdmin = [
     path: "/MonitorData",
   },
   {
-    text: "Payment",
+    text: "รายการชำระรายวัน",
     icon: "MonetizationOnIcon",
     path: "/Payment",
   },
