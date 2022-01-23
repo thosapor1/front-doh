@@ -72,7 +72,7 @@ const headerCells = [
   },
   {
     id: "wait_for_decide",
-    label: "รอพิจารณา",
+    label: "ตรวจสอบแล้ว",
   },
   {
     id: "income",
