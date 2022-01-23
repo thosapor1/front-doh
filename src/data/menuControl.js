@@ -74,6 +74,12 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/MonitorData",
   },
+  {
+    text: "รายการชำระรายวัน",
+    icon: "MonetizationOnIcon",
+    path: "/Payment",
+  },
+
   // {
   //   text: "รายการบังคับ",
   //   icon: "playlist_add_check",

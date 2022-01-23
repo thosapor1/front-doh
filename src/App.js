@@ -27,6 +27,8 @@ import CollectFromPk3 from "./pages/CollectFromPk3";
 import MenuDataMonitor from "./pages/MenuDataMonitor";
 import MonitorData from "./pages/MonitorData";
 import ExpectIncomeV2 from "./pages/ExpectIncomeV2";
+import Payment from "./pages/Payment";
+
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -73,6 +75,7 @@ function App() {
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}
             />
+            <Route path="/Payment" component={Payment} />
           </Layout>
         </Switch>
       </HashRouter>
