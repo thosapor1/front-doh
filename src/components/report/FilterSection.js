@@ -75,12 +75,15 @@ const valueMenuItem = [
 ];
 
 export default function FilterSection(props) {
-  const { onFetchData, report } = props;
+  const {
+    onFetchData,
+    report,
+    selectedDate,
+    setSelectedDate,
+    checkpoint,
+    setCheckpoint,
+  } = props;
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().setDate(new Date().getDate() - 1)
-  );
-  const [checkpoint, setCheckpoint] = useState(0);
 
   useEffect(() => {}, []);
   return (

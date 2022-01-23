@@ -123,6 +123,10 @@ export default function Report() {
   const [allTsTable, setAllTsTable] = useState("");
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setDate(new Date().getDate() - 1)
+  );
+  const [checkpoint, setCheckpoint] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -159,69 +163,67 @@ export default function Report() {
             aria-label="simple tabs example"
           >
             <Tab
-              label="รายงานประจำวัน"
+              label="สรปุ TS ประจำวัน"
               {...a11yProps(0)}
               className={classes.tab}
             />
             <Tab
-              label="รายงานใบนำฝาก"
+              label="สรุป Billing ประจำวัน"
               {...a11yProps(1)}
               className={classes.tab}
             />
             <Tab
-              label="รายงานสรุปยอดคงค้าง"
+              label="สรุป Payment ประจำวัน"
               {...a11yProps(2)}
               className={classes.tab}
             />
-            <Tab
+            {/* <Tab
               label="รายงานสรุปจราจร"
               {...a11yProps(3)}
               className={classes.tab}
-            />
-            <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} />
+            /> */}
+            {/* <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} /> */}
           </Tabs>
 
           <TabPanel value={value} index={0}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection onFetchData={fetchData} report={PdfDaily} />
+              <FilterSection
+                onFetchData={fetchData}
+                report={PdfDaily}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
               <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
-                </Typography>
-
                 <div style={{ display: "flex", marginTop: 20 }}>
                   <div>
-                    <TableReportDaily dataList={allTsTable} />
+                    <TableReportDaily
+                      dataList={allTsTable}
+                      selectedDate={selectedDate}
+                      checkpoint={checkpoint}
+                    />
                   </div>
                   <div>
                     <BlockDailyReport />
                   </div>
                 </div>
 
-                <TableReportDaily2 dataList={allTsTable2} />
+                {/* <TableReportDaily2 dataList={allTsTable2} /> */}
               </Paper>
             </Container>
           </TabPanel>
 
           <TabPanel value={value} index={1}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2 onFetchData={fetchData} report={PdfSumMonthly} />
+              <FilterSection2
+                onFetchData={fetchData}
+                report={PdfSumMonthly}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
               <Paper style={{ marginTop: 20 }}>
                 <Typography
                   style={{
@@ -245,7 +247,7 @@ export default function Report() {
 
                 <BlockSumMonthlyReport />
 
-                <TableReportSumMonthly dataList={allTsTable3} />
+                {/* <TableReportSumMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
@@ -289,7 +291,7 @@ export default function Report() {
                   </div>
                 </div>
 
-                <TableReportRemainMonthly dataList={allTsTable3} />
+                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
