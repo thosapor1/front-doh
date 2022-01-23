@@ -302,34 +302,13 @@ export default function TablePayment(props) {
                 เลขที่ใบแจ้งหนี้
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                ประเภทบัญชี
+                วันออกใบแจ้งหนี้
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                ค่าธรรมเนียมทั้งหมด
+                จำนวนเงิน
               </TableCell>
               <TableCell align="center" className={classes.header}>
-                ค่าปรับทั้งหมด
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                ค่าดำเนินการทั้งหมด
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                ค่าชำระเงินทั้งหมด
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                วันแจ้งหนี้
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                การชำระ
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                จำนวนเงินที่จ่าย
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                วันที่จ่าย
-              </TableCell>
-              <TableCell align="center" className={classes.header}>
-                ช่องทางการจ่าย
+                ช่องทางการชำระ
               </TableCell>
             </StyledTableRow>
           </TableHead>
@@ -361,31 +340,6 @@ export default function TablePayment(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.fineAmount ? data.fineAmount : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.collectionAmount ? data.collectionAmount : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.totalAmount ? data.totalAmount : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.issueDate ? data.issueDate : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.payment_flag ? data.payment_flag : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.payment_totalAmount
-                        ? data.payment_totalAmount
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.payment_date ? data.payment_date : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.payment_channel_code
-                        ? data.payment_channel_code
-                        : "-"}
                     </TableCell>
                   </StyledTableRow>
                 ))
