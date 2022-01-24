@@ -18,7 +18,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import { getDataCollectFromPk3, getDropdown } from "../service/allService";
+import { getDataMonitor, getDropdown } from "../service/allService";
 import TablePayment from "../components/TablePayment";
 
 const useStyles = makeStyles((theme) => {
@@ -172,25 +172,27 @@ export default function Payment() {
       endTime: timeEnd,
       //   status: tsType.toString(),
     };
-    console.log(sendData);
+    // console.log(sendData);
 
-    const res = await getDataCollectFromPk3(sendData);
+    const res = await getDataMonitor(sendData);
+
     if (!!res) {
+      // console.log(res.data.result_card);
       setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res ? res.data.summary : summary);
+      setSummary(!!res.data.result_card ? res.data.result_card[0] : summary);
     }
     if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
+      // console.log("test");
     }
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
 
-    console.log(eyesStatus);
+    // console.log(eyesStatus);
   };
 
   // const refresh = (pageId = 1) => {
@@ -269,17 +271,17 @@ export default function Payment() {
     // },
     {
       value:
-        !!summary && !!summary.total_amount
-          ? summary.total_amount.toLocaleString().toString()
+        !!summary && !!summary.count
+          ? summary.count.toLocaleString().toString()
           : "0",
       status: "normal",
       label: "จำนวนรายการ",
-      type: "money",
+      type: "รายการ",
     },
     {
       value:
-        !!summary && !!summary.payment_totalAmount
-          ? summary.payment_totalAmount.toLocaleString().toString()
+        !!summary && !!summary.sum_fee
+          ? summary.sum_fee.toLocaleString().toString()
           : "0",
       status: "not_normal",
       label: "จำนวนเงิน",
@@ -310,7 +312,7 @@ export default function Payment() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          Payment
+          รายการชำระรายวัน
         </Typography>
 
         {/* Filter Section */}
