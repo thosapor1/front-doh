@@ -276,6 +276,32 @@ export const getImageLane = (sendData) => {
   return response;
 };
 
+//Report page
+export const getDataReportTS = (sendData) => {
+  const response = apiURLv1.post("/expect-pdf-ts", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataReportBilling = (sendData) => {
+  const response = apiURLv1
+    .post("/expect-pdf-billing", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDataReportPayment = (sendData) => {
+  const response = apiURLv1
+    .post("/expect-pdf-payment", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 export const getDataMonitor = (sendData) => {
   const response = apiURLv1
     .post("/payment-monitor", sendData)

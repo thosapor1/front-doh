@@ -13,9 +13,30 @@ pdfMake.fonts = {
   },
 };
 
-export default function PdfDaily() {
+export default function PdfDaily(selectedDate, checkpoint) {
   let win = window.open("", "_blank");
   const date = format(new Date(), "dd MMMM yyyy", { localize: "th" });
+
+  const getDate = format(selectedDate, "yyyy-MM-dd");
+  const ck = checkpoint;
+  console.log(getDate, ck);
+  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
+  let sendData = { date: getDate, checkpoint: ck.toString() };
+
+  const pdfGenDownload = (docDefinition) => {
+    return new Promise((resolve, reject) => {
+      try {
+        console.log("generate");
+        pdfMake
+          .createPdf(docDefinition)
+          .download("รายงานสรุปTrasactionประจำวัน.pdf", () => {
+            resolve();
+          });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
 
   let docDefinition = {
     footer: function (currentPage, pageCount) {

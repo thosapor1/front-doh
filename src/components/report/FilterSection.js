@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
-      width: 150,
+      width: 170,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 170,
       },
     },
   };
@@ -75,12 +75,15 @@ const valueMenuItem = [
 ];
 
 export default function FilterSection(props) {
-  const { onFetchData, report } = props;
+  const {
+    onFetchData,
+    report,
+    selectedDate,
+    setSelectedDate,
+    checkpoint,
+    setCheckpoint,
+  } = props;
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().setDate(new Date().getDate() - 1)
-  );
-  const [checkpoint, setCheckpoint] = useState(0);
 
   useEffect(() => {}, []);
   return (
@@ -139,7 +142,7 @@ export default function FilterSection(props) {
           className={classes.btn}
           style={{ backgroundColor: "lightpink" }}
           onClick={() => {
-            report();
+            report(selectedDate, checkpoint);
           }}
         >
           pdf

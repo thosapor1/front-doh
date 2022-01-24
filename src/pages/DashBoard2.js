@@ -264,7 +264,6 @@ export default function DashBoard2() {
       getChartData(!!res ? res.data.month : []);
       // getPopUpData(!!res ? res.data : []);
     }
-    Swal.close();
 
     if (!!res && res.data.status === false) {
       Swal.fire({
