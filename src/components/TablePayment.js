@@ -313,10 +313,10 @@ export default function TablePayment(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
+            {!!dataList.result_payment
+              ? dataList.result_payment.map((data, index) => (
                   <StyledTableRow
-                    key={data.transactionId}
+                    key={data.paymentHistory_invoiceNo}
                     onClick={() => {
                       // fetchData(data.transactionId, index - 1, index - 2);
                       // setRowID(index);
@@ -330,16 +330,22 @@ export default function TablePayment(props) {
                       {(page - 1) * 100 + (index + 1)}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.invoiceNo ? data.invoiceNo : "-"}
+                      {!!data.paymentHistory_invoiceNo
+                        ? data.paymentHistory_invoiceNo
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.transactionType ? data.transactionType : "-"}
+                      {!!data.issueDate ? data.issueDate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.feeAmount ? data.feeAmount : "-"}
+                      {!!data.paymentHistory_totalAmount
+                        ? data.paymentHistory_totalAmount
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fineAmount ? data.fineAmount : "-"}
+                      {!!data.paymentHistories_paymentChannel_description
+                        ? data.paymentHistories_paymentChannel_description
+                        : "-"}
                     </TableCell>
                   </StyledTableRow>
                 ))
