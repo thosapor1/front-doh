@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableReportDaily(props) {
+export default function TableNumberOfCar(props) {
   const { dataList } = props;
 
   const classes = useStyles();
@@ -58,33 +58,18 @@ export default function TableReportDaily(props) {
                 ประเภทรถ
               </th>
               <th className={classes.th}>จำนวนรถทั้งหมด</th>
-              <th className={classes.th}>รถปกติ</th>
-              <th className={classes.th}>รถยกเว้น</th>
-              <th className={classes.th}>รถผิดกฏหมาย</th>
             </tr>
             <tr>
               <th className={classes.th2}>(คัน)</th>
-              <th className={classes.th2}>(คัน)</th>
-              <th className={classes.th2}>(คัน)</th>
-              <th className={classes.th2}>(คัน)</th>
             </tr>
-            {!!dataList.result_hq
-              ? dataList.result_hq.map((item, index) => (
+            {!!dataList.reuslt_lane
+              ? dataList.reuslt_lane.map((item, index) => (
                   <tr key={index}>
                     <td className={classes.td} style={{ height: 20 }}>
                       {item.class === "total" ? "รวมทั้งหมด" : `C${item.class}`}
                     </td>
                     <td className={classes.td}>
                       {item.count.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.normal.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.reject.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.illegal.toLocaleString()}
                     </td>
                   </tr>
                 ))

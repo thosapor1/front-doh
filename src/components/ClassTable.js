@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => {
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
+      zIndex: 1,
     },
     footer: {
       backgroundColor: "darkgreen;",

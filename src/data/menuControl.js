@@ -25,6 +25,11 @@ export const menuItemsForSuperAdmin = [
     path: "/expectIncome",
   },
   {
+    text: "รายได้พึงได้รายวันV2",
+    icon: "task",
+    path: "/expectIncomeV2",
+  },
+  {
     text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay",
@@ -69,6 +74,12 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/MonitorData",
   },
+  {
+    text: "รายการชำระรายวัน",
+    icon: "MonetizationOnIcon",
+    path: "/Payment",
+  },
+
   // {
   //   text: "รายการบังคับ",
   //   icon: "playlist_add_check",

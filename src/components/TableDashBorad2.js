@@ -21,7 +21,7 @@ const apiURL = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      maxHeight: 860,
+      maxHeight: 720,
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -72,7 +72,7 @@ const headerCells = [
   },
   {
     id: "wait_for_decide",
-    label: "รอพิจารณา",
+    label: "ตรวจสอบแล้ว",
   },
   {
     id: "income",

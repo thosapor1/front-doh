@@ -180,6 +180,7 @@ export default function MonitorData() {
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate())
   );
+  const [seconds, setSeconds] = useState(0);
   const fetchData = async () => {
     Swal.fire({
       title: "Loading",
@@ -821,9 +822,17 @@ export default function MonitorData() {
     },
   ];
 
+  // useEffect(() => {
+  //   fetchData();
+  //   setInterval(() => fetchData(), 10000);
+  // }, []);
+
   useEffect(() => {
     fetchData();
-    setInterval(() => fetchData(), 900000);
+    const interval = setInterval(() => {
+      fetchData();
+    }, 900000);
+    return () => clearInterval(interval);
   }, []);
 
   const classes = useStyles();

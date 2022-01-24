@@ -209,35 +209,35 @@ export default function DashBoard2() {
     ];
   };
 
-  const getPopUpData = (dataInMonth) => {
-    let data = [
-      {
-        label: "จำนวนรายการทั้งหมดของเดือน",
-        value: dataInMonth.st_total,
-        color: "gary",
-      },
-      {
-        label: "จำนวนรายการตรวจสอบ",
-        value: dataInMonth.st_wait,
-        color: "red",
-      },
+  // const getPopUpData = (dataInMonth) => {
+  //   let data = [
+  //     {
+  //       label: "จำนวนรายการทั้งหมดของเดือน",
+  //       value: dataInMonth.st_total,
+  //       color: "gary",
+  //     },
+  //     {
+  //       label: "จำนวนรายการตรวจสอบ",
+  //       value: dataInMonth.st_wait,
+  //       color: "red",
+  //     },
 
-      {
-        label: "จำนวนรายการตรวจสอบแก้ไขแล้ว",
-        value: dataInMonth.st_edited,
-        color: "orange",
-      },
+  //     {
+  //       label: "จำนวนรายการตรวจสอบแก้ไขแล้ว",
+  //       value: dataInMonth.st_edited,
+  //       color: "orange",
+  //     },
 
-      {
-        label: "จำนวนรายการตรวจสอบเสร็จสิ้น",
-        value: dataInMonth.st_finish,
-        color: "green",
-      },
-    ];
+  //     {
+  //       label: "จำนวนรายการตรวจสอบเสร็จสิ้น",
+  //       value: dataInMonth.st_finish,
+  //       color: "green",
+  //     },
+  //   ];
 
-    setCardData(data);
-    console.log(cardData);
-  };
+  //   setCardData(data);
+  //   console.log(cardData);
+  // };
 
   const getChartData = (dataInMonth) => {
     if (!!dataInMonth) {
@@ -259,14 +259,26 @@ export default function DashBoard2() {
     month = format(selectedDate, "yyyy-MM");
     const sendData = { date: month };
     const res = await getDataDashBoard(sendData);
-    setDataTable(!!res ? res.data : []);
-    getChartData(!!res ? res.data.month : []);
-    getPopUpData(!!res ? res.data : []);
-    Swal.close();
+    if (!!res) {
+      setDataTable(!!res ? res.data : []);
+      getChartData(!!res ? res.data.month : []);
+      // getPopUpData(!!res ? res.data : []);
+    }
+
+    if (!!res && res.data.status === false) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
   };
 
   useEffect(() => {
     fetchData();
+    console.log(new Date().toLocaleDateString("th-TH"));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -280,7 +292,7 @@ export default function DashBoard2() {
             })} */}
           </Typography>
         </Grid>
-        <Grid item lg={10} md={12} sm={12}>
+        <Grid item lg={12} md={12} sm={12}>
           <Grid item component={Paper} className={classes.filterSection}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -319,7 +331,7 @@ export default function DashBoard2() {
           </Grid>
         </Grid>
 
-        <Grid
+        {/* <Grid
           component={Paper}
           item
           lg={2}
@@ -459,15 +471,15 @@ export default function DashBoard2() {
           </Paper>
           <div>{}</div>
 
-          {/* <div className={classes.btnContainer}>
+          <div className={classes.btnContainer}>
             <Button variant="contained" color="primary" size="small">
               พิมพ์รายงาน
             </Button>
             <Button variant="contained" color="primary" size="small">
               ดูข้อมูลทั้งหมด
             </Button>
-          </div> */}
-        </Grid>
+          </div>
+        </Grid> */}
       </Grid>
     </Container>
   );
