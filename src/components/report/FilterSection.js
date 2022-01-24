@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
-      width: 150,
+      width: 170,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 170,
       },
     },
   };

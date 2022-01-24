@@ -15,76 +15,31 @@ pdfMake.fonts = {
   },
 };
 
-export default function TransactionDaily(selectedDate, checkpoint) {
-  let win = window.open("", "_blank");
+export default async function TransactionDaily(selectedDate, checkpoint) {
+  // let win = window.open("", "_blank");
   const date = format(new Date(), "dd MMMM yyyy");
-
-  const getDate = format(selectedDate, "yyyy-MM-dd");
+  const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
   const url =
     "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/expect-pdf-ts";
   let sendData = { date: getDate, checkpoint: ck.toString() };
 
-  let income = 0;
-  let incomeHQ = 0;
+  Swal.fire({
+    title: `กำลังสร้างรายงาน`,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+  const res = await axios.post(url, sendData);
 
-  let body1 = [
-    [
-      {
-        text: "ประเภทรถ",
-        rowSpan: 2,
-        border: [true, true, true, true],
-        margin: [0, 5, 0, 0],
-      },
-      { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
-      {
-        text: "จำนวนรถที่ผิดพลาด",
-        border: [true, true, true, false],
-      },
-      { text: "รถยกเว้น", border: [true, true, true, false] },
-      { text: "รถที่คงค้าง", border: [true, true, true, false] },
-    ],
-    [
-      {},
-      {
-        text: "(คัน)",
-        border: [true, false, true, true],
-        margin: [0, -5, 0, 0],
-      },
-      {
-        text: "(คัน)",
-        border: [true, false, true, true],
-        margin: [0, -5, 0, 0],
-      },
-      {
-        text: "(คัน)",
-        border: [true, false, true, true],
-        margin: [0, -5, 0, 0],
-      },
-      {
-        text: "(คัน)",
-        border: [true, false, true, true],
-        margin: [0, -5, 0, 0],
-      },
-    ],
-  ];
+  console.log(res);
 
-  let body2 = [
-    [
-      {
-        text: "ประเภทรถ",
-        rowSpan: 2,
-        margin: [0, 5, 0, 0],
-      },
-      {
-        text: "จำนวนรถทั้งหมด",
-        border: [true, true, true, false],
-        margin: [0, 5, 0, 0],
-      },
-    ],
-    [{}, { text: "(คัน)", border: [true, false, true, true] }],
-  ];
+  setTimeout(async () => {
+    await pdfGenDownload(docDefinition);
+    Swal.close();
+  }, 1000);
 
   const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
@@ -95,34 +50,6 @@ export default function TransactionDaily(selectedDate, checkpoint) {
           .download("รายงานสรุปTrasactionประจำวัน.pdf", () => {
             resolve();
           });
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
-  const pushToBody = (res) => {
-    return new Promise((resolve, reject) => {
-      try {
-        for (let index = 0; index < res.data.length; index++) {
-          body1.push([
-            !!res.data.result_hq && res.data.result_hq[index].class === "total"
-              ? `รวมทั้งหมด`
-              : `C${res.data.result_hq[index].class}`,
-            !!res.data.result_hq ? res.data.result_hq[index].count : "",
-            !!res.data.result_hq ? res.data.result_hq[index].normal : "",
-            !!res.data.result_hq ? res.data.result_hq[index].reject : "",
-            !!res.data.result_hq ? res.data.result_hq[index].illegal : "",
-          ]);
-
-          body2.push([
-            !!res.data.reuslt_lane &&
-            res.data.reuslt_lane[index].class === "total"
-              ? `รวมทั้งหมด`
-              : `C${res.data.reuslt_lane[index].class}`,
-            !!res.data.reuslt_lane ? res.data.reuslt_lane[index].count : "",
-          ]);
-        }
       } catch (err) {
         reject(err);
       }
@@ -220,7 +147,19 @@ export default function TransactionDaily(selectedDate, checkpoint) {
       },
       { text: `${date}`, alignment: "center", fontSize: 14 },
       {
-        text: "หน่วยงานรับการตรวจสอบ 902 - ทับช้าง 1",
+        text: `หน่วยงานรับการตรวจสอบ 902 - ${
+          checkpoint === 0
+            ? "ทุกด่าน"
+            : checkpoint === 1
+            ? "ด่านทับช้าง 1"
+            : checkpoint === 2
+            ? "ด่านทับช้าง 2"
+            : checkpoint === 3
+            ? "ด่านธัญบุรี 1"
+            : checkpoint === 4
+            ? "ด่านธัญบุรี 2"
+            : ""
+        }`,
         fontSize: 14,
         margin: [0, 10, 0, 0],
       },
@@ -234,7 +173,74 @@ export default function TransactionDaily(selectedDate, checkpoint) {
         style: "table",
         table: {
           widths: [70, 70, 70, 70, 70],
-          body: body1,
+          body: [
+            [
+              {
+                text: "ประเภทรถ",
+                rowSpan: 2,
+                border: [true, true, true, true],
+                margin: [0, 5, 0, 0],
+              },
+              { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
+              {
+                text: "จำนวนรถที่ผิดพลาด",
+                border: [true, true, true, false],
+              },
+              { text: "รถยกเว้น", border: [true, true, true, false] },
+              { text: "รถที่คงค้าง", border: [true, true, true, false] },
+            ],
+            [
+              {},
+              {
+                text: "(คัน)",
+                border: [true, false, true, true],
+                margin: [0, -5, 0, 0],
+              },
+              {
+                text: "(คัน)",
+                border: [true, false, true, true],
+                margin: [0, -5, 0, 0],
+              },
+              {
+                text: "(คัน)",
+                border: [true, false, true, true],
+                margin: [0, -5, 0, 0],
+              },
+              {
+                text: "(คัน)",
+                border: [true, false, true, true],
+                margin: [0, -5, 0, 0],
+              },
+            ],
+            [
+              { text: `C${res.data.result_hq[0].class}` },
+              { text: res.data.result_hq[0].count.toLocaleString() },
+              { text: res.data.result_hq[0].normal.toLocaleString() },
+              { text: res.data.result_hq[0].reject.toLocaleString() },
+              { text: res.data.result_hq[0].illegal.toLocaleString() },
+            ],
+            [
+              { text: `C${res.data.result_hq[1].class}` },
+              { text: res.data.result_hq[1].count.toLocaleString() },
+              { text: res.data.result_hq[1].normal.toLocaleString() },
+              { text: res.data.result_hq[1].reject.toLocaleString() },
+              { text: res.data.result_hq[1].illegal.toLocaleString() },
+            ],
+            [
+              { text: `C${res.data.result_hq[2].class}` },
+              { text: res.data.result_hq[2].count.toLocaleString() },
+              { text: res.data.result_hq[2].normal.toLocaleString() },
+              { text: res.data.result_hq[2].reject.toLocaleString() },
+              { text: res.data.result_hq[2].illegal.toLocaleString() },
+            ],
+            [
+              { text: `รวมทั้งหมด` },
+              { text: res.data.result_hq[3].count.toLocaleString() },
+              { text: res.data.result_hq[3].normal.toLocaleString() },
+              { text: res.data.result_hq[3].reject.toLocaleString() },
+              { text: res.data.result_hq[3].illegal.toLocaleString() },
+            ],
+          ],
         },
       },
       {
@@ -242,9 +248,46 @@ export default function TransactionDaily(selectedDate, checkpoint) {
           {
             fontSize: 11,
             style: "table",
-            // margin: [35, 20, 0, 450],
+            margin: [54, 20, 0, 450],
             table: {
-              body: body2,
+              widths: [90, 90],
+              body: [
+                [
+                  {
+                    text: "ประเภทรถ",
+                    rowSpan: 2,
+                    margin: [0, 5, 0, 0],
+                  },
+                  {
+                    text: "จำนวนรถทั้งหมด",
+                    border: [true, true, true, false],
+                  },
+                ],
+                [
+                  {},
+                  {
+                    text: "(คัน)",
+                    border: [true, false, true, true],
+                    margin: [0, -5, 0, 0],
+                  },
+                ],
+                [
+                  { text: `C${res.data.result_hq[0].class}` },
+                  { text: res.data.result_hq[0].count.toLocaleString() },
+                ],
+                [
+                  { text: `C${res.data.result_hq[1].class}` },
+                  { text: res.data.result_hq[1].count.toLocaleString() },
+                ],
+                [
+                  { text: `C${res.data.result_hq[2].class}` },
+                  { text: res.data.result_hq[2].count.toLocaleString() },
+                ],
+                [
+                  { text: `รวมทั้งหมด` },
+                  { text: res.data.result_hq[3].count.toLocaleString() },
+                ],
+              ],
             },
           },
           {
@@ -252,10 +295,23 @@ export default function TransactionDaily(selectedDate, checkpoint) {
             style: "table",
             // margin: [35, 20, 0, 450],
             table: {
+              widths: [60, 60, 45],
               body: [
                 [
                   {
-                    text: "รายได้ด่านทับช้าง 1",
+                    text: `รายได้ด่าน${
+                      checkpoint === 0
+                        ? "ทุกด่าน"
+                        : checkpoint === 1
+                        ? "ด่านทับช้าง1"
+                        : checkpoint === 2
+                        ? "ด่านทับช้าง2"
+                        : checkpoint === 3
+                        ? "ด่านธัญบุรี1"
+                        : checkpoint === 4
+                        ? "ด่านธัญบุรี2"
+                        : ""
+                    }`,
                     border: [true, true, true, false],
                     colSpan: 3,
                     bold: true,
@@ -268,20 +324,35 @@ export default function TransactionDaily(selectedDate, checkpoint) {
                     text: "รายได้ที่พึงได้",
                     border: [true, false, false, false],
                     alignment: "left",
-                    margin: [0, -2, 0, 0],
                   },
-                  { text: income },
-                  { text: "บาท" },
+                  {
+                    text: res.data.result_revenue[0].revenue.toLocaleString(),
+                    border: [false, false, false, false],
+                    alignment: "right",
+                  },
+                  {
+                    text: "บาท",
+                    border: [false, false, true, false],
+                  },
                 ],
                 [
                   {
                     text: "รายได้ที่พึงได้ (HQ)",
-                    border: [true, false, false, false],
+                    border: [true, false, false, true],
                     alignment: "left",
-                    margin: [0, -2, 0, 0],
+                    margin: [0, 0, 0, 52],
                   },
-                  { text: incomeHQ },
-                  { text: "บาท" },
+                  {
+                    text: res.data.result_revenue[0].revenue_mFlow.toLocaleString(),
+                    alignment: "right",
+                    border: [false, false, false, true],
+                    margin: [0, 0, 0, 52],
+                  },
+                  {
+                    text: "บาท",
+                    border: [false, false, true, true],
+                    margin: [0, 0, 0, 52],
+                  },
                 ],
               ],
             },
@@ -297,29 +368,8 @@ export default function TransactionDaily(selectedDate, checkpoint) {
     },
     defaultStyle: { font: "THSarabun" },
   };
+  // await pushToBody(res);
+  // console.log(body1, body2);
 
-  Swal.fire({
-    title: `กำลังสร้างรายงาน`,
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
-  axios
-    .post(url, sendData)
-    .then(async (res) => {
-      income = !!res ? res.data.result_revenue[0].revenue : "";
-      incomeHQ = !!res ? res.data.result_revenue[0].revenue_mFlow : "";
-      console.log(income, incomeHQ);
-
-      await pushToBody(res);
-      console.log(docDefinition);
-
-      await pdfGenDownload(docDefinition);
-
-      // pdfMake.createPdf(docDefinition).open({}, win);
-    })
-    .then(() => {
-      Swal.close();
-    });
+  // pdfMake.createPdf(docDefinition).open({}, win);
 }

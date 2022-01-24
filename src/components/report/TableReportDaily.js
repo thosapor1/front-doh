@@ -58,9 +58,9 @@ export default function TableReportDaily(props) {
                 ประเภทรถ
               </th>
               <th className={classes.th}>จำนวนรถทั้งหมด</th>
-              <th className={classes.th}>จำนวนรถที่ผิดพลาด</th>
+              <th className={classes.th}>รถปกติ</th>
               <th className={classes.th}>รถยกเว้น</th>
-              <th className={classes.th}>รถที่คงค้าง</th>
+              <th className={classes.th}>รถผิดกฏหมาย</th>
             </tr>
             <tr>
               <th className={classes.th2}>(คัน)</th>

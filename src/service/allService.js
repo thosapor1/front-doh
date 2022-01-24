@@ -283,3 +283,21 @@ export const getDataReportTS = (sendData) => {
   });
   return response;
 };
+
+export const getDataReportBilling = (sendData) => {
+  const response = apiURLv1
+    .post("/expect-pdf-billing", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDataReportPayment = (sendData) => {
+  const response = apiURLv1
+    .post("/expect-pdf-payment", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
