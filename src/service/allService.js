@@ -275,3 +275,12 @@ export const getImageLane = (sendData) => {
     });
   return response;
 };
+
+export const getDataMonitor = (sendData) => {
+  const response = apiURLv1
+    .post("/payment-monitor", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
