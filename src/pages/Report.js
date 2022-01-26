@@ -166,7 +166,17 @@ export default function Report() {
     if (!!res && !!res.data.status) {
       setDailyTransaction(res.data);
     }
-    Swal.close();
+
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      console.log("test");
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
 
     // console.log(res.data);
   };
@@ -304,7 +314,13 @@ export default function Report() {
                     </Typography>
                   </Box>
                 </div>
-                <div style={{ display: "flex", marginTop: 20 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: 20,
+                    justifyContent: "center",
+                  }}
+                >
                   <div>
                     <TableNumberOfCar dataList={dailyTransaction} />
                   </div>
