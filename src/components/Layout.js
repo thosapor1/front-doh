@@ -50,9 +50,12 @@ import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
 import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
 import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
 let drawerWidth = 220;
-const drawerColor = "#46005E";
+const drawerColor =
+  "linear-gradient(38deg, rgba(70,0,94,1) 41%, rgba(154,0,73,1) 89%)";
 
 const apiURL = axios.create({
   baseURL:
@@ -79,11 +82,13 @@ const useStyles = makeStyles((theme) => {
     },
     drawerPaper: {
       width: drawerWidth,
-      backgroundColor: drawerColor,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
     },
     hideDrawerPaper: {
       width: 0,
-      backgroundColor: drawerColor,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
     },
     root: {
       display: "flex",
@@ -153,6 +158,17 @@ const useStyles = makeStyles((theme) => {
     },
     showMenuButton: {
       marginRight: theme.spacing(2),
+    },
+    arrowIcon: {
+      color: "white",
+    },
+    contianerArrow: {
+      margin: "10px 0px 0px 80px",
+      width: 50,
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "#6a008f",
+      },
     },
   };
 });
@@ -311,7 +327,7 @@ export default function Layout({ children }) {
                     ) : item.path === "/superAuditDisplay2" ? (
                       <SupervisedUserCircleRoundedIcon />
                     ) : item.path === "/report" ? (
-                      <ReceiptRoundedIcon />
+                      <DescriptionRoundedIcon />
                     ) : item.path === "/DataVolume" ? (
                       <DataUsageRoundedIcon />
                     ) : item.path === "/MandatoryItem" ? (
@@ -319,7 +335,7 @@ export default function Layout({ children }) {
                     ) : item.path === "/pk3Display" ? (
                       <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (
-                      <MonetizationOnRoundedIcon />
+                      <ReceiptRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
                       <DesktopMacRoundedIcon />
                     ) : item.path === "/Payment" ? (
@@ -386,19 +402,14 @@ export default function Layout({ children }) {
           ออกจากระบบ
         </Button>
 
-        <Button
-          style={{
-            backgroundColor: "lightblue",
-            borderRadius: "50%",
-            width: 10,
-            margin: "10px 10px ",
-          }}
+        <IconButton
           onClick={() => {
             setChangeWidthDrawer(!changeWidthDrawer);
           }}
+          className={classes.contianerArrow}
         >
-          test
-        </Button>
+          <ArrowBackIosRoundedIcon className={classes.arrowIcon} />
+        </IconButton>
       </Drawer>
       <div className={classes.page}>
         <div className={classes.toolbar}></div>

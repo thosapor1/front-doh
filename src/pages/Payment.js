@@ -431,7 +431,7 @@ export default function Payment() {
             />
           </MuiPickersUtilsProvider>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
               inputVariant="outlined"
               ampm={false}
@@ -459,7 +459,7 @@ export default function Payment() {
               onChange={setSelectedTimeEnd}
               className={classes.input}
             />
-          </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider> */}
 
           <Button
             variant="contained"
@@ -502,7 +502,9 @@ export default function Payment() {
                 item
                 component={Paper}
                 key={index}
-                lg={2}
+                lg={3}
+                md={5}
+                xs={5}
                 className={classes.card}
                 style={{
                   borderLeft:
