@@ -49,9 +49,13 @@ import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRoun
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
 import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
+import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
-const drawerWidth = 220;
-const drawerColor = "#46005E";
+let drawerWidth = 220;
+const drawerColor =
+  "linear-gradient(38deg, rgba(70,0,94,1) 41%, rgba(154,0,73,1) 89%)";
 
 const apiURL = axios.create({
   baseURL:
@@ -72,20 +76,30 @@ const useStyles = makeStyles((theme) => {
       zIndex: 2,
     },
     swipableDrawer: {
-      width: 20,
+      width: 0,
       flexShrink: 0,
       zIndex: 2,
     },
     drawerPaper: {
       width: drawerWidth,
-      backgroundColor: drawerColor,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
+    },
+    hideDrawerPaper: {
+      width: 0,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
     },
     root: {
       display: "flex",
       zIndex: 3,
     },
     ListItemText: {
+      borderRadius: 10,
       color: "white",
+      "&:hover": {
+        background: "rgba(0, 0, 0, 0.2)",
+      },
     },
     btn: {
       fontSize: "0.8rem",
@@ -98,11 +112,20 @@ const useStyles = makeStyles((theme) => {
       },
     },
     active: {
-      background: "#61438Fff",
+      borderRadius: 10,
+      background: "rgba(0, 0, 0, 0.3)",
       color: "white",
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
+      background: "#9A0049",
+      // zIndex: 1,
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
+      },
+    },
+    appBarExpanded: {
+      width: "100%",
       background: "#9A0049",
       // zIndex: 1,
       [theme.breakpoints.down("md")]: {
@@ -136,6 +159,20 @@ const useStyles = makeStyles((theme) => {
       marginRight: theme.spacing(2),
       [theme.breakpoints.up("lg")]: {
         display: "none",
+      },
+    },
+    showMenuButton: {
+      marginRight: theme.spacing(2),
+    },
+    arrowIcon: {
+      color: "white",
+    },
+    contianerArrow: {
+      margin: "10px 0px 0px 80px",
+      width: 50,
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "#6a008f",
       },
     },
   };
@@ -173,19 +210,14 @@ export default function Layout({ children }) {
   const [configItems, setConfigItems] = useState([]);
   const [userName, setUserName] = useState();
   const [open, setOpen] = React.useState(false);
+  const [changeWidthDrawer, setChangeWidthDrawer] = useState(false);
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const toggleDrawer = (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
+  const toggleDrawer = () => {
     setOpen(!open);
+    console.log("test");
   };
 
   useEffect(() => {
@@ -212,14 +244,22 @@ export default function Layout({ children }) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar} elevation={0}>
+      <AppBar
+        className={!changeWidthDrawer ? classes.appBar : classes.appBarExpanded}
+        elevation={0}
+      >
         <ToolBar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={toggleDrawer}
-            className={classes.menuButton}
+            onClick={() => {
+              toggleDrawer();
+              setChangeWidthDrawer(!changeWidthDrawer);
+            }}
+            className={
+              !changeWidthDrawer ? classes.menuButton : classes.showMenuButton
+            }
           >
             <MenuIcon />
           </IconButton>
@@ -234,10 +274,14 @@ export default function Layout({ children }) {
         </ToolBar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
+        className={!changeWidthDrawer ? classes.drawer : classes.swipableDrawer}
         variant={isMdUp ? "permanent" : "temporary"}
         anchor="left"
-        classes={{ paper: classes.drawerPaper }}
+        classes={{
+          paper: !changeWidthDrawer
+            ? classes.drawerPaper
+            : classes.hideDrawerPaper,
+        }}
         open={open}
         onClose={toggleDrawer}
       >
@@ -288,7 +332,7 @@ export default function Layout({ children }) {
                     ) : item.path === "/superAuditDisplay2" ? (
                       <SupervisedUserCircleRoundedIcon />
                     ) : item.path === "/report" ? (
-                      <ReceiptRoundedIcon />
+                      <DescriptionRoundedIcon />
                     ) : item.path === "/DataVolume" ? (
                       <DataUsageRoundedIcon />
                     ) : item.path === "/MandatoryItem" ? (
@@ -296,9 +340,9 @@ export default function Layout({ children }) {
                     ) : item.path === "/pk3Display" ? (
                       <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (
-                      <MonetizationOnRoundedIcon />
+                      <ReceiptRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
-                      <ListAltRoundedIcon />
+                      <DesktopMacRoundedIcon />
                     ) : item.path === "/Payment" ? (
                       <MonetizationOnRoundedIcon />
                     ) : (
@@ -363,19 +407,14 @@ export default function Layout({ children }) {
           ออกจากระบบ
         </Button>
 
-        <Button
-          style={{
-            backgroundColor: "lightblue",
-            borderRadius: "50%",
-            width: 10,
-            margin: "10px 10px ",
-          }}
+        <IconButton
           onClick={() => {
-            alert("test");
+            setChangeWidthDrawer(!changeWidthDrawer);
           }}
+          className={classes.contianerArrow}
         >
-          test
-        </Button>
+          <ArrowBackIosRoundedIcon className={classes.arrowIcon} />
+        </IconButton>
       </Drawer>
       <div className={classes.page}>
         <div className={classes.toolbar}></div>

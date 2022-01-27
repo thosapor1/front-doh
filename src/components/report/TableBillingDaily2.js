@@ -9,25 +9,25 @@ const useStyles = makeStyles((theme) => {
       padding: 20,
     },
     th: {
-      fontWeight: 400,
+      fontWeight: 700,
       border: "1px solid black",
       width: 150,
-      fontSize: 11,
-      padding: "0px",
+      fontSize: 14,
+      padding: "5px",
     },
     th2: {
-      fontWeight: 400,
+      fontWeight: 700,
       border: "1px solid black",
       width: 150,
-      padding: "0px",
-      fontSize: 11,
+      padding: "5px",
+      fontSize: 14,
     },
     td: {
       fontWeight: 400,
       border: "1px solid black",
       width: 150,
-      fontSize: 11,
-      padding: "0px",
+      fontSize: 14,
+      padding: "5px",
       textAlign: "center",
     },
     table: {
@@ -71,7 +71,7 @@ export default function TableBillingDaily2(props) {
                   ? dataList.result_billing_value[0].count_no_value.toLocaleString()
                   : ""}
               </td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>{!!dataList ? 0 : ""}</td>
             </tr>
           </table>
         </div>
