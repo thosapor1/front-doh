@@ -96,6 +96,9 @@ const useStyles = makeStyles((theme) => {
     },
     ListItemText: {
       color: "white",
+      "&:hover": {
+        background: "rgba(0, 0, 0, 0.2)",
+      },
     },
     btn: {
       fontSize: "0.8rem",
