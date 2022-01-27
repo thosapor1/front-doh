@@ -328,7 +328,10 @@ export default function Report() {
                     <TableReportDaily dataList={dailyTransaction} />
                   </div>
                   <div>
-                    <BlockDailyReport dataList={dailyTransaction} />
+                    <BlockDailyReport
+                      dataList={dailyTransaction}
+                      checkpoint={checkpoint}
+                    />
                   </div>
                 </div>
 

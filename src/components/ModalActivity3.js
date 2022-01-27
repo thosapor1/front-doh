@@ -408,8 +408,8 @@ export default function ModalActivity3(props) {
       cancelButtonText: "ยกเลิก",
     });
 
-    const res = await operation(sendData);
     if (result.isConfirmed) {
+      const res = await operation(sendData);
       if (!!res && res.data.status === true) {
         Swal.close();
         await Swal.fire({
@@ -484,8 +484,8 @@ export default function ModalActivity3(props) {
       cancelButtonText: "ยกเลิก",
     });
 
-    const res = await operation(sendData);
     if (result.isConfirmed) {
+      const res = await operation(sendData);
       if (!!res && res.data.status === true) {
         Swal.close();
         await Swal.fire({

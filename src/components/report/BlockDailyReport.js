@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => {
       borderTop: "1px solid black",
       borderRight: "1px solid black",
       width: 150,
-      fontSize: 13,
+      fontSize: 14,
+      padding: "5px",
     },
     th2: {
       fontWeight: 400,
@@ -21,14 +22,14 @@ const useStyles = makeStyles((theme) => {
       borderLeft: "1px solid black",
       borderRight: "1px solid black",
       width: 130,
-      // padding: "0px",
-      fontSize: 11,
+      padding: "5px",
+      fontSize: 14,
     },
     td: {
       fontWeight: 400,
       border: "1px solid black",
       width: 130,
-      fontSize: 11,
+      fontSize: 14,
       padding: "0px",
       textAlign: "left",
     },
@@ -36,25 +37,26 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderLeft: "1px solid black",
       width: 130,
-      fontSize: 11,
-      paddingLeft: "10px",
+      fontSize: 14,
+      padding: "5px",
       textAlign: "left",
     },
     td3: {
       fontWeight: 400,
       borderRight: "1px solid black",
       width: 150,
-      fontSize: 11,
+      fontSize: 14,
       padding: "0px",
-      textAlign: "center",
+      paddingRight: "10px",
+      textAlign: "right",
     },
     td4: {
       fontWeight: 400,
       //   borderRight: "1px solid black",
       width: 150,
-      fontSize: 12,
+      fontSize: 14,
       padding: "0px",
-      textAlign: "center",
+      textAlign: "right",
     },
     table: {
       borderCollapse: "collapse",
@@ -66,7 +68,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function BlockDailyReport(props) {
-  const { dataList } = props;
+  const { dataList, checkpoint } = props;
   const classes = useStyles();
   return (
     <>
@@ -74,7 +76,19 @@ export default function BlockDailyReport(props) {
         <table className={classes.table}>
           <tr>
             <th className={classes.th} colSpan="3">
-              รายได้ด่านทับช้าง 1
+              {`รายได้ด่าน${
+                checkpoint === 0
+                  ? "ทุกด่าน"
+                  : checkpoint === 1
+                  ? "ด่านทับช้าง1"
+                  : checkpoint === 2
+                  ? "ด่านทับช้าง2"
+                  : checkpoint === 3
+                  ? "ด่านธัญบุรี1"
+                  : checkpoint === 4
+                  ? "ด่านธัญบุรี2"
+                  : ""
+              }`}
             </th>
             {/* <th className={classes.th} colSpan="3">
               ค่าปรับด่านทับช้าง 1
@@ -101,13 +115,13 @@ export default function BlockDailyReport(props) {
           <tr>
             <td
               className={classes.td2}
-              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+              style={{ paddingBottom: 102, borderBottom: "1px solid black" }}
             >
               รายได้ที่พึงได้ (HQ)
             </td>
             <td
               className={classes.td4}
-              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+              style={{ paddingBottom: 102, borderBottom: "1px solid black" }}
             >
               {!!dataList.result_revenue
                 ? dataList.result_revenue[0].revenue_mFlow.toLocaleString()
@@ -115,102 +129,11 @@ export default function BlockDailyReport(props) {
             </td>
             <td
               className={classes.td3}
-              style={{ paddingBottom: 59, borderBottom: "1px solid black" }}
+              style={{ paddingBottom: 102, borderBottom: "1px solid black" }}
             >
               บาท
             </td>
-            {/* <td className={classes.td2}>ค่าปรับที่เกิดขึ้น</td>
-            <td className={classes.td4}>300,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td className={classes.td2}>จำนวนรถทั้งหมด</td>
-            <td className={classes.td4}>40</td>
-            <td className={classes.td3}>คัน</td> */}
           </tr>
-          {/* <tr className={classes.tr}>
-            <td className={classes.td2}>รายได้ที่ได้รับ</td>
-            <td className={classes.td4}>500,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td className={classes.td2}>เรทค่าปรับ</td>
-            <td className={classes.td4}>300</td>
-            <td className={classes.td3}>บาท</td>
-            <td className={classes.td2} style={{ width: 250 }}>
-              จำนวนที่มีข้อยกเว้นพิเศษ
-            </td>
-            <td className={classes.td4}>30</td>
-            <td className={classes.td3}>คัน</td>
-          </tr> */}
-          {/* <tr className={classes.tr}>
-            <td className={classes.td2}>รวมทั้งสิ้น</td>
-            <td className={classes.td4}>500,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td className={classes.td2} style={{ width: 170 }}>
-              ค่าปรับที่ทำการพักชำระ
-            </td>
-            <td className={classes.td4}>200,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td
-              className={classes.td2}
-              style={{ borderRight: "1px solid black" }}
-              colSpan="3"
-            >
-              (จำนวนรถที่ผิดพลาด,รถยกเว้น,รถที่คงค้าง)
-            </td>
-          </tr> */}
-          {/* <tr className={classes.tr}>
-            <td className={classes.td2}>คงค้าง</td>
-            <td className={classes.td4}>500,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td className={classes.td2}>รวมทั้งสิ้น</td>
-            <td className={classes.td4}>200,000</td>
-            <td className={classes.td3}>บาท</td>
-            <td
-              className={classes.td2}
-              colSpan="3"
-              style={{ borderRight: "1px solid black" }}
-            ></td>
-          </tr> */}
-          {/* <tr className={classes.tr}>
-            <td
-              className={classes.td2}
-              colSpan="3"
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            ></td>
-            <td
-              className={classes.td2}
-              style={{
-                borderBottom: "1px solid black",
-                paddingBottom: 6,
-              }}
-            >
-              คงค้าง
-            </td>
-            <td
-              className={classes.td4}
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              100,000
-            </td>
-            <td
-              className={classes.td3}
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              บาท
-            </td>
-            <td
-              className={classes.td2}
-              colSpan="3"
-              style={{
-                borderRight: "1px solid black",
-                borderBottom: "1px solid black",
-              }}
-            ></td>
-          </tr> */}
         </table>
       </div>
     </>
