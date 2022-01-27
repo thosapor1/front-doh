@@ -201,10 +201,12 @@ export default function User() {
 
     const res = await getDataUsers();
 
-    if (!!res) {
-      Swal.close();
+    if (!!res && !!res.data.user_list) {
       setState(res.data);
-    } else {
+      Swal.close();
+    }
+
+    if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
