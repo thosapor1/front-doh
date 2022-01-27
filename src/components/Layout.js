@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => {
       zIndex: 3,
     },
     ListItemText: {
+      borderRadius: 10,
       color: "white",
       "&:hover": {
         background: "rgba(0, 0, 0, 0.2)",
@@ -111,7 +112,8 @@ const useStyles = makeStyles((theme) => {
       },
     },
     active: {
-      background: "#61438Fff",
+      borderRadius: 10,
+      background: "rgba(0, 0, 0, 0.3)",
       color: "white",
     },
     appBar: {
