@@ -49,8 +49,9 @@ import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRoun
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
 import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
+import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
 
-const drawerWidth = 220;
+let drawerWidth = 220;
 const drawerColor = "#46005E";
 
 const apiURL = axios.create({
@@ -72,12 +73,16 @@ const useStyles = makeStyles((theme) => {
       zIndex: 2,
     },
     swipableDrawer: {
-      width: 20,
+      width: 0,
       flexShrink: 0,
       zIndex: 2,
     },
     drawerPaper: {
       width: drawerWidth,
+      backgroundColor: drawerColor,
+    },
+    hideDrawerPaper: {
+      width: 0,
       backgroundColor: drawerColor,
     },
     root: {
@@ -103,6 +108,14 @@ const useStyles = makeStyles((theme) => {
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
+      background: "#9A0049",
+      // zIndex: 1,
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
+      },
+    },
+    appBarExpanded: {
+      width: "100%",
       background: "#9A0049",
       // zIndex: 1,
       [theme.breakpoints.down("md")]: {
@@ -137,6 +150,9 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.up("lg")]: {
         display: "none",
       },
+    },
+    showMenuButton: {
+      marginRight: theme.spacing(2),
     },
   };
 });
@@ -173,19 +189,14 @@ export default function Layout({ children }) {
   const [configItems, setConfigItems] = useState([]);
   const [userName, setUserName] = useState();
   const [open, setOpen] = React.useState(false);
+  const [changeWidthDrawer, setChangeWidthDrawer] = useState(false);
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const toggleDrawer = (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
+  const toggleDrawer = () => {
     setOpen(!open);
+    console.log("test");
   };
 
   useEffect(() => {
@@ -212,14 +223,22 @@ export default function Layout({ children }) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar} elevation={0}>
+      <AppBar
+        className={!changeWidthDrawer ? classes.appBar : classes.appBarExpanded}
+        elevation={0}
+      >
         <ToolBar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={toggleDrawer}
-            className={classes.menuButton}
+            onClick={() => {
+              toggleDrawer();
+              setChangeWidthDrawer(!changeWidthDrawer);
+            }}
+            className={
+              !changeWidthDrawer ? classes.menuButton : classes.showMenuButton
+            }
           >
             <MenuIcon />
           </IconButton>
@@ -234,10 +253,14 @@ export default function Layout({ children }) {
         </ToolBar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
+        className={!changeWidthDrawer ? classes.drawer : classes.swipableDrawer}
         variant={isMdUp ? "permanent" : "temporary"}
         anchor="left"
-        classes={{ paper: classes.drawerPaper }}
+        classes={{
+          paper: !changeWidthDrawer
+            ? classes.drawerPaper
+            : classes.hideDrawerPaper,
+        }}
         open={open}
         onClose={toggleDrawer}
       >
@@ -298,7 +321,7 @@ export default function Layout({ children }) {
                     ) : item.path === "/collectFromPk3" ? (
                       <MonetizationOnRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
-                      <ListAltRoundedIcon />
+                      <DesktopMacRoundedIcon />
                     ) : item.path === "/Payment" ? (
                       <MonetizationOnRoundedIcon />
                     ) : (
@@ -371,7 +394,7 @@ export default function Layout({ children }) {
             margin: "10px 10px ",
           }}
           onClick={() => {
-            alert("test");
+            setChangeWidthDrawer(!changeWidthDrawer);
           }}
         >
           test
