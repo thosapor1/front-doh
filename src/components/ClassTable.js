@@ -103,16 +103,16 @@ export default function ClassTable(props) {
                         {`C${data.class}`}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.sum_all.toLocaleString()}
+                        {!!data.sum_all ? data.sum_all.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.reject.toLocaleString()}
+                        {!!data.reject ? data.reject.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.normal.toLocaleString()}
+                        {!!data.normal ? data.normal.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.revenue.toLocaleString()}
+                        {!!data.revenue ? data.revenue.toLocaleString() : 0}
                       </TableCell>
                     </StyledTableRow>
                   ))
@@ -134,7 +134,7 @@ export default function ClassTable(props) {
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[
                   dataList.result_vehicleClass.length - 1
-                ]
+                ].sum_all
                   ? dataList.result_vehicleClass[
                       dataList.result_vehicleClass.length - 1
                     ].sum_all.toLocaleString()
@@ -144,7 +144,7 @@ export default function ClassTable(props) {
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[
                   dataList.result_vehicleClass.length - 1
-                ]
+                ].reject
                   ? dataList.result_vehicleClass[
                       dataList.result_vehicleClass.length - 1
                     ].reject.toLocaleString()
@@ -154,7 +154,7 @@ export default function ClassTable(props) {
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[
                   dataList.result_vehicleClass.length - 1
-                ]
+                ].normal
                   ? dataList.result_vehicleClass[
                       dataList.result_vehicleClass.length - 1
                     ].normal.toLocaleString()
@@ -164,7 +164,7 @@ export default function ClassTable(props) {
                 {!!dataList.result_vehicleClass &&
                 !!dataList.result_vehicleClass[
                   dataList.result_vehicleClass.length - 1
-                ]
+                ].revenue
                   ? dataList.result_vehicleClass[
                       dataList.result_vehicleClass.length - 1
                     ].revenue.toLocaleString()
