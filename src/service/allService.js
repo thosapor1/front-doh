@@ -84,7 +84,7 @@ export const getDataExpectIncomeActivity = (sendData) => {
 };
 
 export const searchOnExpectIncome = (endpoint, sendData) => {
-  const response = apiURLv2.post(`${endpoint}`, sendData).catch((error) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
