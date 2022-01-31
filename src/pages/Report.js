@@ -13,18 +13,8 @@ import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
 import FilterSection2 from "../components/report/FilterSection2";
 import TableReportDaily from "../components/report/TableReportDaily";
-import TableReportDaily2 from "../components/report/TableReportDaily2";
-import { report1 } from "../data/mockDataReport";
-import { report2 } from "../data/mockDataReport2";
-import PdfDaily from "../components/report/PdfDaily";
-import BlockSumMonthlyReport from "../components/report/BlockSumMonthlyReport";
-import TableReportSumMonthly from "../components/report/TableReportSumMonthly";
-import TableReportRemainMonthly from "../components/report/TableReportReaminMonthly";
-import BlockRemainReport from "../components/report/BlockRemainReport";
 import TableReportTrafficMonthly from "../components/report/TableReportTrafficMonthly";
 import BlockTrafficReport from "../components/report/BlockTrafficReport";
-import PdfSumMonthly from "../components/report/PdfSumMonthly";
-import PdfRemain from "../components/report/PdfRemain";
 import PdfTraffic from "../components/report/PdfTraffic";
 import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
@@ -45,6 +35,8 @@ import TableBillingDaily2 from "../components/report/TableBillingDaily2";
 import TablePaymentDaily from "../components/report/TablePaymentDaily";
 import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
+import BillingTSPdf from "../components/report/BillingTSPdf";
+import PaymentTSPdf from "../components/report/PaymentTSPdf";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -345,6 +337,7 @@ export default function Report() {
               <FilterSection
                 onFetchData={fetchData2}
                 report={PdfBillingDaily}
+                transactionReport={BillingTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -411,6 +404,7 @@ export default function Report() {
               <FilterSection
                 onFetchData={fetchData3}
                 report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}

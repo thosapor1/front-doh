@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchOnExpectIncome } from "../service/allService";
+import { searchByPlate, searchOnExpectIncome } from "../service/allService";
 import { Autocomplete } from "@material-ui/lab";
 
 const useStyle = makeStyles((theme) => {
@@ -93,8 +93,8 @@ export default function SearchByPlateComponent(props) {
     const sendData = {
       date: format(date, "yyyy-MM-dd"),
       plate: valuePlate,
-      province: valueProvince.name,
-      code: valueProvince.code,
+      // province: valueProvince.name,
+      // code: valueProvince.code,
     };
     let eye = [];
 
@@ -105,7 +105,7 @@ export default function SearchByPlateComponent(props) {
       didOpen: () => Swal.showLoading(),
     });
 
-    const res = await searchOnExpectIncome(endpoint, sendData);
+    const res = await searchByPlate(sendData);
 
     if (!!res && !!res.data.status) {
       eye.push({

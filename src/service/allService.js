@@ -97,6 +97,15 @@ export const searchByMatchTS = (endpoint, sendData) => {
   return response;
 };
 
+export const searchByPlate = (sendData) => {
+  const response = apiURLv1
+    .post("/search-plate-mflow", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //ExpertIncomeV2 page
 export const getDataExpectIncomeV2 = (sendData) => {
   const response = apiURLv2.post("/expect-income", sendData).catch((error) => {
