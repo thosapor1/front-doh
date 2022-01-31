@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchOnExpectIncome } from "../service/allService";
+import { searchByMatchTS, searchOnExpectIncome } from "../service/allService";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -70,14 +70,18 @@ export default function SearchComponent2(props) {
     };
 
     let eye = [];
-
+    let res = "";
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
-    const res = await searchOnExpectIncome(endpoint, sendData);
+    if (endpoint === "/search-transaction-match") {
+      res = await searchByMatchTS(endpoint, sendData);
+    } else {
+      res = await searchOnExpectIncome(endpoint, sendData);
+    }
 
     if (!!res && !!res.data.status) {
       eye.push({

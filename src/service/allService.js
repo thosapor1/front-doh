@@ -90,6 +90,13 @@ export const searchOnExpectIncome = (endpoint, sendData) => {
   return response;
 };
 
+export const searchByMatchTS = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //ExpertIncomeV2 page
 export const getDataExpectIncomeV2 = (sendData) => {
   const response = apiURLv2.post("/expect-income", sendData).catch((error) => {

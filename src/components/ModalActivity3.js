@@ -1400,8 +1400,8 @@ export default function ModalActivity3(props) {
                     colSpan={2}
                     style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
                   >
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
