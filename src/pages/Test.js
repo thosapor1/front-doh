@@ -21,7 +21,9 @@ export default function Test() {
 
   return (
     <>
-     
+     <P>
+       Test
+     </P>
     </>
   );
 }
