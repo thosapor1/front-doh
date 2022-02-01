@@ -70,7 +70,9 @@ export default async function TransactionDaily(selectedDate, checkpoint) {
       try {
         for (let index = 1; index < res.length; index++) {
           body1.push([
-            !!res[index].class ? `C${res[index].class}` : "-",
+            !!res[index].class && res[index].class === "total"
+              ? `รวมทั้งหมด`
+              : `C${res[index].class}`,
             !!res[index].count ? res[index].count.toLocaleString() : "-",
             !!res[index].normal ? res[index].normal.toLocaleString() : "-",
             !!res[index].reject ? res[index].reject.toLocaleString() : "-",
@@ -92,10 +94,10 @@ export default async function TransactionDaily(selectedDate, checkpoint) {
       return axios.post(url, sendData).then(async (res) => {
         pushToBody1(res.data.result_hq);
 
-        // setTimeout(async () => {
-        //   await pdfGenDownload(docDefinition);
-        //   Swal.close();
-        // }, 1000);
+        setTimeout(async () => {
+          await pdfGenDownload(docDefinition);
+          Swal.close();
+        }, 1000);
         console.log(body1);
       });
     },
