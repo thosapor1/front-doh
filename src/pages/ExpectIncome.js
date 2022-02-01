@@ -19,11 +19,12 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
 import { getDataExpectIncome, getDropdown } from "../service/allService";
+import SearchComponent2 from "../components/SearchComponent2";
+import SearchByPlateComponent from "../components/SearchByPlateComponent ";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -127,10 +128,13 @@ export default function ExpectIncome() {
   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
-
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
+  const [province, setProvince] = useState(null);
+  const [licensePlate, setLicensePlate] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -148,6 +152,17 @@ export default function ExpectIncome() {
   // const handleOpen = () => {
   //   setOpen(true);
   // };
+
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
 
   const fetchData = async (pageId = 1) => {
     let eyes = [];
@@ -475,34 +490,55 @@ export default function ExpectIncome() {
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
-          <Box style={{ marginRight: "0.8rem" }}>
-            <SearchComponent
-              value={transactionId}
-              date={selectedDate}
-              handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
-              }}
-              name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
-              setEyesStatus={setEyesStatus}
-              eyesStatus={eyesStatus}
-            />
-          </Box>
-          <Grid
-            container
-            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
-          >
+          <Grid container style={{ columnGap: "0.5rem", rowGap: "0.5rem" }}>
+            <Grid item style={{ display: "flex" }} lg={4} md={12} sm={12}>
+              <Box style={{ marginRight: "0.5rem" }}>
+                <SearchComponent2
+                  value={transactionId}
+                  date={selectedDate}
+                  handleOnChange={(e) => {
+                    setTransactionId(e.target.value);
+                    checkFormatSearch(e.target.value);
+                    // console.log(e.target.value);
+                  }}
+                  name="search"
+                  label="transaction id"
+                  setTable={setAllTsTable}
+                  endpoint={endpoint}
+                  setEyesStatus={setEyesStatus}
+                  eyesStatus={eyesStatus}
+                />
+              </Box>
+
+              <SearchByPlateComponent
+                valuePlate={licensePlate}
+                valueProvince={province}
+                setProvince={setProvince}
+                date={selectedDate}
+                handleOnChange={(e) => {
+                  setLicensePlate(e.target.value);
+                }}
+                handleOnChangeProvince={(e, newProvince) => {
+                  setProvince(newProvince);
+                }}
+                setInputValue={(e) => setInputValue(e.target.value)}
+                inputValue={inputValue}
+                dropdown={dropdown.province}
+                setTable={setAllTsTable}
+                endpoint={endpoint}
+                setEyesStatus={setEyesStatus}
+                eyesStatus={eyesStatus}
+              />
+            </Grid>
+
             {dataCard.map((card, index) => (
               <Grid
                 item
                 component={Paper}
                 key={index}
-                lg
-                md={5}
-                sm={6}
+                lg={2}
+                md={3}
+                sm={3}
                 className={classes.card}
                 style={{
                   borderLeft:
@@ -517,39 +553,28 @@ export default function ExpectIncome() {
                       : "3px solid lightgrey",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  alignItems="center"
+                <Typography
+                  style={{
+                    color:
+                      card.status === "total"
+                        ? "gray"
+                        : card.status === "normal"
+                        ? "green"
+                        : card.status === "not_normal"
+                        ? "red"
+                        : card.status === "revenue"
+                        ? "orange"
+                        : "lightgrey",
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                  }}
                 >
-                  <Grid item lg={10} md={12} sm={12}>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "not_normal"
-                            ? "red"
-                            : card.status === "revenue"
-                            ? "orange"
-                            : "lightgrey",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {!!card.value ? card.value.toLocaleString() : []}
-                      {card.status === "revenue" ? " บาท" : " รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={2} md={12} sm={12}>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
+                  {card.label}
+                </Typography>
+                <Typography style={{ fontSize: "1rem" }}>
+                  {!!card.value ? card.value.toLocaleString() : []}
+                  {card.status === "revenue" ? " บาท" : " รายการ"}
+                </Typography>
               </Grid>
             ))}
           </Grid>

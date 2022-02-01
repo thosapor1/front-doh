@@ -84,9 +84,25 @@ export const getDataExpectIncomeActivity = (sendData) => {
 };
 
 export const searchOnExpectIncome = (endpoint, sendData) => {
-  const response = apiURLv2.post(`${endpoint}`, sendData).catch((error) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
+  return response;
+};
+
+export const searchByMatchTS = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const searchByPlate = (sendData) => {
+  const response = apiURLv1
+    .post("/search-plate-mflow", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
   return response;
 };
 

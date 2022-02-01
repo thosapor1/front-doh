@@ -50,8 +50,9 @@ import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
 import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
 import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
-import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
+import KeyboardArrowLeftRoundedIcon from "@material-ui/icons/KeyboardArrowLeftRounded";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
+import KeyboardArrowRightRoundedIcon from "@material-ui/icons/KeyboardArrowRightRounded";
 
 let drawerWidth = 220;
 const drawerColor =
@@ -75,7 +76,7 @@ const useStyles = makeStyles((theme) => {
       flexShrink: 0,
       zIndex: 2,
     },
-    swipableDrawer: {
+    swipeAbleDrawer: {
       width: 0,
       flexShrink: 0,
       zIndex: 2,
@@ -167,12 +168,16 @@ const useStyles = makeStyles((theme) => {
     arrowIcon: {
       color: "white",
     },
-    contianerArrow: {
-      margin: "10px 0px 0px 80px",
+    containerArrow: {
       width: 50,
+      color: "gray",
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
       borderRadius: "50%",
       "&:hover": {
-        backgroundColor: "#6a008f",
+        backgroundColor: "rgba(0, 0, 0, 0.25)",
+      },
+      [theme.breakpoints.down("md")]: {
+        display: "none",
       },
     },
   };
@@ -250,16 +255,31 @@ export default function Layout({ children }) {
       >
         <ToolBar>
           <IconButton
+            onClick={() => {
+              setChangeWidthDrawer(!changeWidthDrawer);
+            }}
+            className={classes.containerArrow}
+          >
+            {!changeWidthDrawer ? (
+              <KeyboardArrowLeftRoundedIcon
+                className={classes.arrowIcon}
+                size="small"
+              />
+            ) : (
+              <KeyboardArrowRightRoundedIcon
+                className={classes.arrowIcon}
+                size="small"
+              />
+            )}
+          </IconButton>
+          <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={() => {
               toggleDrawer();
-              setChangeWidthDrawer(!changeWidthDrawer);
             }}
-            className={
-              !changeWidthDrawer ? classes.menuButton : classes.showMenuButton
-            }
+            className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
@@ -274,7 +294,9 @@ export default function Layout({ children }) {
         </ToolBar>
       </AppBar>
       <Drawer
-        className={!changeWidthDrawer ? classes.drawer : classes.swipableDrawer}
+        className={
+          !changeWidthDrawer ? classes.drawer : classes.swipeAbleDrawer
+        }
         variant={isMdUp ? "permanent" : "temporary"}
         anchor="left"
         classes={{
@@ -406,15 +428,6 @@ export default function Layout({ children }) {
         >
           ออกจากระบบ
         </Button>
-
-        <IconButton
-          onClick={() => {
-            setChangeWidthDrawer(!changeWidthDrawer);
-          }}
-          className={classes.contianerArrow}
-        >
-          <ArrowBackIosRoundedIcon className={classes.arrowIcon} />
-        </IconButton>
       </Drawer>
       <div className={classes.page}>
         <div className={classes.toolbar}></div>

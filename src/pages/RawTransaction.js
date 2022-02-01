@@ -173,10 +173,17 @@ export default function RawTransaction() {
     };
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
     const res = await getDataRawTransaction(sendData);
-    setState(!!res ? res.data : []);
-    setSummary(!!res ? res.data.summary : []);
-    // console.log(res.data.dropdown_Checkpoint);
+
+    if (!!res && res.data.status === false) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      console.log("test");
+    }
     if (!!res) {
+      setState(!!res ? res.data : []);
+      setSummary(!!res ? res.data.summary : []);
       Swal.close();
     }
   };

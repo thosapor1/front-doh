@@ -82,6 +82,7 @@ export default function FilterSection(props) {
     setSelectedDate,
     checkpoint,
     setCheckpoint,
+    transactionReport,
   } = props;
   const classes = useStyles();
 
@@ -145,7 +146,18 @@ export default function FilterSection(props) {
             report(selectedDate, checkpoint);
           }}
         >
-          pdf
+          summary pdf
+        </Button>
+
+        <Button
+          variant="contained"
+          className={classes.btn}
+          style={{ backgroundColor: "lightgreen" }}
+          onClick={() => {
+            transactionReport(selectedDate, checkpoint);
+          }}
+        >
+          transaction pdf
         </Button>
       </Grid>
     </>
