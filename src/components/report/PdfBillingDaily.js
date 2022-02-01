@@ -191,7 +191,9 @@ export default async function PdfBillingDaily(selectedDate, checkpoint) {
                     text: "จำนวนใบแจ้งหนี้สมาชิก",
                   },
                   {
-                    text: res.data.result_billing[0].billing_member.toLocaleString(),
+                    text: !!res.data.result_billing[0].billing_member
+                      ? res.data.result_billing[0].billing_member.toLocaleString()
+                      : "-",
                   },
                 ],
                 [
@@ -199,7 +201,9 @@ export default async function PdfBillingDaily(selectedDate, checkpoint) {
                     text: "จำนวนใบแจ้งหนี้ไม่ใช่สมาชิก",
                   },
                   {
-                    text: res.data.result_billing[0].billing_nonemember.toLocaleString(),
+                    text: !!res.data.result_billing[0].billing_nonemember
+                      ? res.data.result_billing[0].billing_nonemember.toLocaleString()
+                      : "-",
                   },
                 ],
               ],

@@ -21,9 +21,6 @@ const useStyle = makeStyles((theme) => {
       },
       width: 150,
       margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 150,
-      },
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -65,11 +62,17 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-shrink": {
         transform: "translate(14px, -6px) scale(0.75)",
       },
+      margin: theme.spacing(1),
       width: 200,
       // margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
         width: 200,
       },
+    },
+    button: {
+      height: 40,
+      fontSize: "0.7rem",
+      margin: theme.spacing(1),
     },
   };
 });
@@ -83,7 +86,7 @@ export default function SearchByPlateComponent(props) {
     name,
     handleOnChange,
     setTable,
-    endpoint,
+
     setEyesStatus,
     valuePlate,
     handleOnChangeProvince,
@@ -128,7 +131,7 @@ export default function SearchByPlateComponent(props) {
 
   return (
     <>
-      <Paper style={{ height: 112, width: 320 }}>
+      <Box style={{ display: "flex" }}>
         <TextField
           variant="outlined"
           className={classes.input1}
@@ -149,11 +152,16 @@ export default function SearchByPlateComponent(props) {
               <TextField {...params} label="province" variant="outlined" />
             )}
           />
-          <Button variant="contained" color="primary" onClick={onClickHandle}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onClickHandle}
+            className={classes.button}
+          >
             {`Search`}
           </Button>
         </Box>
-      </Paper>
+      </Box>
     </>
   );
 }

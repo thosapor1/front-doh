@@ -15,7 +15,7 @@ pdfMake.fonts = {
   },
 };
 
-export default function PaymentTSPdf(selectedDate, checkpoint) {
+export default function PdfTransaction(selectedDate, checkpoint) {
   const getDate = format(selectedDate, "yyyy-MM-dd");
   const ck = checkpoint;
   console.log(getDate, ck);
@@ -24,10 +24,30 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
 
   let body = [
     [
-      { text: "ลำดับ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "transaction", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ช่อง", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "เวลาเข้าด่าน", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ประเภทรถ", colSpan: 4, margin: [0, 5, 0, 0] },
+      { text: "ประเภท TS", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "ค่าผ่านทาง", rowSpan: 2, margin: [0, 5, 0, 0] },
       { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 5, 0, 0] },
-      { text: "จำนวนยอด", rowSpan: 2, margin: [0, 5, 0, 0] },
-      { text: "ช่องทางชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "การชำระ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "หมายเหตุ", rowSpan: 2, margin: [0, 5, 0, 0] },
+      { text: "สถานะ", rowSpan: 2, margin: [0, 5, 0, 0] },
+    ],
+    [
+      {},
+      {},
+      {},
+      {},
+      { text: "จริง" },
+      { text: "AD" },
+      { text: "Lane" },
+      { text: "HQ" },
+      {},
+      {},
+      {},
     ],
   ];
 
@@ -37,7 +57,7 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
         console.log("generate");
         pdfMake
           .createPdf(docDefinition)
-          .download("รายงานPaymentประจำวัน.pdf", () => {
+          .download("รายงานTransactionประจำวัน.pdf", () => {
             resolve();
           });
       } catch (err) {
@@ -52,7 +72,9 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
         for (let index = 0; index < res.data.length; index++) {
           // console.log(index);
           body.push([
-            index,
+            !!res.data[index].transactionId
+              ? res.data[index].transactionId
+              : "-",
             !!res.data[index].match_checkpoint
               ? res.data[index].match_checkpoint
               : "-",
@@ -60,6 +82,13 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
             !!res.data[index].match_timestamp
               ? res.data[index].match_timestamp.split(" ")[1]
               : "-",
+            `C${res.data[index].match_real_vehicleClass}`,
+            !!res.data[index].AD ? `C${res.data[index].AD}` : "-",
+            `C${res.data[index].mf_lane_vehicleClass}`,
+            `C${res.data[index].vehicleClass}`,
+            !!res.data[index].hasPayment ? res.data[index].hasPayment : "-",
+            !!res.data[index].forceFlag ? res.data[index].forceFlag : "-",
+            !!res.data[index].status ? res.data[index].status : "-",
           ]);
         }
         console.log("loop");
@@ -188,7 +217,7 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
       {
         style: "table2",
         table: {
-          widths: [40, 120, 120, 120],
+          widths: [90, 50, 40, 60, 50, 50, 50, 50, 60, 60, 70],
           headerRows: 2,
           body: body,
         },
@@ -197,7 +226,7 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
     styles: {
       table: { marginTop: 20, alignment: "center", fontSize: 9 },
       table2: {
-        marginLeft: 150,
+        marginLeft: 12,
         marginTop: 20,
         alignment: "center",
         fontSize: 11,

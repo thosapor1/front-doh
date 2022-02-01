@@ -264,6 +264,7 @@ export default function Report() {
               <FilterSection
                 onFetchData={fetchData}
                 report={TransactionDaily}
+                transactionReport={BillingTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
