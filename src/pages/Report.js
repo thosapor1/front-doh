@@ -24,6 +24,7 @@ import TableNumberOfCar from "../components/report/TableNumberOfCar";
 import axios from "axios";
 import {
   getDataReportBilling,
+  getDataReportDisplay,
   getDataReportPayment,
   getDataReportTS,
 } from "../service/allService";
@@ -153,7 +154,7 @@ export default function Report() {
       date: date,
       checkpoint: checkpoint.toString(),
     };
-    const res = await getDataReportTS(sendData);
+    const res = await getDataReportDisplay(sendData);
 
     if (!!res && !!res.data.status) {
       setDailyTransaction(res.data);

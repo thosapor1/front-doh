@@ -293,8 +293,14 @@ export const getImageLane = (sendData) => {
 };
 
 //Report page
+export const getDataReportDisplay = (sendData) => {
+  const response = apiURLv1.post("/display-ts", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
 export const getDataReportTS = (sendData) => {
-  const response = apiURLv1.post("/expect-pdf-ts", sendData).catch((error) => {
+  const response = apiURLv1.post("/export-pdf-ts", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
