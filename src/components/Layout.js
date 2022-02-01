@@ -49,9 +49,14 @@ import PlaylistAddCheckRoundedIcon from "@material-ui/icons/PlaylistAddCheckRoun
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import HourglassEmptyRoundedIcon from "@material-ui/icons/HourglassEmptyRounded";
 import MonetizationOnRoundedIcon from "@material-ui/icons/MonetizationOnRounded";
+import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
+import KeyboardArrowLeftRoundedIcon from "@material-ui/icons/KeyboardArrowLeftRounded";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
+import KeyboardArrowRightRoundedIcon from "@material-ui/icons/KeyboardArrowRightRounded";
 
-const drawerWidth = 220;
-const drawerColor = "#46005E";
+let drawerWidth = 220;
+const drawerColor =
+  "linear-gradient(38deg, rgba(70,0,94,1) 41%, rgba(154,0,73,1) 89%)";
 
 const apiURL = axios.create({
   baseURL:
@@ -71,16 +76,31 @@ const useStyles = makeStyles((theme) => {
       flexShrink: 0,
       zIndex: 2,
     },
+    swipeAbleDrawer: {
+      width: 0,
+      flexShrink: 0,
+      zIndex: 2,
+    },
     drawerPaper: {
       width: drawerWidth,
-      backgroundColor: drawerColor,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
+    },
+    hideDrawerPaper: {
+      width: 0,
+      background: drawerColor,
+      // backgroundColor: drawerColor,
     },
     root: {
       display: "flex",
       zIndex: 3,
     },
     ListItemText: {
+      borderRadius: 10,
       color: "white",
+      "&:hover": {
+        background: "rgba(0, 0, 0, 0.2)",
+      },
     },
     btn: {
       fontSize: "0.8rem",
@@ -93,11 +113,20 @@ const useStyles = makeStyles((theme) => {
       },
     },
     active: {
-      background: "#61438Fff",
+      borderRadius: 10,
+      background: "rgba(0, 0, 0, 0.3)",
       color: "white",
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
+      background: "#9A0049",
+      // zIndex: 1,
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
+      },
+    },
+    appBarExpanded: {
+      width: "100%",
       background: "#9A0049",
       // zIndex: 1,
       [theme.breakpoints.down("md")]: {
@@ -130,6 +159,24 @@ const useStyles = makeStyles((theme) => {
     menuButton: {
       marginRight: theme.spacing(2),
       [theme.breakpoints.up("lg")]: {
+        display: "none",
+      },
+    },
+    showMenuButton: {
+      marginRight: theme.spacing(2),
+    },
+    arrowIcon: {
+      color: "white",
+    },
+    containerArrow: {
+      width: 50,
+      color: "gray",
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "rgba(0, 0, 0, 0.25)",
+      },
+      [theme.breakpoints.down("md")]: {
         display: "none",
       },
     },
@@ -168,19 +215,14 @@ export default function Layout({ children }) {
   const [configItems, setConfigItems] = useState([]);
   const [userName, setUserName] = useState();
   const [open, setOpen] = React.useState(false);
+  const [changeWidthDrawer, setChangeWidthDrawer] = useState(false);
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const toggleDrawer = (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
+  const toggleDrawer = () => {
     setOpen(!open);
+    console.log("test");
   };
 
   useEffect(() => {
@@ -207,13 +249,36 @@ export default function Layout({ children }) {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar} elevation={0}>
+      <AppBar
+        className={!changeWidthDrawer ? classes.appBar : classes.appBarExpanded}
+        elevation={0}
+      >
         <ToolBar>
+          <IconButton
+            onClick={() => {
+              setChangeWidthDrawer(!changeWidthDrawer);
+            }}
+            className={classes.containerArrow}
+          >
+            {!changeWidthDrawer ? (
+              <KeyboardArrowLeftRoundedIcon
+                className={classes.arrowIcon}
+                size="small"
+              />
+            ) : (
+              <KeyboardArrowRightRoundedIcon
+                className={classes.arrowIcon}
+                size="small"
+              />
+            )}
+          </IconButton>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={toggleDrawer}
+            onClick={() => {
+              toggleDrawer();
+            }}
             className={classes.menuButton}
           >
             <MenuIcon />
@@ -229,10 +294,16 @@ export default function Layout({ children }) {
         </ToolBar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
+        className={
+          !changeWidthDrawer ? classes.drawer : classes.swipeAbleDrawer
+        }
         variant={isMdUp ? "permanent" : "temporary"}
         anchor="left"
-        classes={{ paper: classes.drawerPaper }}
+        classes={{
+          paper: !changeWidthDrawer
+            ? classes.drawerPaper
+            : classes.hideDrawerPaper,
+        }}
         open={open}
         onClose={toggleDrawer}
       >
@@ -276,12 +347,14 @@ export default function Layout({ children }) {
                       <ListAltRoundedIcon />
                     ) : item.path === "/expectIncome" ? (
                       <ListRoundedIcon />
+                    ) : item.path === "/expectIncomeV2" ? (
+                      <ListRoundedIcon />
                     ) : item.path === "/auditDisplay" ? (
                       <PlaylistAddCheckRoundedIcon />
                     ) : item.path === "/superAuditDisplay2" ? (
                       <SupervisedUserCircleRoundedIcon />
                     ) : item.path === "/report" ? (
-                      <ReceiptRoundedIcon />
+                      <DescriptionRoundedIcon />
                     ) : item.path === "/DataVolume" ? (
                       <DataUsageRoundedIcon />
                     ) : item.path === "/MandatoryItem" ? (
@@ -289,9 +362,11 @@ export default function Layout({ children }) {
                     ) : item.path === "/pk3Display" ? (
                       <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (
-                      <MonetizationOnRoundedIcon />
+                      <ReceiptRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
-                      <ListAltRoundedIcon />
+                      <DesktopMacRoundedIcon />
+                    ) : item.path === "/Payment" ? (
+                      <MonetizationOnRoundedIcon />
                     ) : (
                       ""
                     )}

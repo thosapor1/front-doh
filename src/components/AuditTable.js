@@ -70,7 +70,7 @@ const useStyle = makeStyles((theme) => {
       maxHeight: "60vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
-        maxHeight: "50vh",
+        maxHeight: "57vh",
       },
       marginTop: 10,
     },

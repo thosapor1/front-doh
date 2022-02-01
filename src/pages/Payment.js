@@ -5,9 +5,7 @@ import {
   Container,
   Grid,
   makeStyles,
-  MenuItem,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import {
@@ -18,13 +16,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay2 from "../components/TableAuditDisplay2";
+import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import GateTable2 from "../components/GateTable2";
-import ClassTable from "../components/ClassTable";
-import { getDataExpectIncome, getDropdown } from "../service/allService";
-import SearchComponent2 from "../components/SearchComponent2";
-import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import { getDataMonitor, getDropdown } from "../service/allService";
+import TablePayment from "../components/TablePayment";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -85,10 +80,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 155,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 155,
       },
     },
     input1: {
@@ -118,23 +113,20 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ExpectIncome() {
+export default function Payment() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(1);
-  const [status_select, setStatus_select] = useState(0);
-  const [selectGate, setSelectGate] = useState(0);
-  const [selectCarType, setSelectCarType] = useState(0);
+  //   const [checkpoint, setCheckpoint] = useState(1);
+  //   const [status_select, setStatus_select] = useState(0);
+  //   const [selectGate, setSelectGate] = useState(0);
+  //   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
+
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0);
+  //   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
-  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  const [province, setProvince] = useState(null);
-  const [licensePlate, setLicensePlate] = useState("");
-  const [inputValue, setInputValue] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -153,19 +145,7 @@ export default function ExpectIncome() {
   //   setOpen(true);
   // };
 
-  const checkFormatSearch = (e) => {
-    if (/^m/gi.test(e)) {
-      setEndpoint("/search-transaction-match");
-    } else if (/^t/gi.test(e)) {
-      setEndpoint("/search-transaction-hq");
-    } else if (/\d{6}/.test(e)) {
-      setEndpoint("/search-transaction-audit");
-    }
-    console.log(endpoint);
-  };
-
   const fetchData = async (pageId = 1) => {
-    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -183,43 +163,36 @@ export default function ExpectIncome() {
 
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint.toString() || "0",
-      gate: selectGate.toString() || "0",
-      state: status_select.toString() || "0",
-      vehicleClass: selectCarType.toString() || "0",
+      //   checkpoint: checkpoint.toString() || "0",
+      //   gate: selectGate.toString() || "0",
+      //   state: status_select.toString() || "0",
+      //   vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      //   status: tsType.toString(),
     };
-    console.log(sendData);
+    // console.log(sendData);
 
-    const res = await getDataExpectIncome(sendData);
-    if (!!res && res.data.status === false) {
+    const res = await getDataMonitor(sendData);
+
+    if (!!res) {
+      // console.log(res.data.result_card);
+      setAllTsTable(!!res ? res.data : []);
+      setSummary(!!res.data.result_card ? res.data.result_card[0] : summary);
+    }
+    if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
+      // console.log("test");
     }
-    if (!!res) {
-      setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res ? res.data.summary : summary);
-    }
-    if (!!res && !!res.data.resultsDisplay) {
-      for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
-        eyes.push({
-          state: res.data.resultsDisplay[i].state,
-          readFlag: res.data.resultsDisplay[i].readFlag,
-          transactionId: res.data.resultsDisplay[i].transactionId,
-        });
-      }
-      setEyesStatus(eyes);
-    }
-
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
+
+    // console.log(eyesStatus);
   };
 
   // const refresh = (pageId = 1) => {
@@ -287,26 +260,42 @@ export default function ExpectIncome() {
   // };
 
   const dataCard = [
+    // {
+    //   value:
+    //     !!summary && !!summary.count_billing
+    //       ? summary.count_billing.toLocaleString().toString()
+    //       : "0",
+    //   status: "total",
+    //   label: "จำนวนรายการแจ้งหนี้",
+    //   type: "label",
+    // },
     {
-      value: !!summary ? summary.ts_total : 0,
-      status: "total",
-      label: "จำนวนรายการทั้งหมดของวัน",
-    },
-    {
-      value: !!summary ? summary.ts_normal : 0,
+      value:
+        !!summary && !!summary.count
+          ? summary.count.toLocaleString().toString()
+          : "0",
       status: "normal",
-      label: "จำนวนรายการรถปกติ",
+      label: "จำนวนรายการ",
+      type: "รายการ",
     },
     {
-      value: !!summary ? summary.ts_not_normal : 0,
+      value:
+        !!summary && !!summary.sum_fee
+          ? summary.sum_fee.toLocaleString().toString()
+          : "0",
       status: "not_normal",
-      label: "จำนวนรายการตรวจสอบ",
+      label: "จำนวนเงิน",
+      type: "money",
     },
-    {
-      value: !!summary ? summary.revenue : 0,
-      status: "revenue",
-      label: "รายได้พึงได้รายวัน",
-    },
+    // {
+    //   value:
+    //     !!summary && !!summary.overdue
+    //       ? summary.overdue.toLocaleString().toString()
+    //       : "0",
+    //   status: "revenue",
+    //   label: "ค้างจ่าย",
+    //   type: "money",
+    // },
   ];
 
   useEffect(() => {
@@ -323,12 +312,12 @@ export default function ExpectIncome() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+          รายการชำระรายวัน
         </Typography>
 
         {/* Filter Section */}
         <Grid container component={Paper} className={classes.filterSection}>
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="ด่าน"
@@ -364,7 +353,7 @@ export default function ExpectIncome() {
                   </MenuItem>
                 ))
               : []}
-          </TextField>
+          </TextField> */}
 
           {/* <TextField
             select
@@ -384,7 +373,7 @@ export default function ExpectIncome() {
               : []}
           </TextField> */}
 
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="สถานะ"
@@ -422,7 +411,7 @@ export default function ExpectIncome() {
                   </MenuItem>
                 ))
               : []}
-          </TextField>
+          </TextField> */}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -442,7 +431,7 @@ export default function ExpectIncome() {
             />
           </MuiPickersUtilsProvider>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
               inputVariant="outlined"
               ampm={false}
@@ -470,7 +459,7 @@ export default function ExpectIncome() {
               onChange={setSelectedTimeEnd}
               className={classes.input}
             />
-          </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider> */}
 
           <Button
             variant="contained"
@@ -490,55 +479,32 @@ export default function ExpectIncome() {
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
-          <Grid container style={{ columnGap: "0.5rem", rowGap: "0.5rem" }}>
-            <Grid item style={{ display: "flex" }} lg={4} md={12} sm={12}>
-              <Box style={{ marginRight: "0.5rem" }}>
-                <SearchComponent2
-                  value={transactionId}
-                  date={selectedDate}
-                  handleOnChange={(e) => {
-                    setTransactionId(e.target.value);
-                    checkFormatSearch(e.target.value);
-                    // console.log(e.target.value);
-                  }}
-                  name="search"
-                  label="transaction id"
-                  setTable={setAllTsTable}
-                  endpoint={endpoint}
-                  setEyesStatus={setEyesStatus}
-                  eyesStatus={eyesStatus}
-                />
-              </Box>
-
-              <SearchByPlateComponent
-                valuePlate={licensePlate}
-                valueProvince={province}
-                setProvince={setProvince}
-                date={selectedDate}
-                handleOnChange={(e) => {
-                  setLicensePlate(e.target.value);
-                }}
-                handleOnChangeProvince={(e, newProvince) => {
-                  setProvince(newProvince);
-                }}
-                setInputValue={(e) => setInputValue(e.target.value)}
-                inputValue={inputValue}
-                dropdown={dropdown.province}
-                setTable={setAllTsTable}
-                endpoint={endpoint}
-                setEyesStatus={setEyesStatus}
-                eyesStatus={eyesStatus}
-              />
-            </Grid>
-
+          <Box style={{ marginRight: "0.8rem" }}>
+            <SearchComponent
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                console.log(transactionId);
+              }}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint="/audit-search"
+            />
+          </Box>
+          <Grid
+            container
+            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
+          >
             {dataCard.map((card, index) => (
               <Grid
                 item
                 component={Paper}
                 key={index}
-                lg={2}
-                md={3}
-                sm={3}
+                lg={3}
+                md={5}
+                xs={5}
                 className={classes.card}
                 style={{
                   borderLeft:
@@ -553,48 +519,48 @@ export default function ExpectIncome() {
                       : "3px solid lightgrey",
                 }}
               >
-                <Typography
-                  style={{
-                    color:
-                      card.status === "total"
-                        ? "gray"
-                        : card.status === "normal"
-                        ? "green"
-                        : card.status === "not_normal"
-                        ? "red"
-                        : card.status === "revenue"
-                        ? "orange"
-                        : "lightgrey",
-                    fontSize: "1rem",
-                    fontWeight: 700,
-                  }}
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
                 >
-                  {card.label}
-                </Typography>
-                <Typography style={{ fontSize: "1rem" }}>
-                  {!!card.value ? card.value.toLocaleString() : []}
-                  {card.status === "revenue" ? " บาท" : " รายการ"}
-                </Typography>
+                  <Grid item lg={10} md={12} sm={12}>
+                    <Typography
+                      style={{
+                        color:
+                          card.status === "total"
+                            ? "gray"
+                            : card.status === "normal"
+                            ? "green"
+                            : card.status === "not_normal"
+                            ? "red"
+                            : card.status === "revenue"
+                            ? "orange"
+                            : "lightgrey",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography style={{ fontSize: "1rem" }}>
+                      {!!card.value ? card.value.toLocaleString() : []}
+                      {card.type === "money" ? " บาท" : " รายการ"}
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={2} md={12} sm={12}>
+                    <DescriptionTwoToneIcon />
+                  </Grid>
+                </Grid>
               </Grid>
             ))}
           </Grid>
         </Box>
 
         {/* Table Section */}
-        <Grid
-          container
-          component={Paper}
-          className={classes.gateAndClassSection}
-        >
-          <Grid item md={12} sm={12} lg={4} className={classes.gateTable}>
-            <GateTable2 dataList={allTsTable} />
-          </Grid>
-          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
-            <ClassTable dataList={allTsTable} />
-          </Grid>
-        </Grid>
+
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-          <TableAuditDisplay2
+          <TablePayment
             dataList={allTsTable}
             page={page}
             onChange={handlePageChange}

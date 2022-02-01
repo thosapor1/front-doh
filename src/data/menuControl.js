@@ -14,20 +14,31 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/rawTransaction",
   },
-  {
-    text: "รายการจัดเก็บจาก PK3",
-    icon: "MonetizationOnIcon",
-    path: "/collectFromPk3",
-  },
+
   {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
     path: "/expectIncome",
   },
   {
+    text: "รายได้พึงได้รายวันV2",
+    icon: "task",
+    path: "/expectIncomeV2",
+  },
+  {
     text: "รายได้รายวัน",
     icon: "poll",
     path: "/auditDisplay",
+  },
+  {
+    text: "รายการแจ้งหนี้จาก PK3",
+    icon: "MonetizationOnIcon",
+    path: "/collectFromPk3",
+  },
+  {
+    text: "รายการชำระรายวัน",
+    icon: "MonetizationOnIcon",
+    path: "/Payment",
   },
   // {
   //   text: "super audit display",
@@ -69,6 +80,7 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/MonitorData",
   },
+
   // {
   //   text: "รายการบังคับ",
   //   icon: "playlist_add_check",

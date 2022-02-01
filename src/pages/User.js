@@ -98,19 +98,10 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
-
 export default function User() {
   const classes = useStyles();
 
   const [state, setState] = useState({});
-
-  const [progressStatus, setProgressStatus] = useState({});
 
   const [open, setOpen] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -201,10 +192,12 @@ export default function User() {
 
     const res = await getDataUsers();
 
-    if (!!res) {
-      Swal.close();
+    if (!!res && !!res.data.user_list) {
       setState(res.data);
-    } else {
+      Swal.close();
+    }
+
+    if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",

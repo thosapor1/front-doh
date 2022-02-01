@@ -13,23 +13,30 @@ import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
 import FilterSection2 from "../components/report/FilterSection2";
 import TableReportDaily from "../components/report/TableReportDaily";
-import TableReportDaily2 from "../components/report/TableReportDaily2";
-import { report1 } from "../data/mockDataReport";
-import { report2 } from "../data/mockDataReport2";
-import PdfDaily from "../components/report/PdfDaily";
-import BlockSumMonthlyReport from "../components/report/BlockSumMonthlyReport";
-import TableReportSumMonthly from "../components/report/TableReportSumMonthly";
-import TableReportRemainMonthly from "../components/report/TableReportReaminMonthly";
-import BlockRemainReport from "../components/report/BlockRemainReport";
 import TableReportTrafficMonthly from "../components/report/TableReportTrafficMonthly";
 import BlockTrafficReport from "../components/report/BlockTrafficReport";
-import PdfSumMonthly from "../components/report/PdfSumMonthly";
-import PdfRemain from "../components/report/PdfRemain";
 import PdfTraffic from "../components/report/PdfTraffic";
 import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
 import FilterSection3 from "../components/report/FilterSection3";
+import TableNumberOfCar from "../components/report/TableNumberOfCar";
+import axios from "axios";
+import {
+  getDataReportBilling,
+  getDataReportPayment,
+  getDataReportTS,
+} from "../service/allService";
+import format from "date-fns/format";
+import Swal from "sweetalert2";
+import TransactionDaily from "../components/report/TransactionDaily";
+import TableBillingDaily from "../components/report/TableBillingDaily";
+import TableBillingDaily2 from "../components/report/TableBillingDaily2";
+import TablePaymentDaily from "../components/report/TablePaymentDaily";
+import PdfBillingDaily from "../components/report/PdfBillingDaily";
+import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
+import BillingTSPdf from "../components/report/BillingTSPdf";
+import PaymentTSPdf from "../components/report/PaymentTSPdf";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -120,27 +127,98 @@ const data1 = [
 export default function Report() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [allTsTable, setAllTsTable] = useState("");
+  const [dailyTransaction, setDailyTransaction] = useState([]);
+  const [dailyBilling, setDailyBilling] = useState([]);
+  const [dailyPayment, setDailyPayment] = useState([]);
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setDate(new Date().getDate() - 1)
+  );
+  const [checkpoint, setCheckpoint] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const fetchData = () => {
-    // apiURL.post("/system-config").then((res) => {
-    //   setAllTsTable(res.data);
-    //   console.log("res: ", res.data);
-    // });
+  const fetchData = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
-    setAllTsTable(data1);
-    setAllTsTable2(report1);
-    setAllTsTable3(report2);
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+    };
+    const res = await getDataReportTS(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDailyTransaction(res.data);
+    }
+
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      console.log("test");
+    }
+    if (!!res && res.data.status !== false) {
+      Swal.close();
+    }
+
+    // console.log(res.data);
+  };
+
+  const fetchData2 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+    };
+    const res = await getDataReportBilling(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDailyBilling(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData3 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+    };
+    const res = await getDataReportPayment(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDailyPayment(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   return (
@@ -159,120 +237,216 @@ export default function Report() {
             aria-label="simple tabs example"
           >
             <Tab
-              label="รายงานประจำวัน"
+              label="สรปุ TS ประจำวัน"
               {...a11yProps(0)}
               className={classes.tab}
             />
             <Tab
-              label="รายงานใบนำฝาก"
+              label="สรุป Billing ประจำวัน"
               {...a11yProps(1)}
               className={classes.tab}
             />
             <Tab
-              label="รายงานสรุปยอดคงค้าง"
+              label="สรุป Payment ประจำวัน"
               {...a11yProps(2)}
               className={classes.tab}
             />
-            <Tab
+            {/* <Tab
               label="รายงานสรุปจราจร"
               {...a11yProps(3)}
               className={classes.tab}
-            />
-            <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} />
+            /> */}
+            {/* <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} /> */}
           </Tabs>
 
           <TabPanel value={value} index={0}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection onFetchData={fetchData} report={PdfDaily} />
+              <FilterSection
+                onFetchData={fetchData}
+                report={TransactionDaily}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
               <Paper style={{ marginTop: 20 }}>
-                <Typography
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingTop: 20,
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {checkpoint === 0
+                        ? "ทุกด่าน"
+                        : checkpoint === 1
+                        ? "ด่านทับช้าง1"
+                        : checkpoint === 2
+                        ? "ด่านทับช้าง2"
+                        : checkpoint === 3
+                        ? "ด่านธัญบุรี1"
+                        : checkpoint === 4
+                        ? "ด่านธัญบุรี2"
+                        : ""}
+                    </Typography>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร สรุป Transaction ประจำวันที่ ${format(
+                        selectedDate,
+                        "dd/MM/yyyy"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
+                <div
                   style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
+                    display: "flex",
+                    marginTop: 20,
+                    justifyContent: "center",
                   }}
                 >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำวัน
-                </Typography>
-
-                <div style={{ display: "flex", marginTop: 20 }}>
                   <div>
-                    <TableReportDaily dataList={allTsTable} />
+                    <TableNumberOfCar dataList={dailyTransaction} />
                   </div>
                   <div>
-                    <BlockDailyReport />
+                    <TableReportDaily dataList={dailyTransaction} />
+                  </div>
+                  <div>
+                    <BlockDailyReport
+                      dataList={dailyTransaction}
+                      checkpoint={checkpoint}
+                    />
                   </div>
                 </div>
 
-                <TableReportDaily2 dataList={allTsTable2} />
+                {/* <TableReportDaily2 dataList={allTsTable2} /> */}
               </Paper>
             </Container>
           </TabPanel>
 
           <TabPanel value={value} index={1}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2 onFetchData={fetchData} report={PdfSumMonthly} />
+              <FilterSection
+                onFetchData={fetchData2}
+                report={PdfBillingDaily}
+                transactionReport={BillingTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
               <Paper style={{ marginTop: 20 }}>
-                <Typography
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingTop: 20,
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {checkpoint === 0
+                        ? "ทุกด่าน"
+                        : checkpoint === 1
+                        ? "ด่านทับช้าง1"
+                        : checkpoint === 2
+                        ? "ด่านทับช้าง2"
+                        : checkpoint === 3
+                        ? "ด่านธัญบุรี1"
+                        : checkpoint === 4
+                        ? "ด่านธัญบุรี2"
+                        : ""}
+                    </Typography>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร สรุป Billing ประจำวันที่ ${format(
+                        selectedDate,
+                        "dd/MM/yyyy"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
+                <div
                   style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 20,
                   }}
                 >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
-
-                <BlockSumMonthlyReport />
-
-                <TableReportSumMonthly dataList={allTsTable3} />
+                  <div>
+                    <TableBillingDaily dataList={dailyBilling} />
+                  </div>
+                  <div>
+                    <TableBillingDaily2 dataList={dailyBilling} />
+                  </div>
+                </div>
+                {/* <TableReportSumMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
 
           <TabPanel value={value} index={2}>
             <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2 onFetchData={fetchData} report={PdfRemain} />
+              <FilterSection
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
               <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingTop: 20,
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {checkpoint === 0
+                        ? "ทุกด่าน"
+                        : checkpoint === 1
+                        ? "ด่านทับช้าง1"
+                        : checkpoint === 2
+                        ? "ด่านทับช้าง2"
+                        : checkpoint === 3
+                        ? "ด่านธัญบุรี1"
+                        : checkpoint === 4
+                        ? "ด่านธัญบุรี2"
+                        : ""}
+                    </Typography>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร สรุป Payment ประจำวันที่ ${format(
+                        selectedDate,
+                        "dd/MM/yyyy"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
 
                 <div
                   style={{
@@ -282,14 +456,11 @@ export default function Report() {
                   }}
                 >
                   <div>
-                    <BlockRemainReport />
-                  </div>
-                  <div>
-                    <TableReportDaily dataList={allTsTable} />
+                    <TablePaymentDaily dataList={dailyPayment} />
                   </div>
                 </div>
 
-                <TableReportRemainMonthly dataList={allTsTable3} />
+                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
