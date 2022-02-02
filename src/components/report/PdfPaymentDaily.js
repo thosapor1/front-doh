@@ -22,7 +22,7 @@ export default async function PdfPaymentDaily(selectedDate, checkpoint) {
   const ck = checkpoint;
   console.log(getDate, ck);
   const url =
-    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/expect-pdf-payment";
+    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/display-payment";
   let sendData = { date: getDate, checkpoint: ck.toString() };
 
   Swal.fire({

@@ -308,7 +308,7 @@ export const getDataReportTS = (sendData) => {
 
 export const getDataReportBilling = (sendData) => {
   const response = apiURLv1
-    .post("/export-pdf-billing", sendData)
+    .post("/display-billing", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
@@ -317,7 +317,7 @@ export const getDataReportBilling = (sendData) => {
 
 export const getDataReportPayment = (sendData) => {
   const response = apiURLv1
-    .post("/expect-pdf-payment", sendData)
+    .post("/display-payment", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });

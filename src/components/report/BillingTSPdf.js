@@ -19,7 +19,8 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
   const getDate = format(selectedDate, "yyyy-MM-dd");
   const ck = checkpoint;
   console.log(getDate, ck);
-  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
+  const url =
+    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf-billing";
   let sendData = { date: getDate, checkpoint: ck.toString() };
 
   let body = [
