@@ -221,8 +221,11 @@ export default function Layout({ children }) {
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
 
   const toggleDrawer = () => {
-    setOpen(!open);
+    setOpen(true);
     console.log("test");
+  };
+  const toggleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -278,6 +281,7 @@ export default function Layout({ children }) {
             edge="start"
             onClick={() => {
               toggleDrawer();
+              setChangeWidthDrawer(false);
             }}
             className={classes.menuButton}
           >
@@ -305,7 +309,9 @@ export default function Layout({ children }) {
             : classes.hideDrawerPaper,
         }}
         open={open}
-        onClose={toggleDrawer}
+        onClose={() => {
+          toggleClose();
+        }}
       >
         <div
           style={{
