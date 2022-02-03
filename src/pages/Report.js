@@ -24,6 +24,7 @@ import TableNumberOfCar from "../components/report/TableNumberOfCar";
 import axios from "axios";
 import {
   getDataReportBilling,
+  getDataReportDisplay,
   getDataReportPayment,
   getDataReportTS,
 } from "../service/allService";
@@ -37,6 +38,7 @@ import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
 import PaymentTSPdf from "../components/report/PaymentTSPdf";
+import PdfTS from "../components/report/PdfTS";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -153,7 +155,7 @@ export default function Report() {
       date: date,
       checkpoint: checkpoint.toString(),
     };
-    const res = await getDataReportTS(sendData);
+    const res = await getDataReportDisplay(sendData);
 
     if (!!res && !!res.data.status) {
       setDailyTransaction(res.data);
@@ -264,6 +266,7 @@ export default function Report() {
               <FilterSection
                 onFetchData={fetchData}
                 report={TransactionDaily}
+                transactionReport={PdfTS}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}

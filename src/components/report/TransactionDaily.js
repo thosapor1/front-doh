@@ -17,29 +17,206 @@ pdfMake.fonts = {
 
 export default async function TransactionDaily(selectedDate, checkpoint) {
   // let win = window.open("", "_blank");
-  const date = format(new Date(), "dd MMMM yyyy");
+  const date = format(selectedDate, "dd MMMM yyyy");
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
-  const url =
-    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/expect-pdf-ts";
+  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/display-ts";
   let sendData = { date: getDate, checkpoint: ck.toString() };
+
+  let body1 = [
+    [
+      {
+        text: "ประเภทรถ",
+        rowSpan: 2,
+        border: [true, true, true, true],
+        margin: [0, 5, 0, 0],
+      },
+      { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
+      {
+        text: "จำนวนรถที่ผิดพลาด",
+        border: [true, true, true, false],
+      },
+      { text: "รถยกเว้น", border: [true, true, true, false] },
+      { text: "รถที่คงค้าง", border: [true, true, true, false] },
+    ],
+    [
+      {},
+      {
+        text: "(คัน)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+      {
+        text: "(คัน)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+      {
+        text: "(คัน)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+      {
+        text: "(คัน)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+    ],
+  ];
+
+  let body2 = [
+    [
+      {
+        text: "ประเภทรถ",
+        rowSpan: 2,
+        margin: [0, 5, 0, 0],
+      },
+      {
+        text: "จำนวนรถทั้งหมด",
+        border: [true, true, true, false],
+      },
+    ],
+    [
+      {},
+      {
+        text: "(คัน)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+    ],
+  ];
+
+  let body3 = [
+    [
+      {
+        text: `รายได้ด่าน${
+          checkpoint === 0
+            ? "ทุกด่าน"
+            : checkpoint === 1
+            ? "ด่านทับช้าง1"
+            : checkpoint === 2
+            ? "ด่านทับช้าง2"
+            : checkpoint === 3
+            ? "ด่านธัญบุรี1"
+            : checkpoint === 4
+            ? "ด่านธัญบุรี2"
+            : ""
+        }`,
+        border: [true, true, true, false],
+        colSpan: 3,
+        bold: true,
+      },
+      {},
+      {},
+    ],
+  ];
+
+  const pushToBody1 = (res) => {
+    return new Promise((resolve, reject) => {
+      try {
+        for (let index = 0; index < res.length; index++) {
+          body1.push([
+            !!res[index].class && res[index].class === "total"
+              ? `รวมทั้งหมด`
+              : `C${res[index].class}`,
+            !!res[index].count ? res[index].count.toLocaleString() : "-",
+            !!res[index].normal ? res[index].normal.toLocaleString() : "-",
+            !!res[index].reject ? res[index].reject.toLocaleString() : "-",
+            !!res[index].illegal ? res[index].illegal.toLocaleString() : "-",
+          ]);
+        }
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  const pushToBody2 = (res) => {
+    return new Promise((resolve, reject) => {
+      try {
+        for (let index = 0; index < res.length; index++) {
+          body2.push([
+            !!res[index].class && res[index].class === "total"
+              ? `รวมทั้งหมด`
+              : `C${res[index].class}`,
+            !!res[index].count ? res[index].count.toLocaleString() : "-",
+          ]);
+        }
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  const pushToBody3 = (res) => {
+    return new Promise((resolve, reject) => {
+      try {
+        body3.push(
+          [
+            {
+              text: "รายได้ที่พึงได้",
+              border: [true, false, false, false],
+              alignment: "left",
+            },
+            {
+              text: res[0].revenue.toLocaleString(),
+              border: [false, false, false, false],
+              alignment: "right",
+            },
+            {
+              text: "บาท",
+              border: [false, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "รายได้ที่พึงได้ (HQ)",
+              border: [true, false, false, true],
+              alignment: "left",
+              margin: [0, 0, 0, 52],
+            },
+            {
+              text: res[0].revenue_mFlow.toLocaleString(),
+              alignment: "right",
+              border: [false, false, false, true],
+              margin: [0, 0, 0, 52],
+            },
+            {
+              text: "บาท",
+              border: [false, false, true, true],
+              margin: [0, 0, 0, 52],
+            },
+          ]
+        );
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
 
   Swal.fire({
     title: `กำลังสร้างรายงาน`,
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
+      return axios.post(url, sendData).then(async (res) => {
+        pushToBody1(res.data.result_hq);
+        pushToBody2(res.data.reuslt_lane);
+        pushToBody3(res.data.result_revenue);
+
+        setTimeout(async () => {
+          await pdfGenDownload(docDefinition);
+          Swal.close();
+        }, 1000);
+        // console.log();
+      });
     },
   });
-  const res = await axios.post(url, sendData);
-
-  console.log(res);
-
-  setTimeout(async () => {
-    await pdfGenDownload(docDefinition);
-    Swal.close();
-  }, 1000);
 
   const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
@@ -173,74 +350,7 @@ export default async function TransactionDaily(selectedDate, checkpoint) {
         style: "table",
         table: {
           widths: [70, 70, 70, 70, 70],
-          body: [
-            [
-              {
-                text: "ประเภทรถ",
-                rowSpan: 2,
-                border: [true, true, true, true],
-                margin: [0, 5, 0, 0],
-              },
-              { text: "จำนวนรถทั้งหมด", border: [true, true, true, false] },
-              {
-                text: "จำนวนรถที่ผิดพลาด",
-                border: [true, true, true, false],
-              },
-              { text: "รถยกเว้น", border: [true, true, true, false] },
-              { text: "รถที่คงค้าง", border: [true, true, true, false] },
-            ],
-            [
-              {},
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-            ],
-            [
-              { text: `C${res.data.result_hq[0].class}` },
-              { text: res.data.result_hq[0].count.toLocaleString() },
-              { text: res.data.result_hq[0].normal.toLocaleString() },
-              { text: res.data.result_hq[0].reject.toLocaleString() },
-              { text: res.data.result_hq[0].illegal.toLocaleString() },
-            ],
-            [
-              { text: `C${res.data.result_hq[1].class}` },
-              { text: res.data.result_hq[1].count.toLocaleString() },
-              { text: res.data.result_hq[1].normal.toLocaleString() },
-              { text: res.data.result_hq[1].reject.toLocaleString() },
-              { text: res.data.result_hq[1].illegal.toLocaleString() },
-            ],
-            [
-              { text: `C${res.data.result_hq[2].class}` },
-              { text: res.data.result_hq[2].count.toLocaleString() },
-              { text: res.data.result_hq[2].normal.toLocaleString() },
-              { text: res.data.result_hq[2].reject.toLocaleString() },
-              { text: res.data.result_hq[2].illegal.toLocaleString() },
-            ],
-            [
-              { text: `รวมทั้งหมด` },
-              { text: res.data.result_hq[3].count.toLocaleString() },
-              { text: res.data.result_hq[3].normal.toLocaleString() },
-              { text: res.data.result_hq[3].reject.toLocaleString() },
-              { text: res.data.result_hq[3].illegal.toLocaleString() },
-            ],
-          ],
+          body: body1,
         },
       },
       {
@@ -251,43 +361,7 @@ export default async function TransactionDaily(selectedDate, checkpoint) {
             margin: [54, 20, 0, 450],
             table: {
               widths: [90, 90],
-              body: [
-                [
-                  {
-                    text: "ประเภทรถ",
-                    rowSpan: 2,
-                    margin: [0, 5, 0, 0],
-                  },
-                  {
-                    text: "จำนวนรถทั้งหมด",
-                    border: [true, true, true, false],
-                  },
-                ],
-                [
-                  {},
-                  {
-                    text: "(คัน)",
-                    border: [true, false, true, true],
-                    margin: [0, -5, 0, 0],
-                  },
-                ],
-                [
-                  { text: `C${res.data.result_hq[0].class}` },
-                  { text: res.data.result_hq[0].count.toLocaleString() },
-                ],
-                [
-                  { text: `C${res.data.result_hq[1].class}` },
-                  { text: res.data.result_hq[1].count.toLocaleString() },
-                ],
-                [
-                  { text: `C${res.data.result_hq[2].class}` },
-                  { text: res.data.result_hq[2].count.toLocaleString() },
-                ],
-                [
-                  { text: `รวมทั้งหมด` },
-                  { text: res.data.result_hq[3].count.toLocaleString() },
-                ],
-              ],
+              body: body2,
             },
           },
           {
@@ -296,65 +370,7 @@ export default async function TransactionDaily(selectedDate, checkpoint) {
             // margin: [35, 20, 0, 450],
             table: {
               widths: [60, 60, 45],
-              body: [
-                [
-                  {
-                    text: `รายได้ด่าน${
-                      checkpoint === 0
-                        ? "ทุกด่าน"
-                        : checkpoint === 1
-                        ? "ด่านทับช้าง1"
-                        : checkpoint === 2
-                        ? "ด่านทับช้าง2"
-                        : checkpoint === 3
-                        ? "ด่านธัญบุรี1"
-                        : checkpoint === 4
-                        ? "ด่านธัญบุรี2"
-                        : ""
-                    }`,
-                    border: [true, true, true, false],
-                    colSpan: 3,
-                    bold: true,
-                  },
-                  {},
-                  {},
-                ],
-                [
-                  {
-                    text: "รายได้ที่พึงได้",
-                    border: [true, false, false, false],
-                    alignment: "left",
-                  },
-                  {
-                    text: res.data.result_revenue[0].revenue.toLocaleString(),
-                    border: [false, false, false, false],
-                    alignment: "right",
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "รายได้ที่พึงได้ (HQ)",
-                    border: [true, false, false, true],
-                    alignment: "left",
-                    margin: [0, 0, 0, 52],
-                  },
-                  {
-                    text: res.data.result_revenue[0].revenue_mFlow.toLocaleString(),
-                    alignment: "right",
-                    border: [false, false, false, true],
-                    margin: [0, 0, 0, 52],
-                  },
-                  {
-                    text: "บาท",
-                    border: [false, false, true, true],
-                    margin: [0, 0, 0, 52],
-                  },
-                ],
-              ],
+              body: body3,
             },
           },
         ],

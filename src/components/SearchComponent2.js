@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from "@material-ui/core";
+import { Box, Button, Paper, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
@@ -41,11 +41,13 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-shrink": {
         transform: "translate(14px, -6px) scale(0.75)",
       },
-      width: 200,
+
       margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 200,
-      },
+    },
+    button: {
+      height: 40,
+      fontSize: "0.7rem",
+      margin: theme.spacing(1),
     },
   };
 });
@@ -104,7 +106,7 @@ export default function SearchComponent2(props) {
 
   return (
     <>
-      <Paper style={{ height: 112 }}>
+      <Box style={{ height: 60, display: "flex" }}>
         <TextField
           variant="outlined"
           className={classes.input1}
@@ -116,12 +118,12 @@ export default function SearchComponent2(props) {
         <Button
           variant="contained"
           color="primary"
-          style={{ display: "block", marginLeft: 120 }}
+          className={classes.button}
           onClick={onClickHandle}
         >
           {`Search`}
         </Button>
-      </Paper>
+      </Box>
     </>
   );
 }
