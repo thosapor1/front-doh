@@ -331,10 +331,10 @@ export default function ExpectIncome() {
           ? summary[0].wait_consider
           : "0",
       status: "checked",
-      label: "รายการตรวจสอบแล้ว",
+      label: "รายการตรวจสอบ",
     },
     {
-      value: !!summary[0] && !!summary[0].wait_hq ? summary[0].revenue : "0",
+      value: !!summary[0] && !!summary[0].revenue ? summary[0].revenue : "0",
       status: "revenue",
       label: "รายได้พึงได้รายวัน",
     },

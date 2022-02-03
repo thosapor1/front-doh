@@ -54,12 +54,14 @@ export default function PaymentTSPdf(selectedDate, checkpoint) {
           // console.log(index);
           body.push([
             index,
-            !!res.data[index].match_checkpoint
-              ? res.data[index].match_checkpoint
+            !!res.data[index].paymentHistory_customerId
+              ? res.data[index].paymentHistory_customerId
               : "-",
-            !!res.data[index].match_gate ? res.data[index].match_gate : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[1]
+            !!res.data[index].paymentHistory_totalAmount
+              ? res.data[index].paymentHistory_totalAmount
+              : "-",
+            !!res.data[index].paymentHistories_paymentChannel_code
+              ? res.data[index].paymentHistories_paymentChannel_code
               : "-",
           ]);
         }

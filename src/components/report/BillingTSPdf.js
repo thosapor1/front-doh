@@ -35,10 +35,10 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
   const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
       try {
-        console.log("generate");
         pdfMake
           .createPdf(docDefinition)
           .download("รายงานBillingประจำวัน.pdf", () => {
+            console.log("generate");
             resolve();
           });
       } catch (err) {
@@ -54,12 +54,10 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
           // console.log(index);
           body.push([
             index,
-            !!res.data[index].match_checkpoint
-              ? res.data[index].match_checkpoint
-              : "-",
-            !!res.data[index].match_gate ? res.data[index].match_gate : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[1]
+            !!res.data[index].invoiceNo ? res.data[index].invoiceNo : "-",
+            !!res.data[index].totalAmount ? res.data[index].totalAmount : "-",
+            !!res.data[index].invoiceStatus_description
+              ? res.data[index].invoiceStatus_description
               : "-",
           ]);
         }

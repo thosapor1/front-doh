@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => {
       zIndex: 1,
     },
     footer: {
-      backgroundColor: "darkgreen;",
+      backgroundColor: "#FC4F4F;",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
