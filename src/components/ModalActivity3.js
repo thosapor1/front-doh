@@ -248,9 +248,9 @@ const useStyle = makeStyles((theme) => {
       },
     },
     tableContainer: {
-      height: "20vh",
+      height: "23vh",
       [theme.breakpoints.down("lg")]: {
-        height: "20vh",
+        height: "23vh",
       },
     },
   };
