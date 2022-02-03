@@ -19,7 +19,8 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
   const getDate = format(selectedDate, "yyyy-MM-dd");
   const ck = checkpoint;
   console.log(getDate, ck);
-  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf";
+  const url =
+    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-pdf-billing";
   let sendData = { date: getDate, checkpoint: ck.toString() };
 
   let body = [
@@ -34,10 +35,12 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
   const pdfGenDownload = (docDefinition) => {
     return new Promise((resolve, reject) => {
       try {
-        console.log("generate");
-        pdfMake.createPdf(docDefinition).download("รายงานประจำวัน.pdf", () => {
-          resolve();
-        });
+        pdfMake
+          .createPdf(docDefinition)
+          .download("รายงานBillingประจำวัน.pdf", () => {
+            console.log("generate");
+            resolve();
+          });
       } catch (err) {
         reject(err);
       }
@@ -50,15 +53,11 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
         for (let index = 0; index < res.data.length; index++) {
           // console.log(index);
           body.push([
-            !!res.data[index].transactionId
-              ? res.data[index].transactionId
-              : "-",
-            !!res.data[index].match_checkpoint
-              ? res.data[index].match_checkpoint
-              : "-",
-            !!res.data[index].match_gate ? res.data[index].match_gate : "-",
-            !!res.data[index].match_timestamp
-              ? res.data[index].match_timestamp.split(" ")[1]
+            index,
+            !!res.data[index].invoiceNo ? res.data[index].invoiceNo : "-",
+            !!res.data[index].totalAmount ? res.data[index].totalAmount : "-",
+            !!res.data[index].invoiceStatus_description
+              ? res.data[index].invoiceStatus_description
               : "-",
           ]);
         }
@@ -164,7 +163,19 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
       },
       { text: `${date}`, alignment: "center", fontSize: 14 },
       {
-        text: "หน่วยงานรับการตรวจสอบ 902 - ทับช้าง 1",
+        text: `หน่วยงานรับการตรวจสอบ 902 - ${
+          checkpoint === 0
+            ? "ทุกด่าน"
+            : checkpoint === 1
+            ? "ด่านทับช้าง 1"
+            : checkpoint === 2
+            ? "ด่านทับช้าง 2"
+            : checkpoint === 3
+            ? "ด่านธัญบุรี 1"
+            : checkpoint === 4
+            ? "ด่านธัญบุรี 2"
+            : ""
+        }`,
         fontSize: 14,
         margin: [0, 10, 0, 0],
       },
@@ -176,7 +187,7 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
       {
         style: "table2",
         table: {
-          widths: [120, 120, 120, 120],
+          widths: [40, 120, 120, 120],
           headerRows: 2,
           body: body,
         },
@@ -185,7 +196,7 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
     styles: {
       table: { marginTop: 20, alignment: "center", fontSize: 9 },
       table2: {
-        marginLeft: 40,
+        marginLeft: 150,
         marginTop: 20,
         alignment: "center",
         fontSize: 11,
@@ -220,7 +231,6 @@ export default function BillingTSPdf(selectedDate, checkpoint) {
             didOpen: async () => {
               Swal.showLoading();
               await pushToBody(res);
-
               setTimeout(async () => {
                 await pdfGenDownload(docDefinition);
                 Swal.close();

@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => {
       alignItems: "center",
     },
     cardSection: {
-      display: "flex",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -56,8 +55,9 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
     btn: {
       backgroundColor: "#46005E",
@@ -288,22 +288,53 @@ export default function ExpectIncome() {
 
   const dataCard = [
     {
-      value: !!summary ? summary.ts_total : 0,
+      value: !!summary[0] && !!summary[0].ts_total ? summary[0].ts_total : "0",
       status: "total",
-      label: "จำนวนรายการทั้งหมดของวัน",
+      label: "รายการทั้งหมด",
     },
     {
-      value: !!summary ? summary.ts_normal : 0,
+      value:
+        !!summary[0] && !!summary[0].ts_normal ? summary[0].ts_normal : "0",
       status: "normal",
-      label: "จำนวนรายการรถปกติ",
+      label: "รายการรถปกติ",
     },
     {
-      value: !!summary ? summary.ts_not_normal : 0,
+      value:
+        summary[0] && !!summary[0].ts_not_normal
+          ? summary[0].ts_not_normal
+          : "0",
       status: "not_normal",
-      label: "จำนวนรายการตรวจสอบ",
+      label: "รายการผิดปกติ",
     },
     {
-      value: !!summary ? summary.revenue : 0,
+      value: !!summary[0] && !!summary[0].wait_hq ? summary[0].wait_hq : "0",
+      status: "waitPk3",
+      label: "รายการรอจัดเก็บ",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_super ? summary[0].wait_super : "0",
+      status: "waitSuper",
+      label: "รายการรอSuper",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_acknowledge
+          ? summary[0].wait_acknowledge
+          : "0",
+      status: "waitToKnow",
+      label: "รายการรอรับทราบ",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_consider
+          ? summary[0].wait_consider
+          : "0",
+      status: "checked",
+      label: "รายการตรวจสอบ",
+    },
+    {
+      value: !!summary[0] && !!summary[0].revenue ? summary[0].revenue : "0",
       status: "revenue",
       label: "รายได้พึงได้รายวัน",
     },
@@ -489,95 +520,125 @@ export default function ExpectIncome() {
         </Grid>
 
         {/* Card Section */}
-        <Box className={classes.cardSection}>
-          <Grid container style={{ columnGap: "0.5rem", rowGap: "0.5rem" }}>
-            <Grid item style={{ display: "flex" }} lg={4} md={12} sm={12}>
-              <Box style={{ marginRight: "0.5rem" }}>
-                <SearchComponent2
-                  value={transactionId}
-                  date={selectedDate}
-                  handleOnChange={(e) => {
-                    setTransactionId(e.target.value);
-                    checkFormatSearch(e.target.value);
-                    // console.log(e.target.value);
-                  }}
-                  name="search"
-                  label="transaction id"
-                  setTable={setAllTsTable}
-                  endpoint={endpoint}
-                  setEyesStatus={setEyesStatus}
-                  eyesStatus={eyesStatus}
-                />
-              </Box>
 
-              <SearchByPlateComponent
-                valuePlate={licensePlate}
-                valueProvince={province}
-                setProvince={setProvince}
-                date={selectedDate}
-                handleOnChange={(e) => {
-                  setLicensePlate(e.target.value);
-                }}
-                handleOnChangeProvince={(e, newProvince) => {
-                  setProvince(newProvince);
-                }}
-                setInputValue={(e) => setInputValue(e.target.value)}
-                inputValue={inputValue}
-                dropdown={dropdown.province}
-                setTable={setAllTsTable}
-                endpoint={endpoint}
-                setEyesStatus={setEyesStatus}
-                eyesStatus={eyesStatus}
-              />
-            </Grid>
+        <Paper
+          item
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "center",
+          }}
+        >
+          <Box style={{ marginRight: "0.5rem" }}>
+            <SearchComponent2
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
+              }}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint={endpoint}
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
+            />
+          </Box>
 
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={2}
-                md={3}
-                sm={3}
-                className={classes.card}
+          <SearchByPlateComponent
+            valuePlate={licensePlate}
+            valueProvince={province}
+            setProvince={setProvince}
+            date={selectedDate}
+            handleOnChange={(e) => {
+              setLicensePlate(e.target.value);
+            }}
+            handleOnChangeProvince={(e, newProvince) => {
+              setProvince(newProvince);
+            }}
+            setInputValue={(e) => setInputValue(e.target.value)}
+            inputValue={inputValue}
+            dropdown={dropdown.province}
+            setTable={setAllTsTable}
+            endpoint={endpoint}
+            setEyesStatus={setEyesStatus}
+            eyesStatus={eyesStatus}
+          />
+        </Paper>
+
+        <Box
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "space-between",
+          }}
+        >
+          {dataCard.map((card, index) => (
+            <Paper
+              className={classes.card}
+              key={index}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "revenue"
+                    ? "3px solid gold"
+                    : card.status === "not_normal"
+                    ? "3px solid red"
+                    : card.status === "waitPk3"
+                    ? "3px solid blue"
+                    : card.status === "waitToKnow"
+                    ? "3px solid darkviolet"
+                    : card.status === "waitSuper"
+                    ? "3px solid orange"
+                    : card.status === "checked"
+                    ? "3px solid lightgreen"
+                    : "3px solid lightgrey",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
-                      : card.status === "not_normal"
-                      ? "3px solid red"
+                      ? "green"
                       : card.status === "revenue"
-                      ? "3px solid orange"
-                      : "3px solid lightgrey",
+                      ? "gold"
+                      : card.status === "not_normal"
+                      ? "red"
+                      : card.status === "waitPk3"
+                      ? "blue"
+                      : card.status === "waitToKnow"
+                      ? "darkviolet"
+                      : card.status === "waitSuper"
+                      ? "orange"
+                      : card.status === "checked"
+                      ? "lightgreen"
+                      : "lightgrey",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Typography
-                  style={{
-                    color:
-                      card.status === "total"
-                        ? "gray"
-                        : card.status === "normal"
-                        ? "green"
-                        : card.status === "not_normal"
-                        ? "red"
-                        : card.status === "revenue"
-                        ? "orange"
-                        : "lightgrey",
-                    fontSize: "1rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  {card.label}
-                </Typography>
-                <Typography style={{ fontSize: "1rem" }}>
-                  {!!card.value ? card.value.toLocaleString() : []}
-                  {card.status === "revenue" ? " บาท" : " รายการ"}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : []}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "revenue" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}
