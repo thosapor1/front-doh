@@ -219,6 +219,7 @@ export default function Layout({ children }) {
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
+  const department = Cookies.get("department_id");
 
   const toggleDrawer = () => {
     setOpen(true);
@@ -392,7 +393,6 @@ export default function Layout({ children }) {
               ))
             : []}
         </List>
-        {}
         <Divider variant="middle" className={classes.hr2} />
         <List>
           {configItems.map((item) => (

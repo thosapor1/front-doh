@@ -350,7 +350,7 @@ export default function ModalPK3Activity3(props) {
 
     console.log(fileName);
     if (fileName !== "") {
-      axios.post(`${URL}/pk3-upload-file`, formData).then((res) => {
+      axios.post(`${URL}/display-pk3-activity`, formData).then((res) => {
         setProgress(0);
         if (res.data.status === true) {
           Swal.fire({
@@ -1178,7 +1178,7 @@ export default function ModalPK3Activity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>Lane_TS</TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={2} >
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}

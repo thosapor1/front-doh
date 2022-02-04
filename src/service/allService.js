@@ -20,6 +20,13 @@ const apiURLv3 = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
+const apiURLv10 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
+});
+
 const cannotConnectNetWork = {
   icon: "error",
   text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
@@ -151,7 +158,7 @@ export const getDataAuditDisplay = (sendData) => {
   return response;
 };
 
-export const getDataSuperaudit = (sendData) => {
+export const getDataSuperAudit = (sendData) => {
   const response = apiURLv1
     .post("/display-super-audit", sendData)
     .catch((error) => {
@@ -162,6 +169,23 @@ export const getDataSuperaudit = (sendData) => {
 
 export const getDataSuperauditActivity = (sendData) => {
   const response = apiURLv2
+    .post("/display-super-audit-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+//superAdminDisplayV3 page
+export const getDataSuperAuditV3 = (sendData) => {
+  const response = apiURLv10.post("/display-pk3", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataSuperAuditActivityV10 = (sendData) => {
+  const response = apiURLv10
     .post("/display-super-audit-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
@@ -335,11 +359,16 @@ export const getDataMonitor = (sendData) => {
 
 //ExportData page
 export const exportData = (sendData) => {
-  const response = apiURLv1
-    .post("/", sendData)
-    .catch((error) => {
-      Swal.fire(cannotConnectNetWork);
-    });
+  const response = apiURLv1.post("/", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
   return response;
 };
 
+//Pk3DisplayV2 page
+export const getDataPk3V10 = (sendData) => {
+  const response = apiURLv10.post("/display-pk3", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};

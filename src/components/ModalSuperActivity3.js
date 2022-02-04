@@ -780,16 +780,16 @@ export default function ModalSuperActivity3(props) {
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
-                    {!!resultDisplay.cameras_plateNo1
-                      ? resultDisplay.cameras_plateNo1
+                    {!!resultDisplay.audit_plate
+                      ? resultDisplay.audit_plate
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
                   <TableCell>
-                    {!!resultDisplay.province_description
-                      ? resultDisplay.province_description
+                    {!!resultDisplay.audit_province
+                      ? resultDisplay.audit_province
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -943,15 +943,19 @@ export default function ModalSuperActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>{`C${resultDisplay.audit_vehicleClass}`}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
+                    {resultDisplay.audit_size}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>{resultDisplay.audit_speed}</TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -1213,7 +1217,10 @@ export default function ModalSuperActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>Lane_TS</TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}
@@ -1435,9 +1442,12 @@ export default function ModalSuperActivity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>HQ_TS</TableCell>
-                  <TableCell colSpan={2}>
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>

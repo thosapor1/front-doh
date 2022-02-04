@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity3 from "./ModalSuperActivity3";
 import { format } from "date-fns";
-import { getDataSuperauditActivity } from "../service/allService";
+import { getDataSuperauditActivity, getDataSuperAuditActivityV10 } from "../service/allService";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -197,7 +197,7 @@ export default function TableSuperdisplay3(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    const res = await getDataSuperauditActivity(sendData);
+    const res = await getDataSuperAuditActivityV10(sendData);
 
     if (!!res && !!res.data.status) {
       Swal.close();

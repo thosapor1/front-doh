@@ -23,6 +23,7 @@ import TableSuperdisplay2 from "../components/TableSuperdisplay2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
 import {
+  getDataSuperAudit,
   getDataSuperaudit,
 } from "../service/allService";
 
@@ -204,7 +205,7 @@ export default function SuperAuditDisplay2() {
     };
     console.log(sendData);
 
-    const res = await getDataSuperaudit(sendData);
+    const res = await getDataSuperAudit(sendData);
     if (!!res) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : []);

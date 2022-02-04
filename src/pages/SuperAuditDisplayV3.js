@@ -22,9 +22,8 @@ import Swal from "sweetalert2";
 import TableSuperdisplay2 from "../components/TableSuperdisplay2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import {
-  getDataSuperaudit,
-} from "../service/allService";
+import { getDataSuperAudit } from "../service/allService";
+import TableSuperdisplay3 from "../components/TableSuperdisplay3";
 
 const apiURL = axios.create({
   baseURL:
@@ -204,7 +203,7 @@ export default function SuperAuditDisplayV3() {
     };
     console.log(sendData);
 
-    const res = await getDataSuperaudit(sendData);
+    const res = await getDataSuperAudit(sendData);
     if (!!res) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : []);
@@ -569,7 +568,7 @@ export default function SuperAuditDisplayV3() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableSuperdisplay2
+            <TableSuperdisplay3
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}

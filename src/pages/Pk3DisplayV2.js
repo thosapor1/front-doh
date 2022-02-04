@@ -29,11 +29,11 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const apiURLv2 = axios.create({
+const apiURLv10 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -172,7 +172,7 @@ export default function PK3DisplayV2() {
     });
   };
 
-  const fetchData = (pageId = 1) => {
+  const fetchData = async (pageId = 1) => {
     let eyes = [];
     Swal.fire({
       title: "Loading",
@@ -206,7 +206,7 @@ export default function PK3DisplayV2() {
     };
     console.log(sendData);
 
-    apiURLv2
+    apiURLv10
       .post("/display-pk3", sendData)
       .then((res) => {
         Swal.close();
