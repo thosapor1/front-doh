@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
 import { getDataExpectIncome, getDropdown } from "../service/allService";
@@ -204,7 +203,7 @@ export default function ExpectIncome() {
     }
     if (!!res) {
       setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res ? res.data.summary : summary);
+      setSummary(!!res.data.summary ? res.data.summary : []);
     }
     if (!!res && !!res.data.resultsDisplay) {
       for (let i = 0; i < res.data.resultsDisplay.length; i++) {

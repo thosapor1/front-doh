@@ -28,7 +28,9 @@ import MenuDataMonitor from "./pages/MenuDataMonitor";
 import MonitorData from "./pages/MonitorData";
 import ExpectIncomeV2 from "./pages/ExpectIncomeV2";
 import Payment from "./pages/Payment";
-
+import ExportData from "./pages/ExportData";
+import SuperAuditDisplayV3 from "./pages/SuperAuditDisplayV3";
+import PK3DisplayV2 from "./pages/Pk3DisplayV2";
 
 // import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
@@ -61,8 +63,13 @@ function App() {
             <Route path="/expectIncomeV2" component={ExpectIncomeV2} />
             <Route path="/auditDisplay" component={AuditDisplay} />
             <Route path="/pk3Display" component={Pk3Display} />
+            <Route path="/pk3DisplayV2" component={PK3DisplayV2} />
             <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
             <Route path="/superAuditDisplay2" component={SuperAuditDisplay2} />
+            <Route
+              path="/superAuditDisplayV3"
+              component={SuperAuditDisplayV3}
+            />
             <Route path="/user" component={User} />
             <Route path="/config" component={Config} />
             <Route path="/userLogs" component={UserLogs} />
@@ -71,6 +78,7 @@ function App() {
             <Route path="/mandatoryItem" component={MandatoryItem} />
             <Route path="/MonitorData" component={MonitorData} />
             <Route path="/MenuDataMonitor" component={MenuDataMonitor} />
+            <Route path="/ExportData" component={ExportData} />
             <Route
               path="/transactionMonitorV1"
               component={TransactionMonitorV1}

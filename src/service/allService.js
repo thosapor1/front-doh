@@ -332,3 +332,14 @@ export const getDataMonitor = (sendData) => {
     });
   return response;
 };
+
+//ExportData page
+export const exportData = (sendData) => {
+  const response = apiURLv1
+    .post("/", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
