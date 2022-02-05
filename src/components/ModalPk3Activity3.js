@@ -949,7 +949,7 @@ export default function ModalPK3Activity3(props) {
                   <TableCell>ประเภทรถ</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_vehicleClass
-                      ? `${resultDisplay.audit_vehicleClass}`
+                      ? `C${resultDisplay.audit_vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>

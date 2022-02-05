@@ -240,7 +240,7 @@ export default function TablePK3display3(props) {
     setEyesStatus(
       !!eyesStatus[index] && [
         ...eyesStatus,
-        (eyesStatus[index].pk3_readFlag = 1),
+        (eyesStatus[index].readFlag = 1),
       ]
     );
 

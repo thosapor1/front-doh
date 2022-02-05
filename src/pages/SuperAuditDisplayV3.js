@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import TableSuperdisplay2 from "../components/TableSuperdisplay2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import { getDataSuperAudit } from "../service/allService";
+import { getDataSuperAudit, getDataSuperAuditV3 } from "../service/allService";
 import TableSuperdisplay3 from "../components/TableSuperdisplay3";
 
 const apiURL = axios.create({
@@ -146,6 +146,7 @@ export default function SuperAuditDisplayV3() {
   const [checkpoint, setCheckpoint] = useState("1");
   const [status_select, setStatus_select] = useState("0");
   const [summary, setSummary] = useState([]);
+  const [eyesStatus, setEyesStatus] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
@@ -175,6 +176,7 @@ export default function SuperAuditDisplayV3() {
   };
 
   const fetchData = async (pageId = 1) => {
+    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -203,7 +205,7 @@ export default function SuperAuditDisplayV3() {
     };
     console.log(sendData);
 
-    const res = await getDataSuperAudit(sendData);
+    const res = await getDataSuperAuditV3(sendData);
     if (!!res) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : []);
@@ -215,6 +217,17 @@ export default function SuperAuditDisplayV3() {
       });
       console.log("test");
     }
+    if (!!res && !!res.data.resultsDisplay) {
+      for (let i = 0; i < res.data.resultsDisplay.length; i++) {
+        eyes.push({
+          state: res.data.resultsDisplay[i].state,
+          readFlag: res.data.resultsDisplay[i].readFlag,
+          transactionId: res.data.resultsDisplay[i].transactionId,
+        });
+      }
+      setEyesStatus(eyes);
+    }
+
     if (!!res && res.data.status !== false) {
       Swal.close();
     }
@@ -575,6 +588,8 @@ export default function SuperAuditDisplayV3() {
               onFetchData={fetchData}
               dropdown={dropdown}
               checkDate={selectedDate}
+              eyesStatus={eyesStatus}
+              setEyesStatus={setEyesStatus}
             />
           </Grid>
         </Grid>

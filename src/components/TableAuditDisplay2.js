@@ -398,7 +398,9 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_class ? `C${data.audit_class}` : "-"}
+                      {!!data.audit_vehicleClass
+                        ? `C${data.audit_vehicleClass}`
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.mf_lane_vehicleClass

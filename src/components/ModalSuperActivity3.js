@@ -141,10 +141,10 @@ const useStyle = makeStyles((theme) => {
       padding: theme.spacing(2, 4, 3),
       marginTop: "3.5%",
       [theme.breakpoints.only("md")]: {
-        marginTop: "100%",
+        marginTop: "130%",
       },
       [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
+        marginTop: "150%",
       },
     },
     head: {
@@ -870,7 +870,7 @@ export default function ModalSuperActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen5(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.audit_picRGB_2}
                 open={open5}
                 onClose={() => setOpen5(false)}
@@ -889,7 +889,7 @@ export default function ModalSuperActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen6(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.audit_picRGB_1}
                 open={open6}
                 onClose={() => setOpen6(false)}
@@ -908,7 +908,7 @@ export default function ModalSuperActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen7(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.audit_picRGB}
                 open={open7}
                 onClose={() => setOpen7(false)}
@@ -927,7 +927,7 @@ export default function ModalSuperActivity3(props) {
                 className={classes.image}
                 onClick={() => setOpen8()}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage2
                 dataList={dataList.audit_pic_crop}
                 open={open8}
                 onClose={() => setOpen8(false)}
@@ -947,19 +947,29 @@ export default function ModalSuperActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>{`C${resultDisplay.audit_vehicleClass}`}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_vehicleClass
+                      ? `C${resultDisplay.audit_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
                   <TableCell
                     style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
                   >
-                    {resultDisplay.audit_size}
+                    {!!resultDisplay.audit_size
+                      ? resultDisplay.audit_size
+                      : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>{resultDisplay.audit_speed}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_speed
+                      ? resultDisplay.audit_speed
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>

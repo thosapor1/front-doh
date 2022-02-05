@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
@@ -179,8 +180,20 @@ const StyledTableRow = withStyles((theme) => ({
 export default function TableSuperdisplay3(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [rowID, setRowID] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
+
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -229,7 +242,12 @@ export default function TableSuperdisplay3(props) {
   };
 
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
+
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus(
+      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
+    );
+  };
 
   return (
     <div>
@@ -335,8 +353,12 @@ export default function TableSuperdisplay3(props) {
                     key={data.transactionId}
                     onClick={() => {
                       fetchData(data.transactionId, index - 1, index - 2);
+                      setRowID(index);
+                      ChangeEyeStatus(index);
                     }}
-                    className={classes.tableRow}
+                    // className={classes.tableRow}
+                    selected={rowID === index}
+                    className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
@@ -380,27 +402,35 @@ export default function TableSuperdisplay3(props) {
                       {`-`}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
+                      {!!eyesStatus[index] &&
+                      eyesStatus[index].readFlag === 1 &&
+                      eyesStatus[index].state === 2 ? (
+                        <VisibilityIcon style={{ color: "blue" }} />
+                      ) : (
+                        <FiberManualRecordIcon
+                          style={{
+                            // fontSize: "0.8rem",
+                            color:
+                              data.state === 1
+                                ? "lightgray"
+                                : data.state === 2
+                                ? "#FF2400"
+                                : data.state === 3
+                                ? "blue"
+                                : data.state === 4
+                                ? "orange"
+                                : data.state === 5
+                                ? "black"
+                                : data.state === 6
+                                ? "darkviolet"
+                                : data.state === 7
+                                ? "lightblue"
+                                : data.state === 8
+                                ? "lightgreen"
+                                : "rgba(0,0,0,0)",
+                          }}
+                        />
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))
