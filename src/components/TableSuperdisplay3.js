@@ -20,7 +20,10 @@ import Swal from "sweetalert2";
 import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity3 from "./ModalSuperActivity3";
 import { format } from "date-fns";
-import { getDataSuperauditActivity, getDataSuperAuditActivityV10 } from "../service/allService";
+import {
+  getDataSuperauditActivity,
+  getDataSuperAuditActivityV10,
+} from "../service/allService";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -355,8 +358,8 @@ export default function TableSuperdisplay3(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
+                      {!!data.audit_vehicleClass
+                        ? `C${data.audit_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>

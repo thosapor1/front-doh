@@ -381,8 +381,8 @@ export default function TablePK3display3(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
+                      {!!data.audit_vehicleClass
+                        ? `C${data.audit_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
