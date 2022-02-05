@@ -21,7 +21,8 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import TablePK3display2 from "../components/AllTsTableForPk3Activity2";
+import TablePK3display2 from "../components/TablePK3display2";
+import TablePK3display3 from "../components/TablePK3display3";
 
 const apiURL = axios.create({
   baseURL:
@@ -597,7 +598,7 @@ export default function PK3DisplayV2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TablePK3display2
+            <TablePK3display3
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}

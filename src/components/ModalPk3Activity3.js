@@ -138,12 +138,13 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
+      marginTop: "5%",
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "100%",
+        marginTop: "115%",
       },
       [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
+        marginTop: "150%",
       },
     },
     head: {
@@ -698,7 +699,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -709,19 +710,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value5} index={0}>
@@ -755,15 +756,15 @@ export default function ModalPK3Activity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.audit_picRGB
+                    ? `data:image/png;base64, ${dataList.audit_picRGB}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen1()}
+                onClick={() => setOpen1(true)}
               />
-              <ModalExpandedImage
-                dataList={dataList.mf_lane_picCrop}
+              <ModalExpandedImage2
+                dataList={dataList.audit_picRGB}
                 open={open1}
                 onClose={() => setOpen1(false)}
               />
@@ -799,33 +800,35 @@ export default function ModalPK3Activity3(props) {
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
-                    {!!resultDisplay.cameras_plateNo1
-                      ? resultDisplay.cameras_plateNo1
+                    {!!resultDisplay.audit_plate
+                      ? resultDisplay.audit_plate
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
                   <TableCell>
-                    {!!resultDisplay.province_description
-                      ? resultDisplay.province_description
+                    {!!resultDisplay.audit_province
+                      ? resultDisplay.audit_province
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
+                    {/* {!!resultDisplay.brand_description
                       ? resultDisplay.brand_description
-                      : "-"}
+                      : "-"} */}
+                    {"-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
                   <TableCell>
-                    {!!resultDisplay.colors_description
+                    {/* {!!resultDisplay.colors_description
                       ? resultDisplay.colors_description
-                      : "-"}
+                      : "-"} */}
+                    {"-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -847,7 +850,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -858,19 +861,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value6} index={0}>
@@ -904,15 +907,15 @@ export default function ModalPK3Activity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.audit_picBW
+                    ? `data:image/png;base64, ${dataList.audit_picBW}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen2()}
+                onClick={() => setOpen2(true)}
               />
-              <ModalExpandedImage
-                dataList={noImage}
+              <ModalExpandedImage2
+                dataList={dataList.audit_picBW}
                 open={open2}
                 onClose={() => setOpen2(false)}
               />
@@ -944,15 +947,27 @@ export default function ModalPK3Activity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_vehicleClass
+                      ? `${resultDisplay.audit_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_size
+                      ? `${resultDisplay.audit_size}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_speed
+                      ? `${resultDisplay.audit_speed}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
@@ -973,7 +988,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -984,19 +999,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
@@ -1074,7 +1089,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1084,19 +1099,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel1 value={value1} index={0}>
@@ -1178,7 +1193,10 @@ export default function ModalPK3Activity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>Lane_TS</TableCell>
-                  <TableCell colSpan={2} >
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
                     {!!resultDisplay.mf_lane_tranId
                       ? resultDisplay.mf_lane_tranId
                       : "-"}
@@ -1321,7 +1339,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1331,19 +1349,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel2 value={value2} index={0}>
@@ -1441,7 +1459,10 @@ export default function ModalPK3Activity3(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell>HQ_TS</TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell
+                    colSpan={2}
+                    style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
+                  >
                     {!!resultDisplay.refTransactionId
                       ? resultDisplay.refTransactionId
                       : "-"}
@@ -1467,7 +1488,7 @@ export default function ModalPK3Activity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1477,19 +1498,19 @@ export default function ModalPK3Activity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel3 value={value3} index={0}>

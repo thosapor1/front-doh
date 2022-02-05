@@ -115,14 +115,14 @@ export const searchByPlate = (sendData) => {
 
 //ExpertIncomeV2 page
 export const getDataExpectIncomeV2 = (sendData) => {
-  const response = apiURLv2.post("/expect-income", sendData).catch((error) => {
+  const response = apiURLv10.post("/expect-income", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
 };
 
 export const getDataExpectIncomeActivityV2 = (sendData) => {
-  const response = apiURLv3
+  const response = apiURLv10
     .post("/expect-income-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);

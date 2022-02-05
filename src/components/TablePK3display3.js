@@ -29,11 +29,11 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const apiURLv2 = axios.create({
+const apiURLv10 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
 });
 
 const detailStatus = [
@@ -208,7 +208,7 @@ export default function TablePK3display3(props) {
     endpoint = "/display-pk3-activity";
     setOpen(true);
 
-    apiURLv2
+    apiURLv10
       .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
@@ -406,7 +406,7 @@ export default function TablePK3display3(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!eyesStatus[index] &&
-                      eyesStatus[index].pk3_readFlag === 1 &&
+                      eyesStatus[index].readFlag === 1 &&
                       eyesStatus[index].state === 3 ? (
                         <VisibilityIcon style={{ color: "blue" }} />
                       ) : (

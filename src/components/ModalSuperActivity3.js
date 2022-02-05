@@ -139,8 +139,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.down("md")]: {
-        marginTop: 700,
+      marginTop: "3.5%",
+      [theme.breakpoints.only("md")]: {
+        marginTop: "100%",
+      },
+      [theme.breakpoints.only("sm")]: {
+        marginTop: "120%",
       },
     },
     head: {
@@ -692,15 +696,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
+                  !!dataList.audit_picBW_2
+                    ? `data:image/png;base64, ${dataList.audit_picBW_2}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen1()}
+                onClick={() => setOpen1(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.audit_pic_full}
+                dataList={dataList.audit_picBW_2}
                 open={open1}
                 onClose={() => setOpen1(false)}
               />
@@ -711,15 +715,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_full
-                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
+                  !!dataList.audit_picBW_1
+                    ? `data:image/png;base64, ${dataList.audit_picBW_1}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen2()}
+                onClick={() => setOpen2(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.audit_pic_crop}
+                dataList={dataList.audit_picBW_1}
                 open={open2}
                 onClose={() => setOpen2(false)}
               />
@@ -730,15 +734,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_full
-                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
+                  !!dataList.audit_picBW
+                    ? `data:image/png;base64, ${dataList.audit_picBW}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen3()}
+                onClick={() => setOpen3(true)}
               />
               <ModalExpandedImage2
-                dataList={dataList.audit_pic_crop}
+                dataList={dataList.audit_picBW}
                 open={open3}
                 onClose={() => setOpen3(false)}
               />
@@ -754,7 +758,7 @@ export default function ModalSuperActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen4()}
+                onClick={() => setOpen4(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.audit_pic_crop}
@@ -859,15 +863,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.audit_picRGB_2
+                    ? `data:image/png;base64, ${dataList.audit_picRGB_2}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen5()}
+                onClick={() => setOpen5(true)}
               />
               <ModalExpandedImage
-                dataList={dataList.audit_pic_crop}
+                dataList={dataList.audit_picRGB_2}
                 open={open5}
                 onClose={() => setOpen5(false)}
               />
@@ -878,15 +882,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.audit_picRGB_1
+                    ? `data:image/png;base64, ${dataList.audit_picRGB_1}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen6()}
+                onClick={() => setOpen6(true)}
               />
               <ModalExpandedImage
-                dataList={dataList.audit_pic_crop}
+                dataList={dataList.audit_picRGB_1}
                 open={open6}
                 onClose={() => setOpen6(false)}
               />
@@ -897,15 +901,15 @@ export default function ModalSuperActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
-                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                  !!dataList.audit_picRGB
+                    ? `data:image/png;base64, ${dataList.audit_picRGB}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen7()}
+                onClick={() => setOpen7(true)}
               />
               <ModalExpandedImage
-                dataList={dataList.audit_pic_crop}
+                dataList={dataList.audit_picRGB}
                 open={open7}
                 onClose={() => setOpen7(false)}
               />

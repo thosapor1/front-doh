@@ -794,16 +794,16 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
-                    {!!resultDisplay.cameras_plateNo1
-                      ? resultDisplay.cameras_plateNo1
+                    {!!resultDisplay.audit_plate
+                      ? resultDisplay.audit_plate
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
                   <TableCell>
-                    {!!resultDisplay.province_description
-                      ? resultDisplay.province_description
+                    {!!resultDisplay.audit_province
+                      ? resultDisplay.audit_province
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -957,15 +957,27 @@ export default function ModalActivity3(props) {
               <TableBody>
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.colors_description
+                      ? `C${resultDisplay.audit_vehicleClass}`
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ขนาด</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_size
+                      ? resultDisplay.audit_size
+                      : "-"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
-                  <TableCell>{"-"}</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.colors_description
+                      ? resultDisplay.colors_description
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>
