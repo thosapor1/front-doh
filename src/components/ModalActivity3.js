@@ -958,7 +958,7 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ประเภทรถ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.colors_description
+                    {!!resultDisplay.audit_vehicleClass
                       ? `C${resultDisplay.audit_vehicleClass}`
                       : "-"}
                   </TableCell>
