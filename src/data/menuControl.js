@@ -218,6 +218,12 @@ export const menuItemsForMember = [
     icon: "poll",
     path: "/auditDisplay",
   },
+  {
+    text: "รายได้พึงได้รายวันV2",
+    icon: "task",
+    path: "/expectIncomeV2",
+  },
+
   // {
   //   text: "รายได้คงค้าง",
   //   icon: "poll",

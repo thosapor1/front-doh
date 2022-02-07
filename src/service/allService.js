@@ -178,7 +178,7 @@ export const getDataSuperauditActivity = (sendData) => {
 
 //superAdminDisplayV3 page
 export const getDataSuperAuditV3 = (sendData) => {
-  const response = apiURLv10.post("/display-pk3", sendData).catch((error) => {
+  const response = apiURLv10.post("/display-super-audit", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
