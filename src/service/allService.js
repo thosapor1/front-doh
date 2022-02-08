@@ -141,6 +141,24 @@ export const getDataCollectFromPk3 = (sendData) => {
   return response;
 };
 
+export const searchByInvoiceId = (endpoint, sendData) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+
+  return response;
+};
+
+export const getDataByInvoiceNo = (sendData) => {
+  const response = apiURLv1
+    .post("/billing-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
 //SuperAuditDisplay page
 export const downLoadFileAuditDisplay = (sendData, header) => {
   const response = apiURLv1
@@ -178,9 +196,11 @@ export const getDataSuperauditActivity = (sendData) => {
 
 //superAdminDisplayV3 page
 export const getDataSuperAuditV3 = (sendData) => {
-  const response = apiURLv10.post("/display-super-audit", sendData).catch((error) => {
-    Swal.fire(cannotConnectNetWork);
-  });
+  const response = apiURLv10
+    .post("/display-super-audit", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
   return response;
 };
 

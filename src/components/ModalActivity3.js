@@ -641,6 +641,14 @@ export default function ModalActivity3(props) {
                 !!dataList.resultsDisplay
                   ? dataList.resultsDisplay[0].match_gate
                   : ""
+              } / วันที่ ${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_timestamp.split(" ")[0]
+                  : ""
+              } / เวลา ${
+                !!dataList.resultsDisplay
+                  ? dataList.resultsDisplay[0].match_timestamp.split(" ")[1]
+                  : ""
               }`}
             </Typography>
           </Box>
@@ -706,7 +714,7 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !dataList.audit_picRGB_2
+                  !!dataList.audit_picRGB_2
                     ? `data:image/png;base64, ${dataList.audit_picRGB_2}`
                     : noImage
                 }

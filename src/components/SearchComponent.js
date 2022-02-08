@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchOnExpectIncome } from "../service/allService";
+import { searchByInvoiceId, searchOnExpectIncome } from "../service/allService";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -64,10 +64,8 @@ export default function SearchComponent(props) {
   } = props;
 
   const onClickHandle = async () => {
-    const sendData = {
-      date: format(date, "yyyy-MM-dd"),
-      transactionId: value,
-    };
+    let sendData = {};
+    let res = "";
     let eye = [];
 
     Swal.fire({
@@ -76,24 +74,47 @@ export default function SearchComponent(props) {
       didOpen: () => Swal.showLoading(),
     });
 
-    const res = await searchOnExpectIncome(endpoint, sendData);
+    if (endpoint === "/search-billing") {
+      sendData = {
+        date: format(date, "yyyy-MM-dd"),
+        invoiceNo: value,
+      };
 
-    if (!!res && !!res.data.status) {
-      eye.push({
-        state: res.data.resultsDisplay[0].state,
-        readFlag: res.data.resultsDisplay[0].readFlag,
-        transactionId: res.data.resultsDisplay[0].transactionId,
-      });
-      setEyesStatus(eye);
+      res = await searchByInvoiceId(endpoint, sendData);
+      setTable(!!res ? res.data : []);
+      Swal.close();
+
+      if (!!res && res.data.resultsDisplay) {
+        Swal.fire({
+          title: "Fail",
+          text: "transaction ไม่ถูกต้อง",
+          icon: "warning",
+        });
+      }
+    } else {
+      sendData = {
+        date: format(date, "yyyy-MM-dd"),
+        transactionId: value,
+      };
+      res = await searchOnExpectIncome(endpoint, sendData);
+      if (!!res && !!res.data.status) {
+        eye.push({
+          state: res.data.resultsDisplay[0].state,
+          readFlag: res.data.resultsDisplay[0].readFlag,
+          transactionId: res.data.resultsDisplay[0].transactionId,
+        });
+        setEyesStatus(eye);
+      }
       setTable(!!res.data.status ? res.data : []);
       Swal.close();
-    }
-    if (!!res && !res.data.status) {
-      Swal.fire({
-        title: "Fail",
-        text: "โปรดใส่ transaction",
-        icon: "warning",
-      });
+
+      if (!!res && !res.data.status) {
+        Swal.fire({
+          title: "Fail",
+          text: "transaction ไม่ถูกต้อง",
+          icon: "warning",
+        });
+      }
     }
   };
 

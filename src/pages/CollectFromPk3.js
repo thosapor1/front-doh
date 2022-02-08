@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => {
 export default function CollectFromPk3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [allTsTable, setAllTsTable] = useState([]);
+  const [table, setTable] = useState([]);
   //   const [checkpoint, setCheckpoint] = useState(1);
   //   const [status_select, setStatus_select] = useState(0);
   //   const [selectGate, setSelectGate] = useState(0);
@@ -126,7 +126,7 @@ export default function CollectFromPk3() {
 
   const [dropdown, setDropdown] = useState([]);
   //   const [tsType, setTsType] = useState(0);
-  const [transactionId, setTransactionId] = useState("");
+  const [invoiceId, setInvoiceId] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -163,20 +163,15 @@ export default function CollectFromPk3() {
 
     const sendData = {
       page: pageId.toString(),
-      //   checkpoint: checkpoint.toString() || "0",
-      //   gate: selectGate.toString() || "0",
-      //   state: status_select.toString() || "0",
-      //   vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      //   status: tsType.toString(),
     };
     console.log(sendData);
 
     const res = await getDataCollectFromPk3(sendData);
     if (!!res) {
-      setAllTsTable(!!res ? res.data : []);
+      setTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : summary);
     }
     if (!!res && !res.data.status) {
@@ -479,16 +474,16 @@ export default function CollectFromPk3() {
         <Box className={classes.cardSection}>
           <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
-              value={transactionId}
+              value={invoiceId}
               date={selectedDate}
               handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
+                setInvoiceId(e.target.value);
+                console.log(invoiceId);
               }}
               name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
+              label="Invoice No."
+              setTable={setTable}
+              endpoint="/search-billing"
             />
           </Box>
           <Grid
@@ -559,14 +554,12 @@ export default function CollectFromPk3() {
 
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
           <TableCollectFromPk3
-            dataList={allTsTable}
+            dataList={table}
             page={page}
             onChange={handlePageChange}
             onFetchData={fetchData}
             dropdown={dropdown}
             checkDate={selectedDate}
-            eyesStatus={eyesStatus}
-            setEyesStatus={setEyesStatus}
           />
         </Grid>
       </Container>
