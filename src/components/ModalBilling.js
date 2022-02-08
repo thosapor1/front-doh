@@ -45,12 +45,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      [theme.breakpoints.only("md")]: {
-        marginTop: "100%",
-      },
-      [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
-      },
+      // [theme.breakpoints.only("md")]: {
+      //   marginTop: "1%",
+      // },
+      // [theme.breakpoints.only("sm")]: {
+      //   marginTop: "20%",
+      // },
     },
     header: {
       backgroundColor: "#7C85BFff",
@@ -170,7 +170,8 @@ export default function ModalBilling(props) {
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: !!dataList.resultsDisplay ? "white" : "red",
+                color: "gray",
+                float: "right",
               }}
             />
           </Tooltip>

@@ -289,16 +289,16 @@ export default function TableCollectFromPk3(props) {
                       {!!data.transactionType ? data.transactionType : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.feeAmount ? data.feeAmount : "-"}
+                      {!!data.feeAmount ? data.feeAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fineAmount ? data.fineAmount : "-"}
+                      {!!data.fineAmount ? data.fineAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.collectionAmount ? data.collectionAmount : "-"}
+                      {!!data.collectionAmount ? data.collectionAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.totalAmount ? data.totalAmount : "-"}
+                      {data.totalAmount ? data.totalAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.issueDate ? data.issueDate : "-"}
@@ -309,7 +309,7 @@ export default function TableCollectFromPk3(props) {
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.payment_totalAmount
                         ? data.payment_totalAmount
-                        : "-"}
+                        : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.payment_date
