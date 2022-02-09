@@ -220,6 +220,14 @@ export default function TablePayment(props) {
       Swal.close();
       setOpen(true);
     }
+    if (!!res && !res.data.status) {
+      handleClose();
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+      // console.log("test");
+    }
   };
 
   // const handleOpen = (state) => {

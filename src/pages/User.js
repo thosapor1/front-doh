@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => {
         outline: "1px  lightgray",
       },
     },
-    root: { backgroundColor: "#f9f9f9", paddingTop: "1rem" },
+    root: { backgroundColor: "rgba(235,176,129,0.15)", paddingTop: "1rem" },
     paper: { padding: theme.spacing(1) },
     btn: {
       marginTop: "1rem",

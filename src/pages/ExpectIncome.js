@@ -28,7 +28,7 @@ import SearchByPlateComponent from "../components/SearchByPlateComponent ";
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
