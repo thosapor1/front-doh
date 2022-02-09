@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => {
 export default function Payment() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [allTsTable, setAllTsTable] = useState([]);
+  const [table, setTable] = useState([]);
   //   const [checkpoint, setCheckpoint] = useState(1);
   //   const [status_select, setStatus_select] = useState(0);
   //   const [selectGate, setSelectGate] = useState(0);
@@ -178,7 +178,7 @@ export default function Payment() {
 
     if (!!res) {
       // console.log(res.data.result_card);
-      setAllTsTable(!!res ? res.data : []);
+      setTable(!!res ? res.data : []);
       setSummary(!!res.data.result_card ? res.data.result_card[0] : summary);
     }
     if (!!res && !res.data.status) {
@@ -488,9 +488,9 @@ export default function Payment() {
                 console.log(transactionId);
               }}
               name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
+              label="Payment No."
+              setTable={setTable}
+              endpoint="/search-payment"
             />
           </Box>
           <Grid
@@ -561,14 +561,12 @@ export default function Payment() {
 
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
           <TablePayment
-            dataList={allTsTable}
+            dataList={table}
             page={page}
             onChange={handlePageChange}
             onFetchData={fetchData}
             dropdown={dropdown}
             checkDate={selectedDate}
-            eyesStatus={eyesStatus}
-            setEyesStatus={setEyesStatus}
           />
         </Grid>
       </Container>

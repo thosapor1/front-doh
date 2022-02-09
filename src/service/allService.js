@@ -392,3 +392,20 @@ export const getDataPk3V10 = (sendData) => {
   });
   return response;
 };
+
+//Payment page
+export const searchByPayment = (sendData) => {
+  const response = apiURLv1.post("/search-payment", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataByPaymentNo = (sendData) => {
+  const response = apiURLv1
+    .post("/billing-payment", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};

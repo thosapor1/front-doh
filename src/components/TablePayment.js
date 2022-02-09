@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
 import { getDataExpectIncomeActivity } from "../service/allService";
+import ModalBilling from "./ModalBilling";
 
 const detailStatus = [
   {
@@ -201,21 +202,15 @@ export default function TablePayment(props) {
 
   const { dataList, page, onChange, checkDate, onFetchData } = props;
 
-  const fetchData = async (ts, index1, index2) => {
+  const fetchData = async (paymentNo) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
-    console.log(index1, index2);
-    const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
-    const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
-
     const sendData = {
-      transactionId: [ts, tsBefore1, tsBefore2],
+      paymentNo: paymentNo.toString(),
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
@@ -318,12 +313,12 @@ export default function TablePayment(props) {
                   <StyledTableRow
                     key={data.paymentHistory_invoiceNo}
                     onClick={() => {
-                      // fetchData(data.transactionId, index - 1, index - 2);
-                      // setRowID(index);
-                      // ChangeEyeStatus(index);
+                      fetchData(data.paymentHistory_invoiceNo);
+                      setOpen(true);
+                      setRowID(index);
                     }}
                     // className={classes.tableRow}
-                    // selected={rowID === index}
+                    selected={rowID === index}
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -354,15 +349,14 @@ export default function TablePayment(props) {
         </Table>
       </TableContainer>
 
-      {/* <ModalActivity3
-          dataList={dataForActivity}
-          open={open}
-          onClick={handleClose}
-          onFetchData={props.onFetchData}
-          dropdown={dropdown}
-          checkDate={checkDate}
-          page={page}
-        /> */}
+      <ModalBilling
+        dataList={dataForActivity}
+        open={open}
+        close={handleClose}
+        onFetchData={props.onFetchData}
+        checkDate={checkDate}
+        page={page}
+      />
     </div>
   );
 }

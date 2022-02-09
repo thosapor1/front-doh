@@ -3,7 +3,11 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchByInvoiceId, searchOnExpectIncome } from "../service/allService";
+import {
+  searchByInvoiceId,
+  searchByPayment,
+  searchOnExpectIncome,
+} from "../service/allService";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -84,10 +88,33 @@ export default function SearchComponent(props) {
       setTable(!!res ? res.data : []);
       Swal.close();
 
-      if (!!res && res.data.resultsDisplay) {
+      if (
+        (!!res && !res.data.status) ||
+        (!!res && !res.data.resultsDisplay[0])
+      ) {
         Swal.fire({
           title: "Fail",
-          text: "transaction ไม่ถูกต้อง",
+          text: "Invoice No. ไม่ถูกต้อง",
+          icon: "warning",
+        });
+      }
+    } else if (endpoint === "/search-payment") {
+      sendData = {
+        date: format(date, "yyyy-MM-dd"),
+        paymentNo: value,
+      };
+
+      res = await searchByPayment(endpoint, sendData);
+      setTable(!!res ? res.data : []);
+      Swal.close();
+
+      if (
+        (!!res && !res.data.status) ||
+        (!!res && !res.data.resultsDisplay[0])
+      ) {
+        Swal.fire({
+          title: "Fail",
+          text: "Payment No. ไม่ถูกต้อง",
           icon: "warning",
         });
       }
