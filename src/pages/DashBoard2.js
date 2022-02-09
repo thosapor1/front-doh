@@ -8,9 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { format } from "date-fns";
-import { th } from "date-fns/locale";
 import axios from "axios";
 import Swal from "sweetalert2";
 import TableDashBoard2 from "../components/TableDashBorad2";
@@ -20,6 +18,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { getDataDashBoard } from "../service/allService";
+import styles from "../styles/CssModule.module.css";
 
 const apiURL = axios.create({
   baseURL:
@@ -120,14 +119,14 @@ const useStyle = makeStyles((theme) => {
         paddingLeft: "27%",
       },
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
+    // btn: {
+    //   backgroundColor: "#46005E",
+    //   color: "white",
+    //   margin: theme.spacing(1),
+    //   "&:hover": {
+    //     backgroundColor: "#6a008f",
+    //   },
+    // },
     tableSection: {},
     textField: {
       "& .MuiInputBase-input": {
@@ -313,7 +312,7 @@ export default function DashBoard2() {
                 // onClose={() => fetchData(format(selectedDate, "yyyy-MM"))}
               />
             </MuiPickersUtilsProvider>
-            <Button className={classes.btn} onClick={() => fetchData()}>
+            <Button className={styles.btnInformation} onClick={() => fetchData()}>
               ดูข้อมูล
             </Button>
           </Grid>

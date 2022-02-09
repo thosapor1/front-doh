@@ -3,8 +3,9 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchByPlate, searchOnExpectIncome } from "../service/allService";
+import { searchByPlate } from "../service/allService";
 import { Autocomplete } from "@material-ui/lab";
+import styles from "../styles/CssModule.module.css";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -161,7 +162,7 @@ export default function SearchByPlateComponent(props) {
             variant="contained"
             color="primary"
             onClick={onClickHandle}
-            className={classes.button}
+            className={styles.btnSearch}
           >
             {`Search`}
           </Button>

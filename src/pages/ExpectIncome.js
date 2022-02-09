@@ -24,6 +24,7 @@ import ClassTable from "../components/ClassTable";
 import { getDataExpectIncome, getDropdown } from "../service/allService";
 import SearchComponent2 from "../components/SearchComponent2";
 import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import styles from "../styles/CssModule.module.css";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -504,14 +505,14 @@ export default function ExpectIncome() {
 
           <Button
             variant="contained"
-            className={classes.btn}
+            className={styles.btnInformation}
             onClick={() => fetchData(1)}
           >
             ดูข้อมูล
           </Button>
           <Button
             variant="contained"
-            className={classes.btn2}
+            className={styles.btnRefresh}
             // onClick={() => refresh(1)}
           >
             refresh

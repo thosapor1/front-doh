@@ -22,6 +22,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { getDataRawTransaction, getDropdown } from "../service/allService";
+import styles from "../styles/CssModule.module.css";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -261,15 +262,14 @@ export default function RawTransaction() {
           </TextField>
 
           <Button
-            className={classes.btn}
+            className={styles.btnInformation}
             color="primary"
             variant="contained"
-            startIcon={<FilterListIcon />}
             onClick={() => {
               fetchData(1);
             }}
           >
-            กรองข้อมูล
+            ดูข้อมูล
           </Button>
         </Grid>
 

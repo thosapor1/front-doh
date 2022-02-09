@@ -4,6 +4,7 @@ import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { searchByMatchTS, searchOnExpectIncome } from "../service/allService";
+import styles from "../styles/CssModule.module.css";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -85,10 +86,7 @@ export default function SearchComponent2(props) {
       res = await searchOnExpectIncome(endpoint, sendData);
     }
 
-    if (
-      (!!res && !res.data.status) ||
-      (!!res && !res.data.resultsDisplay[0])
-    ) {
+    if ((!!res && !res.data.status) || (!!res && !res.data.resultsDisplay[0])) {
       Swal.fire({
         title: "Fail",
         text: "transaction ไม่ถูกต้อง",
@@ -127,8 +125,7 @@ export default function SearchComponent2(props) {
         />
         <Button
           variant="contained"
-          color="primary"
-          className={classes.button}
+          className={styles.btnSearch}
           onClick={onClickHandle}
         >
           {`Search`}
