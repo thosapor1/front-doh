@@ -126,7 +126,7 @@ export default function SearchComponent(props) {
 
   return (
     <>
-      <Paper style={{ display: "flex", height: 61, padding: 10 }}>
+      <Paper style={{ display: "flex", height: 51, padding: 10 }}>
         <TextField
           variant="outlined"
           className={classes.input1}
@@ -137,7 +137,7 @@ export default function SearchComponent(props) {
         />
 
         <StyledButtonSearch
-          style={{ marginLeft: "20px" }}
+          style={{ margin: "0px 0px 0px 10px" }}
           onClick={onClickHandle}
         >
           {`Search`}

@@ -110,6 +110,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     filterSection: {
+      display: "flex",
       padding: theme.spacing(1),
       marginTop: 10,
       justifyContent: "center",
@@ -368,60 +369,55 @@ export default function AuditDisplay() {
         </Typography>
 
         {/* Filter Section */}
-        <Grid container component={Paper} className={classes.filterSection}>
-          <Box>
-            <TextField
-              select
-              variant="outlined"
-              label="ด่าน"
+        <Paper className={classes.filterSection}>
+          <TextField
+            select
+            variant="outlined"
+            label="ด่าน"
+            className={classes.input1}
+            onChange={(event) => setStation(event.target.value)}
+            name="station"
+            value={station}
+          >
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
               className={classes.input1}
-              onChange={(event) => setStation(event.target.value)}
-              name="station"
-              value={station}
-            >
-              {!!dropdown.checkpoint
-                ? dropdown.checkpoint.map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.checkpoint_name}
-                    </MenuItem>
-                  ))
-                : []}
-            </TextField>
-
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className={classes.input1}
-                style={{ width: 170 }}
-                disableToolbar
-                variant="inline"
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
-                margin="normal"
-                // minDate={selectedDate}
-                id="date"
-                label="วันที่เข้าด่าน"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-
-            <StyledButtonInformation
-              onClick={() => {
-                fetchData(1);
+              style={{ width: 170 }}
+              disableToolbar
+              variant="inline"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              margin="normal"
+              // minDate={selectedDate}
+              id="date"
+              label="วันที่เข้าด่าน"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
               }}
-            >
-              ดูข้อมูล
-            </StyledButtonInformation>
-          </Box>
-          <Box>
-            <StyledButtonPrint onClick={download}>
-              พิมพ์รายงาน
-            </StyledButtonPrint>
-          </Box>
-        </Grid>
+            />
+          </MuiPickersUtilsProvider>
+
+          <StyledButtonInformation
+            onClick={() => {
+              fetchData(1);
+            }}
+          >
+            ดูข้อมูล
+          </StyledButtonInformation>
+
+          <StyledButtonPrint onClick={download}>พิมพ์รายงาน</StyledButtonPrint>
+        </Paper>
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
@@ -465,9 +461,7 @@ export default function AuditDisplay() {
                 {!!card.value ? card.value.toLocaleString() : "0"}
               </Typography>
               <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                {card.status === "late" || card.status === "fine"
-                  ? " บาท"
-                  : " รายการ"}
+                บาท
               </Typography>
             </Paper>
           ))}

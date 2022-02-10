@@ -42,10 +42,6 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    cardSection: {
-      display: "flex",
-      marginTop: 10,
-    },
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
@@ -56,9 +52,16 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "white",
     },
     card: {
-      padding: "0.5rem",
-      height: 80,
-      paddingTop: 20,
+      padding: "1rem",
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
+    },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -871,45 +874,36 @@ export default function MonitorData() {
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
-          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={2}
-                className={classes.card}
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft: `3px solid ${card.color}`,
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft: `3px solid ${card.color}`,
+                  color: card.color,
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Typography
-                      style={{
-                        color: card.color,
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}
-                      {card.status === "revenue" ? ` บาท` : ` รายการ`}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "revenue" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}

@@ -47,10 +47,7 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    cardSection: {
-      display: "flex",
-      marginTop: 10,
-    },
+
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
@@ -62,24 +59,15 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     input: {
       "& .MuiInputBase-input": {
@@ -91,10 +79,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -501,59 +489,50 @@ export default function SuperAuditDisplay2() {
             />
           </Box>
 
-          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={4}
-                className={classes.card}
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "unMatch"
+                    ? "3px solid orange"
+                    : "3px solid red",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
+                      ? "green"
                       : card.status === "unMatch"
-                      ? "3px solid orange"
-                      : "3px solid red",
+                      ? "orange"
+                      : "red",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "unMatch"
-                            ? "orange"
-                            : "red",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}
-                      {card.status === "revenue" ? ` บาท` : ` รายการ`}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.type === "money" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}

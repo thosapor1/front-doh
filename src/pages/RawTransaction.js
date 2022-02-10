@@ -1,4 +1,3 @@
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {
@@ -17,9 +16,6 @@ import {
 import React from "react";
 import { useState, useEffect } from "react";
 import AuditTable from "../components/AuditTable";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { getDataRawTransaction, getDropdown } from "../service/allService";
@@ -83,10 +79,6 @@ const useStyle = makeStyles((theme) => {
       marginTop: 10,
       justifyContent: "center",
       alignItems: "center",
-    },
-    searchButton: {
-      textAlign: "right",
-      [theme.breakpoints.down("md")]: {},
     },
     input1: {
       "& .MuiInputBase-input": {

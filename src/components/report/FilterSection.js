@@ -24,18 +24,10 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {},
     filterSection: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       marginTop: 10,
       justifyContent: "center",
       alignItems: "center",
-    },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
     },
     input: {
       "& .MuiInputBase-input": {
@@ -44,10 +36,13 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
-      width: 170,
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 170,
+        width: 160,
       },
     },
   };

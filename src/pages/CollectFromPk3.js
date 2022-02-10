@@ -17,7 +17,6 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import SearchComponent from "../components/SearchComponent";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { getDataCollectFromPk3, getDropdown } from "../service/allService";
 import TableCollectFromPk3 from "../components/TableCollectFromPk3";
 import {
@@ -267,7 +266,7 @@ export default function CollectFromPk3() {
           ? summary.count_billing.toLocaleString().toString()
           : "0",
       status: "total",
-      label: "จำนวนรายการแจ้งหนี้",
+      label: "รายการแจ้งหนี้",
       type: "label",
     },
     {
@@ -437,7 +436,7 @@ export default function CollectFromPk3() {
                 {!!card.value ? card.value.toLocaleString() : "0"}
               </Typography>
               <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                {card.status === "revenue" ? " บาท" : " รายการ"}
+                {card.type === "money" ? " บาท" : " รายการ"}
               </Typography>
             </Paper>
           ))}

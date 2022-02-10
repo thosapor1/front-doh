@@ -10,14 +10,12 @@ import {
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
-  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import SearchComponent from "../components/SearchComponent";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { getDataMonitor, getDropdown } from "../service/allService";
 import TablePayment from "../components/TablePayment";
 import {
@@ -37,10 +35,6 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    cardSection: {
-      display: "flex",
-      marginTop: 10,
-    },
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
@@ -55,25 +49,17 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
-    },
+
     input: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -84,11 +70,8 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 155,
+      width: 160,
       margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 155,
-      },
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -101,8 +84,6 @@ const useStyles = makeStyles((theme) => {
         height: 40,
       },
       "& .MuiInputLabel-outlined": {
-        // transform: 'translate(14px, 14px) scale(1)',
-        // paddingBottom: 20,
         fontSize: "0.8rem",
       },
       width: 150,
@@ -321,102 +302,6 @@ export default function Payment() {
 
         {/* Filter Section */}
         <Grid container component={Paper} className={classes.filterSection}>
-          {/* <TextField
-            select
-            variant="outlined"
-            label="ด่าน"
-            value={checkpoint}
-            onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input1}
-            name="gate_select"
-          >
-            {!!dropdown.checkpoint
-              ? dropdown.checkpoint
-                  .filter((item) => item.id > 0)
-                  .map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.checkpoint_name}
-                    </MenuItem>
-                  ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ช่อง"
-            value={selectGate}
-            onChange={(e) => setSelectGate(e.target.value)}
-            className={classes.input1}
-            name="gate"
-          >
-            {!!dropdown.gate
-              ? dropdown.gate.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
-          {/* <TextField
-            select
-            variant="outlined"
-            label="ประเภทรถ"
-            value={selectCarType}
-            onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input1}
-            name="carType"
-          >
-            {!!dropdown.vehicle
-              ? dropdown.vehicle.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.class}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
-          {/* <TextField
-            select
-            variant="outlined"
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              setStatus_select(e.target.value);
-            }}
-            className={classes.input1}
-            name="status_select"
-          >
-            {!!dropdown.state
-              ? dropdown.state.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ประเภทTS"
-            value={tsType}
-            onChange={(e) => {
-              setTsType(e.target.value);
-            }}
-            className={classes.input1}
-            name="tsType"
-          >
-            {!!dropdown.ts_status
-              ? dropdown.ts_status.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.input}
@@ -435,41 +320,10 @@ export default function Payment() {
             />
           </MuiPickersUtilsProvider>
 
-          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              inputVariant="outlined"
-              ampm={false}
-              variant="inline"
-              label="เวลาเริ่มต้น"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeStart}
-              onChange={setSelectedTimeStart}
-              className={classes.input}
-            />
-          </MuiPickersUtilsProvider>
-
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardTimePicker
-              inputVariant="outlined"
-              ampm={false}
-              variant="inline"
-              label="เวลาสิ้นสุด"
-              openTo="hours"
-              views={["hours", "minutes", "seconds"]}
-              format="HH:mm:ss"
-              value={selectedTimeEnd}
-              onChange={setSelectedTimeEnd}
-              className={classes.input}
-            />
-          </MuiPickersUtilsProvider> */}
-
           <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
           </StyledButtonInformation>
           <StyledButtonRefresh
-
           // onClick={() => refresh(1)}
           >
             refresh
@@ -492,68 +346,55 @@ export default function Payment() {
               endpoint="/search-payment"
             />
           </Box>
-          <Grid
-            container
-            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
-          >
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={3}
-                md={5}
-                xs={5}
-                className={classes.card}
+
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "not_normal"
+                    ? "3px solid red"
+                    : card.status === "revenue"
+                    ? "3px solid orange"
+                    : "3px solid lightgrey",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
+                      ? "green"
                       : card.status === "not_normal"
-                      ? "3px solid red"
+                      ? "red"
                       : card.status === "revenue"
-                      ? "3px solid orange"
-                      : "3px solid lightgrey",
+                      ? "orange"
+                      : "lightgrey",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item lg={10} md={12} sm={12}>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "not_normal"
-                            ? "red"
-                            : card.status === "revenue"
-                            ? "orange"
-                            : "lightgrey",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {!!card.value ? card.value.toLocaleString() : []}
-                      {card.type === "money" ? " บาท" : " รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={2} md={12} sm={12}>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : []}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "revenue" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}
