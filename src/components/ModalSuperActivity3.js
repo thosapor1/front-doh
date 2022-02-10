@@ -32,12 +32,6 @@ import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import { operation } from "../service/allService";
 
-const apiURL = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
-      : `${process.env.REACT_APP_BASE_URL_V2}`,
-});
 const apiURLv1 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"

@@ -982,8 +982,8 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ความเร็ว</TableCell>
                   <TableCell>
-                    {!!resultDisplay.colors_description
-                      ? resultDisplay.colors_description
+                    {!!resultDisplay.audit_speed
+                      ? resultDisplay.audit_speed
                       : "-"}
                   </TableCell>
                 </TableRow>
