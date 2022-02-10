@@ -20,6 +20,7 @@ import {
   getDataExpectIncomeActivity,
 } from "../service/allService";
 import ModalBilling from "./ModalBilling";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "59vh",
+      maxHeight: "64vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "58vh",
@@ -199,17 +200,14 @@ export default function TableCollectFromPk3(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
                 setSelectedPage("");
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}

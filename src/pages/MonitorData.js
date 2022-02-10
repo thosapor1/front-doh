@@ -21,6 +21,7 @@ import { format, set } from "date-fns";
 import Swal from "sweetalert2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import TableMonitor from "../components/TableMonitorData";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -180,7 +181,7 @@ export default function MonitorData() {
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate())
   );
-  const [seconds, setSeconds] = useState(0);
+
   const fetchData = async () => {
     Swal.fire({
       title: "Loading",
@@ -863,13 +864,9 @@ export default function MonitorData() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
+          </StyledButtonInformation>
         </Grid>
 
         {/* Card Section */}

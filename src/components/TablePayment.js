@@ -17,8 +17,9 @@ import { Pagination } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
-import { getDataExpectIncomeActivity } from "../service/allService";
+import { getDataByPaymentNo } from "../service/allService";
 import ModalBilling from "./ModalBilling";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
 const detailStatus = [
   {
@@ -210,11 +211,11 @@ export default function TablePayment(props) {
     });
 
     const sendData = {
-      paymentNo: paymentNo.toString(),
+      invoiceNo: paymentNo.toString(),
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    const res = await getDataExpectIncomeActivity(sendData);
+    const res = await getDataByPaymentNo(sendData);
     SetDataForActivity(!!res ? res.data : []);
     if (!!res && !!res.status) {
       Swal.close();
@@ -255,9 +256,7 @@ export default function TablePayment(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
+            <StyledButtonGoToPage
               style={{ height: 35 }}
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
@@ -265,7 +264,7 @@ export default function TablePayment(props) {
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}

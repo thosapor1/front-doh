@@ -20,6 +20,10 @@ import SearchComponent from "../components/SearchComponent";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { getDataMonitor, getDropdown } from "../service/allService";
 import TablePayment from "../components/TablePayment";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -461,20 +465,15 @@ export default function Payment() {
             />
           </MuiPickersUtilsProvider> */}
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            // onClick={() => refresh(1)}
+          </StyledButtonInformation>
+          <StyledButtonRefresh
+
+          // onClick={() => refresh(1)}
           >
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}

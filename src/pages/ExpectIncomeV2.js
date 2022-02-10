@@ -21,9 +21,17 @@ import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
-import { getDataExpectIncome, getDataExpectIncomeV2, getDropdown } from "../service/allService";
+import {
+  getDataExpectIncome,
+  getDataExpectIncomeV2,
+  getDropdown,
+} from "../service/allService";
 import SearchComponent2 from "../components/SearchComponent2";
 import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -58,22 +66,6 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
       width: "10%",
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
-    },
     input: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -84,10 +76,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -101,8 +93,6 @@ const useStyles = makeStyles((theme) => {
         height: 40,
       },
       "& .MuiInputLabel-outlined": {
-        // transform: 'translate(14px, 14px) scale(1)',
-        // paddingBottom: 20,
         fontSize: "0.8rem",
       },
       width: 150,
@@ -502,20 +492,14 @@ export default function ExpectIncome() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            // onClick={() => refresh(1)}
+          </StyledButtonInformation>
+          <StyledButtonRefresh
+          // onClick={() => refresh(1)}
           >
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}

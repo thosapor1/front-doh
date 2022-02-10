@@ -25,6 +25,7 @@ import {
   getDataSuperauditActivity,
   getDataSuperAuditActivityV10,
 } from "../service/allService";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -263,14 +264,11 @@ export default function TableSuperdisplay3(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}

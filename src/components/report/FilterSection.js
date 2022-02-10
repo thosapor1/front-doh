@@ -12,6 +12,13 @@ import {
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
+import {
+  StyledButtonGoToPage,
+  StyledButtonInformation,
+  StyledButtonPrint,
+  StyledButtonRefresh,
+  StyledButtonSearch,
+} from "../../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -129,36 +136,28 @@ export default function FilterSection(props) {
           ))}
         </TextField>
 
-        <Button
-          variant="contained"
-          className={classes.btn}
+        <StyledButtonInformation
           onClick={() => {
             onFetchData();
           }}
         >
           ดูข้อมูล
-        </Button>
-        <Button
-          variant="contained"
-          className={classes.btn}
-          style={{ backgroundColor: "lightpink" }}
+        </StyledButtonInformation>
+        <StyledButtonGoToPage
+          style={{ height: 39 }}
           onClick={() => {
             report(selectedDate, checkpoint);
           }}
         >
           summary pdf
-        </Button>
-
-        <Button
-          variant="contained"
-          className={classes.btn}
-          style={{ backgroundColor: "lightgreen" }}
+        </StyledButtonGoToPage>
+        <StyledButtonRefresh
           onClick={() => {
             transactionReport(selectedDate, checkpoint);
           }}
         >
           transaction pdf
-        </Button>
+        </StyledButtonRefresh>
       </Grid>
     </>
   );

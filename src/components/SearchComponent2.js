@@ -4,7 +4,7 @@ import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { searchByMatchTS, searchOnExpectIncome } from "../service/allService";
-import styles from "../styles/CssModule.module.css";
+import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -123,13 +123,9 @@ export default function SearchComponent2(props) {
           name={name}
           onChange={handleOnChange}
         />
-        <Button
-          variant="contained"
-          className={styles.btnSearch}
-          onClick={onClickHandle}
-        >
+        <StyledButtonSearch onClick={onClickHandle}>
           {`Search`}
-        </Button>
+        </StyledButtonSearch>
       </Box>
     </>
   );

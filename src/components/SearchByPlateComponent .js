@@ -5,7 +5,10 @@ import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { searchByPlate } from "../service/allService";
 import { Autocomplete } from "@material-ui/lab";
-import styles from "../styles/CssModule.module.css";
+import {
+  StyledButtonInformation,
+  StyledButtonSearch,
+} from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -158,14 +161,9 @@ export default function SearchByPlateComponent(props) {
               <TextField {...params} label="province" variant="outlined" />
             )}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onClickHandle}
-            className={styles.btnSearch}
-          >
+          <StyledButtonSearch onClick={onClickHandle}>
             {`Search`}
-          </Button>
+          </StyledButtonSearch>
         </Box>
       </Box>
     </>

@@ -403,7 +403,7 @@ export const searchByPayment = (sendData) => {
 
 export const getDataByPaymentNo = (sendData) => {
   const response = apiURLv1
-    .post("/billing-payment", sendData)
+    .post("/payment-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });

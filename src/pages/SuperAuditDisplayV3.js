@@ -24,6 +24,10 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
 import { getDataSuperAudit, getDataSuperAuditV3 } from "../service/allService";
 import TableSuperdisplay3 from "../components/TableSuperdisplay3";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -486,20 +490,12 @@ export default function SuperAuditDisplayV3() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
+          </StyledButtonInformation>
+          <StyledButtonRefresh onClick={() => refresh(1)}>
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}

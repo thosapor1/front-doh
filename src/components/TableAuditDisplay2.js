@@ -24,6 +24,7 @@ import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
 import { getDataExpectIncomeActivityV2 } from "../service/allService";
 import { useLocation } from "react-router-dom";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 // import format from "date-fns/format";
 
 const detailStatus = [
@@ -272,17 +273,14 @@ export default function TableAuditDisplay2(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
                 setSelectedPage("");
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}

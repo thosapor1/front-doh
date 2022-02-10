@@ -26,6 +26,10 @@ import {
   downLoadFileAuditDisplay,
   getDataAuditDisplay,
 } from "../service/allService";
+import {
+  StyledButtonInformation,
+  StyledButtonPrint,
+} from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -46,12 +50,6 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
-    cardSection: {
-      display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
-      columnGap: 10,
-    },
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
@@ -71,9 +69,16 @@ const useStyles = makeStyles((theme) => {
       },
     },
     card: {
-      width: "100%",
-      height: 100,
+      padding: "1rem",
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
+    },
+    cardSection: {
       display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -107,7 +112,7 @@ const useStyles = makeStyles((theme) => {
     filterSection: {
       padding: theme.spacing(1),
       marginTop: 10,
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
     },
     searchButton: {
@@ -190,7 +195,7 @@ export default function AuditDisplay() {
     {
       value: !!summary.fine ? summary.fine : 0,
       status: "fine",
-      label: "ชำระโดยผู้รับจ้าง(มากกว่า32วัน)",
+      label: "ชำระโดยผู้รับจ้าง",
     },
   ];
 
@@ -403,32 +408,23 @@ export default function AuditDisplay() {
               />
             </MuiPickersUtilsProvider>
 
-            <Button
-              className={classes.btn}
-              color="primary"
-              variant="contained"
-              startIcon={<FilterListIcon />}
+            <StyledButtonInformation
               onClick={() => {
                 fetchData(1);
               }}
             >
-              กรองข้อมูล
-            </Button>
+              ดูข้อมูล
+            </StyledButtonInformation>
           </Box>
           <Box>
-            <Button
-              className={classes.btn}
-              variant="contained"
-              style={{ backgroundColor: "#ec407a" }}
-              onClick={download}
-            >
+            <StyledButtonPrint onClick={download}>
               พิมพ์รายงาน
-            </Button>
+            </StyledButtonPrint>
           </Box>
         </Grid>
 
         {/* Card Section */}
-        <div className={classes.cardSection}>
+        <Box className={classes.cardSection}>
           {dataCard.map((card, index) => (
             <Paper
               key={index}
@@ -444,36 +440,38 @@ export default function AuditDisplay() {
                     : "3px solid blue",
               }}
             >
-              <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item>
-                  <Typography
-                    style={{
-                      color:
-                        card.status === "total"
-                          ? "gray"
-                          : card.status === "normal"
-                          ? "green"
-                          : card.status === "late"
-                          ? "red"
-                          : "blue",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {card.label}
-                  </Typography>
-                  <Typography style={{ fontSize: "1rem" }}>
-                    {`${card.value.toLocaleString()}`}
-                    {card.label === "รายการทั้งหมด" ? " รายการ" : " บาท"}
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <DescriptionTwoToneIcon />
-                </Grid>
-              </Grid>
+              <Typography
+                style={{
+                  color:
+                    card.status === "total"
+                      ? "gray"
+                      : card.status === "normal"
+                      ? "green"
+                      : card.status === "late"
+                      ? "red"
+                      : "blue",
+                  fontSize: "0.9rem",
+                }}
+              >
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "late" || card.status === "fine"
+                  ? " บาท"
+                  : " รายการ"}
+              </Typography>
             </Paper>
           ))}
-        </div>
+        </Box>
 
         {/* Table Section */}
         <Grid

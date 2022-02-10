@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from "@material-ui/core";
+import { Box, Button, Paper, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
@@ -8,26 +8,10 @@ import {
   searchByPayment,
   searchOnExpectIncome,
 } from "../service/allService";
+import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
-    root: {},
-    input: {
-      "& .MuiInputBase-input": {
-        fontSize: "0.8rem",
-      },
-      "& .MuiSelect-selectMenu": {
-        height: 15,
-      },
-      "& .MuiInputBase-root": {
-        height: 40,
-      },
-      width: 150,
-      margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 150,
-      },
-    },
     input1: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -45,10 +29,10 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-shrink": {
         transform: "translate(14px, -6px) scale(0.75)",
       },
-      width: 200,
-      margin: theme.spacing(1),
+      // width: 200,
+      margin: 8,
       [theme.breakpoints.down("lg")]: {
-        width: 200,
+        // width: 200,
       },
     },
   };
@@ -147,7 +131,7 @@ export default function SearchComponent(props) {
 
   return (
     <>
-      <Paper style={{ height: 112 }}>
+      <Paper style={{ width: 200 , height:150}}>
         <TextField
           variant="outlined"
           className={classes.input1}
@@ -156,14 +140,13 @@ export default function SearchComponent(props) {
           name={name}
           onChange={handleOnChange}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ display: "block", marginLeft: 120 }}
+
+        <StyledButtonSearch
+          style={{ marginLeft: "20px" }}
           onClick={onClickHandle}
         >
           {`Search`}
-        </Button>
+        </StyledButtonSearch>
       </Paper>
     </>
   );

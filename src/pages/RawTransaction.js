@@ -2,6 +2,7 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {
+  Box,
   Container,
   Grid,
   makeStyles,
@@ -22,7 +23,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import { getDataRawTransaction, getDropdown } from "../service/allService";
-import styles from "../styles/CssModule.module.css";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -66,15 +67,16 @@ const useStyle = makeStyles((theme) => {
       },
     },
     card: {
-      width: "100%",
-      height: 100,
-      display: "flex",
+      padding: "1rem",
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
     cardSection: {
       display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
-      columnGap: 10,
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     filterSection: {
       padding: theme.spacing(1),
@@ -261,20 +263,17 @@ export default function RawTransaction() {
               : []}
           </TextField>
 
-          <Button
-            className={styles.btnInformation}
-            color="primary"
-            variant="contained"
+          <StyledButtonInformation
             onClick={() => {
               fetchData(1);
             }}
           >
             ดูข้อมูล
-          </Button>
+          </StyledButtonInformation>
         </Grid>
 
         {/* Card Section */}
-        <div className={classes.cardSection}>
+        <Box className={classes.cardSection}>
           {dataCard.map((card, index) => (
             <Paper
               key={index}
@@ -290,36 +289,36 @@ export default function RawTransaction() {
                     : "3px solid red",
               }}
             >
-              <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item>
-                  <Typography
-                    style={{
-                      color:
-                        card.status === "total"
-                          ? "gray"
-                          : card.status === "normal"
-                          ? "green"
-                          : card.status === "unMatch"
-                          ? "orange"
-                          : "red",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {card.label}
-                  </Typography>
-                  <Typography style={{ fontSize: "1rem" }}>
-                    {!!card.value ? card.value.toLocaleString() : "0"}
-                    {card.status === "revenue" ? " บาท" : " รายการ"}
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <DescriptionTwoToneIcon />
-                </Grid>
-              </Grid>
+              <Typography
+                style={{
+                  color:
+                    card.status === "total"
+                      ? "gray"
+                      : card.status === "normal"
+                      ? "green"
+                      : card.status === "unMatch"
+                      ? "orange"
+                      : "red",
+                  fontSize: "0.9rem",
+                }}
+              >
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "revenue" ? " บาท" : " รายการ"}
+              </Typography>
             </Paper>
           ))}
-        </div>
+        </Box>
 
         {/* Table Blcok */}
         <Paper style={{ marginTop: 10, padding: "0px 10px" }}>
