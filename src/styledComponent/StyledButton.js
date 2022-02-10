@@ -26,7 +26,7 @@ export const StyledButtonRefresh = styled(Button)`
 
 export const StyledButtonSearch = styled(Button)`
   color: blue;
-  margin: 8px 0px 8px 0px;
+  margin: 8px;
   border: 1px solid blue;
   height: 39px;
   font-size: 0.75rem;

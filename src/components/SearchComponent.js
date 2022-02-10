@@ -29,11 +29,6 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-shrink": {
         transform: "translate(14px, -6px) scale(0.75)",
       },
-      // width: 200,
-      margin: 8,
-      [theme.breakpoints.down("lg")]: {
-        // width: 200,
-      },
     },
   };
 });
@@ -131,7 +126,7 @@ export default function SearchComponent(props) {
 
   return (
     <>
-      <Paper style={{ width: 200 , height:150}}>
+      <Paper style={{ display: "flex", height: 61, padding: 10 }}>
         <TextField
           variant="outlined"
           className={classes.input1}

@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => {
     filterSection: {
       padding: theme.spacing(1),
       marginTop: 10,
+      display: "flex",
       justifyContent: "center",
       alignItems: "center",
     },
