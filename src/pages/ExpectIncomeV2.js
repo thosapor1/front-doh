@@ -121,7 +121,7 @@ export default function ExpectIncome() {
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  const [province, setProvince] = useState(null);
+  const [province, setProvince] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
   const [inputValue, setInputValue] = useState("");
 

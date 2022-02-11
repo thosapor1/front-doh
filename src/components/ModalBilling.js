@@ -206,37 +206,41 @@ export default function ModalBilling(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
-                  <StyledTableRow
-                    key={data.transactionId}
-                    // className={classes.tableRow}
-                    className={classes.selected}
-                  >
-                    <TableCell align="center" className={classes.tableCell}>
-                      {index + 1}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.pk3_transactionId ? data.pk3_transactionId : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate ? data.match_gate : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_vehicleClass
-                        ? `C${data.match_real_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.feeAmount ? data.feeAmount : "0"}
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+              ? dataList.resultsDisplay
+                  .filter((data) => data !== null)
+                  .map((data, index) => (
+                    <StyledTableRow
+                      key={data.transactionId}
+                      // className={classes.tableRow}
+                      className={classes.selected}
+                    >
+                      <TableCell align="center" className={classes.tableCell}>
+                        {index + 1}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.pk3_transactionId
+                          ? data.pk3_transactionId
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_checkpoint ? data.match_checkpoint : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_gate ? data.match_gate : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_real_vehicleClass
+                          ? `C${data.match_real_vehicleClass}`
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.status ? data.status : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {data.feeAmount ? data.feeAmount : "0"}
+                      </TableCell>
+                    </StyledTableRow>
+                  ))
               : []}
           </TableBody>
         </Table>
