@@ -135,6 +135,13 @@ const useStyle = makeStyles((theme) => {
         height: "23vh",
       },
     },
+    inputContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      [theme.breakpoints.down["lg"]]: {
+        display: "block",
+      },
+    },
   };
 });
 
@@ -193,7 +200,7 @@ export default function ModalOperation(props) {
           />
         </RadioGroup>
       </FormControl>
-      <Box style={{ display: "flex", justifyContent: "space-between" }}>
+      <Box className={classes.inputContainer}>
         <TextField
           name="ts1"
           label="Transaction"
@@ -210,6 +217,7 @@ export default function ModalOperation(props) {
           onChange={(e) => setTs2(e.target.value)}
           disabled={value === "separate" || value === "delete" ? true : false}
           size="small"
+          style={{ fontSize: "0.8rem" }}
         />
       </Box>
       <Box

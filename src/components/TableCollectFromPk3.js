@@ -169,19 +169,16 @@ export default function TableCollectFromPk3(props) {
 
     const res = await getDataByInvoiceNo(sendData);
     SetDataForActivity(!!res ? res.data : []);
-    if (!!res && !res.data.status) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
     }
-    if (!!res && res.data.resultsDisplay.length === 0) {
-      Swal.fire({
-        icon: "error",
-        text: "ไม่มีข้อมูล",
-      });
-    }
-    if (!!res && !!res.data.status) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       Swal.close();
       setOpen(true);
     }

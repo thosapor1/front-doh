@@ -217,17 +217,18 @@ export default function TablePayment(props) {
 
     const res = await getDataByPaymentNo(sendData);
     SetDataForActivity(!!res ? res.data : []);
-    if (!!res && !!res.status) {
-      Swal.close();
-      setOpen(true);
-    }
-    if (!!res && !res.data.status) {
-      handleClose();
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      // console.log("test");
+    }
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
+      Swal.close();
+      setOpen(true);
     }
   };
 
@@ -321,7 +322,6 @@ export default function TablePayment(props) {
                     key={data.paymentHistory_invoiceNo}
                     onClick={() => {
                       fetchData(data.paymentHistory_invoiceNo);
-                      setOpen(true);
                       setRowID(index);
                     }}
                     // className={classes.tableRow}
