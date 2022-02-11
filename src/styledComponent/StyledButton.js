@@ -60,6 +60,18 @@ export const StyledButtonGoToPage = styled(Button)`
   }
 `;
 
+export const StyledButtonOperation = styled(Button)`
+  color: #2979ff;
+  border: 1px solid #2979ff;
+  height: 35px;
+  font-size: 0.75rem;
+  margin-left: 3px;
+  &:hover {
+    background-color: #2979ff;
+    color: white;
+  }
+`;
+
 export const StyledButtonLogOut = styled(Button)`
   color: white;
   border: 1px solid white;

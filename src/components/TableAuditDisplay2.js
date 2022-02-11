@@ -24,7 +24,11 @@ import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
 import { getDataExpectIncomeActivityV2 } from "../service/allService";
 import { useLocation } from "react-router-dom";
-import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
+import {
+  StyledButtonGoToPage,
+  StyledButtonOperation,
+} from "../styledComponent/StyledButton";
+import ModalOperation from "./ModalOperation";
 // import format from "date-fns/format";
 
 const detailStatus = [
@@ -191,6 +195,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function TableAuditDisplay2(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openOperation, setOpenOperation] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
@@ -252,6 +257,9 @@ export default function TableAuditDisplay2(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseOperation = () => {
+    setOpenOperation(false);
+  };
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
@@ -292,6 +300,9 @@ export default function TableAuditDisplay2(props) {
               className={classes.pagination}
             />
           </Box>
+          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
+            ดำเนินการ
+          </StyledButtonOperation>
         </Box>
 
         {/* detail box */}
@@ -472,6 +483,8 @@ export default function TableAuditDisplay2(props) {
         checkDate={checkDate}
         page={page}
       />
+
+      <ModalOperation open={openOperation} close={handleCloseOperation} />
     </div>
   );
 }
