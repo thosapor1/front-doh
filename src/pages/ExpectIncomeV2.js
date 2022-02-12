@@ -196,8 +196,6 @@ export default function ExpectIncome() {
     if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res.data.summary ? res.data.summary : []);
-    }
-    if (!!res && !!res.data.resultsDisplay) {
       for (let i = 0; i < res.data.resultsDisplay.length; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
@@ -206,9 +204,6 @@ export default function ExpectIncome() {
         });
       }
       setEyesStatus(eyes);
-    }
-
-    if (!!res && res.data.status !== false) {
       Swal.close();
     }
   };

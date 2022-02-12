@@ -182,18 +182,18 @@ export default function ExpectIncome() {
     console.log(sendData);
 
     const res = await getDataExpectIncome(sendData);
-    if (!!res && res.data.status === false) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
     }
-    if (!!res) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res.data.summary ? res.data.summary : []);
-    }
-    if (!!res && !!res.data.resultsDisplay) {
       for (let i = 0; i < res.data.resultsDisplay.length; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
@@ -202,11 +202,14 @@ export default function ExpectIncome() {
         });
       }
       setEyesStatus(eyes);
-    }
-
-    if (!!res && res.data.status !== false) {
       Swal.close();
     }
+    // if (!!res && !!res.data.resultsDisplay) {
+    // }
+
+    // if (!!res && res.data.status !== false) {
+    //
+    // }
   };
 
   // const refresh = (pageId = 1) => {
