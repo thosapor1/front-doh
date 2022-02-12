@@ -184,14 +184,16 @@ export default function ExpectIncome() {
     console.log(sendData);
 
     const res = await getDataExpectIncomeV2(sendData);
-    if (!!res && res.data.status === false) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
     }
-    if (!!res) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res.data.summary ? res.data.summary : []);
     }
@@ -532,7 +534,7 @@ export default function ExpectIncome() {
 
           <SearchByPlateComponent
             valuePlate={licensePlate}
-            valueProvince={province}
+            valueProvince={!!province ? province : {}}
             setProvince={setProvince}
             date={selectedDate}
             handleOnChange={(e) => {

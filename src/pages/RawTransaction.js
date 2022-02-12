@@ -169,14 +169,16 @@ export default function RawTransaction() {
     // console.log(`sendData: ${JSON.stringify(sendData)}`);
     const res = await getDataRawTransaction(sendData);
 
-    if (!!res && res.data.status === false) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
     }
-    if (!!res) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setState(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : []);
       Swal.close();

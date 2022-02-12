@@ -530,7 +530,7 @@ export default function ExpectIncome() {
 
           <SearchByPlateComponent
             valuePlate={licensePlate}
-            valueProvince={province}
+            valueProvince={!!province ? province : {}}
             setProvince={setProvince}
             date={selectedDate}
             handleOnChange={(e) => {
