@@ -9,58 +9,19 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
-import ModalActivity3 from "./ModalActivity3";
-import { getDataExpectIncomeActivity } from "../service/allService";
+import {
+  getDataByInvoiceNo,
+  getDataExpectIncomeActivity,
+} from "../service/allService";
+import ModalBilling from "./ModalBilling";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
-const detailStatus = [
-  {
-    state: 1,
-    color: "lightgray",
-    label: "ปกติ",
-  },
-  {
-    state: 2,
-    color: "#FF2400",
-    label: "ผิดปกติ",
-  },
-  {
-    state: 3,
-    color: "blue",
-    label: "รอ pk3 ตรวจสอบ",
-  },
-  {
-    state: 4,
-    color: "orange",
-    label: "รอ super audit ตรวจสอบ",
-  },
-  // {
-  //   state: 5,
-  //   color: "black",
-  //   label: "รอพิจารณาพิเศษ",
-  // },
-  {
-    state: 6,
-    color: "darkviolet",
-    label: "รอตรวจสอบรับทราบ",
-  },
-  {
-    state: 7,
-    color: "lightblue",
-    label: "รอจัดเก็บยืนยัน",
-  },
-  {
-    state: 8,
-    color: "lightgreen",
-    label: "ตรวจสอบแล้ว",
-  },
-];
 const useStyles = makeStyles((theme) => {
   return {
     "@global": {
@@ -76,7 +37,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     container: {
-      maxHeight: "59vh",
+      maxHeight: "64vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "58vh",
@@ -123,12 +84,6 @@ const useStyles = makeStyles((theme) => {
       padding: "6px",
       height: 28,
     },
-    // tableCell2: {
-    //   cursor: "pointer",
-    //   fontSize: "0.75rem",
-    //   padding: "6px",
-    //   // height: 10,
-    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -159,7 +114,6 @@ const useStyles = makeStyles((theme) => {
         height: 35,
       },
       "& .MuiInputLabel-outlined": {
-        // paddingBottom: 20,
         fontSize: "0.8rem",
         transform: "translate(10px, 10px) scale(1)",
       },
@@ -201,27 +155,30 @@ export default function TableCollectFromPk3(props) {
 
   const { dataList, page, onChange, checkDate, onFetchData } = props;
 
-  const fetchData = async (ts, index1, index2) => {
+  const fetchData = async (invoiceId) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
-    console.log(index1, index2);
-    const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
-    const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
-
     const sendData = {
-      transactionId: [ts, tsBefore1, tsBefore2],
+      invoiceNo: invoiceId.toString(),
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    const res = await getDataExpectIncomeActivity(sendData);
+    const res = await getDataByInvoiceNo(sendData);
     SetDataForActivity(!!res ? res.data : []);
-    if (!!res && !!res.status) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       Swal.close();
       setOpen(true);
     }
@@ -252,17 +209,14 @@ export default function TableCollectFromPk3(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
                 setSelectedPage("");
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}
@@ -275,21 +229,6 @@ export default function TableCollectFromPk3(props) {
             />
           </Box>
         </Box>
-
-        {/* detail box */}
-        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
-          {detailStatus.map((item) => (
-            <Box style={{ paddingLeft: 10 }}>
-              <FiberManualRecordIcon
-                className={classes.dot}
-                style={{ color: item.color }}
-              />
-              <Typography className={classes.detailStatus}>
-                {item.label}
-              </Typography>
-            </Box>
-          ))}
-        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -339,12 +278,11 @@ export default function TableCollectFromPk3(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      // fetchData(data.transactionId, index - 1, index - 2);
-                      // setRowID(index);
-                      // ChangeEyeStatus(index);
+                      fetchData(data.invoiceNo);
+                      setRowID(index);
                     }}
                     // className={classes.tableRow}
-                    // selected={rowID === index}
+                    selected={rowID === index}
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -357,16 +295,16 @@ export default function TableCollectFromPk3(props) {
                       {!!data.transactionType ? data.transactionType : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.feeAmount ? data.feeAmount : "-"}
+                      {!!data.feeAmount ? data.feeAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.fineAmount ? data.fineAmount : "-"}
+                      {!!data.fineAmount ? data.fineAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.collectionAmount ? data.collectionAmount : "-"}
+                      {!!data.collectionAmount ? data.collectionAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.totalAmount ? data.totalAmount : "-"}
+                      {data.totalAmount ? data.totalAmount : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.issueDate ? data.issueDate : "-"}
@@ -377,10 +315,12 @@ export default function TableCollectFromPk3(props) {
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.payment_totalAmount
                         ? data.payment_totalAmount
-                        : "-"}
+                        : "0"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.payment_date ? data.payment_date : "-"}
+                      {!!data.payment_date
+                        ? data.payment_date.split(" ")[0]
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.payment_channel_code
@@ -394,15 +334,14 @@ export default function TableCollectFromPk3(props) {
         </Table>
       </TableContainer>
 
-      {/* <ModalActivity3
+      <ModalBilling
         dataList={dataForActivity}
         open={open}
-        onClick={handleClose}
+        close={handleClose}
         onFetchData={props.onFetchData}
-        dropdown={dropdown}
         checkDate={checkDate}
         page={page}
-      /> */}
+      />
     </div>
   );
 }

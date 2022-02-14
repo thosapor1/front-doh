@@ -12,16 +12,9 @@ import SearchComponent from "../components/SearchComponent";
 const useStyle = makeStyles((theme) => {
   return {
     root: {},
-
   };
 });
 
 export default function Test() {
-
-
-  return (
-    <>
-     
-    </>
-  );
+  return <></>;
 }

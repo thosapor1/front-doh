@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import ModalAddTabLane from "./ModalAddTabLane";
 import ModalEditTabLane from "./ModalEditTabLane";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -189,15 +190,12 @@ export default function TableGateTab(props) {
           }}
         /> */}
 
-          <Button
-            className={classes.btn}
+          <StyledButtonInformation
             startIcon={<AddTwoToneIcon />}
-            variant="contained"
-            color="primary"
             onClick={handleOpen}
           >
             เพิ่มช่องเก็บค่าผ่านทาง
-          </Button>
+          </StyledButtonInformation>
         </div>
         <TableContainer className={classes.container}>
           <Table stickyHeader>

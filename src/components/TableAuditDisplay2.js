@@ -24,6 +24,11 @@ import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
 import { getDataExpectIncomeActivityV2 } from "../service/allService";
 import { useLocation } from "react-router-dom";
+import {
+  StyledButtonGoToPage,
+  StyledButtonOperation,
+} from "../styledComponent/StyledButton";
+import ModalOperation from "./ModalOperation";
 // import format from "date-fns/format";
 
 const detailStatus = [
@@ -190,6 +195,7 @@ const StyledTableRow = withStyles((theme) => ({
 export default function TableAuditDisplay2(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openOperation, setOpenOperation] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
@@ -251,6 +257,9 @@ export default function TableAuditDisplay2(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseOperation = () => {
+    setOpenOperation(false);
+  };
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
@@ -272,17 +281,14 @@ export default function TableAuditDisplay2(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
                 setSelectedPage("");
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}
@@ -294,6 +300,9 @@ export default function TableAuditDisplay2(props) {
               className={classes.pagination}
             />
           </Box>
+          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
+            ดำเนินการ
+          </StyledButtonOperation>
         </Box>
 
         {/* detail box */}
@@ -398,7 +407,9 @@ export default function TableAuditDisplay2(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_class ? `C${data.audit_class}` : "-"}
+                      {!!data.audit_vehicleClass
+                        ? `C${data.audit_vehicleClass}`
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.mf_lane_vehicleClass
@@ -472,6 +483,8 @@ export default function TableAuditDisplay2(props) {
         checkDate={checkDate}
         page={page}
       />
+
+      <ModalOperation open={openOperation} close={handleCloseOperation} />
     </div>
   );
 }

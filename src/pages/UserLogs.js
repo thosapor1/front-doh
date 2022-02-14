@@ -18,6 +18,7 @@ import UserLogsTAble from "../components/UserLogsTable";
 import DateFnsUtils from "@date-io/date-fns";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       },
     },
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
@@ -124,7 +125,7 @@ export default function UserLogs() {
     });
     //   .then((res) => setDataForTable(res.data));
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -214,15 +215,13 @@ export default function UserLogs() {
           />
         </MuiPickersUtilsProvider>
 
-        <Button
-          variant="contained"
-          className={classes.btn}
+        <StyledButtonInformation
           onClick={() => {
             fetchData(1);
           }}
         >
           ดูข้อมูล
-        </Button>
+        </StyledButtonInformation>
       </Grid>
 
       <Paper style={{ marginTop: "1rem" }}>

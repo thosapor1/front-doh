@@ -26,6 +26,10 @@ import {
   downLoadFileAuditDisplay,
   getDataAuditDisplay,
 } from "../service/allService";
+import {
+  StyledButtonInformation,
+  StyledButtonPrint,
+} from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -43,14 +47,8 @@ const apiURLv1 = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
-    },
-    cardSection: {
-      display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
-      columnGap: 10,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -71,9 +69,16 @@ const useStyles = makeStyles((theme) => {
       },
     },
     card: {
-      width: "100%",
-      height: 100,
+      padding: "1rem",
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
+    },
+    cardSection: {
       display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -105,9 +110,10 @@ const useStyles = makeStyles((theme) => {
       },
     },
     filterSection: {
+      display: "flex",
       padding: theme.spacing(1),
       marginTop: 10,
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
     },
     searchButton: {
@@ -190,7 +196,7 @@ export default function AuditDisplay() {
     {
       value: !!summary.fine ? summary.fine : 0,
       status: "fine",
-      label: "ชำระโดยผู้รับจ้าง(มากกว่า32วัน)",
+      label: "ชำระโดยผู้รับจ้าง",
     },
   ];
 
@@ -363,72 +369,58 @@ export default function AuditDisplay() {
         </Typography>
 
         {/* Filter Section */}
-        <Grid container component={Paper} className={classes.filterSection}>
-          <Box>
-            <TextField
-              select
-              variant="outlined"
-              label="ด่าน"
+        <Paper className={classes.filterSection}>
+          <TextField
+            select
+            variant="outlined"
+            label="ด่าน"
+            className={classes.input1}
+            onChange={(event) => setStation(event.target.value)}
+            name="station"
+            value={station}
+          >
+            {!!dropdown.checkpoint
+              ? dropdown.checkpoint.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.checkpoint_name}
+                  </MenuItem>
+                ))
+              : []}
+          </TextField>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
               className={classes.input1}
-              onChange={(event) => setStation(event.target.value)}
-              name="station"
-              value={station}
-            >
-              {!!dropdown.checkpoint
-                ? dropdown.checkpoint.map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.checkpoint_name}
-                    </MenuItem>
-                  ))
-                : []}
-            </TextField>
-
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className={classes.input1}
-                style={{ width: 170 }}
-                disableToolbar
-                variant="inline"
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
-                margin="normal"
-                // minDate={selectedDate}
-                id="date"
-                label="วันที่เข้าด่าน"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-
-            <Button
-              className={classes.btn}
-              color="primary"
-              variant="contained"
-              startIcon={<FilterListIcon />}
-              onClick={() => {
-                fetchData(1);
+              style={{ width: 170 }}
+              disableToolbar
+              variant="inline"
+              inputVariant="outlined"
+              format="dd/MM/yyyy"
+              margin="normal"
+              // minDate={selectedDate}
+              id="date"
+              label="วันที่เข้าด่าน"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
               }}
-            >
-              กรองข้อมูล
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              className={classes.btn}
-              variant="contained"
-              style={{ backgroundColor: "#ec407a" }}
-              onClick={download}
-            >
-              พิมพ์รายงาน
-            </Button>
-          </Box>
-        </Grid>
+            />
+          </MuiPickersUtilsProvider>
+
+          <StyledButtonInformation
+            onClick={() => {
+              fetchData(1);
+            }}
+          >
+            ดูข้อมูล
+          </StyledButtonInformation>
+
+          <StyledButtonPrint onClick={download}>พิมพ์รายงาน</StyledButtonPrint>
+        </Paper>
 
         {/* Card Section */}
-        <div className={classes.cardSection}>
+        <Box className={classes.cardSection}>
           {dataCard.map((card, index) => (
             <Paper
               key={index}
@@ -444,36 +436,36 @@ export default function AuditDisplay() {
                     : "3px solid blue",
               }}
             >
-              <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item>
-                  <Typography
-                    style={{
-                      color:
-                        card.status === "total"
-                          ? "gray"
-                          : card.status === "normal"
-                          ? "green"
-                          : card.status === "late"
-                          ? "red"
-                          : "blue",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {card.label}
-                  </Typography>
-                  <Typography style={{ fontSize: "1rem" }}>
-                    {`${card.value.toLocaleString()}`}
-                    {card.label === "รายการทั้งหมด" ? " รายการ" : " บาท"}
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <DescriptionTwoToneIcon />
-                </Grid>
-              </Grid>
+              <Typography
+                style={{
+                  color:
+                    card.status === "total"
+                      ? "gray"
+                      : card.status === "normal"
+                      ? "green"
+                      : card.status === "late"
+                      ? "red"
+                      : "blue",
+                  fontSize: "0.9rem",
+                }}
+              >
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                บาท
+              </Typography>
             </Paper>
           ))}
-        </div>
+        </Box>
 
         {/* Table Section */}
         <Grid

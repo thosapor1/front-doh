@@ -14,11 +14,7 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/rawTransaction",
   },
-  {
-    text: "รายการจัดเก็บจาก PK3",
-    icon: "MonetizationOnIcon",
-    path: "/collectFromPk3",
-  },
+
   {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
@@ -34,6 +30,16 @@ export const menuItemsForSuperAdmin = [
     icon: "poll",
     path: "/auditDisplay",
   },
+  {
+    text: "รายการแจ้งหนี้จาก PK3",
+    icon: "MonetizationOnIcon",
+    path: "/collectFromPk3",
+  },
+  {
+    text: "รายการชำระรายวัน",
+    icon: "MonetizationOnIcon",
+    path: "/Payment",
+  },
   // {
   //   text: "super audit display",
   //   icon: "remove_red_eye",
@@ -43,6 +49,11 @@ export const menuItemsForSuperAdmin = [
     text: "super audit",
     icon: "supervised_user_circle",
     path: "/superAuditDisplay2",
+  },
+  {
+    text: "super auditV3",
+    icon: "supervised_user_circle",
+    path: "/superAuditDisplayV3",
   },
   // {
   //   text: "รายได้คงค้าง",
@@ -74,17 +85,12 @@ export const menuItemsForSuperAdmin = [
     icon: "receipt_long",
     path: "/MonitorData",
   },
-  {
-    text: "รายการชำระรายวัน",
-    icon: "MonetizationOnIcon",
-    path: "/Payment",
-  },
 
-  // {
-  //   text: "รายการบังคับ",
-  //   icon: "playlist_add_check",
-  //   path: "/MandatoryItem",
-  // },
+  {
+    text: "Export Data",
+    icon: "playlist_add_check",
+    path: "/ExportData",
+  },
   // {
   //   text: "test",
   //   icon: "playlist_add_check",
@@ -212,6 +218,12 @@ export const menuItemsForMember = [
     icon: "poll",
     path: "/auditDisplay",
   },
+  {
+    text: "รายได้พึงได้รายวันV2",
+    icon: "task",
+    path: "/expectIncomeV2",
+  },
+
   // {
   //   text: "รายได้คงค้าง",
   //   icon: "poll",
@@ -236,6 +248,11 @@ export const menuItemsForPk3 = [
     text: "รายการรอตรวจสอบ",
     icon: "pending_actions",
     path: "/pk3Display",
+  },
+  {
+    text: "รายการรอตรวจสอบV2",
+    icon: "pending_actions",
+    path: "/pk3DisplayV2",
   },
   {
     text: "รายการบังคับ",

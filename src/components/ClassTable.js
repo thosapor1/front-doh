@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => {
       zIndex: 1,
     },
     footer: {
-      backgroundColor: "darkgreen;",
+      backgroundColor: "#FC4F4F;",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
@@ -103,16 +103,16 @@ export default function ClassTable(props) {
                         {`C${data.class}`}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.sum_all.toLocaleString()}
+                        {!!data.sum_all ? data.sum_all.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.reject.toLocaleString()}
+                        {!!data.reject ? data.reject.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.normal.toLocaleString()}
+                        {!!data.normal ? data.normal.toLocaleString() : 0}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
-                        {data.revenue.toLocaleString()}
+                        {!!data.revenue ? data.revenue.toLocaleString() : 0}
                       </TableCell>
                     </StyledTableRow>
                   ))
@@ -122,32 +122,52 @@ export default function ClassTable(props) {
             <StyledTableRow>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
-                !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].class
+                !!dataList.result_vehicleClass[
+                  dataList.result_vehicleClass.length - 1
+                ]
+                  ? dataList.result_vehicleClass[
+                      dataList.result_vehicleClass.length - 1
+                    ].class
                   : `total`}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
-                !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].sum_all.toLocaleString()
+                !!dataList.result_vehicleClass[
+                  dataList.result_vehicleClass.length - 1
+                ].sum_all
+                  ? dataList.result_vehicleClass[
+                      dataList.result_vehicleClass.length - 1
+                    ].sum_all.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
-                !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].reject.toLocaleString()
+                !!dataList.result_vehicleClass[
+                  dataList.result_vehicleClass.length - 1
+                ].reject
+                  ? dataList.result_vehicleClass[
+                      dataList.result_vehicleClass.length - 1
+                    ].reject.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
-                !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].normal.toLocaleString()
+                !!dataList.result_vehicleClass[
+                  dataList.result_vehicleClass.length - 1
+                ].normal
+                  ? dataList.result_vehicleClass[
+                      dataList.result_vehicleClass.length - 1
+                    ].normal.toLocaleString()
                   : 0}
               </TableCell>
               <TableCell align="center" className={classes.footer}>
                 {!!dataList.result_vehicleClass &&
-                !!dataList.result_vehicleClass[3]
-                  ? dataList.result_vehicleClass[3].revenue.toLocaleString()
+                !!dataList.result_vehicleClass[
+                  dataList.result_vehicleClass.length - 1
+                ].revenue
+                  ? dataList.result_vehicleClass[
+                      dataList.result_vehicleClass.length - 1
+                    ].revenue.toLocaleString()
                   : 0}
               </TableCell>
             </StyledTableRow>

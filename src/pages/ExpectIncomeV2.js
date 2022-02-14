@@ -19,8 +19,6 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import SearchComponent from "../components/SearchComponent";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
 import {
@@ -28,11 +26,17 @@ import {
   getDataExpectIncomeV2,
   getDropdown,
 } from "../service/allService";
+import SearchComponent2 from "../components/SearchComponent2";
+import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
@@ -42,7 +46,6 @@ const useStyles = makeStyles((theme) => {
       alignItems: "center",
     },
     cardSection: {
-      display: "flex",
       marginTop: 10,
     },
     gateAndClassSection: {
@@ -59,24 +62,9 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
-    },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
     input: {
       "& .MuiInputBase-input": {
@@ -88,10 +76,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -105,8 +93,6 @@ const useStyles = makeStyles((theme) => {
         height: 40,
       },
       "& .MuiInputLabel-outlined": {
-        // transform: 'translate(14px, 14px) scale(1)',
-        // paddingBottom: 20,
         fontSize: "0.8rem",
       },
       width: 150,
@@ -121,7 +107,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ExpectIncomeV2() {
+export default function ExpectIncome() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
@@ -131,10 +117,13 @@ export default function ExpectIncomeV2() {
   const [selectCarType, setSelectCarType] = useState(0);
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
-
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
+  const [province, setProvince] = useState("");
+  const [licensePlate, setLicensePlate] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -152,6 +141,17 @@ export default function ExpectIncomeV2() {
   // const handleOpen = () => {
   //   setOpen(true);
   // };
+
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
 
   const fetchData = async (pageId = 1) => {
     let eyes = [];
@@ -184,19 +184,19 @@ export default function ExpectIncomeV2() {
     console.log(sendData);
 
     const res = await getDataExpectIncomeV2(sendData);
-    if (!!res && !res.data.resultsDisplay) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
     }
-    if (!!res) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res ? res.data.summary : summary);
-    }
-    if (!!res && !!res.data.resultsDisplay) {
-      for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+      setSummary(!!res.data.summary ? res.data.summary : []);
+      for (let i = 0; i < res.data.resultsDisplay.length; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
           readFlag: res.data.resultsDisplay[i].readFlag,
@@ -204,13 +204,8 @@ export default function ExpectIncomeV2() {
         });
       }
       setEyesStatus(eyes);
-    }
-
-    if (!!res && res.data.status !== false) {
       Swal.close();
     }
-
-    console.log(eyesStatus);
   };
 
   // const refresh = (pageId = 1) => {
@@ -279,24 +274,55 @@ export default function ExpectIncomeV2() {
 
   const dataCard = [
     {
-      value: !!summary ? summary.ts_total : 0,
+      value: !!summary[0] && !!summary[0].ts_total ? summary[0].ts_total : "0",
       status: "total",
-      label: "จำนวนรายการทั้งหมดของวัน",
+      label: "รายการทั้งหมด",
     },
     {
-      value: !!summary ? summary.ts_normal : 0,
+      value:
+        !!summary[0] && !!summary[0].ts_normal ? summary[0].ts_normal : "0",
       status: "normal",
-      label: "จำนวนรายการรถปกติ",
+      label: "รายการรถปกติ",
     },
     {
-      value: !!summary ? summary.ts_not_normal : 0,
+      value:
+        summary[0] && !!summary[0].ts_not_normal
+          ? summary[0].ts_not_normal
+          : "0",
       status: "not_normal",
-      label: "จำนวนรายการตรวจสอบ",
+      label: "รายการผิดปกติ",
     },
     {
-      value: !!summary ? summary.revenue : 0,
+      value: !!summary[0] && !!summary[0].wait_hq ? summary[0].wait_hq : "0",
+      status: "waitPk3",
+      label: "รายการรอจัดเก็บ",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_super ? summary[0].wait_super : "0",
+      status: "waitSuper",
+      label: "รายการรอSuper",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_acknowledge
+          ? summary[0].wait_acknowledge
+          : "0",
+      status: "waitToKnow",
+      label: "รายการรอรับทราบ",
+    },
+    {
+      value:
+        !!summary[0] && !!summary[0].wait_consider
+          ? summary[0].wait_consider
+          : "0",
+      status: "checked",
+      label: "รายการตรวจสอบ",
+    },
+    {
+      value: !!summary[0] && !!summary[0].revenue ? summary[0].revenue : "0",
       status: "revenue",
-      label: "รายได้พึงได้รายวัน",
+      label: "รายได้พึงได้",
     },
   ];
 
@@ -463,102 +489,136 @@ export default function ExpectIncomeV2() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            // onClick={() => refresh(1)}
+          </StyledButtonInformation>
+          <StyledButtonRefresh
+          // onClick={() => refresh(1)}
           >
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}
-        <Box className={classes.cardSection}>
-          <Box style={{ marginRight: "0.8rem" }}>
-            <SearchComponent
+
+        <Paper
+          item
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "center",
+          }}
+        >
+          <Box style={{ marginRight: "0.5rem" }}>
+            <SearchComponent2
               value={transactionId}
               date={selectedDate}
               handleOnChange={(e) => {
                 setTransactionId(e.target.value);
-                console.log(transactionId);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
               }}
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint="/audit-search"
+              endpoint={endpoint}
               setEyesStatus={setEyesStatus}
               eyesStatus={eyesStatus}
             />
           </Box>
-          <Grid
-            container
-            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
-          >
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg
-                md={5}
-                sm={6}
-                className={classes.card}
+
+          <SearchByPlateComponent
+            valuePlate={licensePlate}
+            valueProvince={!!province ? province : {}}
+            setProvince={setProvince}
+            date={selectedDate}
+            handleOnChange={(e) => {
+              setLicensePlate(e.target.value);
+            }}
+            handleOnChangeProvince={(e, newProvince) => {
+              setProvince(newProvince);
+            }}
+            setInputValue={(e) => setInputValue(e.target.value)}
+            inputValue={inputValue}
+            dropdown={dropdown.province}
+            setTable={setAllTsTable}
+            endpoint={endpoint}
+            setEyesStatus={setEyesStatus}
+            eyesStatus={eyesStatus}
+          />
+        </Paper>
+
+        <Box
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "space-between",
+          }}
+        >
+          {dataCard.map((card, index) => (
+            <Paper
+              className={classes.card}
+              key={index}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "revenue"
+                    ? "3px solid gold"
+                    : card.status === "not_normal"
+                    ? "3px solid red"
+                    : card.status === "waitPk3"
+                    ? "3px solid blue"
+                    : card.status === "waitToKnow"
+                    ? "3px solid darkviolet"
+                    : card.status === "waitSuper"
+                    ? "3px solid orange"
+                    : card.status === "checked"
+                    ? "3px solid lightgreen"
+                    : "3px solid lightgrey",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
-                      : card.status === "not_normal"
-                      ? "3px solid red"
+                      ? "green"
                       : card.status === "revenue"
-                      ? "3px solid orange"
-                      : "3px solid lightgrey",
+                      ? "gold"
+                      : card.status === "not_normal"
+                      ? "red"
+                      : card.status === "waitPk3"
+                      ? "blue"
+                      : card.status === "waitToKnow"
+                      ? "darkviolet"
+                      : card.status === "waitSuper"
+                      ? "orange"
+                      : card.status === "checked"
+                      ? "lightgreen"
+                      : "lightgrey",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item lg={10} md={12} sm={12}>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "not_normal"
-                            ? "red"
-                            : card.status === "revenue"
-                            ? "orange"
-                            : "lightgrey",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {!!card.value ? card.value.toLocaleString() : []}
-                      {card.status === "revenue" ? " บาท" : " รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={2} md={12} sm={12}>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : []}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.status === "revenue" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}

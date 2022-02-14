@@ -17,7 +17,9 @@ import { Pagination } from "@material-ui/lab";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import ModalActivity3 from "./ModalActivity3";
-import { getDataExpectIncomeActivity } from "../service/allService";
+import { getDataByPaymentNo } from "../service/allService";
+import ModalBilling from "./ModalBilling";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
 const detailStatus = [
   {
@@ -201,27 +203,30 @@ export default function TablePayment(props) {
 
   const { dataList, page, onChange, checkDate, onFetchData } = props;
 
-  const fetchData = async (ts, index1, index2) => {
+  const fetchData = async (paymentNo) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
 
-    console.log(index1, index2);
-    const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
-    const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
-
     const sendData = {
-      transactionId: [ts, tsBefore1, tsBefore2],
+      invoiceNo: paymentNo.toString(),
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    const res = await getDataExpectIncomeActivity(sendData);
+    const res = await getDataByPaymentNo(sendData);
     SetDataForActivity(!!res ? res.data : []);
-    if (!!res && !!res.status) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       Swal.close();
       setOpen(true);
     }
@@ -252,9 +257,7 @@ export default function TablePayment(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
+            <StyledButtonGoToPage
               style={{ height: 35 }}
               onClick={() => {
                 onFetchData(parseInt(selectedPage));
@@ -262,7 +265,7 @@ export default function TablePayment(props) {
               }}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}
@@ -318,12 +321,11 @@ export default function TablePayment(props) {
                   <StyledTableRow
                     key={data.paymentHistory_invoiceNo}
                     onClick={() => {
-                      // fetchData(data.transactionId, index - 1, index - 2);
-                      // setRowID(index);
-                      // ChangeEyeStatus(index);
+                      fetchData(data.paymentHistory_invoiceNo);
+                      setRowID(index);
                     }}
                     // className={classes.tableRow}
-                    // selected={rowID === index}
+                    selected={rowID === index}
                     className={classes.selected}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -354,15 +356,14 @@ export default function TablePayment(props) {
         </Table>
       </TableContainer>
 
-      {/* <ModalActivity3
-          dataList={dataForActivity}
-          open={open}
-          onClick={handleClose}
-          onFetchData={props.onFetchData}
-          dropdown={dropdown}
-          checkDate={checkDate}
-          page={page}
-        /> */}
+      <ModalBilling
+        dataList={dataForActivity}
+        open={open}
+        close={handleClose}
+        onFetchData={props.onFetchData}
+        checkDate={checkDate}
+        page={page}
+      />
     </div>
   );
 }

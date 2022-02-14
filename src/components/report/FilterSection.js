@@ -12,23 +12,22 @@ import {
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
+import {
+  StyledButtonGoToPage,
+  StyledButtonInformation,
+  StyledButtonPrint,
+  StyledButtonRefresh,
+  StyledButtonSearch,
+} from "../../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {},
     filterSection: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       marginTop: 10,
       justifyContent: "center",
       alignItems: "center",
-    },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
     },
     input: {
       "& .MuiInputBase-input": {
@@ -37,10 +36,13 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
-      width: 150,
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
   };
@@ -75,12 +77,16 @@ const valueMenuItem = [
 ];
 
 export default function FilterSection(props) {
-  const { onFetchData, report } = props;
+  const {
+    onFetchData,
+    report,
+    selectedDate,
+    setSelectedDate,
+    checkpoint,
+    setCheckpoint,
+    transactionReport,
+  } = props;
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().setDate(new Date().getDate() - 1)
-  );
-  const [checkpoint, setCheckpoint] = useState(0);
 
   useEffect(() => {}, []);
   return (
@@ -125,25 +131,28 @@ export default function FilterSection(props) {
           ))}
         </TextField>
 
-        <Button
-          variant="contained"
-          className={classes.btn}
+        <StyledButtonInformation
           onClick={() => {
             onFetchData();
           }}
         >
           ดูข้อมูล
-        </Button>
-        <Button
-          variant="contained"
-          className={classes.btn}
-          style={{ backgroundColor: "lightpink" }}
+        </StyledButtonInformation>
+        <StyledButtonGoToPage
+          style={{ height: 39 }}
           onClick={() => {
-            report();
+            report(selectedDate, checkpoint);
           }}
         >
-          pdf
-        </Button>
+          summary pdf
+        </StyledButtonGoToPage>
+        <StyledButtonRefresh
+          onClick={() => {
+            transactionReport(selectedDate, checkpoint);
+          }}
+        >
+          transaction pdf
+        </StyledButtonRefresh>
       </Grid>
     </>
   );

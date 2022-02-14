@@ -44,12 +44,12 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "rgba(235,176,129,0.15)",
     paddingTop: 20,
   },
   tabs: {
     flexGrow: 1,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "rgba(235,176,129,0.15)",
     "& .MuiBox-root": {
       padding: "0px",
     },

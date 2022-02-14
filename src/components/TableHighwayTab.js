@@ -20,6 +20,7 @@ import axios from "axios";
 import ModalEditTabHighway from "./ModalEditTabHighway";
 import ModalAddTabHighway from "./ModalAddTabHighway";
 import { deleteHighway } from "../service/allService";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -170,15 +171,12 @@ export default function TableHighwayTAb(props) {
           }}
         /> */}
 
-          <Button
-            className={classes.btn}
+          <StyledButtonInformation
             startIcon={<AddTwoToneIcon />}
-            variant="contained"
-            color="primary"
             onClick={handleOpen}
           >
             เพิ่มสายทาง
-          </Button>
+          </StyledButtonInformation>
         </div>
         <TableContainer className={classes.container}>
           <Table stickyHeader>

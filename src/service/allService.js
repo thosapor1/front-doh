@@ -20,6 +20,13 @@ const apiURLv3 = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V3}`,
 });
 
+const apiURLv10 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
+});
+
 const cannotConnectNetWork = {
   icon: "error",
   text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
@@ -84,22 +91,38 @@ export const getDataExpectIncomeActivity = (sendData) => {
 };
 
 export const searchOnExpectIncome = (endpoint, sendData) => {
-  const response = apiURLv2.post(`${endpoint}`, sendData).catch((error) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
 };
 
+export const searchByMatchTS = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const searchByPlate = (sendData) => {
+  const response = apiURLv1
+    .post("/search-plate-mflow", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //ExpertIncomeV2 page
 export const getDataExpectIncomeV2 = (sendData) => {
-  const response = apiURLv2.post("/expect-income", sendData).catch((error) => {
+  const response = apiURLv10.post("/expect-income", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;
 };
 
 export const getDataExpectIncomeActivityV2 = (sendData) => {
-  const response = apiURLv3
+  const response = apiURLv10
     .post("/expect-income-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
@@ -111,6 +134,24 @@ export const getDataExpectIncomeActivityV2 = (sendData) => {
 export const getDataCollectFromPk3 = (sendData) => {
   const response = apiURLv1
     .post("/display-pk3-storage_list", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+
+  return response;
+};
+
+export const searchByInvoiceId = (endpoint, sendData) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+
+  return response;
+};
+
+export const getDataByInvoiceNo = (sendData) => {
+  const response = apiURLv1
+    .post("/billing-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
@@ -135,7 +176,7 @@ export const getDataAuditDisplay = (sendData) => {
   return response;
 };
 
-export const getDataSuperaudit = (sendData) => {
+export const getDataSuperAudit = (sendData) => {
   const response = apiURLv1
     .post("/display-super-audit", sendData)
     .catch((error) => {
@@ -146,6 +187,25 @@ export const getDataSuperaudit = (sendData) => {
 
 export const getDataSuperauditActivity = (sendData) => {
   const response = apiURLv2
+    .post("/display-super-audit-activity", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+//superAdminDisplayV3 page
+export const getDataSuperAuditV3 = (sendData) => {
+  const response = apiURLv10
+    .post("/display-super-audit", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDataSuperAuditActivityV10 = (sendData) => {
+  const response = apiURLv10
     .post("/display-super-audit-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
@@ -276,9 +336,74 @@ export const getImageLane = (sendData) => {
   return response;
 };
 
+//Report page
+export const getDataReportDisplay = (sendData) => {
+  const response = apiURLv1.post("/display-ts", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+export const getDataReportTS = (sendData) => {
+  const response = apiURLv1.post("/export-pdf-ts", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataReportBilling = (sendData) => {
+  const response = apiURLv1
+    .post("/display-billing", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDataReportPayment = (sendData) => {
+  const response = apiURLv1
+    .post("/display-payment", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 export const getDataMonitor = (sendData) => {
   const response = apiURLv1
     .post("/payment-monitor", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+//ExportData page
+export const exportData = (sendData) => {
+  const response = apiURLv1.post("/", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+//Pk3DisplayV2 page
+export const getDataPk3V10 = (sendData) => {
+  const response = apiURLv10.post("/display-pk3", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+//Payment page
+export const searchByPayment = (sendData) => {
+  const response = apiURLv1.post("/search-payment", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataByPaymentNo = (sendData) => {
+  const response = apiURLv1
+    .post("/payment-activity", sendData)
     .catch((error) => {
       Swal.fire(cannotConnectNetWork);
     });
