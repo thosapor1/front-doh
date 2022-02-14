@@ -802,16 +802,16 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
-                    {!!resultDisplay.audit_plate
-                      ? resultDisplay.audit_plate
+                    {!!resultDisplay.cameras_plateNo1
+                      ? resultDisplay.cameras_plateNo1
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
                   <TableCell>
-                    {!!resultDisplay.audit_province
-                      ? resultDisplay.audit_province
+                    {!!resultDisplay.province_description
+                      ? resultDisplay.province_description
                       : "-"}
                   </TableCell>
                 </TableRow>
