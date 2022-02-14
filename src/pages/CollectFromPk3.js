@@ -17,25 +17,25 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import SearchComponent from "../components/SearchComponent";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import { getDataCollectFromPk3, getDropdown } from "../service/allService";
 import TableCollectFromPk3 from "../components/TableCollectFromPk3";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
       padding: theme.spacing(1),
       marginTop: 10,
+      display: "flex",
       justifyContent: "center",
       alignItems: "center",
-    },
-    cardSection: {
-      display: "flex",
-      marginTop: 10,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -51,8 +51,15 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
+    },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -80,10 +87,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -116,7 +123,7 @@ const useStyles = makeStyles((theme) => {
 export default function CollectFromPk3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [allTsTable, setAllTsTable] = useState([]);
+  const [table, setTable] = useState([]);
   //   const [checkpoint, setCheckpoint] = useState(1);
   //   const [status_select, setStatus_select] = useState(0);
   //   const [selectGate, setSelectGate] = useState(0);
@@ -126,7 +133,7 @@ export default function CollectFromPk3() {
 
   const [dropdown, setDropdown] = useState([]);
   //   const [tsType, setTsType] = useState(0);
-  const [transactionId, setTransactionId] = useState("");
+  const [invoiceId, setInvoiceId] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -163,20 +170,15 @@ export default function CollectFromPk3() {
 
     const sendData = {
       page: pageId.toString(),
-      //   checkpoint: checkpoint.toString() || "0",
-      //   gate: selectGate.toString() || "0",
-      //   state: status_select.toString() || "0",
-      //   vehicleClass: selectCarType.toString() || "0",
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      //   status: tsType.toString(),
     };
     console.log(sendData);
 
     const res = await getDataCollectFromPk3(sendData);
     if (!!res) {
-      setAllTsTable(!!res ? res.data : []);
+      setTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : summary);
     }
     if (!!res && !res.data.status) {
@@ -264,7 +266,7 @@ export default function CollectFromPk3() {
           ? summary.count_billing.toLocaleString().toString()
           : "0",
       status: "total",
-      label: "จำนวนรายการแจ้งหนี้",
+      label: "รายการแจ้งหนี้",
       type: "label",
     },
     {
@@ -314,103 +316,7 @@ export default function CollectFromPk3() {
         </Typography>
 
         {/* Filter Section */}
-        <Grid container component={Paper} className={classes.filterSection}>
-          {/* <TextField
-            select
-            variant="outlined"
-            label="ด่าน"
-            value={checkpoint}
-            onChange={(e) => setCheckpoint(e.target.value)}
-            className={classes.input1}
-            name="gate_select"
-          >
-            {!!dropdown.checkpoint
-              ? dropdown.checkpoint
-                  .filter((item) => item.id > 0)
-                  .map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.checkpoint_name}
-                    </MenuItem>
-                  ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ช่อง"
-            value={selectGate}
-            onChange={(e) => setSelectGate(e.target.value)}
-            className={classes.input1}
-            name="gate"
-          >
-            {!!dropdown.gate
-              ? dropdown.gate.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
-          {/* <TextField
-            select
-            variant="outlined"
-            label="ประเภทรถ"
-            value={selectCarType}
-            onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input1}
-            name="carType"
-          >
-            {!!dropdown.vehicle
-              ? dropdown.vehicle.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.class}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
-          {/* <TextField
-            select
-            variant="outlined"
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              setStatus_select(e.target.value);
-            }}
-            className={classes.input1}
-            name="status_select"
-          >
-            {!!dropdown.state
-              ? dropdown.state.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ประเภทTS"
-            value={tsType}
-            onChange={(e) => {
-              setTsType(e.target.value);
-            }}
-            className={classes.input1}
-            name="tsType"
-          >
-            {!!dropdown.ts_status
-              ? dropdown.ts_status.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
-
+        <Paper className={classes.filterSection}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.input}
@@ -459,114 +365,93 @@ export default function CollectFromPk3() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            // onClick={() => refresh(1)}
+          </StyledButtonInformation>
+          <StyledButtonRefresh
+          // onClick={() => refresh(1)}
           >
             refresh
-          </Button>
-        </Grid>
+          </StyledButtonRefresh>
+        </Paper>
 
         {/* Card Section */}
         <Box className={classes.cardSection}>
           <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
-              value={transactionId}
+              value={invoiceId}
               date={selectedDate}
               handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
+                setInvoiceId(e.target.value);
+                console.log(invoiceId);
               }}
               name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
+              label="Invoice No."
+              setTable={setTable}
+              endpoint="/search-billing"
             />
           </Box>
-          <Grid
-            container
-            style={{ display: "flex", columnGap: "0.8rem", rowGap: "0.8rem" }}
-          >
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg
-                md={5}
-                sm={6}
-                className={classes.card}
+
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "not_normal"
+                    ? "3px solid red"
+                    : card.status === "revenue"
+                    ? "3px solid orange"
+                    : "3px solid lightgrey",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
+                      ? "green"
                       : card.status === "not_normal"
-                      ? "3px solid red"
+                      ? "red"
                       : card.status === "revenue"
-                      ? "3px solid orange"
-                      : "3px solid lightgrey",
+                      ? "orange"
+                      : "lightgrey",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item lg={10} md={12} sm={12}>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "not_normal"
-                            ? "red"
-                            : card.status === "revenue"
-                            ? "orange"
-                            : "lightgrey",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {!!card.value ? card.value.toLocaleString() : []}
-                      {card.type === "money" ? " บาท" : " รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={2} md={12} sm={12}>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.type === "money" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}
 
         <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
           <TableCollectFromPk3
-            dataList={allTsTable}
+            dataList={table}
             page={page}
             onChange={handlePageChange}
             onFetchData={fetchData}
             dropdown={dropdown}
             checkDate={selectedDate}
-            eyesStatus={eyesStatus}
-            setEyesStatus={setEyesStatus}
           />
         </Grid>
       </Container>

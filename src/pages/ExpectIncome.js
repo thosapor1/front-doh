@@ -19,17 +19,20 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import GateTable2 from "../components/GateTable2";
 import ClassTable from "../components/ClassTable";
 import { getDataExpectIncome, getDropdown } from "../service/allService";
 import SearchComponent2 from "../components/SearchComponent2";
 import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
@@ -39,7 +42,9 @@ const useStyles = makeStyles((theme) => {
       alignItems: "center",
     },
     cardSection: {
-      marginTop: 10,
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "space-between",
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -59,22 +64,6 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
       width: "10%",
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
-    },
     input: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -85,10 +74,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -102,8 +91,6 @@ const useStyles = makeStyles((theme) => {
         height: 40,
       },
       "& .MuiInputLabel-outlined": {
-        // transform: 'translate(14px, 14px) scale(1)',
-        // paddingBottom: 20,
         fontSize: "0.8rem",
       },
       width: 150,
@@ -132,7 +119,7 @@ export default function ExpectIncome() {
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  const [province, setProvince] = useState(null);
+  const [province, setProvince] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
   const [inputValue, setInputValue] = useState("");
 
@@ -195,19 +182,19 @@ export default function ExpectIncome() {
     console.log(sendData);
 
     const res = await getDataExpectIncome(sendData);
-    if (!!res && res.data.status === false) {
+    if (
+      (!!res && !res.data.status) ||
+      (!!res && !res.data.resultsDisplay.length)
+    ) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
-      console.log("test");
     }
-    if (!!res) {
+    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
       setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res ? res.data.summary : summary);
-    }
-    if (!!res && !!res.data.resultsDisplay) {
-      for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+      setSummary(!!res.data.summary ? res.data.summary : []);
+      for (let i = 0; i < res.data.resultsDisplay.length; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
           readFlag: res.data.resultsDisplay[i].readFlag,
@@ -215,11 +202,14 @@ export default function ExpectIncome() {
         });
       }
       setEyesStatus(eyes);
-    }
-
-    if (!!res && res.data.status !== false) {
       Swal.close();
     }
+    // if (!!res && !!res.data.resultsDisplay) {
+    // }
+
+    // if (!!res && res.data.status !== false) {
+    //
+    // }
   };
 
   // const refresh = (pageId = 1) => {
@@ -336,7 +326,7 @@ export default function ExpectIncome() {
     {
       value: !!summary[0] && !!summary[0].revenue ? summary[0].revenue : "0",
       status: "revenue",
-      label: "รายได้พึงได้รายวัน",
+      label: "รายได้พึงได้",
     },
   ];
 
@@ -503,20 +493,14 @@ export default function ExpectIncome() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            // onClick={() => refresh(1)}
+          </StyledButtonInformation>
+          <StyledButtonRefresh
+          // onClick={() => refresh(1)}
           >
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}
@@ -549,7 +533,7 @@ export default function ExpectIncome() {
 
           <SearchByPlateComponent
             valuePlate={licensePlate}
-            valueProvince={province}
+            valueProvince={!!province ? province : {}}
             setProvince={setProvince}
             date={selectedDate}
             handleOnChange={(e) => {
@@ -568,13 +552,8 @@ export default function ExpectIncome() {
           />
         </Paper>
 
-        <Box
-          style={{
-            display: "flex",
-            margin: "10px 0px 0px 0px",
-            justifyContent: "space-between",
-          }}
-        >
+        {/* Card Section*/}
+        <Box className={classes.cardSection}>
           {dataCard.map((card, index) => (
             <Paper
               className={classes.card}

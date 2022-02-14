@@ -21,7 +21,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import TablePK3display2 from "../components/AllTsTableForPk3Activity2";
+import TablePK3display2 from "../components/TablePK3display2";
 
 const apiURL = axios.create({
   baseURL:
@@ -39,7 +39,7 @@ const apiURLv2 = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {

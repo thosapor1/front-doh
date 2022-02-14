@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   CardMedia,
   Grid,
@@ -15,21 +14,23 @@ import {
   Tabs,
   TextField,
   Typography,
+  Box,
+  Paper,
+  Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
+import Logo_doh from "../image/Logo_doh.png";
 import noImage from "../image/noImageFound.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
-import { operation } from "../service/allService";
-import ModalExpandedImage3 from "./report/ModalExpandedImage3";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -137,12 +138,13 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: theme.palette.background.paper,
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
+      marginTop: "5%",
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "100%",
+        marginTop: "115%",
       },
       [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
+        marginTop: "150%",
       },
     },
     head: {
@@ -248,11 +250,19 @@ const useStyle = makeStyles((theme) => {
       },
     },
     tableContainer: {
-      height: "23vh",
+      height: "20vh",
       [theme.breakpoints.down("lg")]: {
-        height: "23vh",
+        height: "20vh",
       },
     },
+    disableLabel2: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
+
     smallText: {
       "& .MuiOutlinedInput-input": {
         height: "30px",
@@ -260,12 +270,18 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
+
+    progressNone: {
+      display: "none",
+    },
+    progressShow: {
+      display: "show",
+    },
   };
 });
 
-export default function ModalActivity3(props) {
+export default function ModalPK3Activity3(props) {
   const classes = useStyle();
-  const [commentAudit, setCommentAudit] = useState("");
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -273,24 +289,6 @@ export default function ModalActivity3(props) {
   const [open4, setOpen4] = useState(false);
   const [open5, setOpen5] = useState(false);
   const [open6, setOpen6] = useState(false);
-  const [open7, setOpen7] = useState(false);
-  const [open8, setOpen8] = useState(false);
-  const [open9, setOpen9] = useState(false);
-  const [open10, setOpen10] = useState(false);
-  const [open11, setOpen11] = useState(false);
-  const [open12, setOpen12] = useState(false);
-  const [open13, setOpen13] = useState(false);
-  const [open14, setOpen14] = useState(false);
-  const [open15, setOpen15] = useState(false);
-  const [open16, setOpen16] = useState(false);
-  const [open17, setOpen17] = useState(false);
-  const [open18, setOpen18] = useState(false);
-  const [open19, setOpen19] = useState(false);
-  const [open20, setOpen20] = useState(false);
-  const [open21, setOpen21] = useState(false);
-  const [open22, setOpen22] = useState(false);
-  const [open23, setOpen23] = useState(false);
-  const [open24, setOpen24] = useState(false);
 
   const { dataList, dropdown, checkDate, page } = props;
 
@@ -320,34 +318,67 @@ export default function ModalActivity3(props) {
     setValue6(newValue);
   };
 
-  const download = () => {
-    const header = {
-      "Content-Type": "application",
-      responseType: "blob",
-    };
-    const sendData = {
-      transactionId: resultDisplay.transactionId,
-      date: format(checkDate, "yyyy-MM-dd"),
-    };
-    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "downloadFile");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      console.log(res.data);
-      console.log(url);
-    });
-  };
-
   const mockPic = 0;
-  const [state, setState] = useState({});
-  const [vehicleClass, setVehicleClass] = useState("");
+  const [state, setState] = useState({
+    operation: "",
+    commentSuper: "",
+    commentPK3: "",
+    TransactionsPeat: "",
+  });
+  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
+
+  const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const upload = () => {
+    setProgress(1);
+
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    console.log(fileName);
+    if (fileName !== "") {
+      axios.post(`${URL}/display-pk3-activity`, formData).then((res) => {
+        setProgress(0);
+        if (res.data.status === true) {
+          Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Fail",
+            text: "อัพโหลดข้อมูลไม่สำเร็จ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      setProgress(0);
+      Swal.fire({
+        title: "Fail",
+        text: "อัพโหลด File ไม่สำเร็จ",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
 
   const handleOptionChange = (event) => {
     const index = event.target.value;
@@ -357,56 +388,34 @@ export default function ModalActivity3(props) {
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
-      super_audit_vehicleClass: ${vehicleClass}
-      event.target.value: ${index}`
+        super_audit_vehicleClass: ${vehicleClass}
+        event.target.value: ${index}`
     );
   };
 
-  const handleUpdate1 = async () => {
-    const date = format(checkDate, "yyyy-MM-dd");
-    let setOperation = 0;
+  const handleUpdate1 = () => {
+    let endPointURL = "/operation";
 
-    if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 3
-    ) {
-      setOperation = 1;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 7
-    ) {
-      setOperation = 1;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 6
-    ) {
-      setOperation = 1;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 2
-    ) {
-      setOperation = 2;
-    } else if (dataList.resultsDisplay[0].state === 6) {
-      setOperation = 4;
-    }
+    const date = format(checkDate, "yyyy-MM-dd");
+    let setOperation = 6;
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
       transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: vehicleClass.toString(),
+      fee: audit_feeAmount.toString(),
+      status: dataList.resultsDisplay[0].match_transaction_type.toString(),
       operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
+      pk3_comment: commentPK3,
       super_audit_comment: "",
-      ts_duplication: state.TransactionsPeat,
+      ts_duplication: TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    const result = await Swal.fire({
+    Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -414,75 +423,68 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    });
-
-    if (result.isConfirmed) {
-      const res = await operation(sendData);
-      if (!!res && res.data.status === true) {
-        Swal.close();
-        await Swal.fire({
-          title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-          icon: "success",
-        });
-        await props.onClick();
-        await props.onFetchData(page);
-      } else {
-        Swal.close();
-        await Swal.fire({
-          title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
-          icon: "error",
-        });
+      zIndex: 1300,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv2
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+            props.onClick();
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+            });
+          });
       }
-    }
+    });
   };
+  const handleUpdate2 = () => {
+    let endPointURL = "/operation";
 
-  const handleUpdate2 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
-    let setOperation = 0;
 
-    if (dataList.resultsDisplay[0].state === 1) {
-      setOperation = 3;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 3
-    ) {
-      setOperation = 3;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 7
-    ) {
-      setOperation = 3;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 6
-    ) {
-      setOperation = 3;
-    } else if (
-      dataList.resultsDisplay[0].state === 2 &&
-      dataList.resultsDisplay[0].match_transaction_type === 2
-    ) {
-      setOperation = 3;
-    }
+    let setOperation = 7;
 
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
-      transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
+      transactionId: dataList.resultsDisplay[0].transactionId.toString(),
+      state: dataList.resultsDisplay[0].state.toString(),
+      vehicleClass: vehicleClass.toString(),
+      fee: audit_feeAmount.toString(),
+      status: dataList.resultsDisplay[0].match_transaction_type.toString(),
       operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
+      pk3_comment: commentPK3,
       super_audit_comment: "",
-      ts_duplication: state.TransactionsPeat,
+      ts_duplication: TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
 
-    const result = await Swal.fire({
+    Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
       showCancelButton: true,
@@ -490,60 +492,73 @@ export default function ModalActivity3(props) {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    });
-
-    if (result.isConfirmed) {
-      const res = await operation(sendData);
-      if (!!res && res.data.status === true) {
-        Swal.close();
-        await Swal.fire({
-          title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-          icon: "success",
-        });
-        await props.onClick();
-        await props.onFetchData(page);
-      } else {
-        Swal.close();
-        await Swal.fire({
-          title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
-          icon: "error",
-        });
+      zIndex: 1300,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv2
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              props.onFetchData(page);
+            }, 2000);
+            props.onClick();
+          })
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+            });
+          });
       }
-    }
-  };
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.value });
+    });
   };
 
   useEffect(() => {
-    if (!!dataList) {
+    if (dataList) {
       setState(dataList);
-
+      setVehicleClass(dataList.vehicleClass);
+      setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
+      setState({
+        ...state,
+        TransactionsPeat: "",
+        commentPK3: "",
+        operation: "",
+      });
+      setFileName("");
       setVehicleClass(
-        !!dataList.resultsDisplay &&
-          dataList.resultsDisplay[0].match_transaction_type === 3
-          ? dataList.resultsDisplay[0].mf_lane_vehicleClass
-          : !!dataList.resultsDisplay &&
-              dataList.resultsDisplay[0].match_real_vehicleClass
+        !!dataList.resultsDisplay
+          ? dataList.resultsDisplay[0].match_real_vehicleClass
+          : 0
       );
       setAudit_feeAmount(
         !!dataList.resultsDisplay
           ? dataList.resultsDisplay[0].match_real_fee
           : 0
       );
-      setValue1(2);
-      setValue2(2);
-      setValue3(2);
-      setValue4(2);
-      setValue5(2);
-      setValue6(2);
+
+      console.log("dataList", dataList);
     }
   }, [dataList]);
 
@@ -575,9 +590,6 @@ export default function ModalActivity3(props) {
                   : !!dataList.resultsDisplay &&
                     dataList.resultsDisplay[0].state === 7
                   ? "lightblue"
-                  : !!dataList.resultsDisplay &&
-                    dataList.resultsDisplay[0].state === 8
-                  ? "lightgreen"
                   : "none",
               width: "100%",
               display: "flex",
@@ -605,8 +617,6 @@ export default function ModalActivity3(props) {
                   ? "รอตรวจสอบรับทราบ"
                   : dataList.resultsDisplay[0].state === 7
                   ? "รอจัดเก็บยืนยัน"
-                  : dataList.resultsDisplay[0].state === 8
-                  ? "ตรวจสอบแล้ว"
                   : "ไม่มีสถานะ"
                 : ""}
             </Typography>
@@ -653,14 +663,6 @@ export default function ModalActivity3(props) {
                 !!dataList.resultsDisplay
                   ? dataList.resultsDisplay[0].match_gate
                   : ""
-              } / วันที่ ${
-                !!dataList.resultsDisplay
-                  ? dataList.resultsDisplay[0].match_timestamp.split(" ")[0]
-                  : ""
-              } / เวลา ${
-                !!dataList.resultsDisplay
-                  ? dataList.resultsDisplay[0].match_timestamp.split(" ")[1]
-                  : ""
               }`}
             </Typography>
           </Box>
@@ -668,12 +670,14 @@ export default function ModalActivity3(props) {
         <div style={{ position: "absolute", right: 35 }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
+              fontSize="small"
+              color="secondary"
               onClick={props.onClick}
               style={{
                 cursor: "pointer",
                 fontSize: "1.5rem",
                 paddingTop: 5,
-                color: !!dataList.resultsDisplay ? "white" : "red",
+                color: "white",
               }}
             />
           </Tooltip>
@@ -695,7 +699,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -706,19 +710,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value5} index={0}>
@@ -726,17 +730,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_picRGB_2
-                    ? `data:image/png;base64, ${dataList.audit_picRGB_2}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen1(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_picRGB_2}
-                open={open1}
-                onClose={() => setOpen1(false)}
               />
             </div>
           </TabPanel4>
@@ -745,17 +743,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_picRGB_1
-                    ? `data:image/png;base64, ${dataList.audit_picRGB_1}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen2(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_picRGB_1}
-                open={open2}
-                onClose={() => setOpen2(false)}
               />
             </div>
           </TabPanel4>
@@ -769,12 +761,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen3(true)}
+                onClick={() => setOpen1(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.audit_picRGB}
-                open={open3}
-                onClose={() => setOpen3(false)}
+                open={open1}
+                onClose={() => setOpen1(false)}
               />
             </div>
           </TabPanel4>
@@ -783,17 +775,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_full
-                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen4(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_pic_crop}
-                open={open4}
-                onClose={() => setOpen4(false)}
               />
             </div>
           </TabPanel4>
@@ -814,55 +800,40 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>ทะเบียน</TableCell>
                   <TableCell>
-                    {!!resultDisplay.cameras_plateNo1
-                      ? resultDisplay.cameras_plateNo1
+                    {!!resultDisplay.audit_plate
+                      ? resultDisplay.audit_plate
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>หมวดจังหวัด</TableCell>
                   <TableCell>
-                    {!!resultDisplay.province_description
-                      ? resultDisplay.province_description
+                    {!!resultDisplay.audit_province
+                      ? resultDisplay.audit_province
                       : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
+                    {/* {!!resultDisplay.brand_description
                       ? resultDisplay.brand_description
-                      : "-"}
+                      : "-"} */}
+                    {"-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
                   <TableCell>
-                    {!!resultDisplay.colors_description
+                    {/* {!!resultDisplay.colors_description
                       ? resultDisplay.colors_description
-                      : "-"}
+                      : "-"} */}
+                    {"-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
-          <Box style={{ marginTop: 118 }}>
-            {(!!resultDisplay.state && resultDisplay.state === 1) ||
-            resultDisplay.state === 2 ? (
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "red",
-                }}
-                className={classes.btn}
-                onClick={handleUpdate2}
-              >
-                {`ส่งฝ่ายจัดเก็บตรวจสอบ`}
-              </Button>
-            ) : (
-              ""
-            )}
-          </Box>
         </Grid>
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
@@ -879,7 +850,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -890,19 +861,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value6} index={0}>
@@ -910,17 +881,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_picBW_2
-                    ? `data:image/png;base64, ${dataList.audit_picBW_2}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen5(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_picBW_2}
-                open={open5}
-                onClose={() => setOpen5(false)}
               />
             </div>
           </TabPanel4>
@@ -929,17 +894,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_picBW_1
-                    ? `data:image/png;base64, ${dataList.audit_picBW_1}`
+                  !!mockPic
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen6(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_picBW_1}
-                open={open6}
-                onClose={() => setOpen6(false)}
               />
             </div>
           </TabPanel4>
@@ -953,12 +912,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen7(true)}
+                onClick={() => setOpen2(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.audit_picBW}
-                open={open7}
-                onClose={() => setOpen7(false)}
+                open={open2}
+                onClose={() => setOpen2(false)}
               />
             </div>
           </TabPanel4>
@@ -967,17 +926,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.audit_pic_crop
+                  !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen8(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.audit_pic_crop}
-                open={open8}
-                onClose={() => setOpen8(false)}
               />
             </div>
           </TabPanel4>
@@ -1004,7 +957,7 @@ export default function ModalActivity3(props) {
                   <TableCell>ขนาด</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_size
-                      ? resultDisplay.audit_size
+                      ? `${resultDisplay.audit_size}`
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1012,7 +965,7 @@ export default function ModalActivity3(props) {
                   <TableCell>ความเร็ว</TableCell>
                   <TableCell>
                     {!!resultDisplay.audit_speed
-                      ? resultDisplay.audit_speed
+                      ? `${resultDisplay.audit_speed}`
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1035,7 +988,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 style={{ minWidth: "15%" }}
@@ -1046,19 +999,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel4 value={value4} index={0}>
@@ -1066,17 +1019,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull_2
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull_2}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen9(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.mf_lane_picFull_2}
-                open={open9}
-                onClose={() => setOpen9(false)}
               />
             </div>
           </TabPanel4>
@@ -1085,17 +1032,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picFull_1
-                    ? `data:image/png;base64, ${dataList.mf_lane_picFull_1}`
+                  dataList.mf_lane_picFull !== 0
+                    ? `data:image/png;base64, ${dataList.mf_lane_picFull}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen10(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.mf_lane_picFull_1}
-                open={open10}
-                onClose={() => setOpen10(false)}
               />
             </div>
           </TabPanel4>
@@ -1109,12 +1050,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen11(true)}
+                onClick={() => setOpen3(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.mf_lane_picFull}
-                open={open11}
-                onClose={() => setOpen11(false)}
+                open={open3}
+                onClose={() => setOpen3(false)}
               />
             </div>
           </TabPanel4>
@@ -1124,16 +1065,10 @@ export default function ModalActivity3(props) {
                 component="img"
                 src={
                   !!mockPic
-                    ? `data:image/png;base64, ${dataList.audit_pic_full}`
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen12(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audit_pic_full}
-                open={open12}
-                onClose={() => setOpen12(false)}
               />
             </div>
           </TabPanel4>
@@ -1154,7 +1089,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1164,19 +1099,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel1 value={value1} index={0}>
@@ -1184,17 +1119,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picCrop_2
-                    ? `data:image/png;base64, ${dataList.mf_lane_picCrop_2}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen13(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.mf_lane_picCrop_2}
-                open={open13}
-                onClose={() => setOpen13(false)}
               />
             </div>
           </TabPanel1>
@@ -1203,17 +1132,12 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.mf_lane_picCrop_1
-                    ? `data:image/png;base64, ${dataList.mf_lane_picCrop_1}`
+                  mockPic !== 0
+                    ? // ? `data:image/png;base64, ${dataList.audit_pic_crop}`
+                      Logo_doh
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen14(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.mf_lane_picCrop_1}
-                open={open14}
-                onClose={() => setOpen14(false)}
               />
             </div>
           </TabPanel1>
@@ -1227,12 +1151,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen15(true)}
+                onClick={() => setOpen4(true)}
               />
               <ModalExpandedImage
                 dataList={dataList.mf_lane_picCrop}
-                open={open15}
-                onClose={() => setOpen15(false)}
+                open={open4}
+                onClose={() => setOpen4(false)}
               />
             </div>
           </TabPanel1>
@@ -1241,21 +1165,14 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!mockPic
+                  mockPic !== 0
                     ? `data:image/png;base64, ${dataList.audit_pic_crop}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen16(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.audit_pic_crop}
-                open={open16}
-                onClose={() => setOpen16(false)}
               />
             </div>
           </TabPanel1>
-
           <TableContainer className={classes.tableContainer}>
             <table className={classes.table}>
               <TableHead>
@@ -1288,6 +1205,121 @@ export default function ModalActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>File จากจัดเก็บ</TableCell>
+                  <TableCell>
+                    <Button
+                      style={{ marginLeft: -7.5 }}
+                      onClick={() =>
+                        document.getElementById("raised-button-file").click()
+                      }
+                    >
+                      <label htmlFor="raised-button-file">
+                        <TextField
+                          id="upload"
+                          disabled
+                          variant="outlined"
+                          className={classes.disableLabel2}
+                          label="choose file here"
+                          size="small"
+                          defaultValue="Small"
+                          value={fileName}
+                          InputLabelProps={{
+                            style: {
+                              fontSize: "0.65rem",
+                            },
+                          }}
+                        />
+                      </label>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      className={classes.btn2}
+                      color="secondary"
+                      onClick={() => {
+                        upload();
+                      }}
+                      style={{
+                        fontSize: "0.7rem",
+                        marginTop: 1,
+                      }}
+                    >
+                      upload
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <CircularProgress
+                      style={{
+                        margin: "auto",
+                      }}
+                      className={
+                        progress === 0
+                          ? classes.progressNone
+                          : classes.progressShow
+                      }
+                      size={20}
+                    />
+                    <input
+                      // accept="image/*"
+                      className={classes.input}
+                      style={{ display: "none" }}
+                      id="raised-button-file"
+                      // multiple
+                      type="file"
+                      onChange={(e) => {
+                        setFileName(
+                          !!e.target.files[0] ? e.target.files[0].name : ""
+                        );
+                        setSelectFile(e.target.files[0]);
+                        console.log(selectFile);
+                        // console.log(ref.current.value.split("\\").pop());
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="TransactionsPeat"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={TransactionsPeat}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นจัดเก็บ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentPK3"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={commentPK3}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็น super audit</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
         {/* MF (Vehicle : HQ)  Block */}
@@ -1295,7 +1327,7 @@ export default function ModalActivity3(props) {
           <div className={classes.headCard}>
             <CameraEnhanceTwoToneIcon />
             <Typography style={{ marginLeft: 10 }}>
-              MF (Vehicle : HQ)
+              MF (Vehicle : HQ){" "}
             </Typography>
           </div>
           <div>
@@ -1307,7 +1339,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1317,19 +1349,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel2 value={value2} index={0}>
@@ -1337,17 +1369,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.hp_picFull_2
-                    ? `data:image/png;base64, ${dataList.hp_picFull_2}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen17(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.hp_picFull_2}
-                open={open17}
-                onClose={() => setOpen17(false)}
               />
             </div>
           </TabPanel2>
@@ -1356,17 +1382,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.hp_picFull_1
-                    ? `data:image/png;base64, ${dataList.hp_picFull_1}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen18(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.hp_picFull_1}
-                open={open18}
-                onClose={() => setOpen18(false)}
               />
             </div>
           </TabPanel2>
@@ -1380,12 +1400,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen19(true)}
+                onClick={() => setOpen5(true)}
               />
               <ModalExpandedImage2
                 dataList={dataList.hp_picFull}
-                open={open19}
-                onClose={() => setOpen19(false)}
+                open={open5}
+                onClose={() => setOpen5(false)}
               />
             </div>
           </TabPanel2>
@@ -1395,16 +1415,10 @@ export default function ModalActivity3(props) {
                 component="img"
                 src={
                   mockPic !== 0
-                    ? `data:image/png;base64, ${dataList.audi_pic_full}`
+                    ? `data:image/png;base64, ${dataList.mf_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen20(true)}
-              />
-              <ModalExpandedImage2
-                dataList={dataList.audi_pic_full}
-                open={open20}
-                onClose={() => setOpen20(false)}
               />
             </div>
           </TabPanel2>
@@ -1449,75 +1463,11 @@ export default function ModalActivity3(props) {
                     colSpan={2}
                     style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
                   >
-                    {!!resultDisplay.pk3_transactionId
-                      ? resultDisplay.pk3_transactionId
+                    {!!resultDisplay.refTransactionId
+                      ? resultDisplay.refTransactionId
                       : "-"}
                   </TableCell>
                 </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow className={classes.tableHead1}>
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    เพิ่มเติม
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>File จากจัดเก็บ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.pk3_upload_file ? (
-                      <Link onClick={download}>download</Link>
-                    ) : (
-                      "-"
-                    )}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.ts_duplication
-                      ? resultDisplay.ts_duplication
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.pk3_comment
-                      ? resultDisplay.pk3_comment
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.super_audit_comment
-                      ? resultDisplay.super_audit_comment
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                {!!resultDisplay.state && resultDisplay.state === 2 ? (
-                  <TableRow>
-                    <TableCell>ความเห็นตรวจสอบ</TableCell>
-                    <TableCell>
-                      <TextField
-                        name="commentAudit"
-                        variant="outlined"
-                        onChange={(e) => setCommentAudit(e.target.value)}
-                        className={classes.smallText}
-                        value={commentAudit}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  ""
-                )}
               </TableBody>
             </table>
           </TableContainer>
@@ -1538,7 +1488,7 @@ export default function ModalActivity3(props) {
               variant="scrollable"
               className={classes.tabs}
             >
-              <Tab
+              {/* <Tab
                 label="ก่อน 2 คัน"
                 {...a11yProps(0)}
                 className={classes.tab}
@@ -1548,19 +1498,19 @@ export default function ModalActivity3(props) {
                 {...a11yProps(1)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
               <Tab
                 label="คันที่ตรวจ"
                 {...a11yProps(2)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
               />
-              <Tab
+              {/* <Tab
                 label="วิดีโอ"
                 {...a11yProps(3)}
                 style={{ minWidth: "15%" }}
                 className={classes.tab}
-              />
+              /> */}
             </Tabs>
           </div>
           <TabPanel3 value={value3} index={0}>
@@ -1568,17 +1518,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.hq_picCrop_2
-                    ? `data:image/png;base64, ${dataList.hq_picCrop_2}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen21(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.hq_picCrop_2}
-                open={open21}
-                onClose={() => setOpen21(false)}
               />
             </div>
           </TabPanel3>
@@ -1587,17 +1531,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!dataList.hq_picCrop_1
-                    ? `data:image/png;base64, ${dataList.hq_picCrop_1}`
+                  mockPic !== 0
+                    ? `data:image/png;base64, ${dataList.audit_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen22(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.hq_picCrop_1}
-                open={open22}
-                onClose={() => setOpen22(false)}
               />
             </div>
           </TabPanel3>
@@ -1611,12 +1549,12 @@ export default function ModalActivity3(props) {
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen23(true)}
+                onClick={() => setOpen6(true)}
               />
               <ModalExpandedImage
                 dataList={dataList.hq_picCrop}
-                open={open23}
-                onClose={() => setOpen23(false)}
+                open={open6}
+                onClose={() => setOpen6(false)}
               />
             </div>
           </TabPanel3>
@@ -1625,17 +1563,11 @@ export default function ModalActivity3(props) {
               <CardMedia
                 component="img"
                 src={
-                  !!mockPic
+                  mockPic !== 0
                     ? `data:image/png;base64, ${dataList.audit_pic}`
                     : noImage
                 }
                 className={classes.image}
-                onClick={() => setOpen24(true)}
-              />
-              <ModalExpandedImage
-                dataList={dataList.audit_pic}
-                open={open24}
-                onClose={() => setOpen24(false)}
               />
             </div>
           </TabPanel3>
@@ -1676,77 +1608,68 @@ export default function ModalActivity3(props) {
             </table>
           </TableContainer>
 
-          {!!resultDisplay.state &&
-          (resultDisplay.state === 1 ||
-            resultDisplay.state === 2 ||
-            resultDisplay.state === 6) ? (
-            <TableContainer>
-              <table className={classes.table}>
-                <TableHead>
-                  <TableRow
-                    className={classes.tableHead1}
-                    style={{ backgroundColor: "lightgreen" }}
-                  >
-                    <TableCell colSpan={2} className={classes.headTable}>
-                      การดำเนินการ
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>ประเภท</TableCell>
-                    <TableCell>
-                      <TextField
-                        // disabled={}
-                        variant="outlined"
-                        select
-                        size="small"
-                        className={classes.textField2}
-                        name="vehicleClass"
-                        value={vehicleClass}
-                        onChange={handleOptionChange}
-                      >
-                        {!!dropdown.vehicle
-                          ? dropdown.vehicle
-                              .filter((item) => item.id !== 0)
-                              .map((item, index) => (
-                                <MenuItem key={index} value={item.id}>
-                                  {item.class}
-                                </MenuItem>
-                              ))
-                          : []}
-                      </TextField>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </table>
-            </TableContainer>
-          ) : (
-            ""
-          )}
-
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow
+                  className={classes.tableHead1}
+                  style={{ backgroundColor: "lightgreen" }}
+                >
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    การดำเนินการ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    <TextField
+                      // disabled={}
+                      variant="outlined"
+                      select
+                      size="small"
+                      className={classes.textField2}
+                      name="vehicleClass"
+                      value={vehicleClass}
+                      onChange={handleOptionChange}
+                    >
+                      {!!dropdown.vehicle
+                        ? dropdown.vehicle
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.class}
+                              </MenuItem>
+                            ))
+                        : []}
+                    </TextField>
+                  </TableCell>
+                </TableRow> */}
+              </TableBody>
+            </table>
+          </TableContainer>
           <div>
-            {!!resultDisplay.state &&
-            (resultDisplay.state === 2 || resultDisplay.state === 6) ? (
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "green",
-                  marginTop: 41,
-                }}
-                className={classes.btn}
-                onClick={handleUpdate1}
-              >
-                {!!resultDisplay.state &&
-                resultDisplay.match_transaction_type === 2
-                  ? "ยืนยันการยกเลิกข้อมูล"
-                  : !!resultDisplay.state && resultDisplay.state === 6
-                  ? "รับทราบ"
-                  : "ยืนยันตามฝ่ายจัดเก็บ"}
-              </Button>
-            ) : (
-              ""
-            )}
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "green",
+              }}
+              className={classes.btn}
+              onClick={handleUpdate1}
+            >
+              ยืนยันตามฝ่ายตรวจสอบ
+            </Button>
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "red",
+              }}
+              className={classes.btn}
+              onClick={handleUpdate2}
+            >
+              ชี้แจงรายระเอียดเพิ่มเติม
+            </Button>
           </div>
         </Grid>
       </Grid>

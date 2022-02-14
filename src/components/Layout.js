@@ -7,7 +7,6 @@ import {
   Icon,
   IconButton,
   makeStyles,
-  SvgIcon,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -53,6 +52,11 @@ import DesktopMacRoundedIcon from "@material-ui/icons/DesktopMacRounded";
 import KeyboardArrowLeftRoundedIcon from "@material-ui/icons/KeyboardArrowLeftRounded";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 import KeyboardArrowRightRoundedIcon from "@material-ui/icons/KeyboardArrowRightRounded";
+import ImportExportRoundedIcon from "@material-ui/icons/ImportExportRounded";
+import {
+  StyledButtonInformation,
+  StyledButtonLogOut,
+} from "../styledComponent/StyledButton";
 
 let drawerWidth = 220;
 const drawerColor =
@@ -219,6 +223,7 @@ export default function Layout({ children }) {
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
+  const department = Cookies.get("department_id");
 
   const toggleDrawer = () => {
     setOpen(true);
@@ -359,6 +364,8 @@ export default function Layout({ children }) {
                       <PlaylistAddCheckRoundedIcon />
                     ) : item.path === "/superAuditDisplay2" ? (
                       <SupervisedUserCircleRoundedIcon />
+                    ) : item.path === "/superAuditDisplayV3" ? (
+                      <SupervisedUserCircleRoundedIcon />
                     ) : item.path === "/report" ? (
                       <DescriptionRoundedIcon />
                     ) : item.path === "/DataVolume" ? (
@@ -367,12 +374,16 @@ export default function Layout({ children }) {
                       <ReceiptRoundedIcon />
                     ) : item.path === "/pk3Display" ? (
                       <HourglassEmptyRoundedIcon />
+                    ) : item.path === "/pk3DisplayV2" ? (
+                      <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (
                       <ReceiptRoundedIcon />
                     ) : item.path === "/MonitorData" ? (
                       <DesktopMacRoundedIcon />
                     ) : item.path === "/Payment" ? (
                       <MonetizationOnRoundedIcon />
+                    ) : item.path === "/ExportData" ? (
+                      <ImportExportRoundedIcon />
                     ) : (
                       ""
                     )}
@@ -421,19 +432,17 @@ export default function Layout({ children }) {
           ))}
         </List>
         <Divider variant="middle" className={classes.hr2} />
-        <Button
-          variant="contained"
+        <StyledButtonLogOut
           size="large"
-          color="primary"
+          style={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
           startIcon={<ExitToAppRoundedIcon />}
-          className={classes.btn}
           onClick={() => {
             history.push("/");
             logout();
           }}
         >
           ออกจากระบบ
-        </Button>
+        </StyledButtonLogOut>
       </Drawer>
       <div className={classes.page}>
         <div className={classes.toolbar}></div>

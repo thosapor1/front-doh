@@ -23,6 +23,7 @@ import ModalEdit from "../components/ModalEdit";
 import ModalAdd from "../components/ModalAdd";
 import Swal from "sweetalert2";
 import { deleteUsers, getDataUsers, updateUsers } from "../service/allService";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const tableHeader = [
   { id: "user_id", label: "user_id" },
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => {
         outline: "1px  lightgray",
       },
     },
-    root: { backgroundColor: "#f9f9f9", paddingTop: "1rem" },
+    root: { backgroundColor: "rgba(235,176,129,0.15)", paddingTop: "1rem" },
     paper: { padding: theme.spacing(1) },
     btn: {
       marginTop: "1rem",
@@ -219,15 +220,12 @@ export default function User() {
         </Typography>
         <Paper className={classes.paper}>
           <div style={{ textAlign: "right" }}>
-            <Button
-              className={classes.btn}
+            <StyledButtonInformation
               startIcon={<AddTwoToneIcon />}
-              variant="contained"
-              color="primary"
               onClick={handleOpen}
             >
               เพิ่มผู้ใช้งาน
-            </Button>
+            </StyledButtonInformation>
           </div>
 
           {/* Table */}

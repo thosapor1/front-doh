@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import ModalAddTabFee from "./ModalAddTabFee";
 import ModalEditTabFee from "./ModalEditTabFee";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -181,15 +182,12 @@ export default function TableFeeTab(props) {
           }}
         /> */}
 
-          <Button
-            className={classes.btn}
+          <StyledButtonInformation
             startIcon={<AddTwoToneIcon />}
-            variant="contained"
-            color="primary"
             onClick={handleOpen}
           >
             เพิ่มประเภทรถ
-          </Button>
+          </StyledButtonInformation>
         </div>
         <TableContainer className={classes.container}>
           <Table stickyHeader>

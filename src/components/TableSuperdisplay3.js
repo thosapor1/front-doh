@@ -18,18 +18,22 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import format from "date-fns/format";
-import ModalActivity3 from "./ModalActivity3";
-import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
-import { getDataExpectIncomeActivity } from "../service/allService";
-import { getDataExpectIncomeActivityV2 } from "../service/allService";
-import { useLocation } from "react-router-dom";
+import ModalReadOnly2 from "./ModalReadOnly2";
+import ModalSuperActivity3 from "./ModalSuperActivity3";
+import { format } from "date-fns";
 import {
-  StyledButtonGoToPage,
-  StyledButtonOperation,
-} from "../styledComponent/StyledButton";
-import ModalOperation from "./ModalOperation";
+  getDataSuperauditActivity,
+  getDataSuperAuditActivityV10,
+} from "../service/allService";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 // import format from "date-fns/format";
+
+const apiURLv2 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V2}`
+      : `${process.env.REACT_APP_BASE_URL_V2}`,
+});
 
 const detailStatus = [
   {
@@ -52,11 +56,11 @@ const detailStatus = [
     color: "orange",
     label: "รอ super audit ตรวจสอบ",
   },
-  // {
-  //   state: 5,
-  //   color: "black",
-  //   label: "รอพิจารณาพิเศษ",
-  // },
+  {
+    state: 5,
+    color: "black",
+    label: "รอพิจารณาพิเศษ",
+  },
   {
     state: 6,
     color: "darkviolet",
@@ -89,7 +93,6 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
-      zIndex: 1,
     },
     header2: {
       backgroundColor: "#7C85BFff",
@@ -99,7 +102,7 @@ const useStyles = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 38,
-      zIndex: 1,
+      // zIndex: 10,
     },
     tableRow: {
       "&:hover": {
@@ -121,14 +124,7 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
-      height: 28,
     },
-    // tableCell2: {
-    //   cursor: "pointer",
-    //   fontSize: "0.75rem",
-    //   padding: "6px",
-    //   // height: 10,
-    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -146,7 +142,6 @@ const useStyles = makeStyles((theme) => {
         display: "block",
       },
       justifyItems: "center",
-      marginTop: "0.5rem",
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -172,15 +167,6 @@ const useStyles = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
-    selected: {
-      "&.Mui-selected, &.Mui-selected:hover": {
-        backgroundColor: "purple",
-        "& > .MuiTableCell-root": {
-          color: "yellow",
-          backgroundColor: "purple",
-        },
-      },
-    },
   };
 });
 
@@ -192,14 +178,12 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay2(props) {
-  const classes = useStyles();
+export default function TableSuperdisplay3(props) {
   const [open, setOpen] = useState(false);
-  const [openOperation, setOpenOperation] = useState(false);
-  const [selectedPage, setSelectedPage] = useState("");
-  const [dataForActivity, SetDataForActivity] = useState({});
+  const [open1, setOpen1] = useState(false);
   const [rowID, setRowID] = useState("");
-  const location = useLocation();
+  const [dataForActivity, SetDataForActivity] = useState({});
+  const [selectedPage, setSelectedPage] = useState("");
 
   const {
     dataList,
@@ -217,9 +201,9 @@ export default function TableAuditDisplay2(props) {
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
-      // background: 'rgba(0,0,0,0.80)'
     });
 
+    console.log(index1, index2);
     const tsBefore1 =
       index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
     const tsBefore2 =
@@ -230,20 +214,19 @@ export default function TableAuditDisplay2(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    if (location.pathname === "/expectIncome") {
-      const res = await getDataExpectIncomeActivity(sendData);
-      SetDataForActivity(!!res ? res.data : []);
-      if (!!res && !!res.status) {
-        Swal.close();
-        setOpen(true);
-      }
+    const res = await getDataSuperAuditActivityV10(sendData);
+
+    if (!!res && !!res.data.status) {
+      Swal.close();
+      SetDataForActivity(res.data);
+      console.log("res2:", res.data);
+      setOpen(true);
     } else {
-      const res = await getDataExpectIncomeActivityV2(sendData);
-      SetDataForActivity(!!res ? res.data : []);
-      if (!!res && !!res.status) {
-        Swal.close();
-        setOpen(true);
-      }
+      Swal.fire({
+        icon: "error",
+        text: "เกิดข้อผิดพลาดกับเซิฟเวอร์ ติดต่อผู้ดูแลระบบ",
+      });
+      console.log("test");
     }
   };
 
@@ -256,10 +239,10 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setOpen1(false);
   };
-  const handleCloseOperation = () => {
-    setOpenOperation(false);
-  };
+
+  const classes = useStyles();
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
@@ -282,10 +265,7 @@ export default function TableAuditDisplay2(props) {
               onChange={(e) => setSelectedPage(e.target.value)}
             />
             <StyledButtonGoToPage
-              onClick={() => {
-                onFetchData(parseInt(selectedPage));
-                setSelectedPage("");
-              }}
+              onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
             </StyledButtonGoToPage>
@@ -300,9 +280,6 @@ export default function TableAuditDisplay2(props) {
               className={classes.pagination}
             />
           </Box>
-          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
-            ดำเนินการ
-          </StyledButtonOperation>
         </Box>
 
         {/* detail box */}
@@ -344,12 +321,6 @@ export default function TableAuditDisplay2(props) {
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 ค่าผ่านทาง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                เลขที่ใบแจ้งหนี้
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                การชำระ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
@@ -426,21 +397,13 @@ export default function TableAuditDisplay2(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
+                      {`-`}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!eyesStatus[index] &&
                       eyesStatus[index].readFlag === 1 &&
                       eyesStatus[index].state === 2 ? (
-                        <VisibilityIcon style={{ color: "red" }} />
+                        <VisibilityIcon style={{ color: "blue" }} />
                       ) : (
                         <FiberManualRecordIcon
                           style={{
@@ -474,7 +437,7 @@ export default function TableAuditDisplay2(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity3
+      <ModalSuperActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
@@ -483,8 +446,6 @@ export default function TableAuditDisplay2(props) {
         checkDate={checkDate}
         page={page}
       />
-
-      <ModalOperation open={openOperation} close={handleCloseOperation} />
     </div>
   );
 }

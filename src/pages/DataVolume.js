@@ -18,6 +18,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { getDataVolume } from "../service/allService";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -35,7 +36,7 @@ const useStyle = makeStyles((theme) => {
     },
     root: {
       display: "flex",
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
 
@@ -197,9 +198,9 @@ export default function DataVolume() {
                 }}
               />
             </MuiPickersUtilsProvider>
-            <Button className={classes.btn} onClick={() => fetchData()}>
+            <StyledButtonInformation onClick={() => fetchData()}>
               ดูข้อมูล
-            </Button>
+            </StyledButtonInformation>
           </Grid>
           <Grid
             component={Paper}

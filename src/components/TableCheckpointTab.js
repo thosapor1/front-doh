@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import ModalAddTabCheckpoint from "./ModalAddTabCheckpoint";
 import ModalEditTabCheckpoint from "./ModalEditTabCheckpoint";
+import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -177,15 +178,12 @@ export default function TableCheckpointTab(props) {
           }}
         /> */}
 
-          <Button
-            className={classes.btn}
+          <StyledButtonInformation
             startIcon={<AddTwoToneIcon />}
-            variant="contained"
-            color="primary"
             onClick={handleOpen}
           >
             เพิ่มด่าน
-          </Button>
+          </StyledButtonInformation>
         </div>
         <TableContainer className={classes.container}>
           <Table stickyHeader>
