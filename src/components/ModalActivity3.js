@@ -253,11 +253,19 @@ const useStyle = makeStyles((theme) => {
         height: "23vh",
       },
     },
+    smallText: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
   };
 });
 
 export default function ModalActivity3(props) {
   const classes = useStyle();
+  const [commentAudit, setCommentAudit] = useState("");
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -504,6 +512,10 @@ export default function ModalActivity3(props) {
         });
       }
     }
+  };
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
   };
 
   useEffect(() => {
@@ -834,6 +846,23 @@ export default function ModalActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
+          <Box style={{ marginTop: 118 }}>
+            {(!!resultDisplay.state && resultDisplay.state === 1) ||
+            resultDisplay.state === 2 ? (
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "red",
+                }}
+                className={classes.btn}
+                onClick={handleUpdate2}
+              >
+                {`ส่งฝ่ายจัดเก็บตรวจสอบ`}
+              </Button>
+            ) : (
+              ""
+            )}
+          </Box>
         </Grid>
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
@@ -1473,6 +1502,22 @@ export default function ModalActivity3(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
+                {!!resultDisplay.state && resultDisplay.state === 2 ? (
+                  <TableRow>
+                    <TableCell>ความเห็นตรวจสอบ</TableCell>
+                    <TableCell>
+                      <TextField
+                        name="commentAudit"
+                        variant="outlined"
+                        onChange={(e) => setCommentAudit(e.target.value)}
+                        className={classes.smallText}
+                        value={commentAudit}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  ""
+                )}
               </TableBody>
             </table>
           </TableContainer>
@@ -1687,6 +1732,7 @@ export default function ModalActivity3(props) {
                 variant="contained"
                 style={{
                   backgroundColor: "green",
+                  marginTop: 41,
                 }}
                 className={classes.btn}
                 onClick={handleUpdate1}
@@ -1697,21 +1743,6 @@ export default function ModalActivity3(props) {
                   : !!resultDisplay.state && resultDisplay.state === 6
                   ? "รับทราบ"
                   : "ยืนยันตามฝ่ายจัดเก็บ"}
-              </Button>
-            ) : (
-              ""
-            )}
-            {(!!resultDisplay.state && resultDisplay.state === 1) ||
-            resultDisplay.state === 2 ? (
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "red",
-                }}
-                className={classes.btn}
-                onClick={handleUpdate2}
-              >
-                {`ส่งฝ่ายจัดเก็บตรวจสอบ`}
               </Button>
             ) : (
               ""
