@@ -22,9 +22,11 @@ import Swal from "sweetalert2";
 import TableSuperdisplay2 from "../components/TableSuperdisplay2";
 import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
+import { getDataSuperAudit } from "../service/allService";
 import {
-  getDataSuperaudit,
-} from "../service/allService";
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -36,7 +38,7 @@ const apiURL = axios.create({
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      backgroundColor: "#f9f9f9",
+      backgroundColor: "rgba(235,176,129,0.15)",
       paddingTop: 20,
     },
     filterSection: {
@@ -45,10 +47,7 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    cardSection: {
-      display: "flex",
-      marginTop: 10,
-    },
+
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
@@ -60,24 +59,15 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
+      height: 50,
+      paddingTop: 5,
+      width: "10%",
     },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     input: {
       "& .MuiInputBase-input": {
@@ -89,10 +79,10 @@ const useStyles = makeStyles((theme) => {
       "& .MuiInputBase-root": {
         height: 40,
       },
-      width: 150,
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
     input1: {
@@ -204,7 +194,7 @@ export default function SuperAuditDisplay2() {
     };
     console.log(sendData);
 
-    const res = await getDataSuperaudit(sendData);
+    const res = await getDataSuperAudit(sendData);
     if (!!res) {
       setAllTsTable(!!res ? res.data : []);
       setSummary(!!res ? res.data.summary : []);
@@ -474,20 +464,12 @@ export default function SuperAuditDisplay2() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
+          </StyledButtonInformation>
+          <StyledButtonRefresh onClick={() => refresh(1)}>
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}
@@ -507,59 +489,50 @@ export default function SuperAuditDisplay2() {
             />
           </Box>
 
-          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
-            {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={4}
-                className={classes.card}
+          {dataCard.map((card, index) => (
+            <Paper
+              key={index}
+              className={classes.card}
+              style={{
+                borderLeft:
+                  card.status === "total"
+                    ? "3px solid gray"
+                    : card.status === "normal"
+                    ? "3px solid green"
+                    : card.status === "unMatch"
+                    ? "3px solid orange"
+                    : "3px solid red",
+              }}
+            >
+              <Typography
                 style={{
-                  borderLeft:
+                  color:
                     card.status === "total"
-                      ? "3px solid gray"
+                      ? "gray"
                       : card.status === "normal"
-                      ? "3px solid green"
+                      ? "green"
                       : card.status === "unMatch"
-                      ? "3px solid orange"
-                      : "3px solid red",
+                      ? "orange"
+                      : "red",
+                  fontSize: "0.9rem",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "unMatch"
-                            ? "orange"
-                            : "red",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}
-                      {card.status === "revenue" ? ` บาท` : ` รายการ`}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
-            ))}
-          </Grid>
+                {card.label}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 700,
+                  textAlign: "center",
+                }}
+              >
+                {!!card.value ? card.value.toLocaleString() : "0"}
+              </Typography>
+              <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                {card.type === "money" ? " บาท" : " รายการ"}
+              </Typography>
+            </Paper>
+          ))}
         </Box>
 
         {/* Table Section */}

@@ -18,18 +18,23 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import format from "date-fns/format";
-import ModalActivity3 from "./ModalActivity3";
-import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
-import { getDataExpectIncomeActivity } from "../service/allService";
-import { getDataExpectIncomeActivityV2 } from "../service/allService";
-import { useLocation } from "react-router-dom";
-import {
-  StyledButtonGoToPage,
-  StyledButtonOperation,
-} from "../styledComponent/StyledButton";
-import ModalOperation from "./ModalOperation";
+import ModalPK3Activity2 from "./ModalPk3Activity2";
+import ModalPK3Activity3 from "./ModalPk3Activity3";
+
 // import format from "date-fns/format";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv10 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
+});
 
 const detailStatus = [
   {
@@ -52,11 +57,11 @@ const detailStatus = [
     color: "orange",
     label: "รอ super audit ตรวจสอบ",
   },
-  // {
-  //   state: 5,
-  //   color: "black",
-  //   label: "รอพิจารณาพิเศษ",
-  // },
+  {
+    state: 5,
+    color: "black",
+    label: "รอพิจารณาพิเศษ",
+  },
   {
     state: 6,
     color: "darkviolet",
@@ -66,11 +71,6 @@ const detailStatus = [
     state: 7,
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
-  },
-  {
-    state: 8,
-    color: "lightgreen",
-    label: "ตรวจสอบแล้ว",
   },
 ];
 const useStyles = makeStyles((theme) => {
@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       fontSize: "0.8rem",
       padding: "6px",
-      zIndex: 1,
     },
     header2: {
       backgroundColor: "#7C85BFff",
@@ -99,7 +98,7 @@ const useStyles = makeStyles((theme) => {
       padding: "6px",
       position: "sticky",
       top: 38,
-      zIndex: 1,
+      // zIndex: 10,
     },
     tableRow: {
       "&:hover": {
@@ -121,14 +120,7 @@ const useStyles = makeStyles((theme) => {
       cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
-      height: 28,
     },
-    // tableCell2: {
-    //   cursor: "pointer",
-    //   fontSize: "0.75rem",
-    //   padding: "6px",
-    //   // height: 10,
-    // },
     detailStatus: {
       display: "inline",
       fontSize: "0.8rem",
@@ -146,7 +138,6 @@ const useStyles = makeStyles((theme) => {
         display: "block",
       },
       justifyItems: "center",
-      marginTop: "0.5rem",
     },
     input1: {
       "& .MuiInputBase-input": {
@@ -172,15 +163,6 @@ const useStyles = makeStyles((theme) => {
         marginBottom: 10,
       },
     },
-    selected: {
-      "&.Mui-selected, &.Mui-selected:hover": {
-        backgroundColor: "purple",
-        "& > .MuiTableCell-root": {
-          color: "yellow",
-          backgroundColor: "purple",
-        },
-      },
-    },
   };
 });
 
@@ -192,15 +174,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TableAuditDisplay2(props) {
-  const classes = useStyles();
+export default function TablePK3display3(props) {
   const [open, setOpen] = useState(false);
-  const [openOperation, setOpenOperation] = useState(false);
-  const [selectedPage, setSelectedPage] = useState("");
+  const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
-  const [rowID, setRowID] = useState("");
-  const location = useLocation();
-
+  const [selectedPage, setSelectedPage] = useState("");
   const {
     dataList,
     page,
@@ -212,39 +190,38 @@ export default function TableAuditDisplay2(props) {
     setEyesStatus,
   } = props;
 
-  const fetchData = async (ts, index1, index2) => {
+  const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
-      // background: 'rgba(0,0,0,0.80)'
     });
 
-    const tsBefore1 =
-      index1 > -1 ? dataList.resultsDisplay[index1].transactionId : "0";
-    const tsBefore2 =
-      index2 > -1 ? dataList.resultsDisplay[index2].transactionId : "0";
+    let date = timeStamp.split(" ").shift();
 
     const sendData = {
-      transactionId: [ts, tsBefore1, tsBefore2],
-      date: format(checkDate, "yyyy-MM-dd"),
+      transactionId: ts,
+      date: date,
     };
+    let endpoint = "";
 
-    if (location.pathname === "/expectIncome") {
-      const res = await getDataExpectIncomeActivity(sendData);
-      SetDataForActivity(!!res ? res.data : []);
-      if (!!res && !!res.status) {
+    endpoint = "/display-pk3-activity";
+    setOpen(true);
+
+    apiURLv10
+      .post(endpoint, sendData)
+      .then((res) => {
         Swal.close();
-        setOpen(true);
-      }
-    } else {
-      const res = await getDataExpectIncomeActivityV2(sendData);
-      SetDataForActivity(!!res ? res.data : []);
-      if (!!res && !!res.status) {
-        Swal.close();
-        setOpen(true);
-      }
-    }
+        SetDataForActivity(res.data);
+        console.log("res2:", res.data);
+      })
+      .catch((error) => {
+        handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
   };
 
   // const handleOpen = (state) => {
@@ -256,16 +233,21 @@ export default function TableAuditDisplay2(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-  const handleCloseOperation = () => {
-    setOpenOperation(false);
+    setOpen1(false);
   };
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
-      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
+      !!eyesStatus[index] && [
+        ...eyesStatus,
+        (eyesStatus[index].readFlag = 1),
+      ]
     );
+
+    console.log(eyesStatus);
   };
+
+  const classes = useStyles();
 
   return (
     <div>
@@ -281,14 +263,14 @@ export default function TableAuditDisplay2(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <StyledButtonGoToPage
-              onClick={() => {
-                onFetchData(parseInt(selectedPage));
-                setSelectedPage("");
-              }}
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ height: 35 }}
+              onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
-            </StyledButtonGoToPage>
+            </Button>
           </Box>
           <Box>
             {/* search page box */}
@@ -300,13 +282,10 @@ export default function TableAuditDisplay2(props) {
               className={classes.pagination}
             />
           </Box>
-          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
-            ดำเนินการ
-          </StyledButtonOperation>
         </Box>
 
         {/* detail box */}
-        <Box style={{ display: "flex", paddingTop: 4 }}>
+        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
           {detailStatus.map((item) => (
             <Box style={{ paddingLeft: 10 }}>
               <FiberManualRecordIcon
@@ -318,7 +297,7 @@ export default function TableAuditDisplay2(props) {
               </Typography>
             </Box>
           ))}
-        </Box>
+        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -344,12 +323,6 @@ export default function TableAuditDisplay2(props) {
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 ค่าผ่านทาง
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                เลขที่ใบแจ้งหนี้
-              </TableCell>
-              <TableCell rowSpan={2} align="center" className={classes.header}>
-                การชำระ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 หมายเหตุ
@@ -379,13 +352,14 @@ export default function TableAuditDisplay2(props) {
                   <StyledTableRow
                     key={data.transactionId}
                     onClick={() => {
-                      fetchData(data.transactionId, index - 1, index - 2);
-                      setRowID(index);
+                      fetchData(
+                        data.transactionId,
+                        data.state,
+                        data.match_timestamp
+                      );
                       ChangeEyeStatus(index);
                     }}
-                    // className={classes.tableRow}
-                    selected={rowID === index}
-                    className={classes.selected}
+                    className={classes.tableRow}
                   >
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
@@ -426,12 +400,6 @@ export default function TableAuditDisplay2(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
                       {!!data.forceFlag && data.forceFlag === 1
                         ? "บังคับ"
                         : "-"}
@@ -439,8 +407,8 @@ export default function TableAuditDisplay2(props) {
                     <TableCell align="center" className={classes.tableCell}>
                       {!!eyesStatus[index] &&
                       eyesStatus[index].readFlag === 1 &&
-                      eyesStatus[index].state === 2 ? (
-                        <VisibilityIcon style={{ color: "red" }} />
+                      eyesStatus[index].state === 3 ? (
+                        <VisibilityIcon style={{ color: "blue" }} />
                       ) : (
                         <FiberManualRecordIcon
                           style={{
@@ -474,7 +442,7 @@ export default function TableAuditDisplay2(props) {
         </Table>
       </TableContainer>
 
-      <ModalActivity3
+      <ModalPK3Activity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
@@ -483,8 +451,6 @@ export default function TableAuditDisplay2(props) {
         checkDate={checkDate}
         page={page}
       />
-
-      <ModalOperation open={openOperation} close={handleCloseOperation} />
     </div>
   );
 }

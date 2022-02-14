@@ -16,22 +16,25 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableAuditDisplay2 from "../components/TableAuditDisplay2";
-import GateTable2 from "../components/GateTable2";
-import ClassTable from "../components/ClassTable";
-import {
-  getDataExpectIncome,
-  getDataExpectIncomeV2,
-  getDropdown,
-} from "../service/allService";
-import SearchComponent2 from "../components/SearchComponent2";
-import SearchByPlateComponent from "../components/SearchByPlateComponent ";
+import TableSuperdisplay2 from "../components/TableSuperdisplay2";
+import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
+import SearchComponent from "../components/SearchComponent";
+import { getDataSuperAudit, getDataSuperAuditV3 } from "../service/allService";
+import TableSuperdisplay3 from "../components/TableSuperdisplay3";
 import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -45,18 +48,13 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    cardSection: {
-      marginTop: 10,
-    },
+
     gateAndClassSection: {
       marginTop: 10,
       padding: theme.spacing(2),
       backgroundColor: "white",
-      columnGap: "1rem",
-      justifyContent: "space-between",
     },
     allTsTable: {
-      marginTop: 10,
       padding: theme.spacing(1),
       backgroundColor: "white",
     },
@@ -66,6 +64,13 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
       width: "10%",
     },
+    cardSection: {
+      display: "flex",
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
+    },
+
     input: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -93,6 +98,8 @@ const useStyles = makeStyles((theme) => {
         height: 40,
       },
       "& .MuiInputLabel-outlined": {
+        // transform: 'translate(14px, 14px) scale(1)',
+        // paddingBottom: 20,
         fontSize: "0.8rem",
       },
       width: 150,
@@ -107,23 +114,37 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ExpectIncome() {
+const valueStatus = [
+  {
+    id: 0,
+    value: 0,
+    label: "ทุกสถานะ",
+  },
+  {
+    id: 1,
+    value: 4,
+    label: "รอ super audit ตรวจสอบ",
+  },
+  {
+    id: 2,
+    value: 5,
+    label: "รอพิจารณา",
+  },
+];
+
+export default function SuperAuditDisplayV3() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
-  const [checkpoint, setCheckpoint] = useState(1);
-  const [status_select, setStatus_select] = useState(0);
-  const [selectGate, setSelectGate] = useState(0);
-  const [selectCarType, setSelectCarType] = useState(0);
+  const [checkpoint, setCheckpoint] = useState("1");
+  const [status_select, setStatus_select] = useState("0");
   const [summary, setSummary] = useState([]);
   const [eyesStatus, setEyesStatus] = useState([]);
+  const [selectGate, setSelectGate] = useState("0");
+  const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
-  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  const [province, setProvince] = useState("");
-  const [licensePlate, setLicensePlate] = useState("");
-  const [inputValue, setInputValue] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -140,17 +161,11 @@ export default function ExpectIncome() {
   };
   // const handleOpen = () => {
   //   setOpen(true);
-  // };
-
-  const checkFormatSearch = (e) => {
-    if (/^m/gi.test(e)) {
-      setEndpoint("/search-transaction-match");
-    } else if (/^t/gi.test(e)) {
-      setEndpoint("/search-transaction-hq");
-    } else if (/\d{6}/.test(e)) {
-      setEndpoint("/search-transaction-audit");
-    }
-    console.log(endpoint);
+  const getCheckpoint = (e) => {
+    apiURL.post("/dropdown").then((res) => {
+      console.log(res.data);
+      setDropdown(res.data);
+    });
   };
 
   const fetchData = async (pageId = 1) => {
@@ -172,10 +187,10 @@ export default function ExpectIncome() {
 
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint.toString() || "0",
-      gate: selectGate.toString() || "0",
-      state: status_select.toString() || "0",
-      vehicleClass: selectCarType.toString() || "0",
+      checkpoint: checkpoint.toString(),
+      gate: selectGate,
+      state: status_select.toString(),
+      vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
@@ -183,19 +198,19 @@ export default function ExpectIncome() {
     };
     console.log(sendData);
 
-    const res = await getDataExpectIncomeV2(sendData);
-    if (
-      (!!res && !res.data.status) ||
-      (!!res && !res.data.resultsDisplay.length)
-    ) {
+    const res = await getDataSuperAuditV3(sendData);
+    if (!!res) {
+      setAllTsTable(!!res ? res.data : []);
+      setSummary(!!res ? res.data.summary : []);
+    }
+    if (!!res && !res.data.status) {
       Swal.fire({
         icon: "error",
         text: "ไม่มีข้อมูล",
       });
+      console.log("test");
     }
-    if (!!res && !!res.data.status && !!res.data.resultsDisplay.length) {
-      setAllTsTable(!!res ? res.data : []);
-      setSummary(!!res.data.summary ? res.data.summary : []);
+    if (!!res && !!res.data.resultsDisplay) {
       for (let i = 0; i < res.data.resultsDisplay.length; i++) {
         eyes.push({
           state: res.data.resultsDisplay[i].state,
@@ -204,135 +219,110 @@ export default function ExpectIncome() {
         });
       }
       setEyesStatus(eyes);
+    }
+
+    if (!!res && res.data.status !== false) {
       Swal.close();
     }
   };
 
-  // const refresh = (pageId = 1) => {
-  //   Swal.fire({
-  //     title: "Loading",
-  //     allowOutsideClick: false,
-  //     didOpen: () => Swal.showLoading(),
-  //   });
-  //   if (pageId === 1) {
-  //     setPage(1);
-  //   } else {
-  //     setPage(pageId);
-  //   }
+  const refresh = (pageId = 1) => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+    if (pageId === 1) {
+      setPage(1);
+    } else {
+      setPage(pageId);
+    }
 
-  //   setSelectedDate(new Date().setDate(new Date().getDate() - 1));
-  //   setCheckpoint(0);
-  //   setStatus_select(0);
-  //   setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
-  //   setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
-  //   const timeStart = "00:00:00";
-  //   const timeEnd = "00:00:00";
-  //   const date = format(
-  //     new Date().setDate(new Date().getDate() - 1),
-  //     "yyyy-MM-dd"
-  //   );
+    setSelectedDate(new Date().setDate(new Date().getDate() - 1));
+    setCheckpoint(0);
+    setStatus_select(0);
+    setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
+    setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
+    const timeStart = "00:00:00";
+    const timeEnd = "00:00:00";
+    const date = format(
+      new Date().setDate(new Date().getDate() - 1),
+      "yyyy-MM-dd"
+    );
 
-  //   const sendData = {
-  //     page: pageId.toString(),
-  //     checkpoint_id: checkpoint.toString() || "0",
-  //     gate_id: selectGate.toString() || "0",
-  //     state: status_select.toString() || "0",
-  //     vehicleClass: selectCarType.toString() || "0",
-  //     date: date,
-  //     startTime: timeStart,
-  //     endTime: timeEnd,
-  //     status: tsType.toString(),
-  //   };
-  //   console.log(sendData);
+    const sendData = {
+      page: pageId,
+      checkpoint_id: "0",
+      datetime: date,
+      startTime: timeStart,
+      endTime: timeEnd,
+      state: "0",
+    };
 
-  //   apiURLv1.post("/expect-income", sendData).then((res) => {
-  //     Swal.close();
-  //     setAllTsTable({
-  //       summary: {
-  //         total: 0,
-  //         normal: 0,
-  //         unMatch: 0,
-  //         miss: 0,
-  //       },
-  //       ts_table: [],
-  //     });
-  //     console.log(
-  //       "res: ",
-  //       res.data,
-  //       "tsClass:",
-  //       res.data.ts_class,
-  //       "tsGate: ",
-  //       res.data.ts_gate_table,
-  //       "ts_Table:",
-  //       res.data.ts_table,
-  //       "Summary: ",
-  //       res.data.summary
-  //     );
-  //     setAllTsTable(res.data.status !== false ? res.data : []);
-  //   });
-  // };
+    apiURL
+      .post("/display-superaudit-activity2", sendData)
+      .then((res) => {
+        Swal.close();
+        setAllTsTable({
+          summary: {
+            total: 0,
+            normal: 0,
+            unMatch: 0,
+            miss: 0,
+          },
+          ts_table: [],
+        });
+        console.log(
+          "res: ",
+          res.data,
+          "tsClass:",
+          res.data.ts_class,
+          "tsGate: ",
+          res.data.ts_gate_table,
+          "ts_Table:",
+          res.data.ts_table,
+          "Summary: ",
+          res.data.summary
+        );
+        setAllTsTable(res.data.status !== false ? res.data : []);
+      })
+      .catch((error) => {
+        // handleClose();
+        Swal.fire({
+          icon: "error",
+          text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+        });
+      });
+  };
 
   const dataCard = [
     {
-      value: !!summary[0] && !!summary[0].ts_total ? summary[0].ts_total : "0",
-      status: "total",
-      label: "รายการทั้งหมด",
+      value: !!summary.ts_count
+        ? summary.ts_count.toLocaleString().toString()
+        : "0",
+      status: "checklist",
+      label: "จำนวนรายการตรวจสอบ",
     },
-    {
-      value:
-        !!summary[0] && !!summary[0].ts_normal ? summary[0].ts_normal : "0",
-      status: "normal",
-      label: "รายการรถปกติ",
-    },
-    {
-      value:
-        summary[0] && !!summary[0].ts_not_normal
-          ? summary[0].ts_not_normal
-          : "0",
-      status: "not_normal",
-      label: "รายการผิดปกติ",
-    },
-    {
-      value: !!summary[0] && !!summary[0].wait_hq ? summary[0].wait_hq : "0",
-      status: "waitPk3",
-      label: "รายการรอจัดเก็บ",
-    },
-    {
-      value:
-        !!summary[0] && !!summary[0].wait_super ? summary[0].wait_super : "0",
-      status: "waitSuper",
-      label: "รายการรอSuper",
-    },
-    {
-      value:
-        !!summary[0] && !!summary[0].wait_acknowledge
-          ? summary[0].wait_acknowledge
-          : "0",
-      status: "waitToKnow",
-      label: "รายการรอรับทราบ",
-    },
-    {
-      value:
-        !!summary[0] && !!summary[0].wait_consider
-          ? summary[0].wait_consider
-          : "0",
-      status: "checked",
-      label: "รายการตรวจสอบ",
-    },
-    {
-      value: !!summary[0] && !!summary[0].revenue ? summary[0].revenue : "0",
-      status: "revenue",
-      label: "รายได้พึงได้",
-    },
+    // {
+    //   value: !!summary.normal ? summary.normal : 0,
+    //   status: "normal",
+    //   label: "รายการปกติ",
+    // },
+    // {
+    //   value: !!summary.unMatch ? summary.unMatch : 0,
+    //   status: "unMatch",
+    //   label: "รายการข้อมูลไม่ตรงกัน",
+    // },
+    // {
+    //   value: !!summary.miss ? summary.miss : 0,
+    //   status: "miss",
+    //   label: "รายการสูญหาย",
+    // },
   ];
 
   useEffect(() => {
     // fetchData();
-    async function fetchDropdown() {
-      const res = await getDropdown();
-      setDropdown(res.data);
-    }
-    fetchDropdown();
+    getCheckpoint();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const classes = useStyles();
@@ -340,7 +330,7 @@ export default function ExpectIncome() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          ตรวจสอบ (DOH) : รายได้พึงได้รายวัน
+          super audit display
         </Typography>
 
         {/* Filter Section */}
@@ -412,10 +402,10 @@ export default function ExpectIncome() {
             className={classes.input1}
             name="status_select"
           >
-            {!!dropdown.state
-              ? dropdown.state.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.name}
+            {!!valueStatus
+              ? valueStatus.map((item, index) => (
+                  <MenuItem key={index} value={item.value}>
+                    {item.label}
                   </MenuItem>
                 ))
               : []}
@@ -492,92 +482,41 @@ export default function ExpectIncome() {
           <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
           </StyledButtonInformation>
-          <StyledButtonRefresh
-          // onClick={() => refresh(1)}
-          >
+          <StyledButtonRefresh onClick={() => refresh(1)}>
             refresh
           </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}
-
-        <Paper
-          item
-          style={{
-            display: "flex",
-            margin: "10px 0px 0px 0px",
-            justifyContent: "center",
-          }}
-        >
-          <Box style={{ marginRight: "0.5rem" }}>
-            <SearchComponent2
+        <Box className={classes.cardSection}>
+          <Box style={{ marginRight: "0.8rem" }}>
+            <SearchComponent
               value={transactionId}
               date={selectedDate}
               handleOnChange={(e) => {
                 setTransactionId(e.target.value);
-                checkFormatSearch(e.target.value);
-                // console.log(e.target.value);
+                console.log(transactionId);
               }}
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint={endpoint}
-              setEyesStatus={setEyesStatus}
-              eyesStatus={eyesStatus}
+              endpoint="/audit-search"
             />
           </Box>
 
-          <SearchByPlateComponent
-            valuePlate={licensePlate}
-            valueProvince={!!province ? province : {}}
-            setProvince={setProvince}
-            date={selectedDate}
-            handleOnChange={(e) => {
-              setLicensePlate(e.target.value);
-            }}
-            handleOnChangeProvince={(e, newProvince) => {
-              setProvince(newProvince);
-            }}
-            setInputValue={(e) => setInputValue(e.target.value)}
-            inputValue={inputValue}
-            dropdown={dropdown.province}
-            setTable={setAllTsTable}
-            endpoint={endpoint}
-            setEyesStatus={setEyesStatus}
-            eyesStatus={eyesStatus}
-          />
-        </Paper>
-
-        <Box
-          style={{
-            display: "flex",
-            margin: "10px 0px 0px 0px",
-            justifyContent: "space-between",
-          }}
-        >
           {dataCard.map((card, index) => (
             <Paper
-              className={classes.card}
               key={index}
+              className={classes.card}
               style={{
                 borderLeft:
                   card.status === "total"
                     ? "3px solid gray"
                     : card.status === "normal"
                     ? "3px solid green"
-                    : card.status === "revenue"
-                    ? "3px solid gold"
-                    : card.status === "not_normal"
-                    ? "3px solid red"
-                    : card.status === "waitPk3"
-                    ? "3px solid blue"
-                    : card.status === "waitToKnow"
-                    ? "3px solid darkviolet"
-                    : card.status === "waitSuper"
+                    : card.status === "unMatch"
                     ? "3px solid orange"
-                    : card.status === "checked"
-                    ? "3px solid lightgreen"
-                    : "3px solid lightgrey",
+                    : "3px solid red",
               }}
             >
               <Typography
@@ -587,19 +526,9 @@ export default function ExpectIncome() {
                       ? "gray"
                       : card.status === "normal"
                       ? "green"
-                      : card.status === "revenue"
-                      ? "gold"
-                      : card.status === "not_normal"
-                      ? "red"
-                      : card.status === "waitPk3"
-                      ? "blue"
-                      : card.status === "waitToKnow"
-                      ? "darkviolet"
-                      : card.status === "waitSuper"
+                      : card.status === "unMatch"
                       ? "orange"
-                      : card.status === "checked"
-                      ? "lightgreen"
-                      : "lightgrey",
+                      : "red",
                   fontSize: "0.9rem",
                 }}
               >
@@ -612,10 +541,10 @@ export default function ExpectIncome() {
                   textAlign: "center",
                 }}
               >
-                {!!card.value ? card.value.toLocaleString() : []}
+                {!!card.value ? card.value.toLocaleString() : "0"}
               </Typography>
               <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                {card.status === "revenue" ? " บาท" : " รายการ"}
+                {card.type === "money" ? " บาท" : " รายการ"}
               </Typography>
             </Paper>
           ))}
@@ -627,24 +556,18 @@ export default function ExpectIncome() {
           component={Paper}
           className={classes.gateAndClassSection}
         >
-          <Grid item md={12} sm={12} lg={4} className={classes.gateTable}>
-            <GateTable2 dataList={allTsTable} />
+          <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
+            <TableSuperdisplay3
+              dataList={allTsTable}
+              page={page}
+              onChange={handlePageChange}
+              onFetchData={fetchData}
+              dropdown={dropdown}
+              checkDate={selectedDate}
+              eyesStatus={eyesStatus}
+              setEyesStatus={setEyesStatus}
+            />
           </Grid>
-          <Grid item md={12} sm={12} lg={7} className={classes.classTable}>
-            <ClassTable dataList={allTsTable} />
-          </Grid>
-        </Grid>
-        <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-          <TableAuditDisplay2
-            dataList={allTsTable}
-            page={page}
-            onChange={handlePageChange}
-            onFetchData={fetchData}
-            dropdown={dropdown}
-            checkDate={selectedDate}
-            eyesStatus={eyesStatus}
-            setEyesStatus={setEyesStatus}
-          />
         </Grid>
       </Container>
     </>

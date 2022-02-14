@@ -3,8 +3,12 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchByPlate, searchOnExpectIncome } from "../service/allService";
+import { searchByPlate } from "../service/allService";
 import { Autocomplete } from "@material-ui/lab";
+import {
+  StyledButtonInformation,
+  StyledButtonSearch,
+} from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -64,6 +68,9 @@ const useStyle = makeStyles((theme) => {
       },
       margin: theme.spacing(1),
       width: 200,
+      "& .makeStyles-input2-124 .MuiAutocomplete-input": {
+        padding: "4px 4px",
+      },
       // margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
         width: 200,
@@ -86,7 +93,6 @@ export default function SearchByPlateComponent(props) {
     name,
     handleOnChange,
     setTable,
-
     setEyesStatus,
     valuePlate,
     handleOnChangeProvince,
@@ -96,10 +102,10 @@ export default function SearchByPlateComponent(props) {
     const sendData = {
       date: format(date, "yyyy-MM-dd"),
       plate: valuePlate,
-      // province: valueProvince.name,
-      // code: valueProvince.code,
+      province: valueProvince.name,
+      code: valueProvince.code,
     };
-    let eye = [];
+    let eyes = [];
 
     console.log(sendData);
     Swal.fire({
@@ -111,19 +117,22 @@ export default function SearchByPlateComponent(props) {
     const res = await searchByPlate(sendData);
 
     if (!!res && !!res.data.status) {
-      eye.push({
-        state: res.data.resultsDisplay[0].state,
-        readFlag: res.data.resultsDisplay[0].readFlag,
-        transactionId: res.data.resultsDisplay[0].transactionId,
-      });
-      setEyesStatus(eye);
+      for (let i = 0; i < res.data.resultsDisplay.length; i++) {
+        eyes.push({
+          state: res.data.resultsDisplay[0].state,
+          readFlag: res.data.resultsDisplay[0].readFlag,
+          transactionId: res.data.resultsDisplay[0].transactionId,
+        });
+      }
+      setEyesStatus(eyes);
+      console.log(eyes);
       setTable(!!res.data.status ? res.data : []);
       Swal.close();
     }
     if (!!res && !res.data.status) {
       Swal.fire({
         title: "Fail",
-        text: "โปรดใส่ transaction",
+        text: "ไม่มีข้อมูล",
         icon: "warning",
       });
     }
@@ -152,14 +161,9 @@ export default function SearchByPlateComponent(props) {
               <TextField {...params} label="province" variant="outlined" />
             )}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onClickHandle}
-            className={classes.button}
-          >
+          <StyledButtonSearch onClick={onClickHandle}>
             {`Search`}
-          </Button>
+          </StyledButtonSearch>
         </Box>
       </Box>
     </>

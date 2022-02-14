@@ -16,6 +16,7 @@ import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import ModalActivity from "./ModalActivity";
 import Swal from "sweetalert2";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
@@ -218,14 +219,11 @@ export default function AllTsTableForActivity2(props) {
             value={selectedPage}
             onChange={(e) => setSelectedPage(e.target.value)}
           />
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ height: 35 }}
+          <StyledButtonGoToPage
             onClick={() => onFetchData(parseInt(selectedPage))}
           >
             Go
-          </Button>
+          </StyledButtonGoToPage>
         </Box>
         <Box>
           {/* search page box */}

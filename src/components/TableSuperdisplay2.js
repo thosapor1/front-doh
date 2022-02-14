@@ -21,6 +21,7 @@ import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity2 from "./ModalSuperActivity2";
 import { format } from "date-fns";
 import { getDataSuperauditActivity } from "../service/allService";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -242,14 +243,11 @@ export default function TableSuperdisplay2(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}

@@ -50,6 +50,11 @@ export const menuItemsForSuperAdmin = [
     icon: "supervised_user_circle",
     path: "/superAuditDisplay2",
   },
+  {
+    text: "super auditV3",
+    icon: "supervised_user_circle",
+    path: "/superAuditDisplayV3",
+  },
   // {
   //   text: "รายได้คงค้าง",
   //   icon: "poll",
@@ -81,11 +86,11 @@ export const menuItemsForSuperAdmin = [
     path: "/MonitorData",
   },
 
-  // {
-  //   text: "รายการบังคับ",
-  //   icon: "playlist_add_check",
-  //   path: "/MandatoryItem",
-  // },
+  {
+    text: "Export Data",
+    icon: "playlist_add_check",
+    path: "/ExportData",
+  },
   // {
   //   text: "test",
   //   icon: "playlist_add_check",
@@ -213,6 +218,12 @@ export const menuItemsForMember = [
     icon: "poll",
     path: "/auditDisplay",
   },
+  {
+    text: "รายได้พึงได้รายวันV2",
+    icon: "task",
+    path: "/expectIncomeV2",
+  },
+
   // {
   //   text: "รายได้คงค้าง",
   //   icon: "poll",
@@ -237,6 +248,11 @@ export const menuItemsForPk3 = [
     text: "รายการรอตรวจสอบ",
     icon: "pending_actions",
     path: "/pk3Display",
+  },
+  {
+    text: "รายการรอตรวจสอบV2",
+    icon: "pending_actions",
+    path: "/pk3DisplayV2",
   },
   {
     text: "รายการบังคับ",

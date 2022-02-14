@@ -4,6 +4,7 @@ import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { searchByMatchTS, searchOnExpectIncome } from "../service/allService";
+import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
@@ -71,7 +72,7 @@ export default function SearchComponent2(props) {
       transactionId: value,
     };
 
-    let eye = [];
+    let eyes = [];
     let res = "";
     Swal.fire({
       title: "Loading",
@@ -85,23 +86,30 @@ export default function SearchComponent2(props) {
       res = await searchOnExpectIncome(endpoint, sendData);
     }
 
-    if (!!res && !!res.data.status) {
-      eye.push({
-        state: res.data.resultsDisplay[0].state,
-        readFlag: res.data.resultsDisplay[0].readFlag,
-        transactionId: res.data.resultsDisplay[0].transactionId,
-      });
-      setEyesStatus(eye);
-      setTable(!!res.data.status ? res.data : []);
-      Swal.close();
-    }
-    if (!!res && !res.data.status) {
+    if ((!!res && !res.data.status) || (!!res && !res.data.resultsDisplay[0])) {
       Swal.fire({
         title: "Fail",
         text: "transaction ไม่ถูกต้อง",
         icon: "warning",
       });
+    } else if (!!res && !!res.data.resultsDisplay[0] && !!res.data.status) {
+      eyes.push({
+        state: res.data.resultsDisplay[0].state,
+        readFlag: res.data.resultsDisplay[0].readFlag,
+        transactionId: res.data.resultsDisplay[0].transactionId,
+      });
+      setEyesStatus(eyes);
+      setTable(!!res.data.status ? res.data : []);
+      Swal.close();
     }
+
+    // else {
+    //   Swal.fire({
+    //     title: "Fail",
+    //     text: "ไม่มีข้อมูล",
+    //     icon: "warning",
+    //   });
+    // }
   };
 
   return (
@@ -115,14 +123,9 @@ export default function SearchComponent2(props) {
           name={name}
           onChange={handleOnChange}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={onClickHandle}
-        >
+        <StyledButtonSearch onClick={onClickHandle}>
           {`Search`}
-        </Button>
+        </StyledButtonSearch>
       </Box>
     </>
   );

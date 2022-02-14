@@ -20,6 +20,7 @@ import ImageModal from "./ImageModal";
 import Swal from "sweetalert2";
 import format from "date-fns/format";
 import { getDataRawTransactionActivity } from "../service/allService";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
 const detailStatus = [
   {
@@ -67,7 +68,7 @@ const useStyle = makeStyles((theme) => {
   return {
     root: {},
     container: {
-      maxHeight: "60vh",
+      maxHeight: "64vh",
       overflow: "auto",
       [theme.breakpoints.down("lg")]: {
         maxHeight: "57vh",
@@ -259,14 +260,11 @@ export default function AuditTable(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}
