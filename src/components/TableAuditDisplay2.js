@@ -484,7 +484,11 @@ export default function TableAuditDisplay2(props) {
         page={page}
       />
 
-      <ModalOperation open={openOperation} close={handleCloseOperation} />
+      <ModalOperation
+        open={openOperation}
+        close={handleCloseOperation}
+        checkDate={checkDate}
+      />
     </div>
   );
 }
