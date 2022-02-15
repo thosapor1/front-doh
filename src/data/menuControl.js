@@ -152,11 +152,6 @@ export const menuItemsForAdmin = [
     icon: "poll",
     path: "/auditDisplay",
   },
-  // {
-  //   text: "รายได้คงค้าง",
-  //   icon: "poll",
-  //   path: "/2",
-  // },
   {
     text: "รายงาน",
     icon: "format_list_bulleted",
@@ -223,22 +218,11 @@ export const menuItemsForMember = [
     icon: "task",
     path: "/expectIncomeV2",
   },
-
-  // {
-  //   text: "รายได้คงค้าง",
-  //   icon: "poll",
-  //   path: "/2",
-  // },
   {
     text: "รายงาน",
     icon: "format_list_bulleted",
     path: "/report",
   },
-  // {
-  //   text: "ปริมาณข้อมูล",
-  //   icon: "assessment",
-  //   path: "/DataVolume",
-  // },
 ];
 
 export const menuConfigForMember = [];
