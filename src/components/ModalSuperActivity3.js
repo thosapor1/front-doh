@@ -1267,6 +1267,14 @@ export default function ModalSuperActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ความเห็นตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_comment
+                      ? resultDisplay.audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ความเห็นจัดเก็บ</TableCell>
                   <TableCell>
                     {!!resultDisplay.pk3_comment

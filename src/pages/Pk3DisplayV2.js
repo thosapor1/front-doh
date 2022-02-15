@@ -23,6 +23,10 @@ import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
 import TablePK3display2 from "../components/TablePK3display2";
 import TablePK3display3 from "../components/TablePK3display3";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 
 const apiURL = axios.create({
   baseURL:
@@ -65,24 +69,9 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 112,
-      paddingTop: 30,
-    },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
+      height: 50,
+      paddingTop: 5,
+      width: "100%",
     },
     input: {
       "& .MuiInputBase-input": {
@@ -322,9 +311,9 @@ export default function PK3DisplayV2() {
 
   const dataCard = [
     {
-      value: !!summary.ts_count ? summary.ts_count : 0,
+      value: !!summary.ts_count ? summary.ts_count : "0",
       status: "checklist",
-      label: "จำนวนรายการตรวจสอบ",
+      label: "รายการตรวจสอบ",
     },
     // {
     //   value: !!summary.normal ? summary.normal : 0,
@@ -504,24 +493,23 @@ export default function PK3DisplayV2() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
+          </StyledButtonInformation>
+          <StyledButtonRefresh onClick={() => refresh(1)}>
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}
-        <Box className={classes.cardSection}>
+        <Box
+          item
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "center",
+          }}
+        >
           <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
               value={transactionId}
@@ -537,14 +525,17 @@ export default function PK3DisplayV2() {
             />
           </Box>
 
-          <Grid container style={{ display: "flex", columnGap: "0.8rem" }}>
+          <Box
+            style={{
+              display: "flex",
+              // margin: "10px 0px 0px 0px",
+              justifyContent: "space-between",
+            }}
+          >
             {dataCard.map((card, index) => (
-              <Grid
-                item
-                component={Paper}
-                key={index}
-                lg={4}
+              <Paper
                 className={classes.card}
+                key={index}
                 style={{
                   borderLeft:
                     card.status === "total"
@@ -556,40 +547,36 @@ export default function PK3DisplayV2() {
                       : "3px solid red",
                 }}
               >
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
+                <Typography
+                  style={{
+                    color:
+                      card.status === "total"
+                        ? "gray"
+                        : card.status === "normal"
+                        ? "green"
+                        : card.status === "unMatch"
+                        ? "orange"
+                        : "red",
+                    fontSize: "0.9rem",
+                  }}
                 >
-                  <Grid item>
-                    <Typography
-                      style={{
-                        color:
-                          card.status === "total"
-                            ? "gray"
-                            : card.status === "normal"
-                            ? "green"
-                            : card.status === "unMatch"
-                            ? "orange"
-                            : "red",
-                        fontSize: "1rem",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {card.label}
-                    </Typography>
-                    <Typography style={{ fontSize: "1rem" }}>
-                      {card.value}{" "}
-                      {card.status === "revenue" ? "บาท" : "รายการ"}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <DescriptionTwoToneIcon />
-                  </Grid>
-                </Grid>
-              </Grid>
+                  {card.label}
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "1.15rem",
+                    fontWeight: 700,
+                    textAlign: "center",
+                  }}
+                >
+                  {!!card.value ? card.value.toLocaleString() : []}
+                </Typography>
+                <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                  {card.status === "revenue" ? " บาท" : " รายการ"}
+                </Typography>
+              </Paper>
             ))}
-          </Grid>
+          </Box>
         </Box>
         {/* Table Section */}
         <Grid

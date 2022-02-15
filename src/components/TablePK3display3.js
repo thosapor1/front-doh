@@ -20,6 +20,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ModalPK3Activity2 from "./ModalPk3Activity2";
 import ModalPK3Activity3 from "./ModalPk3Activity3";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 
 // import format from "date-fns/format";
 
@@ -238,10 +239,7 @@ export default function TablePK3display3(props) {
 
   const ChangeEyeStatus = (index) => {
     setEyesStatus(
-      !!eyesStatus[index] && [
-        ...eyesStatus,
-        (eyesStatus[index].readFlag = 1),
-      ]
+      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
     );
 
     console.log(eyesStatus);
@@ -263,14 +261,11 @@ export default function TablePK3display3(props) {
               value={selectedPage}
               onChange={(e) => setSelectedPage(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ height: 35 }}
+            <StyledButtonGoToPage
               onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
-            </Button>
+            </StyledButtonGoToPage>
           </Box>
           <Box>
             {/* search page box */}
