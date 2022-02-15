@@ -409,3 +409,21 @@ export const getDataByPaymentNo = (sendData) => {
     });
   return response;
 };
+
+export const removeMatch = (sendData) => {
+  const response = apiURLv1
+    .post("/pk3/remove-match", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const separateTransaction = (sendData) => {
+  const response = apiURLv1
+    .post("/separate-transaction", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};

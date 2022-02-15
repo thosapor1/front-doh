@@ -16,6 +16,8 @@ import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
 import Swal from "sweetalert2";
 import axios from "axios";
 import format from "date-fns/format";
+import { removeMatch, separateTransaction } from "../service/allService";
+import { Link } from "react-router-dom";
 
 const apiURL = axios.create({
   baseURL:
@@ -157,7 +159,7 @@ const useStyle = makeStyles((theme) => {
 export default function ModalOperation(props) {
   const classes = useStyle();
 
-  const { open, close, checkDate } = props;
+  const { open, close, checkDate, page } = props;
   const [value, setValue] = useState("gather");
   const [ts1, setTs1] = useState("");
   const [ts2, setTs2] = useState("");
@@ -167,47 +169,87 @@ export default function ModalOperation(props) {
 
   // console.log(format(checkDate, "yyyyMMdd"));
 
-  const handleChangeDelete = () => {
-    const sendData = {
-      date: format(checkDate, "yyyyMMdd"),
-      txId: value === "separate" || value === "delete" ? ts1 : ts2,
-    };
+  const handleChangeSubmit = async () => {
+    if (value === "delete") {
+      const sendData = {
+        date: format(checkDate, "yyyyMMdd"),
+        txId: ts1,
+      };
 
-    Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    }).then((result) => {
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
       if (result.isConfirmed) {
-        apiURL.post("/pk3/remove-match", sendData).then((res) => {
-          if (res.data.status === true) {
-            Swal.fire({
-              title: "Success",
-              text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          } else {
-            Swal.fire({
-              title: "Fail",
-              text: "บันทึกข้อมูลไม่สำเร็จ",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        });
+        const res = await removeMatch(sendData);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
       }
-    });
-    // .then(() => props.onClick())
-    // .then(() => props.onFetchData());
+    } else if (value === "separate") {
+      const sendData2 = {
+        date: format(checkDate, "yyyy-MM-dd").toString(),
+        transactionId: ts1.toString(),
+      };
 
-    // const res = await apiURL.post("/changeState2to3", sendData);
-    console.log(sendData);
-    // console.log(res.data);
+      console.log(sendData2);
+
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const res = await separateTransaction(sendData2);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
+      }
+    } else if (value === "gather") {
+      // const sendData = {
+      //   date: format(checkDate, "yyyyMMdd"),
+      //   txId: ts1,
+      // };
+    }
   };
 
   const body = (
@@ -284,7 +326,7 @@ export default function ModalOperation(props) {
           variant="outlined"
           color="primary"
           style={{ margin: "10px 5px 0px 5px" }}
-          onClick={handleChangeDelete}
+          onClick={handleChangeSubmit}
         >
           ตกลง
         </Button>

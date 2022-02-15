@@ -488,6 +488,8 @@ export default function TableAuditDisplay2(props) {
         open={openOperation}
         close={handleCloseOperation}
         checkDate={checkDate}
+        page={page}
+        onFetchData={props.onFetchData}
       />
     </div>
   );
