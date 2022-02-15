@@ -810,6 +810,62 @@ export default function ModalSuperActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow
+                  className={classes.tableHead1}
+                  style={{ backgroundColor: "lightgreen" }}
+                >
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    การดำเนินการ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    <TextField
+                      // disabled={}
+                      variant="outlined"
+                      select
+                      size="small"
+                      className={classes.textField2}
+                      name="vehicleClass"
+                      value={vehicleClass}
+                      onChange={handleOptionChange}
+                    >
+                      {!!dropdown.vehicle
+                        ? dropdown.vehicle
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.class}
+                              </MenuItem>
+                            ))
+                        : []}
+                    </TextField>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+          {!!resultDisplay.state &&
+          resultDisplay.match_transaction_type !== 3 ? (
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "red",
+              }}
+              className={classes.btn2}
+              onClick={handleUpdate2}
+            >
+              เห็นควรตามฝ่ายจัดเก็บรายได้
+            </Button>
+          ) : (
+            ""
+          )}
         </Grid>
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
@@ -1624,73 +1680,19 @@ export default function ModalSuperActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow
-                  className={classes.tableHead1}
-                  style={{ backgroundColor: "lightgreen" }}
-                >
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    การดำเนินการ
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      // disabled={}
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
-                        : []}
-                    </TextField>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
+
           <div>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "green",
+                marginTop: 89,
               }}
               className={classes.btn2}
               onClick={handleUpdate1}
             >
               ยืนยันการจับเก็บรายได้
             </Button>
-            {!!resultDisplay.state &&
-            resultDisplay.match_transaction_type !== 3 ? (
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: "red",
-                }}
-                className={classes.btn2}
-                onClick={handleUpdate2}
-              >
-                เห็นควรตามฝ่ายจัดเก็บรายได้
-              </Button>
-            ) : (
-              ""
-            )}
           </div>
         </Grid>
       </Grid>

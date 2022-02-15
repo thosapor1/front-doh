@@ -53,10 +53,7 @@ import KeyboardArrowLeftRoundedIcon from "@material-ui/icons/KeyboardArrowLeftRo
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 import KeyboardArrowRightRoundedIcon from "@material-ui/icons/KeyboardArrowRightRounded";
 import ImportExportRoundedIcon from "@material-ui/icons/ImportExportRounded";
-import {
-  StyledButtonInformation,
-  StyledButtonLogOut,
-} from "../styledComponent/StyledButton";
+import { StyledButtonLogOut } from "../styledComponent/StyledButton";
 
 let drawerWidth = 220;
 const drawerColor =
@@ -372,8 +369,6 @@ export default function Layout({ children }) {
                       <DataUsageRoundedIcon />
                     ) : item.path === "/MandatoryItem" ? (
                       <ReceiptRoundedIcon />
-                    ) : item.path === "/pk3Display" ? (
-                      <HourglassEmptyRoundedIcon />
                     ) : item.path === "/pk3DisplayV2" ? (
                       <HourglassEmptyRoundedIcon />
                     ) : item.path === "/collectFromPk3" ? (

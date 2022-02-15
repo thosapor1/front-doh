@@ -6,7 +6,6 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import AuditDisplay from "./pages/AuditDisplay";
-import Pk3Display from "./pages/Pk3Display";
 import SuperAuditDisplay from "./pages/SuperAuditDisplay";
 import UserLogs from "./pages/UserLogs";
 import Config from "./pages/Config";
@@ -46,7 +45,7 @@ function App() {
               {/* <Route path="/expectIncome" component={ExpectIncome} /> */}
               <Route path="/expectIncomeV2" component={ExpectIncomeV2} />
               <Route path="/auditDisplay" component={AuditDisplay} />
-              {/* <Route path="/pk3Display" component={Pk3Display} /> */}
+              {/* <Route path="/pk3Display" component={PK3Display} /> */}
               <Route path="/pk3DisplayV2" component={PK3DisplayV2} />
               <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
               <Route
