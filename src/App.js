@@ -43,10 +43,10 @@ function App() {
               <Route path="/dashboard2" component={DashBoard2} />
               <Route path="/rawTransaction" component={RawTransaction} />
               <Route path="/collectFromPk3" component={CollectFromPk3} />
-              <Route path="/expectIncome" component={ExpectIncome} />
+              {/* <Route path="/expectIncome" component={ExpectIncome} /> */}
               <Route path="/expectIncomeV2" component={ExpectIncomeV2} />
               <Route path="/auditDisplay" component={AuditDisplay} />
-              <Route path="/pk3Display" component={Pk3Display} />
+              {/* <Route path="/pk3Display" component={Pk3Display} /> */}
               <Route path="/pk3DisplayV2" component={PK3DisplayV2} />
               <Route path="/superAuditDisplay" component={SuperAuditDisplay} />
               <Route

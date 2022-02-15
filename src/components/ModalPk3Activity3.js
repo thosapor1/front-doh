@@ -1238,6 +1238,7 @@ export default function ModalPK3Activity3(props) {
                           InputLabelProps={{
                             style: {
                               fontSize: "0.65rem",
+                              cursor: "pointer",
                             },
                           }}
                         />
@@ -1314,8 +1315,20 @@ export default function ModalPK3Activity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ความเห็นตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_comment
+                      ? resultDisplay.audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.super_audit_comment
+                      ? resultDisplay.super_audit_comment
+                      : "-"}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </table>

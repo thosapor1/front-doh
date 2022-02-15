@@ -29,7 +29,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import { operation } from "../service/allService";
-import ModalExpandedImage3 from "./report/ModalExpandedImage3";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -404,6 +403,7 @@ export default function ModalActivity3(props) {
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
+      audit_comment: commentAudit,
     };
 
     const result = await Swal.fire({
@@ -480,6 +480,7 @@ export default function ModalActivity3(props) {
       ts_duplication: state.TransactionsPeat,
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
+      audit_comment: commentAudit,
     };
 
     const result = await Swal.fire({
@@ -846,7 +847,73 @@ export default function ModalActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <Box style={{ marginTop: 118 }}>
+
+          {!!resultDisplay.state &&
+          (resultDisplay.state === 1 ||
+            resultDisplay.state === 2 ||
+            resultDisplay.state === 6) ? (
+            <TableContainer>
+              <table className={classes.table}>
+                <TableHead>
+                  <TableRow
+                    className={classes.tableHead1}
+                    style={{ backgroundColor: "lightgreen" }}
+                  >
+                    <TableCell colSpan={2} className={classes.headTable}>
+                      การดำเนินการ
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>ประเภท</TableCell>
+                    <TableCell>
+                      <TextField
+                        // disabled={}
+                        variant="outlined"
+                        select
+                        size="small"
+                        className={classes.textField2}
+                        name="vehicleClass"
+                        value={vehicleClass}
+                        onChange={handleOptionChange}
+                      >
+                        {!!dropdown.vehicle
+                          ? dropdown.vehicle
+                              .filter((item) => item.id !== 0)
+                              .map((item, index) => (
+                                <MenuItem key={index} value={item.id}>
+                                  {item.class}
+                                </MenuItem>
+                              ))
+                          : []}
+                      </TextField>
+                    </TableCell>
+                  </TableRow>
+                  {(!!resultDisplay.state && resultDisplay.state === 1) ||
+                  resultDisplay.state === 2 ? (
+                    <TableRow>
+                      <TableCell>ความเห็นตรวจสอบ</TableCell>
+                      <TableCell>
+                        <TextField
+                          name="commentAudit"
+                          variant="outlined"
+                          onChange={(e) => setCommentAudit(e.target.value)}
+                          className={classes.smallText}
+                          value={commentAudit}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    ""
+                  )}
+                </TableBody>
+              </table>
+            </TableContainer>
+          ) : (
+            ""
+          )}
+          <Box style={{ marginTop: 10 }}>
             {(!!resultDisplay.state && resultDisplay.state === 1) ||
             resultDisplay.state === 2 ? (
               <Button
@@ -1502,22 +1569,6 @@ export default function ModalActivity3(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
-                {!!resultDisplay.state && resultDisplay.state === 2 ? (
-                  <TableRow>
-                    <TableCell>ความเห็นตรวจสอบ</TableCell>
-                    <TableCell>
-                      <TextField
-                        name="commentAudit"
-                        variant="outlined"
-                        onChange={(e) => setCommentAudit(e.target.value)}
-                        className={classes.smallText}
-                        value={commentAudit}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  ""
-                )}
               </TableBody>
             </table>
           </TableContainer>
@@ -1676,55 +1727,6 @@ export default function ModalActivity3(props) {
             </table>
           </TableContainer>
 
-          {!!resultDisplay.state &&
-          (resultDisplay.state === 1 ||
-            resultDisplay.state === 2 ||
-            resultDisplay.state === 6) ? (
-            <TableContainer>
-              <table className={classes.table}>
-                <TableHead>
-                  <TableRow
-                    className={classes.tableHead1}
-                    style={{ backgroundColor: "lightgreen" }}
-                  >
-                    <TableCell colSpan={2} className={classes.headTable}>
-                      การดำเนินการ
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>ประเภท</TableCell>
-                    <TableCell>
-                      <TextField
-                        // disabled={}
-                        variant="outlined"
-                        select
-                        size="small"
-                        className={classes.textField2}
-                        name="vehicleClass"
-                        value={vehicleClass}
-                        onChange={handleOptionChange}
-                      >
-                        {!!dropdown.vehicle
-                          ? dropdown.vehicle
-                              .filter((item) => item.id !== 0)
-                              .map((item, index) => (
-                                <MenuItem key={index} value={item.id}>
-                                  {item.class}
-                                </MenuItem>
-                              ))
-                          : []}
-                      </TextField>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </table>
-            </TableContainer>
-          ) : (
-            ""
-          )}
-
           <div>
             {!!resultDisplay.state &&
             (resultDisplay.state === 2 || resultDisplay.state === 6) ? (
@@ -1732,7 +1734,7 @@ export default function ModalActivity3(props) {
                 variant="contained"
                 style={{
                   backgroundColor: "green",
-                  marginTop: 41,
+                  marginTop: 142,
                 }}
                 className={classes.btn}
                 onClick={handleUpdate1}
