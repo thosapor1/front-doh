@@ -13,7 +13,22 @@ import {
 import React, { useEffect, useState } from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
+import Swal from "sweetalert2";
+import axios from "axios";
+import format from "date-fns/format";
+import {
+  removeMatch,
+  separateTransaction,
+  mergeTransaction,
+} from "../service/allService";
+import { Link } from "react-router-dom";
 
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
 const useStyle = makeStyles((theme) => {
   return {
     "@global": {
@@ -148,12 +163,131 @@ const useStyle = makeStyles((theme) => {
 export default function ModalOperation(props) {
   const classes = useStyle();
 
-  const { open, close } = props;
+  const { open, close, checkDate, page } = props;
   const [value, setValue] = useState("gather");
   const [ts1, setTs1] = useState("");
   const [ts2, setTs2] = useState("");
   const handleChange = (event) => {
     setValue(event.target.value);
+  };
+
+  // console.log(format(checkDate, "yyyyMMdd"));
+
+  const handleChangeSubmit = async () => {
+    if (value === "delete") {
+      const sendData = {
+        date: format(checkDate, "yyyyMMdd"),
+        txId: ts1,
+      };
+
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const res = await removeMatch(sendData);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
+      }
+    } else if (value === "separate") {
+      const sendData2 = {
+        date: format(checkDate, "yyyy-MM-dd").toString(),
+        transactionId: ts1.toString(),
+      };
+
+      console.log(sendData2);
+
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const res = await separateTransaction(sendData2);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
+      }
+    } else if (value === "gather") {
+      const dataArray = [ts1, ts2];
+      const sendData3 = {
+        date: format(checkDate, "yyyy-MM-dd").toString(),
+        transactionId: dataArray,
+      };
+
+      console.log(sendData3);
+
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const res = await mergeTransaction(sendData3);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
+      }
+    }
   };
 
   const body = (
@@ -210,7 +344,7 @@ export default function ModalOperation(props) {
           size="small"
         />
         <TextField
-          name="ts1"
+          name="ts2"
           label="Transaction"
           variant="outlined"
           value={ts2}
@@ -230,6 +364,7 @@ export default function ModalOperation(props) {
           variant="outlined"
           color="primary"
           style={{ margin: "10px 5px 0px 5px" }}
+          onClick={handleChangeSubmit}
         >
           ตกลง
         </Button>
