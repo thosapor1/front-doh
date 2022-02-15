@@ -16,7 +16,11 @@ import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
 import Swal from "sweetalert2";
 import axios from "axios";
 import format from "date-fns/format";
-import { removeMatch, separateTransaction } from "../service/allService";
+import {
+  removeMatch,
+  separateTransaction,
+  mergeTransaction,
+} from "../service/allService";
 import { Link } from "react-router-dom";
 
 const apiURL = axios.create({
@@ -245,10 +249,44 @@ export default function ModalOperation(props) {
         }
       }
     } else if (value === "gather") {
-      // const sendData = {
-      //   date: format(checkDate, "yyyyMMdd"),
-      //   txId: ts1,
-      // };
+      const dataArray = [ts1, ts2];
+      const sendData3 = {
+        date: format(checkDate, "yyyy-MM-dd").toString(),
+        transactionId: dataArray,
+      };
+
+      console.log(sendData3);
+
+      const result = await Swal.fire({
+        text: "คุณต้องการบันทึกข้อมูล!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const res = await mergeTransaction(sendData3);
+        if (!!res && res.data.status === true) {
+          Swal.close();
+          await Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+            icon: "success",
+          });
+          await props.close();
+          await props.onFetchData(page);
+        } else {
+          Swal.close();
+          await Swal.fire({
+            title: "Fail",
+            text: "บันทึกข้อมูลไม่สำเร็จ",
+            icon: "error",
+          });
+        }
+      }
     }
   };
 

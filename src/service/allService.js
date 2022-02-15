@@ -427,3 +427,12 @@ export const separateTransaction = (sendData) => {
     });
   return response;
 };
+
+export const mergeTransaction = (sendData) => {
+  const response = apiURLv1
+    .post("/merge-transaction", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
