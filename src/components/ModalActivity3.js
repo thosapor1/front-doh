@@ -852,7 +852,7 @@ export default function ModalActivity3(props) {
           (resultDisplay.state === 1 ||
             resultDisplay.state === 2 ||
             resultDisplay.state === 6) ? (
-            <TableContainer style={{ marginTop: 90 }}>
+            <TableContainer>
               <table className={classes.table}>
                 <TableHead>
                   <TableRow
@@ -890,6 +890,23 @@ export default function ModalActivity3(props) {
                       </TextField>
                     </TableCell>
                   </TableRow>
+                  {(!!resultDisplay.state && resultDisplay.state === 1) ||
+                  resultDisplay.state === 2 ? (
+                    <TableRow>
+                      <TableCell>ความเห็นตรวจสอบ</TableCell>
+                      <TableCell>
+                        <TextField
+                          name="commentAudit"
+                          variant="outlined"
+                          onChange={(e) => setCommentAudit(e.target.value)}
+                          className={classes.smallText}
+                          value={commentAudit}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    ""
+                  )}
                 </TableBody>
               </table>
             </TableContainer>
@@ -1552,22 +1569,6 @@ export default function ModalActivity3(props) {
                       : "-"}
                   </TableCell>
                 </TableRow>
-                {!!resultDisplay.state && resultDisplay.state === 2 ? (
-                  <TableRow>
-                    <TableCell>ความเห็นตรวจสอบ</TableCell>
-                    <TableCell>
-                      <TextField
-                        name="commentAudit"
-                        variant="outlined"
-                        onChange={(e) => setCommentAudit(e.target.value)}
-                        className={classes.smallText}
-                        value={commentAudit}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  ""
-                )}
               </TableBody>
             </table>
           </TableContainer>
@@ -1733,7 +1734,7 @@ export default function ModalActivity3(props) {
                 variant="contained"
                 style={{
                   backgroundColor: "green",
-                  marginTop: 187,
+                  marginTop: 142,
                 }}
                 className={classes.btn}
                 onClick={handleUpdate1}
