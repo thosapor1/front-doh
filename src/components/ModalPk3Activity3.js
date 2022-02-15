@@ -816,24 +816,33 @@ export default function ModalPK3Activity3(props) {
                 <TableRow>
                   <TableCell>ยี่ห้อ</TableCell>
                   <TableCell>
-                    {/* {!!resultDisplay.brand_description
+                    {!!resultDisplay.brand_description
                       ? resultDisplay.brand_description
-                      : "-"} */}
-                    {"-"}
+                      : "-"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>สี</TableCell>
                   <TableCell>
-                    {/* {!!resultDisplay.colors_description
+                    {!!resultDisplay.colors_description
                       ? resultDisplay.colors_description
-                      : "-"} */}
-                    {"-"}
+                      : "-"}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </table>
           </TableContainer>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "red",
+              marginTop: 58,
+            }}
+            className={classes.btn}
+            onClick={handleUpdate2}
+          >
+            ชี้แจงรายระเอียดเพิ่มเติม
+          </Button>
         </Grid>
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
@@ -1672,16 +1681,6 @@ export default function ModalPK3Activity3(props) {
               onClick={handleUpdate1}
             >
               ยืนยันตามฝ่ายตรวจสอบ
-            </Button>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "red",
-              }}
-              className={classes.btn}
-              onClick={handleUpdate2}
-            >
-              ชี้แจงรายระเอียดเพิ่มเติม
             </Button>
           </div>
         </Grid>
