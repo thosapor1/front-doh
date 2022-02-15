@@ -426,6 +426,7 @@ export default function ModalActivity3(props) {
           icon: "success",
         });
         await props.onClick();
+        setCommentAudit("");
         await props.onFetchData(page);
       } else {
         Swal.close();
@@ -503,6 +504,7 @@ export default function ModalActivity3(props) {
           icon: "success",
         });
         await props.onClick();
+        setCommentAudit("");
         await props.onFetchData(page);
       } else {
         Swal.close();
@@ -655,13 +657,15 @@ export default function ModalActivity3(props) {
                   ? dataList.resultsDisplay[0].match_gate
                   : ""
               } / วันที่ ${
-                !!dataList.resultsDisplay
+                !!dataList.resultsDisplay &&
+                !!dataList.resultsDisplay[0].match_timestamp
                   ? dataList.resultsDisplay[0].match_timestamp.split(" ")[0]
-                  : ""
+                  : "-"
               } / เวลา ${
-                !!dataList.resultsDisplay
+                !!dataList.resultsDisplay &&
+                !!dataList.resultsDisplay[0].match_timestamp
                   ? dataList.resultsDisplay[0].match_timestamp.split(" ")[1]
-                  : ""
+                  : "-"
               }`}
             </Typography>
           </Box>
@@ -669,7 +673,10 @@ export default function ModalActivity3(props) {
         <div style={{ position: "absolute", right: 35 }}>
           <Tooltip title="close">
             <CancelTwoToneIcon
-              onClick={props.onClick}
+              onClick={() => {
+                props.onClick();
+                setCommentAudit("");
+              }}
               style={{
                 cursor: "pointer",
                 fontSize: "1.5rem",
@@ -1562,6 +1569,14 @@ export default function ModalActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>ความเห็นตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_comment
+                      ? resultDisplay.audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>ความเห็น super audit</TableCell>
                   <TableCell>
                     {!!resultDisplay.super_audit_comment
@@ -1759,7 +1774,9 @@ export default function ModalActivity3(props) {
     <div>
       <Modal
         open={props.open}
-        onClose={props.onClose}
+        onClose={() => {
+          props.onClose();
+        }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         style={{
