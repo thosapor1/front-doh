@@ -548,6 +548,7 @@ export default function ModalActivity3(props) {
       setValue5(2);
       setValue6(2);
     }
+    console.log(dropdown);
   }, [dataList]);
 
   const body = (
@@ -876,7 +877,6 @@ export default function ModalActivity3(props) {
                     <TableCell>ประเภท</TableCell>
                     <TableCell>
                       <TextField
-                        // disabled={}
                         variant="outlined"
                         select
                         size="small"
