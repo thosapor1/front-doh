@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TableNumberOfCar(props) {
-  const { dataList } = props;
+  const { dataList, carClass } = props;
 
   const classes = useStyles();
   return (
@@ -62,17 +62,23 @@ export default function TableNumberOfCar(props) {
             <tr>
               <th className={classes.th2}>(คัน)</th>
             </tr>
-            {!!dataList.reuslt_lane
-              ? dataList.reuslt_lane.map((item, index) => (
-                  <tr key={index}>
-                    <td className={classes.td} style={{ height: 20 }}>
-                      {item.class === "total" ? "รวมทั้งหมด" : `C${item.class}`}
-                    </td>
-                    <td className={classes.td}>
-                      {item.count.toLocaleString()}
-                    </td>
-                  </tr>
-                ))
+            {!!carClass
+              ? carClass
+                  .filter((item) => !!item.class)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <td className={classes.td} style={{ height: 20 }}>
+                        {item.class === "0"
+                          ? "ระบุประเภทไม่ได้"
+                          : item.class === "total"
+                          ? "รวมทั้งหมด"
+                          : `C${item.class}`}
+                      </td>
+                      <td className={classes.td}>
+                        {!!item.count ? item.count.toLocaleString() : "0"}
+                      </td>
+                    </tr>
+                  ))
               : dataList}
           </table>
         </div>

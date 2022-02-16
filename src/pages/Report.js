@@ -21,7 +21,6 @@ import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
 import FilterSection3 from "../components/report/FilterSection3";
 import TableNumberOfCar from "../components/report/TableNumberOfCar";
-import axios from "axios";
 import {
   getDataReportBilling,
   getDataReportDisplay,
@@ -132,12 +131,24 @@ export default function Report() {
   const [dailyTransaction, setDailyTransaction] = useState([]);
   const [dailyBilling, setDailyBilling] = useState([]);
   const [dailyPayment, setDailyPayment] = useState([]);
-  const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
   const [checkpoint, setCheckpoint] = useState(0);
+  const [carClass, setCarClass] = useState([
+    { class: "0", count: 0 },
+    { class: "1", count: 0 },
+    { class: "2", count: 0 },
+    { class: "3", count: 0 },
+    { class: "total", count: 0 },
+  ]);
+  const [carClass2, setCarClass2] = useState([
+    { class: "1", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "2", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "3", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "total", count: 0, illegal: 0, normal: 0, reject: 0 },
+  ]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -159,6 +170,32 @@ export default function Report() {
 
     if (!!res && !!res.data.status) {
       setDailyTransaction(res.data);
+      for (let i = 0; i < carClass.length; i++) {
+        for (let j = 0; j < res.data.reuslt_lane.length; j++) {
+          if (carClass[i].class === res.data.reuslt_lane[j].class) {
+            setCarClass([
+              ...carClass,
+              (carClass[i].count = res.data.reuslt_lane[j].count),
+            ]);
+          }
+        }
+      }
+
+      for (let i = 0; i < carClass2.length; i++) {
+        for (let j = 0; j < res.data.result_hq.length; j++) {
+          if (carClass2[i].class === res.data.result_hq[j].class) {
+            setCarClass2([
+              ...carClass2,
+              (carClass2[i].count = res.data.result_hq[j].count),
+              (carClass2[i].normal = res.data.result_hq[j].normal),
+              (carClass2[i].reject = res.data.result_hq[j].reject),
+              (carClass2[i].illegal = res.data.result_hq[j].illegal),
+            ]);
+          }
+        }
+      }
+      console.log("carClass1: ", carClass);
+      console.log("carClass2:", carClass2);
     }
 
     if (!!res && !res.data.status) {
@@ -221,6 +258,8 @@ export default function Report() {
 
   useEffect(() => {
     // fetchData();
+    setCarClass(carClass);
+    setCarClass2(carClass2);
   }, []);
 
   return (
@@ -317,10 +356,16 @@ export default function Report() {
                   }}
                 >
                   <div>
-                    <TableNumberOfCar dataList={dailyTransaction} />
+                    <TableNumberOfCar
+                      dataList={dailyTransaction}
+                      carClass={carClass}
+                    />
                   </div>
                   <div>
-                    <TableReportDaily dataList={dailyTransaction} />
+                    <TableReportDaily
+                      dataList={dailyTransaction}
+                      carClass={carClass2}
+                    />
                   </div>
                   <div>
                     <BlockDailyReport
