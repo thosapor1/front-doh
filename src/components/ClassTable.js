@@ -100,7 +100,9 @@ export default function ClassTable(props) {
                   .map((data, index) => (
                     <StyledTableRow key={index}>
                       <TableCell align="center" className={classes.body}>
-                        {`C${data.class}`}
+                        {data.class === "0"
+                          ? "ระบุประเภทไม่ได้"
+                          : `C${data.class}`}
                       </TableCell>
                       <TableCell align="center" className={classes.body}>
                         {!!data.sum_all ? data.sum_all.toLocaleString() : 0}
