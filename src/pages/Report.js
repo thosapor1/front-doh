@@ -20,6 +20,7 @@ import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
 import FilterSection3 from "../components/report/FilterSection3";
+import FilterSection4 from "../components/report/FilterSection4";
 import TableNumberOfCar from "../components/report/TableNumberOfCar";
 import {
   getDataReportBilling,
@@ -33,6 +34,8 @@ import TransactionDaily from "../components/report/TransactionDaily";
 import TableBillingDaily from "../components/report/TableBillingDaily";
 import TableBillingDaily2 from "../components/report/TableBillingDaily2";
 import TablePaymentDaily from "../components/report/TablePaymentDaily";
+import TabledataTX from "../components/report/TabledataTX";
+
 import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
@@ -131,6 +134,8 @@ export default function Report() {
   const [dailyTransaction, setDailyTransaction] = useState([]);
   const [dailyBilling, setDailyBilling] = useState([]);
   const [dailyPayment, setDailyPayment] = useState([]);
+  const [dataTX, setDataTX] = useState([]);
+  const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -256,6 +261,28 @@ export default function Report() {
     // console.log(res.data);
   };
 
+  const fetchData4 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+    };
+    const res = await getDataReportPayment(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDataTX(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
   useEffect(() => {
     // fetchData();
     setCarClass(carClass);
@@ -292,12 +319,19 @@ export default function Report() {
               {...a11yProps(2)}
               className={classes.tab}
             />
-            {/* <Tab
-              label="รายงานสรุปจราจร"
+
+            <Tab
+              label="สรุปข้อมูล TX"
               {...a11yProps(3)}
               className={classes.tab}
-            /> */}
-            {/* <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} /> */}
+            />
+            {/* <Tab
+              label="รายงานสรุปจราจร"
+              {...a11yProps(4)}
+              className={classes.tab}
+            />
+
+            <Tab label="testPDF" {...a11yProps(5)} className={classes.tab} /> */}
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -512,7 +546,49 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
+
           <TabPanel value={value} index={3}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection4
+                onFetchData={fetchData4}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
+              <Paper style={{ marginTop: 20 }}>
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร ข้อมูล TX ประจำวันที่ ${format(
+                        selectedDate,
+                        "dd/MM/yyyy"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 20,
+                  }}
+                >
+                  <div>
+                    <TabledataTX dataList={dataTX} />
+                  </div>
+                </div>
+
+                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
               <Paper style={{ marginTop: 20 }}>
@@ -542,7 +618,7 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={4}>
+          <TabPanel value={value} index={5}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection3
                 onFetchData={fetchData}
