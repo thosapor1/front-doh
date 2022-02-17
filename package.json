@@ -2,7 +2,7 @@
   "name": "doh-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/audit",
+  "homepage": "/audit_dev",
   "prebuild": "npm run generate-build-meta",
   "generate-build-meta": "./node_modules/react-clear-cache/bin/cli.js",
   "dependencies": {
