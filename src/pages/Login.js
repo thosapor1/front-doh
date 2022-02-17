@@ -126,7 +126,7 @@ export default function Login() {
           res.data.result[0].department_id === 2
         ) {
           setCookies();
-          history.push("/pk3Display");
+          history.push("/pk3DisplayV2");
           console.log("res:", res.data);
         } else if (res.data.status === false) {
           console.log("res:", res.data);
