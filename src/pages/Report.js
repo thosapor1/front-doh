@@ -27,6 +27,7 @@ import {
   getDataReportDisplay,
   getDataReportPayment,
   getDataReportTS,
+  getDatainfoCheckpoint,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -271,12 +272,13 @@ export default function Report() {
     const date = format(selectedDate, "yyyy-MM-dd");
     const sendData = {
       date: date,
-      checkpoint: checkpoint.toString(),
     };
-    const res = await getDataReportPayment(sendData);
+    const res = await getDatainfoCheckpoint(sendData);
 
     if (!!res && !!res.data.status) {
       setDataTX(res.data);
+    } else {
+      setDataTX("");
     }
     Swal.close();
 

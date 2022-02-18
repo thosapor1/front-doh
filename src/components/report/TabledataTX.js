@@ -55,63 +55,226 @@ export default function TabledataTX(props) {
             </tr>
 
             <tr>
-              <td className={classes.td}>ทับช้าง1 MF</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              {/* <td className={classes.td}>
-                {!!dataList.result_payment
-                  ? dataList.result_payment[0].count_payment.toLocaleString()
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[0].checkpoint_name.toLocaleString()
+                  : "ด่านทับช้าง 1 ML"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[0].count_tvcs.toLocaleString()
                   : ""}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_payment
-                  ? dataList.result_payment[0].sum_fee_totalAmount.toLocaleString()
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[0].count_audit.toLocaleString()
                   : ""}
-              </td> */}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[0].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[0].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[0].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
             <tr>
-              <td className={classes.td}>ทับช้าง2 MF</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[1].checkpoint_name.toLocaleString()
+                  : "ด่านทับช้าง 1 SL"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[1].count_tvcs.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[1].count_audit.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[1].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[1].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[1].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
             <tr>
-              <td className={classes.td}>ทับช้าง1 SL</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[2].checkpoint_name.toLocaleString()
+                  : "ด่านทับช้าง 2 ML"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[2].count_tvcs.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[2].count_audit.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[2].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[2].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[2].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
             <tr>
-              <td className={classes.td}>ทับช้าง2 SL</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[3].checkpoint_name.toLocaleString()
+                  : "ด่านทับช้าง 2 SL"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[3].count_tvcs.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[3].count_audit.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[3].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[3].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[3].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
             <tr>
-              <td className={classes.td}>ธัญบุรี1</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[4].checkpoint_name.toLocaleString()
+                  : "ด่านธัญบุรี 1 ML"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[4].count_tvcs.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[4].count_audit.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[4].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[4].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[4].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
-
             <tr>
-              <td className={classes.td}>ธัญบุรี2</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
-              <td className={classes.td}>-</td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[5].checkpoint_name.toLocaleString()
+                  : "ด่านธัญบุรี 2 ML"}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[5].count_tvcs.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[5].count_audit.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[5].count_hq.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[5].count_match_data.toLocaleString()
+                  : ""}
+              </td>
+              <td className={classes.td}>
+                {" "}
+                {!!dataList.result
+                  ? dataList.result[5].count_mis_match_data.toLocaleString()
+                  : ""}
+              </td>
             </tr>
           </table>
         </div>
