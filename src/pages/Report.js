@@ -277,10 +277,14 @@ export default function Report() {
 
     if (!!res && !!res.data.status) {
       setDataTX(res.data);
+      Swal.close();
     } else {
       setDataTX("");
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
     }
-    Swal.close();
 
     // console.log(res.data);
   };
