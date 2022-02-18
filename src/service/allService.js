@@ -436,3 +436,12 @@ export const mergeTransaction = (sendData) => {
     });
   return response;
 };
+
+export const getDatainfoCheckpoint = (sendData) => {
+  const response = apiURLv1
+    .post("/checkpoint-info", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
