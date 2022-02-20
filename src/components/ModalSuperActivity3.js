@@ -341,8 +341,8 @@ export default function ModalSuperActivity3(props) {
   const [state, setState] = useState({});
 
   const [commentSuper, setCommentSuper] = useState("");
-  const [vehicleClass, setVehicleClass] = useState(0);
-  const [audit_feeAmount, setAudit_feeAmount] = useState("");
+  const [vehicleClass, setVehicleClass] = useState(1);
+  const [audit_feeAmount, setAudit_feeAmount] = useState(30);
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const handleChange = (event) => {
@@ -396,7 +396,7 @@ export default function ModalSuperActivity3(props) {
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
+    console.log(sendData)
     const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -498,22 +498,22 @@ export default function ModalSuperActivity3(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      setVehicleClass(dataList.vehicleClass);
-      setAudit_feeAmount(dataList.audit_feeAmount);
+      // setVehicleClass(dataList.vehicleClass);
+      // setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      setVehicleClass(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_vehicleClass
-          : 0
-      );
-      setAudit_feeAmount(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_fee
-          : 0
-      );
+      // setVehicleClass(
+      //   !!dataList.resultsDisplay
+      //     ? dataList.resultsDisplay[0].match_real_vehicleClass
+      //     : 0
+      // );
+      // setAudit_feeAmount(
+      //   !!dataList.resultsDisplay
+      //     ? dataList.resultsDisplay[0].match_real_fee
+      //     : 0
+      // );
       setCommentSuper("");
       console.log("dataList", dataList);
     }
