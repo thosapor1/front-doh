@@ -10,6 +10,8 @@ import {
   Typography,
   TextField,
   Button,
+  Tooltip,
+  IconButton,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -17,8 +19,8 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalMandatoryItem from "./ModalMandatoryItem";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
 // import format from "date-fns/format";
 
@@ -99,9 +101,9 @@ const useStyles = makeStyles((theme) => {
       // zIndex: 10,
     },
     tableRow: {
-      "&:hover": {
-        backgroundColor: "#e8eaf6 !important",
-      },
+      // "&:hover": {
+      //   backgroundColor: "#e8eaf6 !important",
+      // },
     },
     pagination: {
       "& .MuiPaginationItem-root": {
@@ -115,7 +117,7 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
     },
     tableCell: {
-      cursor: "pointer",
+      // cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
     },
@@ -329,13 +331,6 @@ export default function TablePK3display(props) {
               ? dataList.resultsDisplay.map((data) => (
                   <StyledTableRow
                     key={data.transactionId}
-                    onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
-                    }}
                     className={classes.tableRow}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -405,6 +400,29 @@ export default function TablePK3display(props) {
                               : "rgba(0,0,0,0)",
                         }}
                       />
+                      <Tooltip title="ดูข้อมูล" arrow>
+                        <IconButton
+                          aria-label="ดูข้อมูล"
+                          style={{
+                            marginLeft: "1rem",
+                            marginTop: -15,
+                            padding: 5,
+                          }}
+                        >
+                          <DescriptionRoundedIcon
+                            style={{
+                              color: "gray",
+                            }}
+                            onClick={() => {
+                              fetchData(
+                                data.transactionId,
+                                data.state,
+                                data.match_timestamp
+                              );
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </StyledTableRow>
                 ))
