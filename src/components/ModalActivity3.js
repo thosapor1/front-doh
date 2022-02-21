@@ -343,8 +343,8 @@ export default function ModalActivity3(props) {
 
   const mockPic = 0;
   const [state, setState] = useState({});
-  const [vehicleClass, setVehicleClass] = useState("");
-  const [audit_feeAmount, setAudit_feeAmount] = useState("");
+  const [vehicleClass, setVehicleClass] = useState(1);
+  const [audit_feeAmount, setAudit_feeAmount] = useState(30);
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
 
@@ -405,6 +405,8 @@ export default function ModalActivity3(props) {
         dataList.resultsDisplay[0].match_transaction_type.toString(),
       audit_comment: commentAudit,
     };
+
+    console.log(sendData);
 
     const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
@@ -484,6 +486,8 @@ export default function ModalActivity3(props) {
       audit_comment: commentAudit,
     };
 
+    console.log(sendData);
+
     const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -529,18 +533,14 @@ export default function ModalActivity3(props) {
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      setVehicleClass(
-        !!dataList.resultsDisplay &&
-          dataList.resultsDisplay[0].match_transaction_type === 3
-          ? dataList.resultsDisplay[0].mf_lane_vehicleClass
-          : !!dataList.resultsDisplay &&
-              dataList.resultsDisplay[0].match_real_vehicleClass
-      );
-      setAudit_feeAmount(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_fee
-          : 0
-      );
+      // setVehicleClass(
+      //   !!dataList.resultsDisplay &&
+      //     dataList.resultsDisplay[0].match_transaction_type === 3
+      //     ? dataList.resultsDisplay[0].mf_lane_vehicleClass
+      //     : !!dataList.resultsDisplay &&
+      //         dataList.resultsDisplay[0].match_real_vehicleClass
+      // );
+      // setAudit_feeAmount(30);
       setValue1(2);
       setValue2(2);
       setValue3(2);

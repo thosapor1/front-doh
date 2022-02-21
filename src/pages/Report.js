@@ -20,13 +20,14 @@ import BlockTestPDF from "../components/report/BlockTestPDF";
 import TestPDF from "../components/report/TestPDF";
 import exportExcel from "../components/report/exportExcel";
 import FilterSection3 from "../components/report/FilterSection3";
+import FilterSection4 from "../components/report/FilterSection4";
 import TableNumberOfCar from "../components/report/TableNumberOfCar";
-import axios from "axios";
 import {
   getDataReportBilling,
   getDataReportDisplay,
   getDataReportPayment,
   getDataReportTS,
+  getDatainfoCheckpoint,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -34,6 +35,8 @@ import TransactionDaily from "../components/report/TransactionDaily";
 import TableBillingDaily from "../components/report/TableBillingDaily";
 import TableBillingDaily2 from "../components/report/TableBillingDaily2";
 import TablePaymentDaily from "../components/report/TablePaymentDaily";
+import TabledataTX from "../components/report/TabledataTX";
+
 import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
@@ -132,12 +135,26 @@ export default function Report() {
   const [dailyTransaction, setDailyTransaction] = useState([]);
   const [dailyBilling, setDailyBilling] = useState([]);
   const [dailyPayment, setDailyPayment] = useState([]);
+  const [dataTX, setDataTX] = useState([]);
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
   const [checkpoint, setCheckpoint] = useState(0);
+  const [carClass, setCarClass] = useState([
+    { class: "0", count: 0 },
+    { class: "1", count: 0 },
+    { class: "2", count: 0 },
+    { class: "3", count: 0 },
+    { class: "total", count: 0 },
+  ]);
+  const [carClass2, setCarClass2] = useState([
+    { class: "1", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "2", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "3", count: 0, illegal: 0, normal: 0, reject: 0 },
+    { class: "total", count: 0, illegal: 0, normal: 0, reject: 0 },
+  ]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -159,6 +176,32 @@ export default function Report() {
 
     if (!!res && !!res.data.status) {
       setDailyTransaction(res.data);
+      for (let i = 0; i < carClass.length; i++) {
+        for (let j = 0; j < res.data.reuslt_lane.length; j++) {
+          if (carClass[i].class === res.data.reuslt_lane[j].class) {
+            setCarClass([
+              ...carClass,
+              (carClass[i].count = res.data.reuslt_lane[j].count),
+            ]);
+          }
+        }
+      }
+
+      for (let i = 0; i < carClass2.length; i++) {
+        for (let j = 0; j < res.data.result_hq.length; j++) {
+          if (carClass2[i].class === res.data.result_hq[j].class) {
+            setCarClass2([
+              ...carClass2,
+              (carClass2[i].count = res.data.result_hq[j].count),
+              (carClass2[i].normal = res.data.result_hq[j].normal),
+              (carClass2[i].reject = res.data.result_hq[j].reject),
+              (carClass2[i].illegal = res.data.result_hq[j].illegal),
+            ]);
+          }
+        }
+      }
+      console.log("carClass1: ", carClass);
+      console.log("carClass2:", carClass2);
     }
 
     if (!!res && !res.data.status) {
@@ -219,8 +262,37 @@ export default function Report() {
     // console.log(res.data);
   };
 
+  const fetchData4 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+    };
+    const res = await getDatainfoCheckpoint(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDataTX(res.data);
+      Swal.close();
+    } else {
+      setDataTX("");
+      Swal.fire({
+        icon: "error",
+        text: "ไม่มีข้อมูล",
+      });
+    }
+
+    // console.log(res.data);
+  };
+
   useEffect(() => {
     // fetchData();
+    setCarClass(carClass);
+    setCarClass2(carClass2);
   }, []);
 
   return (
@@ -253,12 +325,19 @@ export default function Report() {
               {...a11yProps(2)}
               className={classes.tab}
             />
-            {/* <Tab
-              label="รายงานสรุปจราจร"
+
+            <Tab
+              label="สรุปข้อมูล TX"
               {...a11yProps(3)}
               className={classes.tab}
-            /> */}
-            {/* <Tab label="testPDF" {...a11yProps(4)} className={classes.tab} /> */}
+            />
+            {/* <Tab
+              label="รายงานสรุปจราจร"
+              {...a11yProps(4)}
+              className={classes.tab}
+            />
+
+            <Tab label="testPDF" {...a11yProps(5)} className={classes.tab} /> */}
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -317,10 +396,16 @@ export default function Report() {
                   }}
                 >
                   <div>
-                    <TableNumberOfCar dataList={dailyTransaction} />
+                    <TableNumberOfCar
+                      dataList={dailyTransaction}
+                      carClass={carClass}
+                    />
                   </div>
                   <div>
-                    <TableReportDaily dataList={dailyTransaction} />
+                    <TableReportDaily
+                      dataList={dailyTransaction}
+                      carClass={carClass2}
+                    />
                   </div>
                   <div>
                     <BlockDailyReport
@@ -467,7 +552,49 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
+
           <TabPanel value={value} index={3}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection4
+                onFetchData={fetchData4}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
+              <Paper style={{ marginTop: 20 }}>
+                <div>
+                  <Box>
+                    <Typography
+                      style={{
+                        paddingLeft: 20,
+                        fontWeight: 600,
+                        fontFamily: "sarabun",
+                      }}
+                    >
+                      {`เอกสาร ข้อมูล TX ประจำวันที่ ${format(
+                        selectedDate,
+                        "dd/MM/yyyy"
+                      )}`}
+                    </Typography>
+                  </Box>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 20,
+                  }}
+                >
+                  <div>
+                    <TabledataTX dataList={dataTX} />
+                  </div>
+                </div>
+
+                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
               <Paper style={{ marginTop: 20 }}>
@@ -497,7 +624,7 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={4}>
+          <TabPanel value={value} index={5}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection3
                 onFetchData={fetchData}

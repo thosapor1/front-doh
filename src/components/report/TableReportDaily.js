@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TableReportDaily(props) {
-  const { dataList } = props;
+  const { dataList, carClass } = props;
 
   const classes = useStyles();
   return (
@@ -68,26 +68,30 @@ export default function TableReportDaily(props) {
               <th className={classes.th2}>(คัน)</th>
               <th className={classes.th2}>(คัน)</th>
             </tr>
-            {!!dataList.result_hq
-              ? dataList.result_hq.map((item, index) => (
-                  <tr key={index}>
-                    <td className={classes.td} style={{ height: 20 }}>
-                      {item.class === "total" ? "รวมทั้งหมด" : `C${item.class}`}
-                    </td>
-                    <td className={classes.td}>
-                      {item.count.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.normal.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.reject.toLocaleString()}
-                    </td>
-                    <td className={classes.td}>
-                      {item.illegal.toLocaleString()}
-                    </td>
-                  </tr>
-                ))
+            {!!carClass
+              ? carClass
+                  .filter((item) => !!item.class)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <td className={classes.td} style={{ height: 20 }}>
+                        {item.class === "total"
+                          ? "รวมทั้งหมด"
+                          : `C${item.class}`}
+                      </td>
+                      <td className={classes.td}>
+                        {!!item.count ? item.count.toLocaleString() : "0"}
+                      </td>
+                      <td className={classes.td}>
+                        {!!item.normal ? item.normal.toLocaleString() : "0"}
+                      </td>
+                      <td className={classes.td}>
+                        {!!item.reject ? item.reject.toLocaleString() : "0"}
+                      </td>
+                      <td className={classes.td}>
+                        {!!item.illegal ? item.illegal.toLocaleString() : "0"}
+                      </td>
+                    </tr>
+                  ))
               : dataList}
           </table>
         </div>

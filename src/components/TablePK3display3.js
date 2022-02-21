@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   makeStyles,
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -21,6 +23,7 @@ import Swal from "sweetalert2";
 import ModalPK3Activity2 from "./ModalPk3Activity2";
 import ModalPK3Activity3 from "./ModalPk3Activity3";
 import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
 // import format from "date-fns/format";
 
@@ -102,9 +105,9 @@ const useStyles = makeStyles((theme) => {
       // zIndex: 10,
     },
     tableRow: {
-      "&:hover": {
-        backgroundColor: "#e8eaf6 !important",
-      },
+      // "&:hover": {
+      //   backgroundColor: "#e8eaf6 !important",
+      // },
     },
     pagination: {
       "& .MuiPaginationItem-root": {
@@ -118,7 +121,7 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
     },
     tableCell: {
-      cursor: "pointer",
+      // cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
     },
@@ -180,6 +183,7 @@ export default function TablePK3display3(props) {
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
+  const [rowID, setRowID] = useState("");
   const {
     dataList,
     page,
@@ -346,14 +350,6 @@ export default function TablePK3display3(props) {
               ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
-                    onClick={() => {
-                      fetchData(
-                        data.transactionId,
-                        data.state,
-                        data.match_timestamp
-                      );
-                      ChangeEyeStatus(index);
-                    }}
                     className={classes.tableRow}
                   >
                     <TableCell align="center" className={classes.tableCell}>
@@ -429,6 +425,31 @@ export default function TablePK3display3(props) {
                           }}
                         />
                       )}
+                      <Tooltip title="ดูข้อมูล" arrow>
+                        <IconButton
+                          aria-label="ดูข้อมูล"
+                          style={{
+                            marginLeft: "1rem",
+                            marginTop: -15,
+                            padding: 5,
+                          }}
+                        >
+                          <DescriptionRoundedIcon
+                            style={{
+                              color: "gray",
+                            }}
+                            onClick={() => {
+                              fetchData(
+                                data.transactionId,
+                                data.state,
+                                data.match_timestamp
+                              );
+                              // setRowID(index);
+                              ChangeEyeStatus(index);
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </StyledTableRow>
                 ))
