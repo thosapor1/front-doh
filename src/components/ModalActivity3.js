@@ -549,6 +549,8 @@ export default function ModalActivity3(props) {
       setValue6(2);
     }
     console.log(dropdown);
+    setVehicleClass(1);
+    setAudit_feeAmount(30);
   }, [dataList]);
 
   const body = (
