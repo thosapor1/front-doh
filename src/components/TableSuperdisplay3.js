@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   makeStyles,
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -18,14 +20,15 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalReadOnly2 from "./ModalReadOnly2";
 import ModalSuperActivity3 from "./ModalSuperActivity3";
 import { format } from "date-fns";
+import { getDataSuperAuditActivityV10 } from "../service/allService";
 import {
-  getDataSuperauditActivity,
-  getDataSuperAuditActivityV10,
-} from "../service/allService";
-import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
+  StyledButtonGoToPage,
+  StyledButtonOperation,
+} from "../styledComponent/StyledButton";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
+import ModalOperation from "./ModalOperation";
 // import format from "date-fns/format";
 
 const apiURLv2 = axios.create({
@@ -105,9 +108,9 @@ const useStyles = makeStyles((theme) => {
       // zIndex: 10,
     },
     tableRow: {
-      "&:hover": {
-        backgroundColor: "#e8eaf6 !important",
-      },
+      // "&:hover": {
+      //   backgroundColor: "#e8eaf6 !important",
+      // },
     },
     pagination: {
       "& .MuiPaginationItem-root": {
@@ -121,7 +124,7 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
     },
     tableCell: {
-      cursor: "pointer",
+      // cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
     },
@@ -184,6 +187,7 @@ export default function TableSuperdisplay3(props) {
   const [rowID, setRowID] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
+  const [openOperation, setOpenOperation] = useState(false);
 
   const {
     dataList,
@@ -242,6 +246,10 @@ export default function TableSuperdisplay3(props) {
     setOpen1(false);
   };
 
+  const handleCloseOperation = () => {
+    setOpenOperation(false);
+  };
+
   const classes = useStyles();
 
   const ChangeEyeStatus = (index) => {
@@ -280,6 +288,9 @@ export default function TableSuperdisplay3(props) {
               className={classes.pagination}
             />
           </Box>
+          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
+            ดำเนินการ
+          </StyledButtonOperation>
         </Box>
 
         {/* detail box */}
@@ -349,11 +360,6 @@ export default function TableSuperdisplay3(props) {
               ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
-                    onClick={() => {
-                      fetchData(data.transactionId, index - 1, index - 2);
-                      setRowID(index);
-                      ChangeEyeStatus(index);
-                    }}
                     // className={classes.tableRow}
                     selected={rowID === index}
                     className={classes.selected}
@@ -429,6 +435,31 @@ export default function TableSuperdisplay3(props) {
                           }}
                         />
                       )}
+                      <Tooltip title="ดูข้อมูล" arrow>
+                        <IconButton
+                          aria-label="ดูข้อมูล"
+                          style={{
+                            marginLeft: "1rem",
+                            marginTop: -15,
+                            padding: 5,
+                          }}
+                        >
+                          <DescriptionRoundedIcon
+                            style={{
+                              color: "gray",
+                            }}
+                            onClick={() => {
+                              fetchData(
+                                data.transactionId,
+                                index - 1,
+                                index - 2
+                              );
+                              setRowID(index);
+                              ChangeEyeStatus(index);
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -445,6 +476,14 @@ export default function TableSuperdisplay3(props) {
         dropdown={dropdown}
         checkDate={checkDate}
         page={page}
+      />
+
+      <ModalOperation
+        open={openOperation}
+        close={handleCloseOperation}
+        checkDate={checkDate}
+        page={page}
+        onFetchData={props.onFetchData}
       />
     </div>
   );
