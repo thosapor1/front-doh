@@ -753,6 +753,7 @@ export default function ModalActivity3(props) {
               onClick={() => {
                 props.onClick();
                 setCommentAudit("");
+                setFileName("")
               }}
               style={{
                 cursor: "pointer",
