@@ -297,9 +297,10 @@ export default function SuperAuditDisplayV3() {
 
   const dataCard = [
     {
-      value: !!summary.ts_count
-        ? summary.ts_count.toLocaleString().toString()
-        : "0",
+      value:
+        !!summary && !!summary.ts_count
+          ? summary.ts_count.toLocaleString().toString()
+          : "0",
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },
