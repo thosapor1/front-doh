@@ -274,6 +274,14 @@ const useStyle = makeStyles((theme) => {
 export default function ModalSuperActivity3(props) {
   const classes = useStyle();
 
+  const vehicleClassDropDown = [
+    { id: 0, class: "ทุกประเภท", name: "", fee: "" },
+    { id: 1, class: "C1", name: "4ล้อ", fee: "30" },
+    { id: 2, class: "C2", name: "6ล้อ", fee: "50" },
+    { id: 3, class: "C3", name: "8ล้อ", fee: "70" },
+    { id: 4, class: "ยกเว้น", name: "ยกเว้น", fee: "0" },
+  ];
+
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -419,8 +427,8 @@ export default function ModalSuperActivity3(props) {
   const [state, setState] = useState({});
 
   const [commentSuper, setCommentSuper] = useState("");
-  const [vehicleClass, setVehicleClass] = useState(0);
-  const [audit_feeAmount, setAudit_feeAmount] = useState("");
+  const [vehicleClass, setVehicleClass] = useState(1);
+  const [audit_feeAmount, setAudit_feeAmount] = useState(30);
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
   const [fileName, setFileName] = useState("");
@@ -434,8 +442,8 @@ export default function ModalSuperActivity3(props) {
   const handleOptionChange = (event) => {
     const index = event.target.value;
     setVehicleClass(index);
-    setAudit_vehicleClass_id(dropdown.vehicle[index].id);
-    setAudit_feeAmount(dropdown.vehicle[index].fee);
+    setAudit_vehicleClass_id(vehicleClassDropDown[index].id);
+    setAudit_feeAmount(vehicleClassDropDown[index].fee);
 
     console.log(
       `super_audit_feeAmount: ${audit_feeAmount}
@@ -447,7 +455,13 @@ export default function ModalSuperActivity3(props) {
   const handleUpdate1 = async () => {
     const date = format(checkDate, "yyyy-MM-dd");
 
-    let setOperation = 8;
+    let setOperation = "";
+
+    if (vehicleClass === 4) {
+      setOperation = 9;
+    } else {
+      setOperation = 8;
+    }
 
     // if (
     //   dataList.resultsDisplay[0].state === 4 &&
@@ -477,7 +491,7 @@ export default function ModalSuperActivity3(props) {
       match_transaction_type:
         dataList.resultsDisplay[0].match_transaction_type.toString(),
     };
-
+    console.log(sendData);
     const result = await Swal.fire({
       text: "คุณต้องการบันทึกข้อมูล!",
       icon: "warning",
@@ -579,25 +593,26 @@ export default function ModalSuperActivity3(props) {
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      setVehicleClass(dataList.vehicleClass);
-      setAudit_feeAmount(dataList.audit_feeAmount);
+      // setVehicleClass(dataList.vehicleClass);
+      // setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      setVehicleClass(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_vehicleClass
-          : 0
-      );
-      setAudit_feeAmount(
-        !!dataList.resultsDisplay
-          ? dataList.resultsDisplay[0].match_real_fee
-          : 0
-      );
+      // setVehicleClass(
+      //   !!dataList.resultsDisplay
+      //     ? dataList.resultsDisplay[0].match_real_vehicleClass
+      //     : 0
+      // );
+      // setAudit_feeAmount(
+      //   !!dataList.resultsDisplay
+      //     ? dataList.resultsDisplay[0].match_real_fee
+      //     : 0
+      // );
       setCommentSuper("");
       setFileName("");
       console.log("dataList", dataList);
+      setVehicleClass(1);
     }
   }, [dataList]);
 
@@ -892,48 +907,8 @@ export default function ModalSuperActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
-          <TableContainer>
-            <table className={classes.table}>
-              <TableHead>
-                <TableRow
-                  className={classes.tableHead1}
-                  style={{ backgroundColor: "lightgreen" }}
-                >
-                  <TableCell colSpan={2} className={classes.headTable}>
-                    การดำเนินการ
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>
-                    <TextField
-                      // disabled={}
-                      variant="outlined"
-                      select
-                      size="small"
-                      className={classes.textField2}
-                      name="vehicleClass"
-                      value={vehicleClass}
-                      onChange={handleOptionChange}
-                    >
-                      {!!dropdown.vehicle
-                        ? dropdown.vehicle
-                            .filter((item) => item.id !== 0)
-                            .map((item, index) => (
-                              <MenuItem key={index} value={item.id}>
-                                {item.class}
-                              </MenuItem>
-                            ))
-                        : []}
-                    </TextField>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </table>
-          </TableContainer>
-          {!!resultDisplay.state &&
+
+          {/* {!!resultDisplay.state &&
           resultDisplay.match_transaction_type !== 3 ? (
             <Button
               variant="contained"
@@ -947,7 +922,7 @@ export default function ModalSuperActivity3(props) {
             </Button>
           ) : (
             ""
-          )}
+          )} */}
         </Grid>
 
         <Grid item sm={6} md={6} lg={2} className={classes.cardItem}>
@@ -1862,18 +1837,57 @@ export default function ModalSuperActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
-
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow
+                  className={classes.tableHead1}
+                  style={{ backgroundColor: "lightgreen" }}
+                >
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    การดำเนินการ
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>ประเภท</TableCell>
+                  <TableCell>
+                    <TextField
+                      // disabled={}
+                      variant="outlined"
+                      select
+                      size="small"
+                      className={classes.textField2}
+                      name="vehicleClass"
+                      value={vehicleClass}
+                      onChange={handleOptionChange}
+                    >
+                      {!!vehicleClassDropDown
+                        ? vehicleClassDropDown
+                            .filter((item) => item.id !== 0)
+                            .map((item, index) => (
+                              <MenuItem key={index} value={item.id}>
+                                {item.class}
+                              </MenuItem>
+                            ))
+                        : []}
+                    </TextField>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
           <div>
             <Button
               variant="contained"
               style={{
                 backgroundColor: "green",
-                marginTop: 89,
               }}
               className={classes.btn2}
               onClick={handleUpdate1}
             >
-              ยืนยันการจับเก็บรายได้
+              ยืนยันการจัดเก็บรายได้
             </Button>
           </div>
         </Grid>
