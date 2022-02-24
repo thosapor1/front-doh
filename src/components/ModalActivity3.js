@@ -29,6 +29,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import { operation } from "../service/allService";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -138,10 +139,10 @@ const useStyle = makeStyles((theme) => {
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       [theme.breakpoints.only("md")]: {
-        marginTop: "100%",
+        marginTop: "150%",
       },
       [theme.breakpoints.only("sm")]: {
-        marginTop: "120%",
+        marginTop: "190%",
       },
     },
     head: {
@@ -259,6 +260,12 @@ const useStyle = makeStyles((theme) => {
         padding: "0px 5px",
       },
     },
+    progressNone: {
+      display: "none",
+    },
+    progressShow: {
+      display: "show",
+    },
   };
 });
 
@@ -319,7 +326,13 @@ export default function ModalActivity3(props) {
     setValue6(newValue);
   };
 
-  const download = () => {
+  const [selectFile, setSelectFile] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const download = (path) => {
+    let fileType = resultDisplay.pk3_upload_file.split("/")[4];
+    console.log(fileType);
     const header = {
       "Content-Type": "application",
       responseType: "blob",
@@ -328,17 +341,71 @@ export default function ModalActivity3(props) {
       transactionId: resultDisplay.transactionId,
       date: format(checkDate, "yyyy-MM-dd"),
     };
-    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
+
+    let endpoint = "";
+    if (path === "audit") {
+      endpoint = "/download-file-audit";
+    } else if (path === "pk3") {
+      endpoint = "/download-file-pk3";
+    } else if (path === "super") {
+      endpoint = "/download-file-super-audit";
+    } else {
+      return;
+    }
+
+    apiURLv1.post(endpoint, sendData, header).then((res) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "downloadFile");
+      link.setAttribute("download", `${fileType}`);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
       console.log(res.data);
       console.log(url);
     });
+  };
+
+  const upload = () => {
+    setProgress(1);
+
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    console.log(fileName);
+    if (fileName !== "") {
+      axios.post(`${URL}/audit-upload-file`, formData).then((res) => {
+        setProgress(0);
+        if (res.data.status === true) {
+          Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Fail",
+            text: "อัพโหลดข้อมูลไม่สำเร็จ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      setProgress(0);
+      Swal.fire({
+        title: "Fail",
+        text: "อัพโหลด File ไม่สำเร็จ",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const mockPic = 0;
@@ -1364,6 +1431,122 @@ export default function ModalActivity3(props) {
               </TableBody>
             </table>
           </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>File จากตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.state &&
+                    (resultDisplay.state === 1 || resultDisplay.state === 2) ? (
+                      <>
+                        <Button
+                          style={{ marginLeft: -7.5 }}
+                          onClick={() =>
+                            document
+                              .getElementById("raised-button-file")
+                              .click()
+                          }
+                        >
+                          <label htmlFor="raised-button-file">
+                            <TextField
+                              id="upload"
+                              disabled
+                              variant="outlined"
+                              className={classes.disableLabel2}
+                              label="choose file here"
+                              size="small"
+                              defaultValue="Small"
+                              value={fileName}
+                              InputLabelProps={{
+                                style: {
+                                  fontSize: "0.65rem",
+                                },
+                              }}
+                            />
+                          </label>
+                        </Button>
+                        <Button
+                          variant="contained"
+                          className={classes.btn2}
+                          color="secondary"
+                          onClick={() => {
+                            upload();
+                          }}
+                          style={{
+                            fontSize: "0.7rem",
+                            marginTop: 1,
+                          }}
+                        >
+                          upload
+                        </Button>
+                        <CircularProgress
+                          style={{
+                            margin: "auto",
+                          }}
+                          className={
+                            progress === 0
+                              ? classes.progressNone
+                              : classes.progressShow
+                          }
+                          size={20}
+                        />
+
+                        <input
+                          // accept="image/*"
+                          className={classes.input}
+                          style={{ display: "none" }}
+                          id="raised-button-file"
+                          // multiple
+                          type="file"
+                          onChange={(e) => {
+                            setFileName(
+                              !!e.target.files[0] ? e.target.files[0].name : ""
+                            );
+                            setSelectFile(e.target.files[0]);
+                            console.log(selectFile);
+                            // console.log(ref.current.value.split("\\").pop());
+                          }}
+                        />
+                      </>
+                    ) : !!resultDisplay.audit_upload_file ? (
+                      <Link onClick={download("audit")}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>file จากจัดเก็บ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_upload_file ? (
+                      <Link onClick={download("pk3")}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>file จากSuper</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.super_upload_file ? (
+                      <Link onClick={download("super")}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
         {/* MF (Vehicle : HQ)  Block */}
@@ -1544,16 +1727,6 @@ export default function ModalActivity3(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>File จากจัดเก็บ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.pk3_upload_file ? (
-                      <Link onClick={download}>download</Link>
-                    ) : (
-                      "-"
-                    )}
-                  </TableCell>
-                </TableRow>
                 <TableRow>
                   <TableCell>TS ซ้ำกับ</TableCell>
                   <TableCell>
