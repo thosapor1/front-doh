@@ -393,7 +393,7 @@ export default function ModalSuperActivity3(props) {
 
     console.log(fileName);
     if (fileName !== "") {
-      apiURLv1.post(`${URL}/super-audit-upload-file`, formData).then((res) => {
+      apiURLv1.post(`/super-audit-upload-file`, formData).then((res) => {
         setProgress(0);
         if (res.data.status === true) {
           Swal.fire({
