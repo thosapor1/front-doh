@@ -330,7 +330,7 @@ export default function ModalActivity3(props) {
   const [fileName, setFileName] = useState("");
   const [progress, setProgress] = useState(0);
 
-  const download = (path) => {
+  const downloadPk3 = () => {
     let fileType = resultDisplay.pk3_upload_file.split("/")[4];
     console.log(fileType);
     const header = {
@@ -342,29 +342,63 @@ export default function ModalActivity3(props) {
       date: format(checkDate, "yyyy-MM-dd"),
     };
 
-    let endpoint = "";
-    if (path === "audit") {
-      endpoint = "/download-file-audit";
-    } else if (path === "pk3") {
-      endpoint = "/download-file-pk3";
-    } else if (path === "super") {
-      endpoint = "/download-file-super-audit";
-    } else {
-      return;
-    }
-
-    apiURLv1.post(endpoint, sendData, header).then((res) => {
+    apiURLv1.post("/download-file-pk3", sendData, header).then((res) => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      if (path === "audit") {
-        link.setAttribute("download", `audit_${fileType}`);
-      } else if (path === "pk3") {
-        link.setAttribute("download", `pk3_${fileType}`);
-      } else if (path === "super") {
-        link.setAttribute("download", `super_audit_${fileType}`);
-      } else return;
+      link.setAttribute("download", `pk3_${fileType}`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
 
+  const downloadSuper = () => {
+    let fileType = resultDisplay.super_audit_upload_file.split("/")[4];
+    console.log(fileType);
+    const header = {
+      "Content-Type": "application",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+
+    apiURLv1
+      .post("/download-file-super-audit", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `super_audit_${fileType}`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
+  };
+
+  const downloadAudit = () => {
+    let fileType = resultDisplay.audit_upload_file.split("/")[4];
+    console.log(fileType);
+    const header = {
+      "Content-Type": "application",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+
+    apiURLv1.post("/download-file-audit", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `audit_${fileType}`);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -753,7 +787,7 @@ export default function ModalActivity3(props) {
               onClick={() => {
                 props.onClick();
                 setCommentAudit("");
-                setFileName("")
+                setFileName("");
               }}
               style={{
                 cursor: "pointer",
@@ -1526,7 +1560,7 @@ export default function ModalActivity3(props) {
                         />
                       </>
                     ) : !!resultDisplay.audit_upload_file ? (
-                      <Link onClick={() => download("audit")}>download</Link>
+                      <Link onClick={() => downloadAudit()}>download</Link>
                     ) : (
                       "-"
                     )}
@@ -1536,7 +1570,13 @@ export default function ModalActivity3(props) {
                   <TableCell>file จากจัดเก็บ</TableCell>
                   <TableCell>
                     {!!resultDisplay.pk3_upload_file ? (
-                      <Link onClick={() => download("pk3")}>download</Link>
+                      <Link
+                        onClick={() => {
+                          downloadPk3();
+                        }}
+                      >
+                        download
+                      </Link>
                     ) : (
                       "-"
                     )}
@@ -1546,7 +1586,13 @@ export default function ModalActivity3(props) {
                   <TableCell>file จากSuper</TableCell>
                   <TableCell>
                     {!!resultDisplay.super_audit_upload_file ? (
-                      <Link onClick={() => download("super")}>download</Link>
+                      <Link
+                        onClick={() => {
+                          downloadSuper();
+                        }}
+                      >
+                        download
+                      </Link>
                     ) : (
                       "-"
                     )}
