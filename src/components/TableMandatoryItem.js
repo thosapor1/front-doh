@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalMandatoryItem from "./ModalMandatoryItem";
+import ModalActivity3 from "./ModalActivity3";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
 // import format from "date-fns/format";
@@ -27,8 +27,8 @@ import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
-      : `${process.env.REACT_APP_BASE_URL_V1}`,
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
 });
 
 const detailStatus = [
@@ -431,7 +431,7 @@ export default function TablePK3display(props) {
         </Table>
       </TableContainer>
 
-      <ModalMandatoryItem
+      <ModalActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
