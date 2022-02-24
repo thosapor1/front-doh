@@ -3,7 +3,6 @@ import {
   CardMedia,
   Grid,
   makeStyles,
-  MenuItem,
   Modal,
   Tab,
   TableBody,
@@ -15,9 +14,7 @@ import {
   TextField,
   Typography,
   Box,
-  Paper,
   Tooltip,
-  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
