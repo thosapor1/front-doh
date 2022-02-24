@@ -31,6 +31,7 @@ import { Link } from "react-router-dom";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import { operation } from "../service/allService";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -254,6 +255,19 @@ const useStyle = makeStyles((theme) => {
         height: "25vh",
       },
     },
+    disableLabel2: {
+      "& .MuiOutlinedInput-input": {
+        height: "30px",
+        fontSize: "0.75rem",
+        padding: "0px 5px",
+      },
+    },
+    progressNone: {
+      display: "none",
+    },
+    progressShow: {
+      display: "show",
+    },
   };
 });
 
@@ -345,6 +359,70 @@ export default function ModalSuperActivity3(props) {
     });
   };
 
+  const downloadConsider = () => {
+    const header = {
+      "Content-Type": "application",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1.post("/download-file-audit", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "downloadFile");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
+
+  const upload = () => {
+    setProgress(1);
+
+    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
+    const getDate = format(checkDate, "yyyy-MM-dd");
+    console.log(getDate);
+    let formData = new FormData();
+    formData.append("file", selectFile);
+    formData.append("date", getDate);
+    formData.append("transactionId", dataList.resultsDisplay[0].transactionId);
+
+    console.log(fileName);
+    if (fileName !== "") {
+      axios.post(`${URL}/super-audit-upload-file`, formData).then((res) => {
+        setProgress(0);
+        if (res.data.status === true) {
+          Swal.fire({
+            title: "Success",
+            text: "ข้อมูลของคุณถูกอัพโหลดสำเร็จแล้ว",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Fail",
+            text: "อัพโหลดข้อมูลไม่สำเร็จ",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
+    } else {
+      setProgress(0);
+      Swal.fire({
+        title: "Fail",
+        text: "อัพโหลด File ไม่สำเร็จ",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
   const mockPic = 0;
   const [state, setState] = useState({});
 
@@ -353,6 +431,9 @@ export default function ModalSuperActivity3(props) {
   const [audit_feeAmount, setAudit_feeAmount] = useState(30);
   const [audit_vehicleClass_id, setAudit_vehicleClass_id] = useState(0);
   const [resultDisplay, setResultDisplay] = useState([]);
+  const [fileName, setFileName] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [selectFile, setSelectFile] = useState("");
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
     console.log(state.commentSuper);
@@ -529,6 +610,7 @@ export default function ModalSuperActivity3(props) {
       //     : 0
       // );
       setCommentSuper("");
+      setFileName("");
       console.log("dataList", dataList);
       setVehicleClass(1);
     }
@@ -1280,6 +1362,16 @@ export default function ModalSuperActivity3(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
+                  <TableCell>File จากตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_upload_file ? (
+                      <Link onClick={downloadConsider}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
                     {!!resultDisplay.pk3_upload_file ? (
@@ -1289,46 +1381,82 @@ export default function ModalSuperActivity3(props) {
                     )}
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>TS ซ้ำกับ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.ts_duplication
-                      ? resultDisplay.ts_duplication
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็นตรวจสอบ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.audit_comment
-                      ? resultDisplay.audit_comment
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.pk3_comment
-                      ? resultDisplay.pk3_comment
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="commentSuper"
-                      variant="outlined"
-                      onChange={(e) => {
-                        setCommentSuper(e.target.value);
-                        console.log(commentSuper);
-                      }}
-                      className={classes.smallText}
-                      value={commentSuper}
-                    />
-                  </TableCell>
-                </TableRow>
+
+                {!!resultDisplay.state && resultDisplay.state === 4 ? (
+                  <TableRow>
+                    <TableCell>File จาก Super</TableCell>
+                    <TableCell>
+                      <Button
+                        style={{ marginLeft: -7.5 }}
+                        onClick={() =>
+                          document.getElementById("raised-button-file").click()
+                        }
+                      >
+                        <label htmlFor="raised-button-file">
+                          <TextField
+                            id="upload"
+                            disabled
+                            variant="outlined"
+                            className={classes.disableLabel2}
+                            label="choose file here"
+                            size="small"
+                            defaultValue="Small"
+                            value={fileName}
+                            InputLabelProps={{
+                              style: {
+                                fontSize: "0.65rem",
+                                cursor: "pointer",
+                              },
+                            }}
+                          />
+                        </label>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => {
+                          upload();
+                        }}
+                        style={{
+                          fontSize: "0.7rem",
+                          marginTop: 1,
+                        }}
+                      >
+                        upload
+                      </Button>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <CircularProgress
+                        style={{
+                          margin: "auto",
+                        }}
+                        className={
+                          progress === 0
+                            ? classes.progressNone
+                            : classes.progressShow
+                        }
+                        size={20}
+                      />
+                      <input
+                        // accept="image/*"
+                        className={classes.input}
+                        style={{ display: "none" }}
+                        id="raised-button-file"
+                        // multiple
+                        type="file"
+                        onChange={(e) => {
+                          setFileName(
+                            !!e.target.files[0] ? e.target.files[0].name : ""
+                          );
+                          setSelectFile(e.target.files[0]);
+                          console.log(selectFile);
+                          // console.log(ref.current.value.split("\\").pop());
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  ""
+                )}
               </TableBody>
             </table>
           </TableContainer>
@@ -1496,6 +1624,60 @@ export default function ModalSuperActivity3(props) {
                     {!!resultDisplay.pk3_transactionId
                       ? resultDisplay.pk3_transactionId
                       : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.ts_duplication
+                      ? resultDisplay.ts_duplication
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_comment
+                      ? resultDisplay.audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นจัดเก็บ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.pk3_comment
+                      ? resultDisplay.pk3_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็น super audit</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentSuper"
+                      variant="outlined"
+                      onChange={(e) => {
+                        setCommentSuper(e.target.value);
+                        // console.log(commentSuper);
+                      }}
+                      className={classes.smallText}
+                      value={commentSuper}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>
