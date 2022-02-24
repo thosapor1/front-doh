@@ -31,6 +31,7 @@ import { format } from "date-fns";
 import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Link } from "react-router-dom";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -209,6 +210,7 @@ const useStyle = makeStyles((theme) => {
       width: "100%",
       marginTop: 5,
     },
+
     textField: {
       height: 20,
       bottom: 5,
@@ -338,6 +340,52 @@ export default function ModalPK3Activity3(props) {
   const [selectFile, setSelectFile] = useState("");
   const [fileName, setFileName] = useState("");
 
+  const downloadConsider = () => {
+    const header = {
+      "Content-Type": "application",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1.post("/download-file-audit", sendData, header).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "downloadFile");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      console.log(res.data);
+      console.log(url);
+    });
+  };
+
+  const downloadSuper = () => {
+    const header = {
+      "Content-Type": "application",
+      responseType: "blob",
+    };
+    const sendData = {
+      transactionId: resultDisplay.transactionId,
+      date: format(checkDate, "yyyy-MM-dd"),
+    };
+    apiURLv1
+      .post("/download-file-super-audit", sendData, header)
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "downloadFile");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        console.log(res.data);
+        console.log(url);
+      });
+  };
+
   const upload = () => {
     setProgress(1);
 
@@ -351,7 +399,7 @@ export default function ModalPK3Activity3(props) {
 
     console.log(fileName);
     if (fileName !== "") {
-      axios.post(`${URL}/display-pk3-activity`, formData).then((res) => {
+      axios.post(`${URL}/pk3-upload-file`, formData).then((res) => {
         setProgress(0);
         if (res.data.status === true) {
           Swal.fire({
@@ -1226,6 +1274,16 @@ export default function ModalPK3Activity3(props) {
               </TableHead>
               <TableBody>
                 <TableRow>
+                  <TableCell>File จากตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_upload_file ? (
+                      <Link onClick={downloadConsider}>download</Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>File จากจัดเก็บ</TableCell>
                   <TableCell>
                     <Button
@@ -1255,7 +1313,6 @@ export default function ModalPK3Activity3(props) {
                     </Button>
                     <Button
                       variant="contained"
-                      className={classes.btn2}
                       color="secondary"
                       onClick={() => {
                         upload();
@@ -1298,45 +1355,13 @@ export default function ModalPK3Activity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>File จาก Super</TableCell>
                   <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="TransactionsPeat"
-                      variant="outlined"
-                      onChange={handleChange}
-                      className={classes.smallText}
-                      value={TransactionsPeat}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็นจัดเก็บ</TableCell>
-                  <TableCell>
-                    <TextField
-                      id="outlined-basic"
-                      name="commentPK3"
-                      variant="outlined"
-                      onChange={handleChange}
-                      className={classes.smallText}
-                      value={commentPK3}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็นตรวจสอบ</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.audit_comment
-                      ? resultDisplay.audit_comment
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ความเห็น super audit</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.super_audit_comment
-                      ? resultDisplay.super_audit_comment
-                      : "-"}
+                    {!!resultDisplay.super_audit_upload_file ? (
+                      <Link onClick={downloadSuper}>download</Link>
+                    ) : (
+                      "-"
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -1487,6 +1512,61 @@ export default function ModalPK3Activity3(props) {
                   >
                     {!!resultDisplay.refTransactionId
                       ? resultDisplay.refTransactionId
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>TS ซ้ำกับ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="TransactionsPeat"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={TransactionsPeat}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นจัดเก็บ</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="commentPK3"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={commentPK3}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็นตรวจสอบ</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.audit_comment
+                      ? resultDisplay.audit_comment
+                      : "-"}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>ความเห็น super audit</TableCell>
+                  <TableCell>
+                    {!!resultDisplay.super_audit_comment
+                      ? resultDisplay.super_audit_comment
                       : "-"}
                   </TableCell>
                 </TableRow>
