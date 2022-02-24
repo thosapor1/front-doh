@@ -357,7 +357,14 @@ export default function ModalActivity3(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${fileType}`);
+      if (path === "audit") {
+        link.setAttribute("download", `audit_${fileType}`);
+      } else if (path === "pk3") {
+        link.setAttribute("download", `pk3_${fileType}`);
+      } else if (path === "super") {
+        link.setAttribute("download", `super_audit_${fileType}`);
+      } else return;
+
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
@@ -1518,7 +1525,7 @@ export default function ModalActivity3(props) {
                         />
                       </>
                     ) : !!resultDisplay.audit_upload_file ? (
-                      <Link onClick={download("audit")}>download</Link>
+                      <Link onClick={() => download("audit")}>download</Link>
                     ) : (
                       "-"
                     )}
@@ -1528,7 +1535,7 @@ export default function ModalActivity3(props) {
                   <TableCell>file จากจัดเก็บ</TableCell>
                   <TableCell>
                     {!!resultDisplay.pk3_upload_file ? (
-                      <Link onClick={download("pk3")}>download</Link>
+                      <Link onClick={() => download("pk3")}>download</Link>
                     ) : (
                       "-"
                     )}
@@ -1537,8 +1544,8 @@ export default function ModalActivity3(props) {
                 <TableRow>
                   <TableCell>file จากSuper</TableCell>
                   <TableCell>
-                    {!!resultDisplay.super_upload_file ? (
-                      <Link onClick={download("super")}>download</Link>
+                    {!!resultDisplay.super_audit_upload_file ? (
+                      <Link onClick={() => download("super")}>download</Link>
                     ) : (
                       "-"
                     )}
