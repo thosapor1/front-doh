@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   makeStyles,
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -29,6 +31,7 @@ import {
   StyledButtonOperation,
 } from "../styledComponent/StyledButton";
 import ModalOperation from "./ModalOperation";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 // import format from "date-fns/format";
 
 const detailStatus = [
@@ -118,7 +121,6 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 5,
     },
     tableCell: {
-      cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
       height: 28,
@@ -378,11 +380,6 @@ export default function TableAuditDisplay2(props) {
               ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
-                    onClick={() => {
-                      fetchData(data.transactionId, index - 1, index - 2);
-                      setRowID(index);
-                      ChangeEyeStatus(index);
-                    }}
                     // className={classes.tableRow}
                     selected={rowID === index}
                     className={classes.selected}
@@ -444,7 +441,6 @@ export default function TableAuditDisplay2(props) {
                       ) : (
                         <FiberManualRecordIcon
                           style={{
-                            // fontSize: "0.8rem",
                             color:
                               data.state === 1
                                 ? "lightgray"
@@ -466,6 +462,31 @@ export default function TableAuditDisplay2(props) {
                           }}
                         />
                       )}
+                      <Tooltip title="ดูข้อมูล" arrow>
+                        <IconButton
+                          aria-label="ดูข้อมูล"
+                          style={{
+                            marginLeft: "1rem",
+                            marginTop: -15,
+                            padding: 5,
+                          }}
+                        >
+                          <DescriptionRoundedIcon
+                            style={{
+                              color: "gray",
+                            }}
+                            onClick={() => {
+                              fetchData(
+                                data.transactionId,
+                                index - 1,
+                                index - 2
+                              );
+                              setRowID(index);
+                              ChangeEyeStatus(index);
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </StyledTableRow>
                 ))
