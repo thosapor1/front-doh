@@ -79,7 +79,7 @@ export const StyledButtonLogOut = styled(Button)`
   font-size: 0.75rem;
   margin-left: 3px;
   &:hover {
-    background-color: #6a008f;
+    background-color: rgba(0, 0, 0, 0.3);
     color: white;
   }
 `;
