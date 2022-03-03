@@ -36,13 +36,22 @@ import TableBillingDaily from "../components/report/TableBillingDaily";
 import TableBillingDaily2 from "../components/report/TableBillingDaily2";
 import TablePaymentDaily from "../components/report/TablePaymentDaily";
 import TabledataTX from "../components/report/TabledataTX";
-
 import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
 import PaymentTSPdf from "../components/report/PaymentTSPdf";
 import PdfTS from "../components/report/PdfTS";
 import FilterSection5 from "../components/report/FilterSection5";
+import TopTable from "../components/report/TopTable";
+import TableMFlow1 from "../components/report/TableMFlow1";
+import TableExpectIncome from "../components/report/TableExpectIncome";
+import TableSumMFlow1 from "../components/report/TableSumMFlow";
+import TablePaymentDaily2 from "../components/report/TablePaymentDaily2";
+import TopTable2 from "../components/report/TopTable2";
+import TableMonthlyMFlow1 from "../components/report/TableMonthlyMFlow1";
+import TableMonthlyMFlow2 from "../components/report/TableMonthlyMFlow2";
+import TableMonthlyMFlow3 from "../components/report/TableMonthlyMFlow3";
+import TableMonthlyMFlow4 from "../components/report/TableMonthlyMFlow4";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,6 +101,12 @@ const useStyles = makeStyles((theme) => ({
   inTab: {
     backgroundColor: "white",
     paddingTop: "1rem",
+  },
+  typography: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    fontWeight: 600,
+    fontFamily: "sarabun",
   },
 }));
 
@@ -352,14 +367,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -432,14 +440,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -499,14 +500,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -660,24 +654,154 @@ export default function Report() {
           </TabPanel> */}
 
           <TabPanel value={value} index={4}>
-            <FilterSection5
-              onFetchData={fetchData3}
-              report={PdfPaymentDaily}
-              transactionReport={PaymentTSPdf}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              checkpoint={checkpoint}
-              setCheckpoint={setCheckpoint}
-              startTime={startTime}
-              setStartTime={setStartTime}
-              endTime={endTime}
-              setEndTime={setEndTime}
-            />
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMFlow1 />
+                  <TableExpectIncome />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 206,
+                  }}
+                >
+                  <TableSumMFlow1 />
+                </div>
+              </Paper>
+            </Container>
           </TabPanel>
-          <TabPanel value={value} index={5}></TabPanel>
-          <TabPanel value={value} index={6}></TabPanel>
+
+          <TabPanel value={value} index={5}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปการชำระค่าผ่านทางประจำวัน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TablePaymentDaily2 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={6}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการชำระค่าผ่านทางสรุปรายเดือน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMonthlyMFlow1 />
+                  <TableMonthlyMFlow2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 195,
+                  }}
+                >
+                  <TableMonthlyMFlow3 />
+                  <TableMonthlyMFlow4 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
           <TabPanel value={value} index={7}></TabPanel>
           <TabPanel value={value} index={8}></TabPanel>
+          <TabPanel value={value} index={9}></TabPanel>
         </div>
       </Container>
     </>
