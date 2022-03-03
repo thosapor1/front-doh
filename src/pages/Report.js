@@ -42,6 +42,7 @@ import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
 import PaymentTSPdf from "../components/report/PaymentTSPdf";
 import PdfTS from "../components/report/PdfTS";
+import FilterSection5 from "../components/report/FilterSection5";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -94,41 +95,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const data1 = [
-  {
-    id: "1",
-    label: "C1",
-    sumCar: 15,
-    miss: 5,
-    except: 4,
-    remain: 3,
-  },
-  {
-    id: "2",
-    label: "C2",
-    sumCar: 20,
-    miss: 9,
-    except: 0,
-    remain: 1,
-  },
-  {
-    id: "3",
-    label: "C3",
-    sumCar: 5,
-    miss: 6,
-    except: 1,
-    remain: 1,
-  },
-  {
-    id: "4",
-    label: "รวมทั้งหมด",
-    sumCar: 40,
-    miss: 20,
-    except: 5,
-    remain: 5,
-  },
-];
-
 export default function Report() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -138,6 +104,8 @@ export default function Report() {
   const [dataTX, setDataTX] = useState([]);
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
+  const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
+  const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -329,6 +297,36 @@ export default function Report() {
             <Tab
               label="สรุปข้อมูล TX"
               {...a11yProps(3)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปจำนวนรถและรายได้"
+              {...a11yProps(4)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปรายได้ประจำวัน"
+              {...a11yProps(5)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปชำระค่าผ่านทาง"
+              {...a11yProps(6)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปชำระค่าปรับ"
+              {...a11yProps(7)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปหนี้คงค้าง"
+              {...a11yProps(8)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปประกันค่าผ่านทาง"
+              {...a11yProps(9)}
               className={classes.tab}
             />
             {/* <Tab
@@ -594,7 +592,8 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={4}>
+
+          {/* <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
               <Paper style={{ marginTop: 20 }}>
@@ -623,8 +622,9 @@ export default function Report() {
                 <TableReportTrafficMonthly dataList={allTsTable3} />
               </Paper>
             </Container>
-          </TabPanel>
-          <TabPanel value={value} index={5}>
+          </TabPanel> */}
+
+          {/* <TabPanel value={value} index={5}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection3
                 onFetchData={fetchData}
@@ -652,12 +652,32 @@ export default function Report() {
                   เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
                 </Typography>
 
-                <BlockTestPDF />
+                <BlockTestPDF /> */}
 
-                {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
-              </Paper>
+          {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
+          {/* </Paper>
             </Container>
+          </TabPanel> */}
+
+          <TabPanel value={value} index={4}>
+            <FilterSection5
+              onFetchData={fetchData3}
+              report={PdfPaymentDaily}
+              transactionReport={PaymentTSPdf}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              checkpoint={checkpoint}
+              setCheckpoint={setCheckpoint}
+              startTime={startTime}
+              setStartTime={setStartTime}
+              endTime={endTime}
+              setEndTime={setEndTime}
+            />
           </TabPanel>
+          <TabPanel value={value} index={5}></TabPanel>
+          <TabPanel value={value} index={6}></TabPanel>
+          <TabPanel value={value} index={7}></TabPanel>
+          <TabPanel value={value} index={8}></TabPanel>
         </div>
       </Container>
     </>
