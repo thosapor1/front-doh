@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow3(props) {
+export default function TableDebt3(props) {
   const { dataList } = props;
   const [data, setData] = useState([
     { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
@@ -77,21 +77,19 @@ export default function TableMonthlyMFlow3(props) {
             <tr>
               <td
                 className={classes.td}
-                style={{ width: 200, textAlign: "left", borderRight: "0px" }}
+                style={{ width: 200, textAlign: "left" }}
               >
                 ใบแจ้งหนี้รถวิ่งผ่านทาง
               </td>
               <td
                 className={classes.td}
                 style={{
-                  borderLeft: "0px",
-                  borderRight: "0px",
                   textAlign: "right",
                 }}
               >
                 0
               </td>
-              <td className={classes.td} style={{ borderLeft: "0px" }}>
+              <td className={classes.td} style={{ textAlign: "left" }}>
                 รายการ
               </td>
             </tr>
@@ -100,49 +98,54 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td2}
                 style={{
                   borderLeft: "1px solid black",
-                  borderRight: "0px",
+                  borderRight: "1px solid black",
                   textAlign: "left",
                 }}
               >
-                จำนวนรถที่ชำระค่าผ่านทาง
+                รายได้พึงได้รวม
               </td>
               <td
                 className={classes.td2}
-                style={{ borderRight: "0px", textAlign: "right" }}
+                style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
                 0
               </td>
-              <td className={classes.td2}>รายการ</td>
+              <td
+                className={classes.td2}
+                style={{ textAlign: "left" }}
+                style={{ textAlign: "left" }}
+              >
+                บาท
+              </td>
             </tr>
             <tr>
               <td
                 className={classes.td2}
-                style={{ borderLeft: "1px solid black", borderRight: "0px" }}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  textAlign: "left",
+                }}
               >
-                - จำนวนรถที่ชำระตามกำหนด
+                ยอดชำระ
               </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "0px", textAlign: "right" }}
-              >
+              <td className={classes.td2} style={{ textAlign: "right" }}>
                 0
               </td>
-              <td className={classes.td2}>รายการ</td>
+              <td className={classes.td2} style={{ textAlign: "left" }}>
+                บาท
+              </td>
             </tr>
             <tr>
-              <td
-                className={classes.td3}
-                style={{ borderLeft: "1px solid black", borderRight: "0px" }}
-              >
-                - จำนวนรถที่ชำระเกินกำหนด
+              <td className={classes.td} style={{ textAlign: "left" }}>
+                หนี้คงค้าง
               </td>
-              <td
-                className={classes.td3}
-                style={{ borderRight: "0px", textAlign: "right" }}
-              >
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 0
               </td>
-              <td className={classes.td3}>รายการ</td>
+              <td className={classes.td} style={{ textAlign: "left" }}>
+                บาท
+              </td>
             </tr>
           </table>
         </div>

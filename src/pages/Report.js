@@ -52,6 +52,16 @@ import TableMonthlyMFlow1 from "../components/report/TableMonthlyMFlow1";
 import TableMonthlyMFlow2 from "../components/report/TableMonthlyMFlow2";
 import TableMonthlyMFlow3 from "../components/report/TableMonthlyMFlow3";
 import TableMonthlyMFlow4 from "../components/report/TableMonthlyMFlow4";
+import TableMonthlyPayment1 from "../components/report/TableMonthlyPayment1";
+import TableMonthlyPayment2 from "../components/report/TableMonthlyPayment2";
+import TableMonthlyPayment3 from "../components/report/TableMonthlyPayment3 ";
+import TableMonthlyPayment4 from "../components/report/TableMonthlyPayment4";
+import TableDept1 from "../components/report/TableDebt1";
+import TableDept2 from "../components/report/TableDebt2";
+import TableDebt3 from "../components/report/TableDebt3";
+import TableGuarantee1 from "../components/report/TableGuarantee1";
+import TableGuarantee2 from "../components/report/TableGuarantee2";
+import TableGuarantee3 from "../components/report/TableGuarantee3";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -790,7 +800,7 @@ export default function Report() {
                   style={{
                     display: "flex",
                     justifyContent: "right",
-                    marginRight: 195,
+                    marginRight: 210,
                   }}
                 >
                   <TableMonthlyMFlow3 />
@@ -799,9 +809,161 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={7}></TabPanel>
-          <TabPanel value={value} index={8}></TabPanel>
-          <TabPanel value={value} index={9}></TabPanel>
+          <TabPanel value={value} index={7}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการชำระค่าปรับสรุปรายเดือน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMonthlyPayment1 />
+                  <TableMonthlyPayment2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 210,
+                  }}
+                >
+                  <TableMonthlyPayment3 />
+                  <TableMonthlyPayment4 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={8}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานหนี้คงค้าง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableDept1 />
+                  <TableDept2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableDebt3 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={9}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPaymentDaily}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการประกันค่าธรรมเนียมผ่านทาง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableGuarantee1 />
+                  <TableGuarantee2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableGuarantee3 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
         </div>
       </Container>
     </>

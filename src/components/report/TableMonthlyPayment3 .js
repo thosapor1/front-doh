@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow3(props) {
+export default function TableMonthlyPayment3(props) {
   const { dataList } = props;
   const [data, setData] = useState([
     { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
@@ -79,7 +79,7 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td}
                 style={{ width: 200, textAlign: "left", borderRight: "0px" }}
               >
-                ใบแจ้งหนี้รถวิ่งผ่านทาง
+                จำนวนใบแจ้งหนี้เกินกำหนดชำระ
               </td>
               <td
                 className={classes.td}
@@ -104,7 +104,7 @@ export default function TableMonthlyMFlow3(props) {
                   textAlign: "left",
                 }}
               >
-                จำนวนรถที่ชำระค่าผ่านทาง
+                จำนวนใบแจ้งหนี้ชำระค่าปรับ
               </td>
               <td
                 className={classes.td2}
@@ -119,7 +119,7 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td2}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - จำนวนรถที่ชำระตามกำหนด
+                - ชำระเกินกำหนดวันที่ 3
               </td>
               <td
                 className={classes.td2}
@@ -134,7 +134,7 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td3}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - จำนวนรถที่ชำระเกินกำหนด
+                - ชำระเกินกำหนดวันที่ 13
               </td>
               <td
                 className={classes.td3}

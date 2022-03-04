@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       fontFamily: "Sarabun",
-      padding: 20,
+      padding: 10,
     },
     th: {
       fontWeight: 700,

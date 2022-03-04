@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow3(props) {
+export default function TableMonthlyPayment4(props) {
   const { dataList } = props;
   const [data, setData] = useState([
     { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
@@ -79,7 +79,7 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td}
                 style={{ width: 200, textAlign: "left", borderRight: "0px" }}
               >
-                ใบแจ้งหนี้รถวิ่งผ่านทาง
+                ยอดค่าปรับพึงได้
               </td>
               <td
                 className={classes.td}
@@ -92,7 +92,7 @@ export default function TableMonthlyMFlow3(props) {
                 0
               </td>
               <td className={classes.td} style={{ borderLeft: "0px" }}>
-                รายการ
+                บาท
               </td>
             </tr>
             <tr>
@@ -104,7 +104,7 @@ export default function TableMonthlyMFlow3(props) {
                   textAlign: "left",
                 }}
               >
-                จำนวนรถที่ชำระค่าผ่านทาง
+                ยอดชำระค่าปรับ
               </td>
               <td
                 className={classes.td2}
@@ -112,14 +112,14 @@ export default function TableMonthlyMFlow3(props) {
               >
                 0
               </td>
-              <td className={classes.td2}>รายการ</td>
+              <td className={classes.td2}>บาท</td>
             </tr>
             <tr>
               <td
                 className={classes.td2}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - จำนวนรถที่ชำระตามกำหนด
+                - ชำระเกินกำหนดวันที่ 3
               </td>
               <td
                 className={classes.td2}
@@ -127,14 +127,14 @@ export default function TableMonthlyMFlow3(props) {
               >
                 0
               </td>
-              <td className={classes.td2}>รายการ</td>
+              <td className={classes.td2}>บาท</td>
             </tr>
             <tr>
               <td
                 className={classes.td3}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - จำนวนรถที่ชำระเกินกำหนด
+                - ชำระเกินกำหนดวันที่ 13
               </td>
               <td
                 className={classes.td3}
@@ -142,7 +142,7 @@ export default function TableMonthlyMFlow3(props) {
               >
                 0
               </td>
-              <td className={classes.td3}>รายการ</td>
+              <td className={classes.td3}>บาท</td>
             </tr>
           </table>
         </div>
