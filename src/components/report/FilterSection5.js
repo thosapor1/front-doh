@@ -176,7 +176,7 @@ export default function FilterSection5(props) {
         <StyledButtonGoToPage
           style={{ height: 39 }}
           onClick={() => {
-            report(selectedDate, checkpoint);
+            report(selectedDate, checkpoint, startTime, endTime);
           }}
         >
           summary pdf

@@ -119,11 +119,7 @@ export default function TableGuarantee3(props) {
               >
                 0
               </td>
-              <td
-                className={classes.td2}
-                style={{ textAlign: "left" }}
-                style={{ textAlign: "left" }}
-              >
+              <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
               </td>
             </tr>

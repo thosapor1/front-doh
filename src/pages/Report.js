@@ -62,6 +62,7 @@ import TableDebt3 from "../components/report/TableDebt3";
 import TableGuarantee1 from "../components/report/TableGuarantee1";
 import TableGuarantee2 from "../components/report/TableGuarantee2";
 import TableGuarantee3 from "../components/report/TableGuarantee3";
+import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncome";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -667,7 +668,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
-                report={PdfPaymentDaily}
+                report={PdfNumberOfCarAndIncome}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
