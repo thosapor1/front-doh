@@ -11,22 +11,13 @@ import {
 import React, { useEffect, useState } from "react";
 import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
-import FilterSection2 from "../components/report/FilterSection2";
 import TableReportDaily from "../components/report/TableReportDaily";
-import TableReportTrafficMonthly from "../components/report/TableReportTrafficMonthly";
-import BlockTrafficReport from "../components/report/BlockTrafficReport";
-import PdfTraffic from "../components/report/PdfTraffic";
-import BlockTestPDF from "../components/report/BlockTestPDF";
-import TestPDF from "../components/report/TestPDF";
-import exportExcel from "../components/report/exportExcel";
-import FilterSection3 from "../components/report/FilterSection3";
 import FilterSection4 from "../components/report/FilterSection4";
 import TableNumberOfCar from "../components/report/TableNumberOfCar";
 import {
   getDataReportBilling,
   getDataReportDisplay,
   getDataReportPayment,
-  getDataReportTS,
   getDatainfoCheckpoint,
 } from "../service/allService";
 import format from "date-fns/format";
@@ -693,7 +684,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable />
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{
@@ -745,7 +741,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable2 />
+                  <TopTable2
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{
@@ -787,7 +788,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable />
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{
@@ -839,7 +845,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable />
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{
@@ -892,7 +903,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable />
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{
@@ -943,7 +959,12 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TopTable />
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
                 </div>
                 <div
                   style={{

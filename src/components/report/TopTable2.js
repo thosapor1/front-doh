@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
+import { th } from "date-fns/locale";
 import React from "react";
 
 const useStyles = makeStyles((theme) => {
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TopTable2(props) {
-  const { dataList } = props;
+  const { selectedDate, startTime, endTime } = props;
 
   const classes = useStyles();
   return (
@@ -55,10 +56,14 @@ export default function TopTable2(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td}>ข้อมูล ณ วันที่ :</td>
-              <td className={classes.td2}>วันที่ 28 กุมภาพันธ์ 2565</td>
+              <td className={classes.td2}>
+                {format(new Date(), "dd MMMM yyyy", { locale: th })}
+              </td>
               <td className={classes.td}>ข้อมูลเริ่มต้นวันที่ :</td>
               <td className={classes.td2}>
-                วันที่ 27 กุมภาพันธ์ 2565 เวลา 00.00 น.
+                {`วันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })} เวลา ${format(startTime, "HH:mm")} น.`}
               </td>
             </tr>
 
@@ -67,7 +72,9 @@ export default function TopTable2(props) {
               <td className={classes.td2}>ทางหลวงหมายเลข 9</td>
               <td className={classes.td}>ข้อมูลสิ้นสุดวันที่ :</td>
               <td className={classes.td2}>
-                วันที่ 27 กุมภาพันธ์ 2565 เวลา 23.59 น.
+                {`วันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })} เวลา ${format(endTime, "HH:mm")} น.`}
               </td>
             </tr>
           </table>

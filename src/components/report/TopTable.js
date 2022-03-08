@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TopTable(props) {
-  const { dataList } = props;
+  const { selectedDate, startTime, endTime, checkpoint } = props;
 
   const classes = useStyles();
   return (
@@ -61,7 +61,9 @@ export default function TopTable(props) {
               </td>
               <td className={classes.td}>ข้อมูลเริ่มต้นวันที่ :</td>
               <td className={classes.td2}>
-                วันที่ 27 กุมภาพันธ์ 2565 เวลา 00.00 น.
+                {`วันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })} เวลา ${format(startTime, "HH:mm")} น.`}
               </td>
             </tr>
 
@@ -70,12 +72,26 @@ export default function TopTable(props) {
               <td className={classes.td2}>ทางหลวงหมายเลข 9</td>
               <td className={classes.td}>ข้อมูลสิ้นสุดวันที่ :</td>
               <td className={classes.td2}>
-                วันที่ 27 กุมภาพันธ์ 2565 เวลา 23.59 น.
+                {`วันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })} เวลา ${format(endTime, "HH:mm")} น.`}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>ด่าน :</td>
-              <td className={classes.td2}>ทุกด่าน</td>
+              <td className={classes.td2}>
+                {checkpoint === 0
+                  ? "ทุกด่าน"
+                  : checkpoint === 1
+                  ? "ทับช้าง 1"
+                  : checkpoint === 2
+                  ? "ทับช้าง 2"
+                  : checkpoint === 3
+                  ? "ธัญบุรี 1"
+                  : checkpoint === 4
+                  ? "ธัญบุรี 2"
+                  : ""}
+              </td>
               <td className={classes.td}>{null}</td>
               <td className={classes.td2}>{null}</td>
             </tr>
