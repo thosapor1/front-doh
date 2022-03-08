@@ -76,7 +76,7 @@ export default function TableSumMFlow1(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                จำนวนรถวิ่งเข้าด่าน M-Flow
+                สรุปข้อมูลรถวันที่ 27 กุมภาพันธ์ 2565
               </td>
             </tr>
             <tr>
@@ -92,9 +92,38 @@ export default function TableSumMFlow1(props) {
             <tr>
               <td
                 className={classes.td2}
-                style={{ borderBottom: "1px solid black" }}
+                style={{
+                  borderBottom: "1px solid black",
+                  borderTop: "1px solid black",
+                }}
               >
                 ยอดรถที่เก็บรายได้
+              </td>
+              <td
+                className={classes.td3}
+                style={{
+                  borderBottom: "1px solid black",
+                  borderTop: "1px solid black",
+                }}
+              >
+                0
+              </td>
+              <td
+                className={classes.td4}
+                style={{
+                  borderBottom: "1px solid black",
+                  borderTop: "1px solid black",
+                }}
+              >
+                คัน
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td2}
+                style={{ borderBottom: "1px solid black" }}
+              >
+                รายได้พึงได้
               </td>
               <td
                 className={classes.td3}

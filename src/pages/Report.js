@@ -19,6 +19,10 @@ import {
   getDataReportDisplay,
   getDataReportPayment,
   getDatainfoCheckpoint,
+  getDataFeeDaily,
+  getDataTXFeeDaily,
+  getDataFeeDaily2,
+  getDataFeeMonthly,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -55,6 +59,8 @@ import TableGuarantee2 from "../components/report/TableGuarantee2";
 import TableGuarantee3 from "../components/report/TableGuarantee3";
 import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncome";
 import PdfFeeDaily from "../components/report/PdfFeeDaily";
+import PdfFeeMonthly from "../components/report/PdfFeeMonthly";
+import PdfTxNumberOfCar from "../components/report/PdfTxNumberOfCar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -120,6 +126,7 @@ export default function Report() {
   const [dailyBilling, setDailyBilling] = useState([]);
   const [dailyPayment, setDailyPayment] = useState([]);
   const [dataTX, setDataTX] = useState([]);
+  const [feeDaily, setFeeDaily] = useState([]);
   const [allTsTable2, setAllTsTable2] = useState("");
   const [allTsTable3, setAllTsTable3] = useState("");
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
@@ -271,6 +278,77 @@ export default function Report() {
         text: "ไม่มีข้อมูล",
       });
     }
+
+    // console.log(res.data);
+  };
+
+  const fetchData5 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeDaily(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeDaily(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+  const fetchData6 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeDaily2(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeDaily(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData7 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeMonthly(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeDaily(res.data);
+    }
+    Swal.close();
 
     // console.log(res.data);
   };
@@ -659,9 +737,9 @@ export default function Report() {
           <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData5}
                 report={PdfNumberOfCarAndIncome}
-                transactionReport={PaymentTSPdf}
+                transactionReport={PdfTxNumberOfCar}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -697,8 +775,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableMFlow1 />
-                  <TableExpectIncome />
+                  <TableMFlow1 dataList={feeDaily} />
+                  <TableExpectIncome dataList={feeDaily} />
                 </div>
                 <div
                   style={{
@@ -707,7 +785,7 @@ export default function Report() {
                     marginRight: 206,
                   }}
                 >
-                  <TableSumMFlow1 />
+                  <TableSumMFlow1 dataList={feeDaily} />
                 </div>
               </Paper>
             </Container>
@@ -716,7 +794,7 @@ export default function Report() {
           <TabPanel value={value} index={5}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData6}
                 report={PdfFeeDaily}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
@@ -763,8 +841,8 @@ export default function Report() {
           <TabPanel value={value} index={6}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
-                report={PdfPaymentDaily}
+                onFetchData={fetchData7}
+                report={PdfFeeMonthly}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}

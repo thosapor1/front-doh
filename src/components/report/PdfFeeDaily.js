@@ -16,6 +16,13 @@ pdfMake.fonts = {
   },
 };
 
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+
 export default async function PdfFeeDaily(
   selectedDate,
   checkpoint,
@@ -27,15 +34,359 @@ export default async function PdfFeeDaily(
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
-  const url = "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/display-ts";
-  let sendData = { date: getDate, checkpoint: ck.toString() };
+
+  const sendData = {
+    date: format(selectedDate, "yyyy-MM-dd"),
+    checkpoint: checkpoint.toString(),
+    startTime: format(startTime, "HH:mm:ss"),
+    endTime: format(endTime, "HH:mm:ss"),
+  };
+
+  let body = [];
 
   Swal.fire({
     title: `กำลังสร้างรายงาน`,
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return axios.post(url, sendData).then(async (res) => {
+      return apiURL.post("/report-payment", sendData).then(async (res) => {
+        body.push(
+          [
+            {
+              text: "ลำดับ",
+              rowSpan: 2,
+              margin: [0, 8, 0, 0],
+            },
+            {
+              text: "ช่องทางรับชำระเงิน",
+              rowSpan: 2,
+              colSpan: 2,
+              margin: [0, 8, 0, 0],
+            },
+            {},
+            { text: "รายการรับชำระ", border: [true, true, true, false] },
+            { text: "ยอดเงินรับชำระ", border: [true, true, true, false] },
+            { text: "หมายเหตุ", rowSpan: 2, margin: [0, 8, 0, 0] },
+          ],
+          [
+            {},
+            {},
+            {},
+            {
+              text: "(รายการ)",
+              margin: [0, -5, 0, 0],
+              border: [true, false, true, true],
+            },
+            {
+              text: "(บาท)",
+              margin: [0, -5, 0, 0],
+              border: [true, false, true, true],
+            },
+            {},
+          ],
+          [
+            { text: "1" },
+            { text: "บัญชีธนาคาร (Account)", alignment: "left" },
+            { text: "BPDDT", alignment: "left" },
+            {
+              text: res.data.payment[0].payment_list.toLocaleString(),
+            },
+            {
+              text: res.data.payment[0].amount_received.toLocaleString(),
+            },
+            { text: "" },
+          ],
+          [
+            { text: "2" },
+            {
+              text: "บัตรเครดิต/เดบิต (Credit/Debit Card)",
+              alignment: "left",
+            },
+            { text: "AQDD", alignment: "left" },
+            {
+              text: res.data.payment[2].payment_list.toLocaleString(),
+            },
+            {
+              text: res.data.payment[2].amount_received.toLocaleString(),
+            },
+            { text: "" },
+          ],
+          [
+            { text: "3" },
+            {
+              text: "เอ็มพาส (M-PASS)",
+              alignment: "left",
+            },
+            { text: "M-PASS", alignment: "left" },
+            {
+              text: res.data.payment[7].payment_list.toLocaleString(),
+            },
+            {
+              text: res.data.payment[7].amount_received.toLocaleString(),
+            },
+            { text: "" },
+          ],
+          [
+            { text: "4" },
+            {
+              text: "อีซี่พาส (EASYPASS)",
+              alignment: "left",
+            },
+            { text: "EASYPASS", alignment: "left" },
+            {
+              text: res.data.payment[4].payment_list.toLocaleString(),
+            },
+            {
+              text: res.data.payment[4].amount_received.toLocaleString(),
+            },
+            { text: "" },
+          ],
+          [
+            {
+              text: "5",
+              border: [true, true, true, false],
+            },
+            {
+              text: "การจ่ายผ่านบิล",
+              alignment: "left",
+              border: [true, true, true, false],
+            },
+            {
+              text: "SPODD",
+              alignment: "left",
+              border: [true, true, true, false],
+            },
+            {
+              text: "",
+              border: [true, true, true, false],
+            },
+            {
+              text: "",
+              border: [true, true, true, false],
+            },
+            {
+              text: "",
+              border: [true, true, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+            {
+              text: "1)	โมบายแบงค์กิ้ง (Mobile Banking)",
+              alignment: "left",
+              border: [true, false, true, false],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[6].payment_list.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[6].amount_received.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+            {
+              text: "2)	ธนาคาร (Counter Bank)",
+              alignment: "left",
+              border: [true, false, true, false],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: "0",
+              border: [true, false, true, false],
+            },
+            {
+              text: "0",
+              border: [true, false, true, false],
+            },
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+            {
+              text: "3)	อินเทอร์เน็ต (Internet/ CRD)",
+              alignment: "left",
+              border: [true, false, true, false],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[5].payment_list.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[5].amount_received.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+            {
+              text: "4)	ตู้บริการเงินสด (ATM)",
+              alignment: "left",
+              border: [true, false, true, false],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[1].payment_list.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[1].amount_received.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+            {
+              text: "5)	ผู้ให้บริการรับชำระเงิน (Counter Service)",
+              alignment: "left",
+              border: [true, false, true, false],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[3].payment_list.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.payment[3].amount_received.toLocaleString(),
+              border: [true, false, true, false],
+            },
+            {
+              text: "",
+              border: [true, false, true, false],
+            },
+          ],
+          [
+            {
+              text: "",
+              border: [true, false, true, true],
+            },
+            {
+              text: "6)	ใบแจ้งการชำระเงิน (Bill Payment)",
+              alignment: "left",
+              border: [true, false, true, true],
+              margin: [10, 0, 0, 0],
+            },
+            {
+              text: "",
+              alignment: "left",
+              border: [true, false, true, true],
+            },
+            {
+              text: "0",
+              border: [true, false, true, true],
+            },
+            {
+              text: "0",
+              border: [true, false, true, true],
+            },
+            {
+              text: "",
+              border: [true, false, true, true],
+            },
+          ],
+          [
+            {
+              text: "6",
+            },
+            {
+              text: "อิ่นๆ",
+              alignment: "left",
+            },
+            {
+              text: "",
+              alignment: "left",
+            },
+            {
+              text: "0",
+            },
+            {
+              text: "0",
+            },
+            {
+              text: "",
+            },
+          ],
+          [
+            {
+              text: "",
+            },
+            {
+              text: "รวมทั้งหมด",
+              alignment: "left",
+            },
+            {
+              text: "",
+            },
+            {
+              text: res.data.payment[8].payment_list.toLocaleString(),
+            },
+            {
+              text: res.data.payment[8].amount_received.toLocaleString(),
+            },
+            {
+              text: "",
+            },
+          ]
+        );
         setTimeout(async () => {
           await pdfGenDownload(docDefinition);
           Swal.close();
@@ -208,327 +559,7 @@ export default async function PdfFeeDaily(
             style: "table",
             table: {
               widths: [30, 200, 81, 81, 81, 90],
-              body: [
-                [
-                  {
-                    text: "ลำดับ",
-                    rowSpan: 2,
-                    margin: [0, 8, 0, 0],
-                  },
-                  {
-                    text: "ช่องทางรับชำระเงิน",
-                    rowSpan: 2,
-                    colSpan: 2,
-                    margin: [0, 8, 0, 0],
-                  },
-                  {},
-                  { text: "รายการรับชำระ", border: [true, true, true, false] },
-                  { text: "ยอดเงินรับชำระ", border: [true, true, true, false] },
-                  { text: "หมายเหตุ", rowSpan: 2, margin: [0, 8, 0, 0] },
-                ],
-                [
-                  {},
-                  {},
-                  {},
-                  {
-                    text: "(รายการ)",
-                    margin: [0, -5, 0, 0],
-                    border: [true, false, true, true],
-                  },
-                  {
-                    text: "(บาท)",
-                    margin: [0, -5, 0, 0],
-                    border: [true, false, true, true],
-                  },
-                  {},
-                ],
-                [
-                  { text: "1" },
-                  { text: "บัญชีธนาคาร (Account)", alignment: "left" },
-                  { text: "BPDDT", alignment: "left" },
-                  { text: "0" },
-                  { text: "0" },
-                  { text: "" },
-                ],
-                [
-                  { text: "2" },
-                  {
-                    text: "บัตรเครดิต/เดบิต (Credit/Debit Card)",
-                    alignment: "left",
-                  },
-                  { text: "AQDD", alignment: "left" },
-                  { text: "0" },
-                  { text: "0" },
-                  { text: "" },
-                ],
-                [
-                  { text: "3" },
-                  {
-                    text: "เอ็มพาส (M-PASS)",
-                    alignment: "left",
-                  },
-                  { text: "M-PASS", alignment: "left" },
-                  { text: "0" },
-                  { text: "0" },
-                  { text: "" },
-                ],
-                [
-                  { text: "4" },
-                  {
-                    text: "อีซี่พาส (EASYPASS)",
-                    alignment: "left",
-                  },
-                  { text: "EASYPASS", alignment: "left" },
-                  { text: "0" },
-                  { text: "0" },
-                  { text: "" },
-                ],
-                [
-                  {
-                    text: "5",
-                    border: [true, true, true, false],
-                  },
-                  {
-                    text: "การจ่ายผ่านบิล",
-                    alignment: "left",
-                    border: [true, true, true, false],
-                  },
-                  {
-                    text: "SPODD",
-                    alignment: "left",
-                    border: [true, true, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, true, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, true, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, true, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "1)	โมบายแบงค์กิ้ง (Mobile Banking)",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "2)	ธนาคาร (Counter Bank)",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "3)	อินเทอร์เน็ต (Internet/ CRD)",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "4)	ตู้บริการเงินสด (ATM)",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "5)	ผู้ให้บริการรับชำระเงิน (Counter Service)",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, false],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, false],
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                    border: [true, false, true, true],
-                  },
-                  {
-                    text: "6)	ใบแจ้งการชำระเงิน (Bill Payment)",
-                    alignment: "left",
-                    border: [true, false, true, true],
-                    margin: [10, 0, 0, 0],
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                    border: [true, false, true, true],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, true],
-                  },
-                  {
-                    text: "0",
-                    border: [true, false, true, true],
-                  },
-                  {
-                    text: "",
-                    border: [true, false, true, true],
-                  },
-                ],
-                [
-                  {
-                    text: "6",
-                  },
-                  {
-                    text: "อิ่นๆ",
-                    alignment: "left",
-                  },
-                  {
-                    text: "",
-                    alignment: "left",
-                  },
-                  {
-                    text: "0",
-                  },
-                  {
-                    text: "0",
-                  },
-                  {
-                    text: "",
-                  },
-                ],
-                [
-                  {
-                    text: "",
-                  },
-                  {
-                    text: "รวมทั้งหมด",
-                    alignment: "left",
-                  },
-                  {
-                    text: "",
-                  },
-                  {
-                    text: "0",
-                  },
-                  {
-                    text: "0",
-                  },
-                  {
-                    text: "",
-                  },
-                ],
-              ],
+              body: body,
             },
           },
         ],

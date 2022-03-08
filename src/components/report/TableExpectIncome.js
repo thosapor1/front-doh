@@ -105,7 +105,7 @@ export default function TableExpectIncome(props) {
               ? data.map((row) => (
                   <tr>
                     <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
+                      {row.class === "Total" ? "รวมเงินทั้งหมด" : row.class}
                     </td>
                     <td className={classes.td}>{row.fee}</td>
                     <td className={classes.td}>{row.member}</td>

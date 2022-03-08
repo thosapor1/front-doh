@@ -113,9 +113,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
 
             <tr>
@@ -138,9 +136,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
 
             <tr>
@@ -163,9 +159,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
 
             <tr>
@@ -188,9 +182,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
 
             <tr>
@@ -240,7 +232,7 @@ export default function TablePaymentDaily2(props) {
               </td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
             <tr>
               <td
@@ -249,7 +241,7 @@ export default function TablePaymentDaily2(props) {
               >{`2)	ธนาคาร (Counter Bank)`}</td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
             <tr>
               <td
@@ -258,7 +250,7 @@ export default function TablePaymentDaily2(props) {
               >{`3)	อินเทอร์เน็ต (Internet/ CRD)`}</td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
             <tr>
               <td
@@ -267,7 +259,7 @@ export default function TablePaymentDaily2(props) {
               >{`4)	ตู้บริการเงินสด (ATM)`}</td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
             <tr>
               <td
@@ -276,7 +268,7 @@ export default function TablePaymentDaily2(props) {
               >{`5)	ผู้ให้บริการรับชำระเงิน (Counter Service)`}</td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
             <tr>
               <td
@@ -285,7 +277,7 @@ export default function TablePaymentDaily2(props) {
               >{`6)	ใบแจ้งการชำระเงิน (Bill Payment)`}</td>
               <td className={classes.td4}>0</td>
               <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}></td>
             </tr>
 
             <tr>
@@ -303,16 +295,14 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
 
             <tr>
               <td className={classes.td}>{null}</td>
               <td
                 className={classes.td}
-                style={{ width: 270, textAlign: "right" }}
+                style={{ width: 270, textAlign: "left" }}
               >
                 รวมทั้งสิ้น
               </td>
@@ -323,9 +313,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td} style={{ width: 150 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                0
-              </td>
+              <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
           </table>
         </div>

@@ -183,7 +183,7 @@ export default function FilterSection5(props) {
         </StyledButtonGoToPage>
         <StyledButtonRefresh
           onClick={() => {
-            transactionReport(selectedDate, checkpoint);
+            transactionReport(selectedDate, checkpoint, startTime, endTime);
           }}
         >
           transaction pdf
