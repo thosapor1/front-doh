@@ -126,7 +126,7 @@ export default function TableExpectIncome(props) {
               </td>
             </tr>
             <tr>
-              <td className={classes.td}>C1</td>
+              <td className={classes.td}>C2</td>
               <td className={classes.td}>
                 {!!dataList.income
                   ? dataList.income[1].fee.toLocaleString()
@@ -149,7 +149,7 @@ export default function TableExpectIncome(props) {
               </td>
             </tr>
             <tr>
-              <td className={classes.td}>C1</td>
+              <td className={classes.td}>C3</td>
               <td className={classes.td}>
                 {!!dataList.income
                   ? dataList.income[2].fee.toLocaleString()
