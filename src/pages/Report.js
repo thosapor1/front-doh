@@ -11,23 +11,18 @@ import {
 import React, { useEffect, useState } from "react";
 import BlockDailyReport from "../components/report/BlockDailyReport";
 import FilterSection from "../components/report/FilterSection";
-import FilterSection2 from "../components/report/FilterSection2";
 import TableReportDaily from "../components/report/TableReportDaily";
-import TableReportTrafficMonthly from "../components/report/TableReportTrafficMonthly";
-import BlockTrafficReport from "../components/report/BlockTrafficReport";
-import PdfTraffic from "../components/report/PdfTraffic";
-import BlockTestPDF from "../components/report/BlockTestPDF";
-import TestPDF from "../components/report/TestPDF";
-import exportExcel from "../components/report/exportExcel";
-import FilterSection3 from "../components/report/FilterSection3";
 import FilterSection4 from "../components/report/FilterSection4";
 import TableNumberOfCar from "../components/report/TableNumberOfCar";
 import {
   getDataReportBilling,
   getDataReportDisplay,
   getDataReportPayment,
-  getDataReportTS,
   getDatainfoCheckpoint,
+  getDataFeeDaily,
+  getDataTXFeeDaily,
+  getDataFeeDaily2,
+  getDataFeeMonthly,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -36,12 +31,40 @@ import TableBillingDaily from "../components/report/TableBillingDaily";
 import TableBillingDaily2 from "../components/report/TableBillingDaily2";
 import TablePaymentDaily from "../components/report/TablePaymentDaily";
 import TabledataTX from "../components/report/TabledataTX";
-
 import PdfBillingDaily from "../components/report/PdfBillingDaily";
 import PdfPaymentDaily from "../components/report/PdfPaymentDaily";
 import BillingTSPdf from "../components/report/BillingTSPdf";
 import PaymentTSPdf from "../components/report/PaymentTSPdf";
 import PdfTS from "../components/report/PdfTS";
+import FilterSection5 from "../components/report/FilterSection5";
+import TopTable from "../components/report/TopTable";
+import TableMFlow1 from "../components/report/TableMFlow1";
+import TableExpectIncome from "../components/report/TableExpectIncome";
+import TableSumMFlow1 from "../components/report/TableSumMFlow";
+import TablePaymentDaily2 from "../components/report/TablePaymentDaily2";
+import TopTable2 from "../components/report/TopTable2";
+import TableMonthlyMFlow1 from "../components/report/TableMonthlyMFlow1";
+import TableMonthlyMFlow2 from "../components/report/TableMonthlyMFlow2";
+import TableMonthlyMFlow3 from "../components/report/TableMonthlyMFlow3";
+import TableMonthlyMFlow4 from "../components/report/TableMonthlyMFlow4";
+import TableMonthlyPayment1 from "../components/report/TableMonthlyPayment1";
+import TableMonthlyPayment2 from "../components/report/TableMonthlyPayment2";
+import TableMonthlyPayment3 from "../components/report/TableMonthlyPayment3 ";
+import TableMonthlyPayment4 from "../components/report/TableMonthlyPayment4";
+import TableDept1 from "../components/report/TableDebt1";
+import TableDept2 from "../components/report/TableDebt2";
+import TableDebt3 from "../components/report/TableDebt3";
+import TableGuarantee1 from "../components/report/TableGuarantee1";
+import TableGuarantee2 from "../components/report/TableGuarantee2";
+import TableGuarantee3 from "../components/report/TableGuarantee3";
+import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncome";
+import PdfFeeDaily from "../components/report/PdfFeeDaily";
+import PdfFeeMonthly from "../components/report/PdfFeeMonthly";
+import PdfTxNumberOfCar from "../components/report/PdfTxNumberOfCar";
+import PdfFineMonthly from "../components/report/PdfFineMonthly";
+import PdfDebt from "../components/report/PdfDebt";
+import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
+import PdfGuarantee from "../components/report/PdfGuarantee";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,42 +115,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     paddingTop: "1rem",
   },
+  typography: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    fontWeight: 600,
+    fontFamily: "sarabun",
+  },
 }));
-
-const data1 = [
-  {
-    id: "1",
-    label: "C1",
-    sumCar: 15,
-    miss: 5,
-    except: 4,
-    remain: 3,
-  },
-  {
-    id: "2",
-    label: "C2",
-    sumCar: 20,
-    miss: 9,
-    except: 0,
-    remain: 1,
-  },
-  {
-    id: "3",
-    label: "C3",
-    sumCar: 5,
-    miss: 6,
-    except: 1,
-    remain: 1,
-  },
-  {
-    id: "4",
-    label: "รวมทั้งหมด",
-    sumCar: 40,
-    miss: 20,
-    except: 5,
-    remain: 5,
-  },
-];
 
 export default function Report() {
   const classes = useStyles();
@@ -136,8 +130,11 @@ export default function Report() {
   const [dailyBilling, setDailyBilling] = useState([]);
   const [dailyPayment, setDailyPayment] = useState([]);
   const [dataTX, setDataTX] = useState([]);
-  const [allTsTable2, setAllTsTable2] = useState("");
-  const [allTsTable3, setAllTsTable3] = useState("");
+  const [feeDaily, setFeeDaily] = useState([]);
+  const [feeDaily2, setFeeDaily2] = useState([]);
+  const [feeMonthly, setFeeMonthly] = useState([]);
+  const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
+  const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -289,6 +286,77 @@ export default function Report() {
     // console.log(res.data);
   };
 
+  const fetchData5 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeDaily(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeDaily(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+  const fetchData6 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeDaily2(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeDaily2(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData7 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDataFeeMonthly(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFeeMonthly(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
   useEffect(() => {
     // fetchData();
     setCarClass(carClass);
@@ -331,6 +399,36 @@ export default function Report() {
               {...a11yProps(3)}
               className={classes.tab}
             />
+            <Tab
+              label="สรุปจำนวนรถและรายได้"
+              {...a11yProps(4)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปรายได้ประจำวัน"
+              {...a11yProps(5)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปชำระค่าผ่านทาง"
+              {...a11yProps(6)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปชำระค่าปรับ"
+              {...a11yProps(7)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปหนี้คงค้าง"
+              {...a11yProps(8)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปประกันค่าผ่านทาง"
+              {...a11yProps(9)}
+              className={classes.tab}
+            />
             {/* <Tab
               label="รายงานสรุปจราจร"
               {...a11yProps(4)}
@@ -354,14 +452,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -434,14 +525,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -501,14 +585,7 @@ export default function Report() {
               <Paper style={{ marginTop: 20 }}>
                 <div>
                   <Box>
-                    <Typography
-                      style={{
-                        paddingTop: 20,
-                        paddingLeft: 20,
-                        fontWeight: 600,
-                        fontFamily: "sarabun",
-                      }}
-                    >
+                    <Typography className={classes.typography}>
                       {checkpoint === 0
                         ? "ทุกด่าน"
                         : checkpoint === 1
@@ -594,7 +671,8 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={4}>
+
+          {/* <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
               <Paper style={{ marginTop: 20 }}>
@@ -623,8 +701,9 @@ export default function Report() {
                 <TableReportTrafficMonthly dataList={allTsTable3} />
               </Paper>
             </Container>
-          </TabPanel>
-          <TabPanel value={value} index={5}>
+          </TabPanel> */}
+
+          {/* <TabPanel value={value} index={5}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection3
                 onFetchData={fetchData}
@@ -652,9 +731,350 @@ export default function Report() {
                   เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
                 </Typography>
 
-                <BlockTestPDF />
+                <BlockTestPDF /> */}
 
-                {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
+          {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
+          {/* </Paper>
+            </Container>
+          </TabPanel> */}
+
+          <TabPanel value={value} index={4}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData5}
+                report={PdfNumberOfCarAndIncome}
+                transactionReport={PdfTxNumberOfCar}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMFlow1 dataList={feeDaily} />
+                  <TableExpectIncome dataList={feeDaily} />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 206,
+                  }}
+                >
+                  <TableSumMFlow1
+                    dataList={feeDaily}
+                    selectedDate={selectedDate}
+                  />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={5}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData6}
+                report={PdfFeeDaily}
+                transactionReport={PdfTxFeeDaily}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปการชำระค่าผ่านทางประจำวัน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable2
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TablePaymentDaily2 dataList={feeDaily2} />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={6}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData7}
+                report={PdfFeeMonthly}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการชำระค่าผ่านทางสรุปรายเดือน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMonthlyMFlow1 dataList={feeMonthly} />
+                  <TableMonthlyMFlow2 dataList={feeMonthly} />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 210,
+                  }}
+                >
+                  <TableMonthlyMFlow3
+                    dataList={feeMonthly}
+                    selectedDate={selectedDate}
+                  />
+                  <TableMonthlyMFlow4
+                    dataList={feeMonthly}
+                    selectedDate={selectedDate}
+                  />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={7}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfFineMonthly}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการชำระค่าปรับสรุปรายเดือน
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableMonthlyPayment1 />
+                  <TableMonthlyPayment2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 210,
+                  }}
+                >
+                  <TableMonthlyPayment3 />
+                  <TableMonthlyPayment4 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={8}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfDebt}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานหนี้คงค้าง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableDept1 />
+                  <TableDept2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableDebt3 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={9}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfGuarantee}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการประกันค่าธรรมเนียมผ่านทาง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableGuarantee1 />
+                  <TableGuarantee2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableGuarantee3 />
+                </div>
               </Paper>
             </Container>
           </TabPanel>

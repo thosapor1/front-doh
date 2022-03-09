@@ -420,7 +420,7 @@ export default function ModalActivity3(props) {
 
     console.log(fileName);
     if (fileName !== "") {
-      axios.post(`${URL}/audit-upload-file`, formData).then((res) => {
+      apiURLv1.post(`/audit-upload-file`, formData).then((res) => {
         setProgress(0);
         if (res.data.status === true) {
           Swal.fire({
