@@ -95,19 +95,75 @@ export default function TableMFlow1(props) {
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(รายการ)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.member}</td>
-                    <td className={classes.td}>{row.non_member}</td>
-                    <td className={classes.td}>{row.undefined}</td>
-                    <td className={classes.td}>{row.except}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.tx
+                  ? dataList.tx[0].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[0].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[0].illegal.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[0].reject.toLocaleString() : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>
+                {!!dataList.tx
+                  ? dataList.tx[1].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[1].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[1].illegal.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[1].reject.toLocaleString() : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>
+                {!!dataList.tx
+                  ? dataList.tx[2].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[2].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[2].illegal.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[2].reject.toLocaleString() : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวมรายการ</td>
+              <td className={classes.td}>
+                {!!dataList.tx
+                  ? dataList.tx[3].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[3].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[3].illegal.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[3].reject.toLocaleString() : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>

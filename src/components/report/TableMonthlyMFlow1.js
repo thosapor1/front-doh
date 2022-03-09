@@ -55,13 +55,6 @@ const useStyles = makeStyles((theme) => {
 
 export default function TableMonthlyMFlow1(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", car: 0, invoice: 0, expectIncome: 0 },
-  ]);
-
   const classes = useStyles();
   return (
     <>
@@ -92,18 +85,79 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.car}</td>
-                    <td className={classes.td}>{row.invoice}</td>
-                    <td className={classes.td}>{row.expectIncome}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[0].count_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[0].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[0].income.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[1].count_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[1].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[1].income.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[2].count_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[2].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[2].income.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].count_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].income.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>

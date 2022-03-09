@@ -101,19 +101,97 @@ export default function TableExpectIncome(props) {
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมเงินทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.fee}</td>
-                    <td className={classes.td}>{row.member}</td>
-                    <td className={classes.td}>{row.non_member}</td>
-                    <td className={classes.td}>{row.undefined}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[0].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[0].member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[0].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[0].illegal.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[1].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[1].member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[1].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[1].illegal.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[2].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[2].member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[2].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[2].illegal.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td} colSpan={2}>
+                รวมจำนวนเงิน
+              </td>
+
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[3].member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[3].non_member.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.income
+                  ? dataList.income[3].illegal.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>

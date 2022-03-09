@@ -405,6 +405,13 @@ export const getDataFeeMonthly = (sendData) => {
   return response;
 };
 
+export const getTxDailyIncome = (sendData) => {
+  const response = apiURLv1.post("/report-list-payment", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //ExportData page
 export const exportData = (sendData) => {
   const response = apiURLv1.post("/", sendData).catch((error) => {

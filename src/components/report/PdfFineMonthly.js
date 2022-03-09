@@ -23,14 +23,13 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default async function PdfFeeMonthly(
+export default async function PdfFineMonthly(
   selectedDate,
   checkpoint,
   startTime,
   endTime
 ) {
   // let win = window.open("", "_blank");
-  const date = format(selectedDate, "dd MMMM yyyy");
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
@@ -56,7 +55,7 @@ export default async function PdfFeeMonthly(
         body1.push(
           [
             {
-              text: "จำนวนรถวิ่งผ่านด่าน M-Flow",
+              text: "จำนวนรถผ่านเข้าระบบ M-Flow",
               colSpan: 4,
             },
             {},
@@ -66,7 +65,7 @@ export default async function PdfFeeMonthly(
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
             {
-              text: "รถที่คิดค่าธรรมเนียมผ่านทาง",
+              text: "ค่าปรับการชำระเกินกำหนด",
               colSpan: 3,
             },
             {},
@@ -74,14 +73,14 @@ export default async function PdfFeeMonthly(
           ],
           [
             {},
-            { text: "จำนวน", border: [true, true, true, false] },
+            { text: "รถผ่านทาง", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "รายได้พึงได้", border: [true, true, true, false] },
+            { text: "ค่าปรับพึงได้", border: [true, true, true, false] },
           ],
           [
             {},
             {
-              text: "(คัน)",
+              text: "(รายการ)",
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
@@ -124,9 +123,10 @@ export default async function PdfFeeMonthly(
         body2.push(
           [
             {
-              text: "รายได้การชำระค่าธรรมเนียมผ่านทาง",
-              colSpan: 7,
+              text: "รายได้ค่าปรับการชำระช้าเกินกำหนด",
+              colSpan: 8,
             },
+            {},
             {},
             {},
             {},
@@ -136,9 +136,10 @@ export default async function PdfFeeMonthly(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            { text: "ชำระตามกำหนด", colSpan: 2 },
+            { text: "ชำระเกินกำหนดวันที่ 3", colSpan: 2 },
             {},
-            { text: "ชำระเกินกำหนด", colSpan: 2 },
+            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 3 },
+            {},
             {},
             { text: "คงเหลือ", colSpan: 2 },
             {},
@@ -148,7 +149,8 @@ export default async function PdfFeeMonthly(
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
             { text: "ยอดเงิน", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ยอดเงิน", border: [true, true, true, false] },
+            { text: "ค่าปรับ", border: [true, true, true, false] },
+            { text: "ค่าทวงถาม", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
             { text: "ยอดเงิน", border: [true, true, true, false] },
           ],
@@ -166,6 +168,11 @@ export default async function PdfFeeMonthly(
             },
             {
               text: "(รายการ)",
+              border: [true, false, true, true],
+              margin: [0, -5, 0, 0],
+            },
+            {
+              text: "(บาท)",
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
@@ -198,6 +205,9 @@ export default async function PdfFeeMonthly(
               text: res.data.result_classify[0].income_overdue.toLocaleString(),
             },
             {
+              text: res.data.result_classify[0].income_overdue.toLocaleString(),
+            },
+            {
               text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
             },
             {
@@ -212,6 +222,9 @@ export default async function PdfFeeMonthly(
             { text: res.data.result_classify[1].income_due.toLocaleString() },
             {
               text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[1].income_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_overdue.toLocaleString(),
@@ -236,6 +249,9 @@ export default async function PdfFeeMonthly(
               text: res.data.result_classify[2].income_overdue.toLocaleString(),
             },
             {
+              text: res.data.result_classify[2].income_overdue.toLocaleString(),
+            },
+            {
               text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
             },
             {
@@ -243,13 +259,16 @@ export default async function PdfFeeMonthly(
             },
           ],
           [
-            { text: "รวมจำนวนเงิน" },
+            { text: "รวม" },
             {
               text: res.data.result_classify[3].count_bill_due.toLocaleString(),
             },
             { text: res.data.result_classify[3].income_due.toLocaleString() },
             {
               text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[3].income_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_overdue.toLocaleString(),
@@ -275,7 +294,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "ใบแจ้งหนี้รถวิ่งผ่าน",
+              text: "จำนวนใบแจ้งหนี้เกินกำหนดชำระ",
               border: [true, true, false, true],
               alignment: "left",
             },
@@ -288,7 +307,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "จำนวนรถที่ชำระค่าผ่านทาง",
+              text: "จำนวนใบแจ้งหนี้ชำระค่าปรับ",
               border: [true, false, false, false],
               alignment: "left",
             },
@@ -304,7 +323,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "-	จำนวนรถที่ชำระตามกำหนด",
+              text: "-	ชำระเกินกำหนดวันที่ 3",
               alignment: "left",
               margin: [10, 0, 0, 0],
               border: [true, false, false, false],
@@ -318,7 +337,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "-	จำนวนรถที่ชำระเกินกำหนด",
+              text: "-	ชำระเกินกำหนดวันที่ 13",
               alignment: "left",
               margin: [10, 0, 0, 0],
               border: [true, false, false, true],
@@ -330,6 +349,19 @@ export default async function PdfFeeMonthly(
               border: [false, false, false, true],
             },
             { text: "รายการ", border: [false, false, true, true] },
+          ],
+          [
+            {
+              text: "คงเหลือ",
+              alignment: "left",
+              border: [true, false, false, true],
+            },
+            {
+              text: res.data.result_sum[3].income.toLocaleString(),
+              alignment: "right",
+              border: [false, false, false, true],
+            },
+            { text: "บาท", border: [false, false, true, true] },
           ]
         );
         body4.push(
@@ -347,7 +379,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "รายได้พึงได้",
+              text: "ยอดค่าปรับพึงได้",
               alignment: "left",
             },
             {
@@ -358,7 +390,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "ยอดชำระจากผู้ใช้ทาง",
+              text: "ยอดชำระค่าปรับ",
               alignment: "left",
               border: [true, false, true, false],
             },
@@ -374,7 +406,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "-	ยอดชำระตามกำหนด",
+              text: "-	ชำระเกินกำหนดวันที่ 3",
               alignment: "left",
               margin: [10, 0, 0, 0],
               border: [true, false, true, false],
@@ -388,7 +420,7 @@ export default async function PdfFeeMonthly(
           ],
           [
             {
-              text: "-	ยอดชำระเกินกำหนด",
+              text: "-	ชำระเกินกำหนดวันที่ 13",
               alignment: "left",
               margin: [10, 0, 0, 0],
               border: [true, false, true, true],
@@ -400,6 +432,17 @@ export default async function PdfFeeMonthly(
               border: [false, false, true, true],
             },
             { text: "บาท", border: [false, false, true, true] },
+          ],
+          [
+            {
+              text: "คงเหลือ",
+              alignment: "left",
+            },
+            {
+              text: res.data.result_sum[3].income.toLocaleString(),
+              alignment: "right",
+            },
+            { text: "บาท" },
           ]
         );
         setTimeout(async () => {
@@ -462,7 +505,7 @@ export default async function PdfFeeMonthly(
               margin: [40, 0, 0, 0],
             },
             {
-              text: "ตส.03",
+              text: "ตส.04",
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 0],
@@ -510,7 +553,7 @@ export default async function PdfFeeMonthly(
       },
 
       {
-        text: "รายงานการชำระค่าผ่านทางสรุปรายเดือน",
+        text: "รายงานการชำระค่าปรับสรุปรายเดือน",
         fontSize: 14,
         margin: [0, 20, 0, 0],
       },
@@ -597,16 +640,16 @@ export default async function PdfFeeMonthly(
             margin: [70, 10, 0, 0],
             style: "table",
             table: {
-              widths: [46, 46, 46, 46],
+              widths: [40, 40, 40, 40],
               body: body1,
             },
           },
 
           {
             style: "table",
-            margin: [-78, 10, 0, 0],
+            margin: [-95, 10, 0, 0],
             table: {
-              widths: [46, 46, 46, 46, 46, 46, 46],
+              widths: [41, 41, 41, 41, 41, 41, 41, 41],
               body: body2,
             },
           },
@@ -618,7 +661,7 @@ export default async function PdfFeeMonthly(
             style: "table2",
             margin: [263, 10, 0, 0],
             table: {
-              widths: [120, 30, 30],
+              widths: [110, 40, 30],
               body: body3,
             },
           },
@@ -627,7 +670,7 @@ export default async function PdfFeeMonthly(
             style: "table2",
             margin: [10, 10, 0, 0],
             table: {
-              widths: [115, 35, 30],
+              widths: [110, 40, 30],
               body: body4,
             },
           },

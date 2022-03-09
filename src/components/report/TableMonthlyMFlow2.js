@@ -55,44 +55,6 @@ const useStyles = makeStyles((theme) => {
 
 export default function TableMonthlyMFlow2(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    {
-      class: "C1",
-      invoiceNormal: 0,
-      amountNormal: 0,
-      invoiceOver: 0,
-      amountOver: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "C2",
-      invoiceNormal: 0,
-      amountNormal: 0,
-      invoiceOver: 0,
-      amountOver: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "C3",
-      invoiceNormal: 0,
-      amountNormal: 0,
-      invoiceOver: 0,
-      amountOver: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "Total",
-      invoiceNormal: 0,
-      amountNormal: 0,
-      invoiceOver: 0,
-      amountOver: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-  ]);
 
   const classes = useStyles();
   return (
@@ -136,21 +98,139 @@ export default function TableMonthlyMFlow2(props) {
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.invoiceNormal}</td>
-                    <td className={classes.td}>{row.amountNormal}</td>
-                    <td className={classes.td}>{row.invoiceOver}</td>
-                    <td className={classes.td}>{row.amountOver}</td>
-                    <td className={classes.td}>{row.invoiceBalance}</td>
-                    <td className={classes.td}>{row.amountBalance}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].count_bill_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].income_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].count_bill_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].income_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].count_bill_remain.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].income_remain.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].count_bill_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].income_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].count_bill_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].income_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].count_bill_remain.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].income_remain.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].count_bill_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].income_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].count_bill_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].income_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].count_bill_remain.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].income_remain.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].income_due.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].income_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_remain.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].income_remain.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>

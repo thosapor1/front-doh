@@ -108,10 +108,14 @@ export default function TablePaymentDaily2(props) {
                 BPDDT
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[0].payment_list.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[0].amount_received.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
@@ -131,10 +135,14 @@ export default function TablePaymentDaily2(props) {
                 AQDD
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[1].payment_list.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[1].amount_received.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
@@ -154,10 +162,14 @@ export default function TablePaymentDaily2(props) {
                 M-PASS
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[6].payment_list.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[6].amount_received.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
@@ -177,10 +189,14 @@ export default function TablePaymentDaily2(props) {
                 EASYPASS
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[3].payment_list.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[3].amount_received.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
             </tr>
@@ -230,8 +246,16 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td4} rowSpan={6}>
                 {null}
               </td>
-              <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[5].payment_list.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[5].amount_received.toLocaleString()
+                  : "0"}
+              </td>
               <td className={classes.td4}></td>
             </tr>
             <tr>
@@ -248,8 +272,16 @@ export default function TablePaymentDaily2(props) {
                 className={classes.td4}
                 style={{ textAlign: "left", paddingLeft: 25 }}
               >{`3)	อินเทอร์เน็ต (Internet/ CRD)`}</td>
-              <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[4].payment_list.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[4].amount_received.toLocaleString()
+                  : "0"}
+              </td>
               <td className={classes.td4}></td>
             </tr>
             <tr>
@@ -266,8 +298,16 @@ export default function TablePaymentDaily2(props) {
                 className={classes.td4}
                 style={{ textAlign: "left", paddingLeft: 25 }}
               >{`5)	ผู้ให้บริการรับชำระเงิน (Counter Service)`}</td>
-              <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[2].payment_list.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[2].amount_received.toLocaleString()
+                  : "0"}
+              </td>
               <td className={classes.td4}></td>
             </tr>
             <tr>
@@ -308,10 +348,14 @@ export default function TablePaymentDaily2(props) {
               </td>
               <td className={classes.td}>{null}</td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[7].payment_list.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
-                0
+                {!!dataList.payment
+                  ? dataList.payment[7].amount_received.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
             </tr>

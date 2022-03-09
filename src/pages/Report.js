@@ -61,6 +61,10 @@ import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncom
 import PdfFeeDaily from "../components/report/PdfFeeDaily";
 import PdfFeeMonthly from "../components/report/PdfFeeMonthly";
 import PdfTxNumberOfCar from "../components/report/PdfTxNumberOfCar";
+import PdfFineMonthly from "../components/report/PdfFineMonthly";
+import PdfDebt from "../components/report/PdfDebt";
+import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
+import PdfGuarantee from "../components/report/PdfGuarantee";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -127,8 +131,8 @@ export default function Report() {
   const [dailyPayment, setDailyPayment] = useState([]);
   const [dataTX, setDataTX] = useState([]);
   const [feeDaily, setFeeDaily] = useState([]);
-  const [allTsTable2, setAllTsTable2] = useState("");
-  const [allTsTable3, setAllTsTable3] = useState("");
+  const [feeDaily2, setFeeDaily2] = useState([]);
+  const [feeMonthly, setFeeMonthly] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -322,7 +326,7 @@ export default function Report() {
     const res = await getDataFeeDaily2(sendData);
 
     if (!!res && !!res.data.status) {
-      setFeeDaily(res.data);
+      setFeeDaily2(res.data);
     }
     Swal.close();
 
@@ -346,7 +350,7 @@ export default function Report() {
     const res = await getDataFeeMonthly(sendData);
 
     if (!!res && !!res.data.status) {
-      setFeeDaily(res.data);
+      setFeeMonthly(res.data);
     }
     Swal.close();
 
@@ -785,7 +789,10 @@ export default function Report() {
                     marginRight: 206,
                   }}
                 >
-                  <TableSumMFlow1 dataList={feeDaily} />
+                  <TableSumMFlow1
+                    dataList={feeDaily}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
@@ -796,7 +803,7 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData6}
                 report={PdfFeeDaily}
-                transactionReport={PaymentTSPdf}
+                transactionReport={PdfTxFeeDaily}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -832,7 +839,7 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TablePaymentDaily2 />
+                  <TablePaymentDaily2 dataList={feeDaily2} />
                 </div>
               </Paper>
             </Container>
@@ -879,8 +886,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableMonthlyMFlow1 />
-                  <TableMonthlyMFlow2 />
+                  <TableMonthlyMFlow1 dataList={feeMonthly} />
+                  <TableMonthlyMFlow2 dataList={feeMonthly} />
                 </div>
                 <div
                   style={{
@@ -889,8 +896,14 @@ export default function Report() {
                     marginRight: 210,
                   }}
                 >
-                  <TableMonthlyMFlow3 />
-                  <TableMonthlyMFlow4 />
+                  <TableMonthlyMFlow3
+                    dataList={feeMonthly}
+                    selectedDate={selectedDate}
+                  />
+                  <TableMonthlyMFlow4
+                    dataList={feeMonthly}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
@@ -899,7 +912,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
-                report={PdfPaymentDaily}
+                report={PdfFineMonthly}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
@@ -957,7 +970,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
-                report={PdfPaymentDaily}
+                report={PdfDebt}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
@@ -1013,7 +1026,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
-                report={PdfPaymentDaily}
+                report={PdfGuarantee}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}

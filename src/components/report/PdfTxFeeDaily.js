@@ -23,7 +23,7 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default function PdfTxNumberOfCar(
+export default function PdfTxFeeDaily(
   selectedDate,
   checkpoint,
   startTime,
@@ -43,15 +43,16 @@ export default function PdfTxNumberOfCar(
   let body = [
     [
       { text: "ลำดับ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "Transaction", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ประเภทผู้ใช้บริการ", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "วันที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ทะเบียนรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ทะเบียนจังหวัด", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ชนิดรถผ่านทาง", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ด่าน", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "เวลาผ่านทาง", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ประเภทรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ค่าผ่านทาง", border: [true, true, true, false] },
+      { text: "ค่าผ่านทาง " },
+      { text: "วิธีการชำระเงิน", colSpan: 3 },
+      {},
+      {},
     ],
     [
       {},
@@ -61,13 +62,13 @@ export default function PdfTxNumberOfCar(
       {},
       {},
       {},
-      {},
-      {},
+      { text: "(บาท)", margin: [0, -5, 0, 0] },
+      { text: "รูปแบบ", margin: [0, -5, 0, 0] },
       {
-        text: "(บาท)",
-        border: [true, false, true, true],
+        text: "ประเภท",
         margin: [0, -5, 0, 0],
       },
+      { text: "ช่องทาง", margin: [0, -5, 0, 0] },
     ],
   ];
 
@@ -76,13 +77,10 @@ export default function PdfTxNumberOfCar(
       try {
         pdfMake
           .createPdf(docDefinition)
-          .download(
-            "รายงานTransactionจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้.pdf",
-            () => {
-              console.log("generate");
-              resolve();
-            }
-          );
+          .download("รายงานTransactionการชำระค่าผ่านทางประจำวัน.pdf", () => {
+            console.log("generate");
+            resolve();
+          });
       } catch (err) {
         reject(err);
       }
@@ -161,7 +159,7 @@ export default function PdfTxNumberOfCar(
         {
           columns: [
             {
-              text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
+              text: "รายงานสรุปการชำระค่าผ่านทางประจำวัน",
               alignment: "left",
               fontSize: 9,
               margin: [40, 0, 0, 0],
@@ -216,7 +214,7 @@ export default function PdfTxNumberOfCar(
       },
 
       {
-        text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
+        text: "รายงานสรุปการชำระค่าผ่านทางประจำวัน",
         margin: [20, 0, 0, 0],
         fontSize: 14,
       },
@@ -269,30 +267,6 @@ export default function PdfTxNumberOfCar(
                 alignment: "left",
               },
             ],
-            [
-              {
-                text: "ด่าน : ",
-                alignment: "left",
-              },
-              {
-                text: `${
-                  checkpoint === 0
-                    ? "ทุกด่าน"
-                    : checkpoint === 1
-                    ? "ทับช้าง 1"
-                    : checkpoint === 2
-                    ? "ทับช้าง 2"
-                    : checkpoint === 3
-                    ? "ธัญบุรี 1"
-                    : checkpoint === 4
-                    ? "ธัญบุรี 2"
-                    : ""
-                }`,
-                alignment: "left",
-              },
-              {},
-              {},
-            ],
           ],
         },
       },
@@ -300,7 +274,7 @@ export default function PdfTxNumberOfCar(
       {
         style: "table2",
         table: {
-          widths: [30, 130, 55, 45, 55, 50, 30, 50, 40, 40],
+          widths: [25, 60, 90, 45, 55, 30, 30, 30, 40, 40,40],
           headerRows: 2,
           body: body,
         },
@@ -324,7 +298,7 @@ export default function PdfTxNumberOfCar(
     didOpen: async () => {
       Swal.showLoading();
       return apiURL
-        .post("/report-list-tx", sendData, {
+        .post("/report-list-payment", sendData, {
           onDownloadProgress: (ProgressEvent) => {
             document.getElementById(
               "swal2-title"

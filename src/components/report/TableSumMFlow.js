@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
+import { th } from "date-fns/locale";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => {
@@ -60,13 +61,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TableSumMFlow1(props) {
-  const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", member: 0, non_member: 0, undefined: 0, except: 0 },
-    { class: "C2", member: 0, non_member: 0, undefined: 0, except: 0 },
-    { class: "C3", member: 0, non_member: 0, undefined: 0, except: 0 },
-    { class: "Total", member: 0, non_member: 0, undefined: 0, except: 0 },
-  ]);
+  const { dataList, selectedDate } = props;
 
   const classes = useStyles();
   return (
@@ -76,17 +71,25 @@ export default function TableSumMFlow1(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                สรุปข้อมูลรถวันที่ 27 กุมภาพันธ์ 2565
+                {`สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })}`}
               </td>
             </tr>
             <tr>
               <td className={classes.td2}>จำนวนรถทั้งหมด</td>
-              <td className={classes.td3}>0</td>
+              <td className={classes.td3}>
+                {!!dataList.count ? dataList.count.count.toLocaleString() : "0"}
+              </td>
               <td className={classes.td4}>คัน</td>
             </tr>
             <tr>
               <td className={classes.td2}>จำนวนรถที่มีข้อยกเว้นพิเศษ</td>
-              <td className={classes.td3}>0</td>
+              <td className={classes.td3}>
+                {!!dataList.count
+                  ? dataList.count.count_reject.toLocaleString()
+                  : "0"}
+              </td>
               <td className={classes.td4}>คัน</td>
             </tr>
             <tr>
@@ -106,7 +109,9 @@ export default function TableSumMFlow1(props) {
                   borderTop: "1px solid black",
                 }}
               >
-                0
+                {!!dataList.count
+                  ? dataList.count.count_pay_car.toLocaleString()
+                  : "0"}
               </td>
               <td
                 className={classes.td4}
@@ -129,13 +134,15 @@ export default function TableSumMFlow1(props) {
                 className={classes.td3}
                 style={{ borderBottom: "1px solid black" }}
               >
-                0
+                {!!dataList.count
+                  ? dataList.count.count_income.toLocaleString()
+                  : "0"}
               </td>
               <td
                 className={classes.td4}
                 style={{ borderBottom: "1px solid black" }}
               >
-                คัน
+                บาท
               </td>
             </tr>
           </table>
