@@ -24,6 +24,7 @@ import Payment from "./pages/Payment";
 import ExportData from "./pages/ExportData";
 import SuperAuditDisplayV3 from "./pages/SuperAuditDisplayV3";
 import PK3DisplayV2 from "./pages/Pk3DisplayV2";
+import Pk3DataCheckTrue from "./pages/Pk3DataCheckTrue";
 import { StylesProvider } from "@material-ui/core/styles";
 import theme from "./styles/theme";
 
@@ -70,6 +71,7 @@ function App() {
                 component={TransactionMonitorV1}
               />
               <Route path="/Payment" component={Payment} />
+              <Route path="/Pk3DataCheckTrue" component={Pk3DataCheckTrue} />
             </Layout>
           </Switch>
         </HashRouter>
