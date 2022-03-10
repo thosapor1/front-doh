@@ -377,6 +377,41 @@ export const getDataMonitor = (sendData) => {
   return response;
 };
 
+export const getDataFeeDaily = (sendData) => {
+  const response = apiURLv1.post("/report-tx", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataTXFeeDaily = (sendData) => {
+  const response = apiURLv1.post("/report-list-tx", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataFeeDaily2 = (sendData) => {
+  const response = apiURLv1.post("/report-payment", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getDataFeeMonthly = (sendData) => {
+  const response = apiURLv1.post("/report-income", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getTxDailyIncome = (sendData) => {
+  const response = apiURLv1.post("/report-list-payment", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //ExportData page
 export const exportData = (sendData) => {
   const response = apiURLv1.post("/", sendData).catch((error) => {
