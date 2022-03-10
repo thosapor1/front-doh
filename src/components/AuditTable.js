@@ -230,7 +230,12 @@ export default function AuditTable(props) {
 
     if (!!res) {
       SetDataForActivity(
-        path === 2
+        path === 1
+          ? {
+              picCrop: res.data.audit_picBW,
+              picFull: res.data.audit_picRGB,
+            }
+          : path === 2
           ? {
               picCrop: res.data.mf_lane_picCrop,
               picFull: res.data.mf_lane_picFull,

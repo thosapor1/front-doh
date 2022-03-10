@@ -389,7 +389,6 @@ export default function ModalPK3Activity3(props) {
   const upload = () => {
     setProgress(1);
 
-    const URL = `${process.env.REACT_APP_BASE_URL_V1}`;
     const getDate = format(checkDate, "yyyy-MM-dd");
     console.log(getDate);
     let formData = new FormData();
@@ -399,7 +398,7 @@ export default function ModalPK3Activity3(props) {
 
     console.log(fileName);
     if (fileName !== "") {
-      axios.post(`${URL}/pk3-upload-file`, formData).then((res) => {
+      apiURLv1.post(`/pk3-upload-file`, formData).then((res) => {
         setProgress(0);
         if (res.data.status === true) {
           Swal.fire({
