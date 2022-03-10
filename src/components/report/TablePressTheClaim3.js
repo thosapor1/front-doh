@@ -54,14 +54,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow3(props) {
+export default function TablePressTheClaim3(props) {
   const { dataList, selectedDate } = props;
-  const [data, setData] = useState([
-    { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", car: 0, invoice: 0, expectIncome: 0 },
-  ]);
 
   const classes = useStyles();
   return (
@@ -79,65 +73,21 @@ export default function TableMonthlyMFlow3(props) {
 
             <tr>
               <td
-                className={classes.td}
-                style={{ width: 200, textAlign: "left", borderRight: "0px" }}
-              >
-                ใบแจ้งหนี้รถวิ่งผ่านทาง
-              </td>
-              <td
-                className={classes.td}
-                style={{
-                  borderLeft: "0px",
-                  borderRight: "0px",
-                  textAlign: "right",
-                }}
-              >
-                {!!dataList.result_sum
-                  ? dataList.result_sum[3].count_bill.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td} style={{ borderLeft: "0px" }}>
-                รายการ
-              </td>
-            </tr>
-            <tr>
-              <td
                 className={classes.td2}
                 style={{
                   borderLeft: "1px solid black",
                   borderRight: "0px",
+                  width: 200,
                   textAlign: "left",
                 }}
               >
-                จำนวนรถที่ชำระค่าผ่านทาง
+                จำนวนใบแจ้งหนี้ที่มีค่าทวงถาม
               </td>
               <td
                 className={classes.td2}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                {!!dataList.result_classify
-                  ? (
-                      dataList.result_classify[3].count_bill_due +
-                      dataList.result_classify[3].count_bill_overdue
-                    ).toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td2}>รายการ</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td2}
-                style={{ borderLeft: "1px solid black", borderRight: "0px" }}
-              >
-                - จำนวนรถที่ชำระตามกำหนด
-              </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "0px", textAlign: "right" }}
-              >
-                {!!dataList.result_sum
-                  ? dataList.result_classify[3].count_bill_due.toLocaleString()
-                  : "0"}
+                0
               </td>
               <td className={classes.td2}>รายการ</td>
             </tr>
@@ -146,15 +96,13 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td3}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - จำนวนรถที่ชำระเกินกำหนด
+                จำนวนใบแจ้งหนี้ที่ชำระค่าทวงถาม
               </td>
               <td
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                {!!dataList.result_sum
-                  ? dataList.result_classify[3].count_bill_overdue.toLocaleString()
-                  : "0"}
+                0
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>
@@ -173,9 +121,7 @@ export default function TableMonthlyMFlow3(props) {
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                {!!dataList.result_sum
-                  ? dataList.result_classify[3].count_bill_remain.toLocaleString()
-                  : "0"}
+                0
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>

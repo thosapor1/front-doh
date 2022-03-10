@@ -65,6 +65,11 @@ import PdfFineMonthly from "../components/report/PdfFineMonthly";
 import PdfDebt from "../components/report/PdfDebt";
 import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
 import PdfGuarantee from "../components/report/PdfGuarantee";
+import TablePressTheClaim1 from "../components/report/TablePressTheClaim1";
+import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
+import TablePressTheClaim3 from "../components/report/TablePressTheClaim3";
+import TablePressTheClaim4 from "../components/report/TablePressTheClaim4";
+import PdfPressTheClaim from "../components/report/PdfPressTheClaim";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -422,19 +427,21 @@ export default function Report() {
               {...a11yProps(7)}
               className={classes.tab}
             />
+
             <Tab
               label="สรุปค่าทวงถาม"
-              {...a11yProps(10)}
+              {...a11yProps(8)}
               className={classes.tab}
             />
+
             <Tab
               label="สรุปหนี้คงค้าง"
-              {...a11yProps(8)}
+              {...a11yProps(9)}
               className={classes.tab}
             />
             <Tab
               label="สรุปประกันค่าผ่านทาง"
-              {...a11yProps(9)}
+              {...a11yProps(10)}
               className={classes.tab}
             />
 
@@ -917,6 +924,7 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
+
           <TabPanel value={value} index={7}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
@@ -965,7 +973,7 @@ export default function Report() {
                   style={{
                     display: "flex",
                     justifyContent: "right",
-                    marginRight: 210,
+                    marginRight: 214,
                   }}
                 >
                   <TableMonthlyPayment3 selectedDate={selectedDate} />
@@ -975,11 +983,11 @@ export default function Report() {
             </Container>
           </TabPanel>
 
-          <TabPanel value={value} index={10}>
+          <TabPanel value={value} index={8}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
-                report={PdfFineMonthly}
+                report={PdfPressTheClaim}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
@@ -1016,24 +1024,24 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableMonthlyPayment1 />
-                  <TableMonthlyPayment2 />
+                  <TablePressTheClaim1 />
+                  <TablePressTheClaim2 />
                 </div>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "right",
-                    marginRight: 210,
+                    marginRight: 214,
                   }}
                 >
-                  <TableMonthlyPayment3 selectedDate={selectedDate} />
-                  <TableMonthlyPayment4 selectedDate={selectedDate} />
+                  <TablePressTheClaim3 selectedDate={selectedDate} />
+                  <TablePressTheClaim4 selectedDate={selectedDate} />
                 </div>
               </Paper>
             </Container>
           </TabPanel>
 
-          <TabPanel value={value} index={8}>
+          <TabPanel value={value} index={9}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
@@ -1089,7 +1097,8 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={9}>
+
+          <TabPanel value={value} index={10}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}

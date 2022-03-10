@@ -23,7 +23,7 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default async function PdfFineMonthly(
+export default async function PdfPressTheClaim(
   selectedDate,
   checkpoint,
   startTime,
@@ -56,34 +56,26 @@ export default async function PdfFineMonthly(
           [
             {
               text: "จำนวนรถผ่านเข้าระบบ M-Flow",
-              colSpan: 4,
-            },
-            {},
-            {},
-            {},
-          ],
-          [
-            { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            {
-              text: "ค่าปรับการชำระเกินกำหนด",
               colSpan: 3,
             },
             {},
             {},
           ],
           [
+            { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
+            {
+              text: "ชำระเกินกำหนดวันที่ 13",
+              colSpan: 2,
+            },
             {},
-            { text: "รถผ่านทาง", border: [true, true, true, false] },
-            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าปรับพึงได้", border: [true, true, true, false] },
           ],
           [
             {},
-            {
-              text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
-            },
+            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
+            { text: "ค่าทวงถามพึงได้", border: [true, true, true, false] },
+          ],
+          [
+            {},
             {
               text: "(รายการ)",
               border: [true, false, true, true],
@@ -97,25 +89,21 @@ export default async function PdfFineMonthly(
           ],
           [
             { text: "C1" },
-            { text: res.data.result_sum[0].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[0].count_bill.toLocaleString() },
             { text: res.data.result_sum[0].income.toLocaleString() },
           ],
           [
             { text: "C2" },
-            { text: res.data.result_sum[1].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[1].count_bill.toLocaleString() },
             { text: res.data.result_sum[1].income.toLocaleString() },
           ],
           [
             { text: "C3" },
-            { text: res.data.result_sum[2].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[2].count_bill.toLocaleString() },
             { text: res.data.result_sum[2].income.toLocaleString() },
           ],
           [
             { text: "รวม" },
-            { text: res.data.result_sum[3].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[3].count_bill.toLocaleString() },
             { text: res.data.result_sum[3].income.toLocaleString() },
           ]
@@ -124,10 +112,8 @@ export default async function PdfFineMonthly(
           [
             {
               text: "รายได้ค่าปรับการชำระช้าเกินกำหนด",
-              colSpan: 7,
+              colSpan: 5,
             },
-            {},
-            {},
             {},
             {},
             {},
@@ -135,8 +121,6 @@ export default async function PdfFineMonthly(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            { text: "ชำระเกินกำหนดวันที่ 3", colSpan: 2 },
-            {},
             { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 2 },
             {},
             { text: "คงเหลือ", colSpan: 2 },
@@ -144,8 +128,6 @@ export default async function PdfFineMonthly(
           ],
           [
             {},
-            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ยอดเงิน", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
             { text: "ค่าทวงถาม", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
@@ -173,23 +155,9 @@ export default async function PdfFineMonthly(
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
-            {
-              text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
-            },
-            {
-              text: "(บาท)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
-            },
           ],
           [
             { text: "C1" },
-            {
-              text: res.data.result_classify[0].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[0].income_due.toLocaleString() },
             {
               text: res.data.result_classify[0].count_bill_overdue.toLocaleString(),
             },
@@ -206,10 +174,6 @@ export default async function PdfFineMonthly(
           [
             { text: "C2" },
             {
-              text: res.data.result_classify[1].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[1].income_due.toLocaleString() },
-            {
               text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
             },
             {
@@ -225,10 +189,6 @@ export default async function PdfFineMonthly(
           [
             { text: "C3" },
             {
-              text: res.data.result_classify[2].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[2].income_due.toLocaleString() },
-            {
               text: res.data.result_classify[2].count_bill_overdue.toLocaleString(),
             },
             {
@@ -243,10 +203,6 @@ export default async function PdfFineMonthly(
           ],
           [
             { text: "รวม" },
-            {
-              text: res.data.result_classify[3].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[3].income_due.toLocaleString() },
             {
               text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
             },
@@ -274,38 +230,8 @@ export default async function PdfFineMonthly(
           ],
           [
             {
-              text: "จำนวนใบแจ้งหนี้เกินกำหนดชำระ",
-              border: [true, true, false, true],
+              text: "จำนวนใบแจ้งหนี้ที่มีค่าทวงถาม",
               alignment: "left",
-            },
-            {
-              text: res.data.result_sum[3].count_bill.toLocaleString(),
-              border: [false, false, false, true],
-              alignment: "right",
-            },
-            { text: "รายการ", border: [false, false, true, true] },
-          ],
-          [
-            {
-              text: "จำนวนใบแจ้งหนี้ชำระค่าปรับ",
-              border: [true, false, false, false],
-              alignment: "left",
-            },
-            {
-              text: (
-                res.data.result_classify[3].count_bill_due +
-                res.data.result_classify[3].count_bill_overdue
-              ).toLocaleString(),
-              border: [false, false, false, false],
-              alignment: "right",
-            },
-            { text: "รายการ", border: [false, false, true, false] },
-          ],
-          [
-            {
-              text: "-	ชำระเกินกำหนดวันที่ 3",
-              alignment: "left",
-              margin: [10, 0, 0, 0],
               border: [true, false, false, false],
             },
             {
@@ -317,9 +243,8 @@ export default async function PdfFineMonthly(
           ],
           [
             {
-              text: "-	ชำระเกินกำหนดวันที่ 13",
+              text: "จำนวนใบแจ้งหนี้ที่ชำระค่าทวงถาม",
               alignment: "left",
-              margin: [10, 0, 0, 0],
               border: [true, false, false, true],
             },
             {
@@ -359,36 +284,8 @@ export default async function PdfFineMonthly(
           ],
           [
             {
-              text: "ยอดค่าปรับพึงได้",
+              text: "ยอดค่าทวงถามพึงได้",
               alignment: "left",
-            },
-            {
-              text: res.data.result_sum[3].income.toLocaleString(),
-              alignment: "right",
-            },
-            { text: "บาท" },
-          ],
-          [
-            {
-              text: "ยอดชำระค่าปรับ",
-              alignment: "left",
-              border: [true, false, true, false],
-            },
-            {
-              text: (
-                res.data.result_classify[3].income_due +
-                res.data.result_classify[3].income_overdue
-              ).toLocaleString(),
-              border: [false, false, true, false],
-              alignment: "right",
-            },
-            { text: "บาท", border: [false, false, true, false] },
-          ],
-          [
-            {
-              text: "-	ชำระเกินกำหนดวันที่ 3",
-              alignment: "left",
-              margin: [10, 0, 0, 0],
               border: [true, false, true, false],
             },
             {
@@ -400,9 +297,8 @@ export default async function PdfFineMonthly(
           ],
           [
             {
-              text: "-	ชำระเกินกำหนดวันที่ 13",
+              text: "ยอดชำระค่าทวงถาม",
               alignment: "left",
-              margin: [10, 0, 0, 0],
               border: [true, false, true, true],
             },
             {
@@ -485,7 +381,7 @@ export default async function PdfFineMonthly(
               margin: [40, 0, 0, 0],
             },
             {
-              text: "ตส.04.1",
+              text: "ตส.04.2",
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 0],
@@ -533,7 +429,7 @@ export default async function PdfFineMonthly(
       },
 
       {
-        text: "รายงานการชำระค่าปรับสรุปรายเดือน (ค่าปรับส่วนค่าธรรมเนียมผ่านทาง)",
+        text: "รายงานการชำระค่าปรับสรุปรายเดือน (ค่าทวงถาม)",
         fontSize: 14,
         margin: [0, 20, 0, 0],
       },
@@ -620,16 +516,16 @@ export default async function PdfFineMonthly(
             margin: [70, 10, 0, 0],
             style: "table",
             table: {
-              widths: [46, 46, 46, 46],
+              widths: [65, 65, 65],
               body: body1,
             },
           },
 
           {
             style: "table",
-            margin: [-80, 10, 0, 0],
+            margin: [-70, 10, 0, 0],
             table: {
-              widths: [46, 46, 46, 46, 46, 46, 46],
+              widths: [66, 66, 66, 66, 66],
               body: body2,
             },
           },
