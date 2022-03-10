@@ -72,14 +72,14 @@ export default function TablePaymentDaily2(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} rowSpan={2} style={{ width: 150 }}>
+              <td className={classes.td} rowSpan={2} >
                 ลำดับ
               </td>
               <td
                 className={classes.td}
                 rowSpan={2}
                 colSpan={2}
-                style={{ width: 250 }}
+                style={{ width: 370 }}
               >
                 ช่องทางรับชำระเงิน
               </td>
@@ -97,7 +97,7 @@ export default function TablePaymentDaily2(props) {
               <td className={classes.td}>1</td>
               <td
                 className={classes.td}
-                style={{ width: 270, textAlign: "left" }}
+                style={{ width: 320, textAlign: "left" }}
               >
                 บัญชีธนาคาร (Account)
               </td>

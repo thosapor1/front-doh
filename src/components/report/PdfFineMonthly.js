@@ -124,9 +124,8 @@ export default async function PdfFineMonthly(
           [
             {
               text: "รายได้ค่าปรับการชำระช้าเกินกำหนด",
-              colSpan: 8,
+              colSpan: 7,
             },
-            {},
             {},
             {},
             {},
@@ -138,8 +137,7 @@ export default async function PdfFineMonthly(
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
             { text: "ชำระเกินกำหนดวันที่ 3", colSpan: 2 },
             {},
-            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 3 },
-            {},
+            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 2 },
             {},
             { text: "คงเหลือ", colSpan: 2 },
             {},
@@ -149,7 +147,6 @@ export default async function PdfFineMonthly(
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
             { text: "ยอดเงิน", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าปรับ", border: [true, true, true, false] },
             { text: "ค่าทวงถาม", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
             { text: "ยอดเงิน", border: [true, true, true, false] },
@@ -168,11 +165,6 @@ export default async function PdfFineMonthly(
             },
             {
               text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
-            },
-            {
-              text: "(บาท)",
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
@@ -205,9 +197,6 @@ export default async function PdfFineMonthly(
               text: res.data.result_classify[0].income_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[0].income_overdue.toLocaleString(),
-            },
-            {
               text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
             },
             {
@@ -222,9 +211,6 @@ export default async function PdfFineMonthly(
             { text: res.data.result_classify[1].income_due.toLocaleString() },
             {
               text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
-            },
-            {
-              text: res.data.result_classify[1].income_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_overdue.toLocaleString(),
@@ -249,9 +235,6 @@ export default async function PdfFineMonthly(
               text: res.data.result_classify[2].income_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[2].income_overdue.toLocaleString(),
-            },
-            {
               text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
             },
             {
@@ -266,9 +249,6 @@ export default async function PdfFineMonthly(
             { text: res.data.result_classify[3].income_due.toLocaleString() },
             {
               text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
-            },
-            {
-              text: res.data.result_classify[3].income_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_overdue.toLocaleString(),
@@ -553,7 +533,7 @@ export default async function PdfFineMonthly(
       },
 
       {
-        text: "รายงานการชำระค่าปรับสรุปรายเดือน",
+        text: "รายงานการชำระค่าปรับสรุปรายเดือน (ค่าปรับส่วนค่าธรรมเนียมผ่านทาง)",
         fontSize: 14,
         margin: [0, 20, 0, 0],
       },
@@ -640,16 +620,16 @@ export default async function PdfFineMonthly(
             margin: [70, 10, 0, 0],
             style: "table",
             table: {
-              widths: [40, 40, 40, 40],
+              widths: [46, 46, 46, 46],
               body: body1,
             },
           },
 
           {
             style: "table",
-            margin: [-95, 10, 0, 0],
+            margin: [-80, 10, 0, 0],
             table: {
-              widths: [41, 41, 41, 41, 41, 41, 41, 41],
+              widths: [46, 46, 46, 46, 46, 46, 46],
               body: body2,
             },
           },
@@ -677,8 +657,16 @@ export default async function PdfFineMonthly(
         ],
       },
       {
-        text: "(____________________)",
-        margin: [580, 15, 0, 0],
+        columns: [
+          {
+            text: "*มีการยกเว้นค่าปรับถึงวันที่ 31 มีนาคม 2565",
+            margin: [70, 15, 0, 0],
+          },
+          {
+            text: "(____________________)",
+            margin: [200, 15, 0, 0],
+          },
+        ],
       },
       {
         text: "ผู้ตรวจสอบ",

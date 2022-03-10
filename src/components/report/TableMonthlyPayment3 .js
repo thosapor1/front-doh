@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
+import { th } from "date-fns/locale";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => {
@@ -54,14 +55,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TableMonthlyPayment3(props) {
-  const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", car: 0, invoice: 0, expectIncome: 0 },
-  ]);
-
+  const { dataList, selectedDate } = props;
   const classes = useStyles();
   return (
     <>
@@ -70,7 +64,9 @@ export default function TableMonthlyPayment3(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                สรุปข้อมูลรถวันที่ 15 กุมภาพันธ์ 2565
+                {`สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })}`}
               </td>
             </tr>
 
@@ -135,6 +131,25 @@ export default function TableMonthlyPayment3(props) {
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
                 - ชำระเกินกำหนดวันที่ 13
+              </td>
+              <td
+                className={classes.td3}
+                style={{ borderRight: "0px", textAlign: "right" }}
+              >
+                0
+              </td>
+              <td className={classes.td3}>รายการ</td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td3}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "0px",
+                  textAlign: "left",
+                }}
+              >
+                คงเหลือ
               </td>
               <td
                 className={classes.td3}

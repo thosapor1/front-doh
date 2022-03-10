@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       fontFamily: "Sarabun",
-      padding: 20,
+      padding: "0px 0px 0px 20px",
     },
     th: {
       fontWeight: 700,
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 78,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 78,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 78,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -105,7 +105,7 @@ export default function TableMonthlyPayment2(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} colSpan={8}>
+              <td className={classes.td} colSpan={7}>
                 รายได้ค่าปรับการชำระช้าเกินกำหนด
               </td>
             </tr>
@@ -116,7 +116,7 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td} colSpan={2}>
                 ชำระเกินกำหนดวันที่ 3
               </td>
-              <td className={classes.td} colSpan={3}>
+              <td className={classes.td} colSpan={2}>
                 ชำระเกินกำหนดวันที่ 13
               </td>
               <td className={classes.td} colSpan={2}>
@@ -128,7 +128,7 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td2}>ใบแจ้งหนี้</td>
               <td className={classes.td2}>ยอดเงิน</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ค่าปรับ</td>
+
               <td className={classes.td2}>ค่าทวงถาม</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
               <td className={classes.td2}>ยอดเงิน</td>
@@ -137,7 +137,7 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(บาท)</td>
+
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
@@ -152,7 +152,6 @@ export default function TableMonthlyPayment2(props) {
                     <td className={classes.td}>{row.amountOver3d}</td>
                     <td className={classes.td}>{row.invoiceOver13d}</td>
                     <td className={classes.td}>{row.amountOver13d}</td>
-                    <td className={classes.td}>{row.fine}</td>
                     <td className={classes.td}>{row.invoiceBalance}</td>
                     <td className={classes.td}>{row.amountBalance}</td>
                   </tr>
