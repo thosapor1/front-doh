@@ -353,10 +353,12 @@ export default function TablePk3CheckTrue(props) {
                       {!!data.match_gate ? data.match_gate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.audit_approve_date
+                        ? data.audit_approve_date
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.pk3_approve_date ? data.pk3_approve_date : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
@@ -382,15 +384,15 @@ export default function TablePk3CheckTrue(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
+                      {!!data.match_transaction_type_name
+                        ? data.match_transaction_type_name
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
+                      {!!data.refTransactionId ? data.refTransactionId : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!eyesStatus[index] &&

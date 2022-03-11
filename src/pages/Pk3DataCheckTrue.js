@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import SearchComponent from "../components/SearchComponent";
+import SearchComponent2 from "../components/SearchComponent2";
 import TablePk3CheckTrue from "../components/TablePk3CheckTrue";
 import {
   StyledButtonInformation,
@@ -52,8 +52,9 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -126,14 +127,15 @@ export default function PK3DataCheckTrue() {
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  const [status_select, setStatus_select] = useState("3");
+  // const [status_select, setStatus_select] = useState("3");
   const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0);
+  // const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [eyesStatus, setEyesStatus] = useState([]);
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -159,6 +161,17 @@ export default function PK3DataCheckTrue() {
     });
   };
 
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
+
   const fetchData = async (pageId = 1) => {
     let eyes = [];
     Swal.fire({
@@ -182,19 +195,19 @@ export default function PK3DataCheckTrue() {
     // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint,
-      gate: selectGate,
-      state: status_select,
+      checkpoint_id: checkpoint,
+      gate_id: selectGate,
+      state: "0",
       vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      status: "0",
     };
-    console.log(sendData);
+    // console.log(sendData);
 
-    apiURLv10
-      .post("/display-pk3", sendData)
+    apiURL
+      .post("/pk3-approve-display", sendData)
       .then((res) => {
         Swal.close();
         setAllTsTable({
@@ -206,6 +219,7 @@ export default function PK3DataCheckTrue() {
           },
           ts_table: [],
         });
+        console.log(res.data);
         console.log(
           "res: ",
           res.data,
@@ -251,7 +265,7 @@ export default function PK3DataCheckTrue() {
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
     setCheckpoint(0);
-    setStatus_select(0);
+    // setStatus_select(0);
     setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
@@ -283,18 +297,18 @@ export default function PK3DataCheckTrue() {
           },
           ts_table: [],
         });
-        console.log(
-          "res: ",
-          res.data,
-          "tsClass:",
-          res.data.ts_class,
-          "tsGate: ",
-          res.data.ts_gate_table,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
+        // console.log(
+        //   "res: ",
+        //   res.data,
+        //   "tsClass:",
+        //   res.data.ts_class,
+        //   "tsGate: ",
+        //   res.data.ts_gate_table,
+        //   "ts_Table:",
+        //   res.data.ts_table,
+        //   "Summary: ",
+        //   res.data.summary
+        // );
         setAllTsTable(res.data.status !== false ? res.data : []);
       })
       .catch((error) => {
@@ -308,25 +322,10 @@ export default function PK3DataCheckTrue() {
 
   const dataCard = [
     {
-      value: !!summary.ts_count ? summary.ts_count : "0",
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : "0",
       status: "checklist",
       label: "รายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
   ];
 
   useEffect(() => {
@@ -339,7 +338,7 @@ export default function PK3DataCheckTrue() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          รายการตรวจสอบ
+          รายการตรวจสอบแล้ว
         </Typography>
 
         {/* Filter Section */}
@@ -499,82 +498,83 @@ export default function PK3DataCheckTrue() {
         </Grid>
 
         {/* Card Section */}
-        <Box
-          item
-          style={{
-            display: "flex",
-            margin: "10px 0px 0px 0px",
-            justifyContent: "center",
-          }}
-        >
-          <Box style={{ marginRight: "0.8rem" }}>
-            <SearchComponent
-              value={transactionId}
-              date={selectedDate}
-              handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
-              }}
-              name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
-            />
-          </Box>
 
-          <Box
-            style={{
-              display: "flex",
-              // margin: "10px 0px 0px 0px",
-              justifyContent: "space-between",
-            }}
-          >
-            {dataCard.map((card, index) => (
-              <Paper
-                className={classes.card}
-                key={index}
-                style={{
-                  borderLeft:
-                    card.status === "total"
-                      ? "3px solid gray"
-                      : card.status === "normal"
-                      ? "3px solid green"
-                      : card.status === "unMatch"
-                      ? "3px solid orange"
-                      : "3px solid red",
+        <Grid container component={Paper} className={classes.filterSection}>
+          <Box className={classes.cardSection}>
+            <Box style={{ marginRight: "0.8rem" }}>
+              <SearchComponent2
+                value={transactionId}
+                date={selectedDate}
+                handleOnChange={(e) => {
+                  setTransactionId(e.target.value);
+                  checkFormatSearch(e.target.value);
+                  // console.log(e.target.value);
                 }}
-              >
-                <Typography
+                name="search"
+                label="transaction id"
+                setTable={setAllTsTable}
+                endpoint={endpoint}
+                setEyesStatus={setEyesStatus}
+                eyesStatus={eyesStatus}
+              />
+            </Box>
+
+            <Box
+              style={{
+                display: "flex",
+                // margin: "10px 0px 0px 0px",
+                justifyContent: "space-between",
+              }}
+            >
+              {dataCard.map((card, index) => (
+                <Paper
+                  className={classes.card}
+                  key={index}
                   style={{
-                    color:
+                    borderLeft:
                       card.status === "total"
-                        ? "gray"
+                        ? "3px solid gray"
                         : card.status === "normal"
-                        ? "green"
+                        ? "3px solid green"
                         : card.status === "unMatch"
-                        ? "orange"
-                        : "red",
-                    fontSize: "0.9rem",
+                        ? "3px solid orange"
+                        : "3px solid red",
                   }}
                 >
-                  {card.label}
-                </Typography>
-                <Typography
-                  style={{
-                    fontSize: "1.15rem",
-                    fontWeight: 700,
-                    textAlign: "center",
-                  }}
-                >
-                  {!!card.value ? card.value.toLocaleString() : []}
-                </Typography>
-                <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                  {card.status === "revenue" ? " บาท" : " รายการ"}
-                </Typography>
-              </Paper>
-            ))}
+                  <Typography
+                    style={{
+                      color:
+                        card.status === "total"
+                          ? "gray"
+                          : card.status === "normal"
+                          ? "green"
+                          : card.status === "unMatch"
+                          ? "orange"
+                          : "red",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {card.label}
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: "1.15rem",
+                      fontWeight: 700,
+                      textAlign: "center",
+                    }}
+                  >
+                    {!!card.value ? card.value.toLocaleString() : []}
+                  </Typography>
+                  <Typography
+                    style={{ fontSize: "0.7rem", textAlign: "center" }}
+                  >
+                    {card.status === "revenue" ? " บาท" : " รายการ"}
+                  </Typography>
+                </Paper>
+              ))}
+            </Box>
           </Box>
-        </Box>
+        </Grid>
         {/* Table Section */}
         <Grid
           container
