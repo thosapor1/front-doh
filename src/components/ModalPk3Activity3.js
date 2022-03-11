@@ -1128,6 +1128,47 @@ export default function ModalPK3Activity3(props) {
               />
             </div>
           </TabPanel4>
+
+          <TableContainer className={classes.tableContainer}></TableContainer>
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    เพิ่มเติม
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>refTransactionID</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="refTransactionID"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      // value={TransactionsPeat}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>transactionID</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="transactionIDPK3"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      // value={commentPK3}
+                    />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
         {/* ML (LP) Block */}
