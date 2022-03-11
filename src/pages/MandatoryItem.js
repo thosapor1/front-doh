@@ -21,6 +21,10 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import TableMandatoryItem from "../components/TableMandatoryItem";
 import SearchComponent from "../components/SearchComponent";
+import {
+  StyledButtonInformation,
+  StyledButtonRefresh,
+} from "../styledComponent/StyledButton";
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -186,9 +190,9 @@ export default function MandatoryItem() {
     // console.log(status_select);
     const sendData = {
       page: pageId,
-      checkpoint_id: checkpoint,
+      checkpoint_id: checkpoint.toString(),
       gate_id: selectGate,
-      state: status_select,
+      state: status_select.toString(),
       vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
@@ -463,20 +467,12 @@ export default function MandatoryItem() {
             />
           </MuiPickersUtilsProvider>
 
-          <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={() => fetchData(1)}
-          >
+          <StyledButtonInformation onClick={() => fetchData(1)}>
             ดูข้อมูล
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.btn2}
-            onClick={() => refresh(1)}
-          >
+          </StyledButtonInformation>
+          <StyledButtonRefresh onClick={() => refresh(1)}>
             refresh
-          </Button>
+          </StyledButtonRefresh>
         </Grid>
 
         {/* Card Section */}

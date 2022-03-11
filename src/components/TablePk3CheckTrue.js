@@ -20,8 +20,7 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalPK3Activity2 from "./ModalPk3Activity2";
-import ModalPK3Activity3 from "./ModalPk3Activity3";
+import ModalActivity3 from "./ModalActivity3";
 import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
@@ -353,10 +352,12 @@ export default function TablePk3CheckTrue(props) {
                       {!!data.match_gate ? data.match_gate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.audit_approve_date
+                        ? data.audit_approve_date
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.pk3_approve_date ? data.pk3_approve_date : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
@@ -382,15 +383,15 @@ export default function TablePk3CheckTrue(props) {
                       {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
+                      {!!data.match_transaction_type_name
+                        ? data.match_transaction_type_name
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
+                      {!!data.refTransactionId ? data.refTransactionId : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!eyesStatus[index] &&
@@ -455,7 +456,7 @@ export default function TablePk3CheckTrue(props) {
         </Table>
       </TableContainer>
 
-      <ModalPK3Activity3
+      <ModalActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
