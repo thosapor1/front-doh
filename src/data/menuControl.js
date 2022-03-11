@@ -238,6 +238,11 @@ export const menuItemsForPk3 = [
     path: "/pk3DisplayV2",
   },
   {
+    text: "รายการตรวจสอบแล้ว",
+    icon: "pending_actions",
+    path: "/Pk3DataCheckTrue",
+  },
+  {
     text: "รายการบังคับ",
     icon: "playlist_add_check",
     path: "/MandatoryItem",

@@ -377,6 +377,8 @@ export default function Layout({ children }) {
                       <DesktopMacRoundedIcon />
                     ) : item.path === "/Payment" ? (
                       <MonetizationOnRoundedIcon />
+                    ) : item.path === "/Pk3DataCheckTrue" ? (
+                      <PlaylistAddCheckRoundedIcon />
                     ) : item.path === "/ExportData" ? (
                       <ImportExportRoundedIcon />
                     ) : (
