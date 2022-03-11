@@ -25,6 +25,7 @@ import ExportData from "./pages/ExportData";
 import SuperAuditDisplayV3 from "./pages/SuperAuditDisplayV3";
 import PK3DisplayV2 from "./pages/Pk3DisplayV2";
 import Pk3DataCheckTrue from "./pages/Pk3DataCheckTrue";
+import CloseSytem from "./pages/CloseSytem";
 import { StylesProvider } from "@material-ui/core/styles";
 import theme from "./styles/theme";
 
@@ -37,6 +38,7 @@ function App() {
         <HashRouter>
           <Switch>
             <Route exact path="/" component={Login} />
+            <Route exact path="/closesytem" component={CloseSytem} />
             <Route path="/audit_dev" component={Login} />
             <Layout>
               <Route path="/dashboard" component={DashBoard} />
