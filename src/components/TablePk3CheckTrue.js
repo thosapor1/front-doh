@@ -20,8 +20,7 @@ import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ModalPK3Activity2 from "./ModalPk3Activity2";
-import ModalPK3Activity3 from "./ModalPk3Activity3";
+import ModalActivity3 from "./ModalActivity3";
 import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
@@ -457,7 +456,7 @@ export default function TablePk3CheckTrue(props) {
         </Table>
       </TableContainer>
 
-      <ModalPK3Activity3
+      <ModalActivity3
         dataList={dataForActivity}
         open={open}
         onClick={handleClose}
