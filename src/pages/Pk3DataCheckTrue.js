@@ -1,7 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
@@ -19,17 +18,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableMandatoryItem from "../components/TableMandatoryItem";
-import SearchComponent from "../components/SearchComponent";
+import SearchComponent2 from "../components/SearchComponent2";
+import TablePk3CheckTrue from "../components/TablePk3CheckTrue";
 import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv10 = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
+      : `${process.env.REACT_APP_BASE_URL_V10}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -46,8 +52,9 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -60,23 +67,9 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 80,
-    },
-    btn: {
-      backgroundColor: "#46005E",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "#6a008f",
-      },
-    },
-    btn2: {
-      backgroundColor: "green",
-      color: "white",
-      margin: theme.spacing(1),
-      "&:hover": {
-        backgroundColor: "darkgreen",
-      },
+      height: 50,
+      paddingTop: 5,
+      width: "100%",
     },
     input: {
       "& .MuiInputBase-input": {
@@ -123,26 +116,26 @@ const useStyles = makeStyles((theme) => {
 
 const valueStatus = [
   {
-    id: 0,
-    value: 0,
-    label: "ทุกสถานะ",
+    id: 1,
+    value: 3,
+    label: "รอจัดเก็บตรวจสอบ",
   },
 ];
 
-export default function MandatoryItem() {
+export default function PK3DataCheckTrue() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  const [status_select, setStatus_select] = useState("0");
-  // const [status, setStatus] = useState(0);
-  // const [subState, setSubState] = useState(0);
+  // const [status_select, setStatus_select] = useState("3");
+  const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
-  const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState("0");
+  // const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [eyesStatus, setEyesStatus] = useState([]);
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -168,7 +161,19 @@ export default function MandatoryItem() {
     });
   };
 
-  const fetchData = (pageId = 1) => {
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
+
+  const fetchData = async (pageId = 1) => {
+    let eyes = [];
     Swal.fire({
       title: "Loading",
       allowOutsideClick: false,
@@ -189,20 +194,20 @@ export default function MandatoryItem() {
     // console.log(selectCarType);
     // console.log(status_select);
     const sendData = {
-      page: pageId,
-      checkpoint_id: checkpoint.toString(),
+      page: pageId.toString(),
+      checkpoint_id: checkpoint,
       gate_id: selectGate,
-      state: status_select.toString(),
+      state: "0",
       vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      status: "0",
     };
-    console.log(sendData);
+    // console.log(sendData);
 
     apiURL
-      .post("/pk3-force-display", sendData)
+      .post("/pk3-approve-display", sendData)
       .then((res) => {
         Swal.close();
         setAllTsTable({
@@ -214,6 +219,7 @@ export default function MandatoryItem() {
           },
           ts_table: [],
         });
+        console.log(res.data);
         console.log(
           "res: ",
           res.data,
@@ -224,7 +230,17 @@ export default function MandatoryItem() {
         );
 
         setAllTsTable(res.data.status !== false ? res.data : []);
-        setCardData(res.data.status !== false ? res.data.summary : []);
+        setSummary(res.data.status !== false ? res.data.summary : []);
+        if (!!res && !!res.data.resultsDisplay) {
+          for (let i = 0; i <= res.data.resultsDisplay.length - 1; i++) {
+            eyes.push({
+              state: res.data.resultsDisplay[i].state,
+              readFlag: res.data.resultsDisplay[i].pk3_readFlag,
+              transactionId: res.data.resultsDisplay[i].transactionId,
+            });
+          }
+          setEyesStatus(eyes);
+        }
       })
       .catch((error) => {
         // handleClose();
@@ -249,7 +265,7 @@ export default function MandatoryItem() {
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
     setCheckpoint(0);
-    setStatus_select(0);
+    // setStatus_select(0);
     setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
@@ -260,7 +276,7 @@ export default function MandatoryItem() {
     );
 
     const sendData = {
-      page: pageId,
+      page: pageId.toString(),
       checkpoint_id: "0",
       datetime: date,
       startTime: timeStart,
@@ -281,18 +297,18 @@ export default function MandatoryItem() {
           },
           ts_table: [],
         });
-        console.log(
-          "res: ",
-          res.data,
-          "tsClass:",
-          res.data.ts_class,
-          "tsGate: ",
-          res.data.ts_gate_table,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
+        // console.log(
+        //   "res: ",
+        //   res.data,
+        //   "tsClass:",
+        //   res.data.ts_class,
+        //   "tsGate: ",
+        //   res.data.ts_gate_table,
+        //   "ts_Table:",
+        //   res.data.ts_table,
+        //   "Summary: ",
+        //   res.data.summary
+        // );
         setAllTsTable(res.data.status !== false ? res.data : []);
       })
       .catch((error) => {
@@ -304,6 +320,14 @@ export default function MandatoryItem() {
       });
   };
 
+  const dataCard = [
+    {
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : "0",
+      status: "checklist",
+      label: "รายการตรวจสอบ",
+    },
+  ];
+
   useEffect(() => {
     // fetchData();
     getCheckpoint();
@@ -314,7 +338,7 @@ export default function MandatoryItem() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          รายการบังคับ
+          รายการตรวจสอบแล้ว
         </Typography>
 
         {/* Filter Section */}
@@ -373,12 +397,11 @@ export default function MandatoryItem() {
               : []}
           </TextField>
 
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="สถานะ"
             value={status_select}
-            disabled
             onChange={(e) => {
               setStatus_select(e.target.value);
             }}
@@ -398,7 +421,6 @@ export default function MandatoryItem() {
             select
             variant="outlined"
             label="ประเภทTS"
-            disabled
             value={tsType}
             onChange={(e) => {
               setTsType(e.target.value);
@@ -417,7 +439,7 @@ export default function MandatoryItem() {
                     </MenuItem>
                   ))
               : []}
-          </TextField>
+          </TextField> */}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -476,37 +498,83 @@ export default function MandatoryItem() {
         </Grid>
 
         {/* Card Section */}
-        <Box className={classes.cardSection}>
-          <Box>
-            <SearchComponent
-              value={transactionId}
-              date={selectedDate}
-              handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
+
+        <Grid container component={Paper} className={classes.filterSection}>
+          <Box className={classes.cardSection}>
+            <Box style={{ marginRight: "0.8rem" }}>
+              <SearchComponent2
+                value={transactionId}
+                date={selectedDate}
+                handleOnChange={(e) => {
+                  setTransactionId(e.target.value);
+                  checkFormatSearch(e.target.value);
+                  // console.log(e.target.value);
+                }}
+                name="search"
+                label="transaction id"
+                setTable={setAllTsTable}
+                endpoint={endpoint}
+                setEyesStatus={setEyesStatus}
+                eyesStatus={eyesStatus}
+              />
+            </Box>
+
+            <Box
+              style={{
+                display: "flex",
+                // margin: "10px 0px 0px 0px",
+                justifyContent: "space-between",
               }}
-              name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/audit-search"
-            />
+            >
+              {dataCard.map((card, index) => (
+                <Paper
+                  className={classes.card}
+                  key={index}
+                  style={{
+                    borderLeft:
+                      card.status === "total"
+                        ? "3px solid gray"
+                        : card.status === "normal"
+                        ? "3px solid green"
+                        : card.status === "unMatch"
+                        ? "3px solid orange"
+                        : "3px solid red",
+                  }}
+                >
+                  <Typography
+                    style={{
+                      color:
+                        card.status === "total"
+                          ? "gray"
+                          : card.status === "normal"
+                          ? "green"
+                          : card.status === "unMatch"
+                          ? "orange"
+                          : "red",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {card.label}
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: "1.15rem",
+                      fontWeight: 700,
+                      textAlign: "center",
+                    }}
+                  >
+                    {!!card.value ? card.value.toLocaleString() : []}
+                  </Typography>
+                  <Typography
+                    style={{ fontSize: "0.7rem", textAlign: "center" }}
+                  >
+                    {card.status === "revenue" ? " บาท" : " รายการ"}
+                  </Typography>
+                </Paper>
+              ))}
+            </Box>
           </Box>
-          <Box style={{ display: "flex" }}>
-            <Paper className={classes.card} style={{ marginLeft: 10 }}>
-              <Typography className={classes.typography}>
-                {`รายได้ประมาณการ : ${
-                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                ชำระแล้ว : 0
-              </Typography>
-              <Typography className={classes.typography}>
-                ค้างชำระ : 0
-              </Typography>
-            </Paper>
-          </Box>
-        </Box>
+        </Grid>
         {/* Table Section */}
         <Grid
           container
@@ -514,13 +582,15 @@ export default function MandatoryItem() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TableMandatoryItem
+            <TablePk3CheckTrue
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}
               onFetchData={fetchData}
               dropdown={dropdown}
               checkDate={selectedDate}
+              eyesStatus={eyesStatus}
+              setEyesStatus={setEyesStatus}
             />
           </Grid>
         </Grid>
