@@ -657,12 +657,15 @@ export default function ModalPK3Activity3(props) {
         TransactionsPeat: "",
         commentPK3: "",
         operation: "",
-        TransID: !!dataList.resultsDisplay[0].pk3_transactionId
-          ? dataList.resultsDisplay[0].pk3_transactionId
-          : "",
-        RefID: !!dataList.resultsDisplay[0].mf_lane_tranId
-          ? dataList.resultsDisplay[0].mf_lane_tranId
-          : "",
+        TransID:
+          !!dataList.resultsDisplay &&
+          dataList.resultsDisplay[0].pk3_transactionId
+            ? dataList.resultsDisplay[0].pk3_transactionId
+            : "",
+        RefID:
+          !!dataList.resultsDisplay && dataList.resultsDisplay[0].mf_lane_tranId
+            ? dataList.resultsDisplay[0].mf_lane_tranId
+            : "",
       });
       setFileName("");
       setVehicleClass(

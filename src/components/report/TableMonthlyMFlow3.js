@@ -158,6 +158,27 @@ export default function TableMonthlyMFlow3(props) {
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>
+            <tr>
+              <td
+                className={classes.td3}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "0px",
+                  textAlign: "left",
+                }}
+              >
+                คงเหลือ
+              </td>
+              <td
+                className={classes.td3}
+                style={{ borderRight: "0px", textAlign: "right" }}
+              >
+                {!!dataList.result_sum
+                  ? dataList.result_classify[3].count_bill_remain.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td3}>รายการ</td>
+            </tr>
           </table>
         </div>
       </Box>

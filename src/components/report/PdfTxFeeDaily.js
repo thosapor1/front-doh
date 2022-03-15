@@ -49,7 +49,7 @@ export default function PdfTxFeeDaily(
       { text: "ทะเบียนจังหวัด", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ด่าน", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ประเภทรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ค่าผ่านทาง " },
+      { text: "ค่าผ่านทาง ", border: [true, true, true, false] },
       { text: "วิธีการชำระเงิน", colSpan: 3 },
       {},
       {},
@@ -62,13 +62,15 @@ export default function PdfTxFeeDaily(
       {},
       {},
       {},
-      { text: "(บาท)", margin: [0, -5, 0, 0] },
-      { text: "รูปแบบ", margin: [0, -5, 0, 0] },
+      {
+        text: "(บาท)",
+        border: [true, false, false, true],
+      },
+      { text: "รูปแบบ" },
       {
         text: "ประเภท",
-        margin: [0, -5, 0, 0],
       },
-      { text: "ช่องทาง", margin: [0, -5, 0, 0] },
+      { text: "ช่องทาง" },
     ],
   ];
 
@@ -94,30 +96,31 @@ export default function PdfTxFeeDaily(
           // console.log(index);
           body.push([
             index + 1,
-            !!res.data[index].refTransactionId
-              ? res.data[index].refTransactionId
+            !!res.data[index].billing_issueDate
+              ? res.data[index].billing_issueDate
               : "-",
-            !!res.data[index].type ? res.data[index].type : "-",
-            !!res.data[index].cameras_plateNo1
-              ? res.data[index].cameras_plateNo1
+            !!res.data[index].billing_invoiceNo
+              ? res.data[index].billing_invoiceNo
+              : "-",
+            !!res.data[index].license_plate
+              ? res.data[index].license_plate
               : "-",
             !!res.data[index].province_description
               ? res.data[index].province_description
               : "-",
-            !!res.data[index].match_real_vehicleClass
-              ? `C${res.data[index].match_real_vehicleClass}`
-              : "-",
-            !!res.data[index].original_plaza_name
-              ? res.data[index].original_plaza_name
-              : "-",
-            !!res.data[index].cameras_cameraTimestamp
-              ? res.data[index].cameras_cameraTimestamp.split(" ")[1]
+            !!res.data[index].origin_plaza_name
+              ? res.data[index].origin_plaza_name
               : "-",
             !!res.data[index].match_real_vehicleClass
-              ? `C${res.data[index].match_real_vehicleClass}`
+              ? res.data[index].match_real_vehicleClass
               : "-",
             !!res.data[index].match_real_fee
               ? res.data[index].match_real_fee
+              : "-",
+            !!res.data[index].type_1 ? res.data[index].type_1 : "-",
+            !!res.data[index].type_2 ? res.data[index].type_2 : "-",
+            !!res.data[index].payment_paymentChannel_code
+              ? res.data[index].payment_paymentChannel_code
               : "-",
           ]);
         }
@@ -274,7 +277,7 @@ export default function PdfTxFeeDaily(
       {
         style: "table2",
         table: {
-          widths: [25, 60, 90, 45, 55, 30, 30, 30, 40, 40,40],
+          widths: [25, 50, 80, 45, 55, 40, 40, 40, 40, 40, 60],
           headerRows: 2,
           body: body,
         },

@@ -30,7 +30,6 @@ export default async function PdfFeeDaily(
   endTime
 ) {
   // let win = window.open("", "_blank");
-  const date = format(selectedDate, "dd MMMM yyyy");
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
@@ -49,7 +48,7 @@ export default async function PdfFeeDaily(
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-payment", sendData).then(async (res) => {
+      return apiURL.post("/report-list-payment", sendData).then(async (res) => {
         body.push(
           [
             {

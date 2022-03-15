@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyPayment4(props) {
+export default function TablePressTheClaim3(props) {
   const { dataList, selectedDate } = props;
 
   const classes = useStyles();
@@ -73,90 +73,45 @@ export default function TableMonthlyPayment4(props) {
 
             <tr>
               <td
-                className={classes.td}
+                className={classes.td2}
                 style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "0px",
                   width: 200,
                   textAlign: "left",
-                  borderRight: "1px solid black",
                 }}
               >
-                ยอดค่าปรับพึงได้
+                จำนวนใบแจ้งหนี้ที่มีค่าทวงถาม
               </td>
               <td
-                className={classes.td}
-                style={{
-                  borderLeft: "0px",
-                  borderRight: "1px solid black",
-                  textAlign: "right",
-                }}
+                className={classes.td2}
+                style={{ borderRight: "0px", textAlign: "right" }}
               >
                 0
               </td>
-              <td className={classes.td} style={{ borderLeft: "0px" }}>
-                บาท
-              </td>
+              <td className={classes.td2}>รายการ</td>
             </tr>
             <tr>
               <td
-                className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                  textAlign: "left",
-                }}
+                className={classes.td3}
+                style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                ยอดชำระค่าปรับ
+                จำนวนใบแจ้งหนี้ที่ชำระค่าทวงถาม
               </td>
               <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
+                className={classes.td3}
+                style={{ borderRight: "0px", textAlign: "right" }}
               >
                 0
               </td>
-              <td className={classes.td2}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 3
-              </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                0
-              </td>
-              <td className={classes.td2}>บาท</td>
+              <td className={classes.td3}>รายการ</td>
             </tr>
             <tr>
               <td
                 className={classes.td3}
                 style={{
                   borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 13
-              </td>
-              <td
-                className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                0
-              </td>
-              <td className={classes.td3}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td3}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
+                  borderRight: "0px",
                   textAlign: "left",
                 }}
               >
@@ -164,11 +119,11 @@ export default function TableMonthlyPayment4(props) {
               </td>
               <td
                 className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
+                style={{ borderRight: "0px", textAlign: "right" }}
               >
                 0
               </td>
-              <td className={classes.td3}>บาท</td>
+              <td className={classes.td3}>รายการ</td>
             </tr>
           </table>
         </div>

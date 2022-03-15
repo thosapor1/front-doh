@@ -65,6 +65,11 @@ import PdfFineMonthly from "../components/report/PdfFineMonthly";
 import PdfDebt from "../components/report/PdfDebt";
 import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
 import PdfGuarantee from "../components/report/PdfGuarantee";
+import TablePressTheClaim1 from "../components/report/TablePressTheClaim1";
+import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
+import TablePressTheClaim3 from "../components/report/TablePressTheClaim3";
+import TablePressTheClaim4 from "../components/report/TablePressTheClaim4";
+import PdfPressTheClaim from "../components/report/PdfPressTheClaim";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -97,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "rgba(235,176,129,0.15)",
     paddingTop: 20,
+    width: "88.5vw",
   },
   tabs: {
     flexGrow: 1,
@@ -377,6 +383,8 @@ export default function Report() {
             value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
+            variant="scrollable"
+            scrollButtons="auto"
           >
             <Tab
               label="สรปุ TS ประจำวัน"
@@ -419,16 +427,24 @@ export default function Report() {
               {...a11yProps(7)}
               className={classes.tab}
             />
+
+            <Tab
+              label="สรุปค่าทวงถาม"
+              {...a11yProps(8)}
+              className={classes.tab}
+            />
+
             <Tab
               label="สรุปหนี้คงค้าง"
-              {...a11yProps(8)}
+              {...a11yProps(9)}
               className={classes.tab}
             />
             <Tab
               label="สรุปประกันค่าผ่านทาง"
-              {...a11yProps(9)}
+              {...a11yProps(10)}
               className={classes.tab}
             />
+
             {/* <Tab
               label="รายงานสรุปจราจร"
               {...a11yProps(4)}
@@ -908,6 +924,7 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
+
           <TabPanel value={value} index={7}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
@@ -928,7 +945,7 @@ export default function Report() {
                   className={classes.typography}
                   style={{ marginTop: 20 }}
                 >
-                  รายงานการชำระค่าปรับสรุปรายเดือน
+                  {`รายงานการชำระค่าปรับสรุปรายเดือน (ค่าปรับส่วนค่าธรรมเนียมผ่านทาง)`}
                 </Typography>
                 <div
                   style={{
@@ -956,17 +973,75 @@ export default function Report() {
                   style={{
                     display: "flex",
                     justifyContent: "right",
-                    marginRight: 210,
+                    marginRight: 214,
                   }}
                 >
-                  <TableMonthlyPayment3 />
-                  <TableMonthlyPayment4 />
+                  <TableMonthlyPayment3 selectedDate={selectedDate} />
+                  <TableMonthlyPayment4 selectedDate={selectedDate} />
                 </div>
               </Paper>
             </Container>
           </TabPanel>
 
           <TabPanel value={value} index={8}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData3}
+                report={PdfPressTheClaim}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานการชำระค่าปรับสรุปรายเดือน (ค่าทวงถาม)
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TablePressTheClaim1 />
+                  <TablePressTheClaim2 />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 214,
+                  }}
+                >
+                  <TablePressTheClaim3 selectedDate={selectedDate} />
+                  <TablePressTheClaim4 selectedDate={selectedDate} />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={9}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}
@@ -1022,7 +1097,8 @@ export default function Report() {
               </Paper>
             </Container>
           </TabPanel>
-          <TabPanel value={value} index={9}>
+
+          <TabPanel value={value} index={10}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData3}

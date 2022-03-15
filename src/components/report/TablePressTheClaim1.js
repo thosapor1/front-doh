@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -53,14 +53,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyPayment1(props) {
+export default function TablePressTheClaim1(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", fee: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", fee: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", fee: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", fee: 0, invoice: 0, expectIncome: 0 },
-  ]);
 
   const classes = useStyles();
   return (
@@ -77,33 +71,40 @@ export default function TableMonthlyPayment1(props) {
               <td className={classes.td} rowSpan={3}>
                 ประเภทรถ
               </td>
-              <td className={classes.td} colSpan={3}>
-                ค่าปรับการชำระเกินกำหนด
+              <td className={classes.td} colSpan={2}>
+                ชำระเกินกำหนดวันที่ 13
               </td>
             </tr>
 
             <tr>
-              <td className={classes.td2}>รถผ่านทาง</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ค่าปรับพึงได้</td>
+              <td className={classes.td2}>ค่าทวงถามพึงได้</td>
             </tr>
             <tr>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.fee}</td>
-                    <td className={classes.td}>{row.invoice}</td>
-                    <td className={classes.td}>{row.expectIncome}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
           </table>
         </div>
       </Box>

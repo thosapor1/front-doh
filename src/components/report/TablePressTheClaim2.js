@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -53,50 +53,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyPayment2(props) {
+export default function TablePressTheClaim2(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    {
-      class: "C1",
-      invoiceOver3d: 0,
-      amountOver3d: 0,
-      invoiceOver13d: 0,
-      amountOver13d: 0,
-      fine: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "C2",
-      invoiceOver3d: 0,
-      amountOver3d: 0,
-      invoiceOver13d: 0,
-      amountOver13d: 0,
-      fine: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "C3",
-      invoiceOver3d: 0,
-      amountOver3d: 0,
-      invoiceOver13d: 0,
-      amountOver13d: 0,
-      fine: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-    {
-      class: "Total",
-      invoiceOver3d: 0,
-      amountOver3d: 0,
-      invoiceOver13d: 0,
-      amountOver13d: 0,
-      fine: 0,
-      invoiceBalance: 0,
-      amountBalance: 0,
-    },
-  ]);
 
   const classes = useStyles();
   return (
@@ -105,16 +63,13 @@ export default function TableMonthlyPayment2(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} colSpan={7}>
+              <td className={classes.td} colSpan={5}>
                 รายได้ค่าปรับการชำระช้าเกินกำหนด
               </td>
             </tr>
             <tr>
               <td className={classes.td} rowSpan={3}>
                 ประเภทรถ
-              </td>
-              <td className={classes.td} colSpan={2}>
-                ชำระเกินกำหนดวันที่ 3
               </td>
               <td className={classes.td} colSpan={2}>
                 ชำระเกินกำหนดวันที่ 13
@@ -126,9 +81,6 @@ export default function TableMonthlyPayment2(props) {
 
             <tr>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ยอดเงิน</td>
-              <td className={classes.td2}>ใบแจ้งหนี้</td>
-
               <td className={classes.td2}>ค่าทวงถาม</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
               <td className={classes.td2}>ยอดเงิน</td>
@@ -137,26 +89,37 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(รายการ)</td>
-
-              <td className={classes.td3}>(บาท)</td>
-              <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.invoiceOver3d}</td>
-                    <td className={classes.td}>{row.amountOver3d}</td>
-                    <td className={classes.td}>{row.invoiceOver13d}</td>
-                    <td className={classes.td}>{row.amountOver13d}</td>
-                    <td className={classes.td}>{row.invoiceBalance}</td>
-                    <td className={classes.td}>{row.amountBalance}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+              <td className={classes.td}>0</td>
+            </tr>
           </table>
         </div>
       </Box>
