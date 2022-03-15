@@ -51,7 +51,7 @@ export default async function PdfPressTheClaim(
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-income", sendData).then(async (res) => {
+      return apiURL.post("/report-debt", sendData).then(async (res) => {
         body1.push(
           [
             {
@@ -90,22 +90,22 @@ export default async function PdfPressTheClaim(
           [
             { text: "C1" },
             { text: res.data.result_sum[0].count_bill.toLocaleString() },
-            { text: res.data.result_sum[0].income.toLocaleString() },
+            { text: res.data.result_sum[0].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "C2" },
             { text: res.data.result_sum[1].count_bill.toLocaleString() },
-            { text: res.data.result_sum[1].income.toLocaleString() },
+            { text: res.data.result_sum[1].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "C3" },
             { text: res.data.result_sum[2].count_bill.toLocaleString() },
-            { text: res.data.result_sum[2].income.toLocaleString() },
+            { text: res.data.result_sum[2].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "รวม" },
             { text: res.data.result_sum[3].count_bill.toLocaleString() },
-            { text: res.data.result_sum[3].income.toLocaleString() },
+            { text: res.data.result_sum[3].demand_fee_amount.toLocaleString() },
           ]
         );
         body2.push(
@@ -159,61 +159,61 @@ export default async function PdfPressTheClaim(
           [
             { text: "C1" },
             {
-              text: res.data.result_classify[0].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[0].invoice_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[0].income_overdue.toLocaleString(),
+              text: res.data.result_classify[0].amount.toLocaleString(),
             },
             {
-              text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
+              text: res.data.result_classify_balance[0].bill_balance.toLocaleString(),
             },
             {
-              text: res.data.result_classify[0].income_remain.toLocaleString(),
+              text: res.data.result_classify_balance[0].demand_balance.toLocaleString(),
             },
           ],
           [
             { text: "C2" },
             {
-              text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[1].invoice_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[1].income_overdue.toLocaleString(),
+              text: res.data.result_classify[1].amount.toLocaleString(),
             },
             {
-              text: res.data.result_classify[1].count_bill_remain.toLocaleString(),
+              text: res.data.result_classify_balance[1].bill_balance.toLocaleString(),
             },
             {
-              text: res.data.result_classify[1].income_remain.toLocaleString(),
+              text: res.data.result_classify_balance[1].demand_balance.toLocaleString(),
             },
           ],
           [
             { text: "C3" },
             {
-              text: res.data.result_classify[2].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[2].invoice_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[2].income_overdue.toLocaleString(),
+              text: res.data.result_classify[2].amount.toLocaleString(),
             },
             {
-              text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
+              text: res.data.result_classify_balance[2].bill_balance.toLocaleString(),
             },
             {
-              text: res.data.result_classify[2].income_remain.toLocaleString(),
+              text: res.data.result_classify_balance[2].demand_balance.toLocaleString(),
             },
           ],
           [
             { text: "รวม" },
             {
-              text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[3].invoice_overdue.toLocaleString(),
             },
             {
-              text: res.data.result_classify[3].income_overdue.toLocaleString(),
+              text: res.data.result_classify[3].amount.toLocaleString(),
             },
             {
-              text: res.data.result_classify[3].count_bill_remain.toLocaleString(),
+              text: res.data.result_classify_balance[3].bill_balance.toLocaleString(),
             },
             {
-              text: res.data.result_classify[3].income_remain.toLocaleString(),
+              text: res.data.result_classify_balance[3].demand_balance.toLocaleString(),
             },
           ]
         );
@@ -235,7 +235,7 @@ export default async function PdfPressTheClaim(
               border: [true, false, false, false],
             },
             {
-              text: res.data.result_classify[3].count_bill_due.toLocaleString(),
+              text: res.data.result_classify_balance[2].demand_balance.toLocaleString(),
               alignment: "right",
               border: [false, false, false, false],
             },
@@ -248,7 +248,7 @@ export default async function PdfPressTheClaim(
               border: [true, false, false, true],
             },
             {
-              text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[3].invoice_overdue.toLocaleString(),
               alignment: "right",
               margin: [10, 0, 0, 0],
               border: [false, false, false, true],
@@ -262,7 +262,7 @@ export default async function PdfPressTheClaim(
               border: [true, false, false, true],
             },
             {
-              text: res.data.result_sum[3].income.toLocaleString(),
+              text: res.data.result_classify_balance[3].bill_balance.toLocaleString(),
               alignment: "right",
               border: [false, false, false, true],
             },
@@ -289,7 +289,7 @@ export default async function PdfPressTheClaim(
               border: [true, false, true, false],
             },
             {
-              text: res.data.result_classify[3].income_due.toLocaleString(),
+              text: res.data.result_sum[3].demand_fee_amount.toLocaleString(),
               alignment: "right",
               border: [true, false, true, false],
             },
@@ -302,7 +302,7 @@ export default async function PdfPressTheClaim(
               border: [true, false, true, true],
             },
             {
-              text: res.data.result_classify[3].income_overdue.toLocaleString(),
+              text: res.data.result_classify[3].amount.toLocaleString(),
               alignment: "right",
               margin: [10, 0, 0, 0],
               border: [false, false, true, true],
@@ -315,7 +315,7 @@ export default async function PdfPressTheClaim(
               alignment: "left",
             },
             {
-              text: res.data.result_sum[3].income.toLocaleString(),
+              text: res.data.result_classify_balance[3].demand_balance.toLocaleString(),
               alignment: "right",
             },
             { text: "บาท" },

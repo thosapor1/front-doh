@@ -65,9 +65,13 @@ export default function TablePressTheClaim4(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                {`สรุปข้อมูลยอดชำระวันที่ ${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })}`}
+                {`สรุปข้อมูลยอดชำระวันที่ ${format(
+                  selectedDate,
+                  "dd MMMM yyyy",
+                  {
+                    locale: th,
+                  }
+                )}`}
               </td>
             </tr>
 
@@ -87,7 +91,9 @@ export default function TablePressTheClaim4(props) {
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].demand_fee_amount.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2}>บาท</td>
             </tr>
@@ -110,7 +116,9 @@ export default function TablePressTheClaim4(props) {
                   width: 20,
                 }}
               >
-                0
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].amount.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3}>บาท</td>
             </tr>
@@ -132,7 +140,9 @@ export default function TablePressTheClaim4(props) {
                   textAlign: "right",
                 }}
               >
-                0
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[3].demand_balance.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3} style={{ width: 20 }}>
                 บาท

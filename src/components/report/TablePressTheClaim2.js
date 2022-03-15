@@ -94,31 +94,95 @@ export default function TablePressTheClaim2(props) {
 
             <tr>
               <td className={classes.td}>C1</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].invoice_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[0].amount.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[0].bill_balance.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[0].demand_balance.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].invoice_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[1].amount.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[1].bill_balance.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[1].demand_balance.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].invoice_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[2].amount.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[2].bill_balance.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[2].demand_balance.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>รวม</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].invoice_overdue.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].amount.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[3].bill_balance.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[3].demand_balance.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
           </table>
         </div>

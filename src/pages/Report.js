@@ -1081,8 +1081,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TablePressTheClaim1  dataList={debtData} />
-                  <TablePressTheClaim2  dataList={debtData} />
+                  <TablePressTheClaim1 dataList={debtData} />
+                  <TablePressTheClaim2 dataList={debtData} />
                 </div>
                 <div
                   style={{
@@ -1091,8 +1091,14 @@ export default function Report() {
                     marginRight: 214,
                   }}
                 >
-                  <TablePressTheClaim3  dataList={debtData} selectedDate={selectedDate} />
-                  <TablePressTheClaim4  dataList={debtData} selectedDate={selectedDate} />
+                  <TablePressTheClaim3
+                    dataList={debtData}
+                    selectedDate={selectedDate}
+                  />
+                  <TablePressTheClaim4
+                    dataList={debtData}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
