@@ -51,7 +51,7 @@ export default async function PdfFineMonthly(
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-income", sendData).then(async (res) => {
+      return apiURL.post("/report-income-fine", sendData).then(async (res) => {
         body1.push(
           [
             {
@@ -97,27 +97,35 @@ export default async function PdfFineMonthly(
           ],
           [
             { text: "C1" },
-            { text: res.data.result_sum[0].count_vehicle.toLocaleString() },
-            { text: res.data.result_sum[0].count_bill.toLocaleString() },
-            { text: res.data.result_sum[0].income.toLocaleString() },
+            {
+              text: res.data.result_sum[0].count_vehicle_fine.toLocaleString(),
+            },
+            { text: res.data.result_sum[0].count_bill_fine.toLocaleString() },
+            { text: res.data.result_sum[0].income_fine.toLocaleString() },
           ],
           [
             { text: "C2" },
-            { text: res.data.result_sum[1].count_vehicle.toLocaleString() },
-            { text: res.data.result_sum[1].count_bill.toLocaleString() },
-            { text: res.data.result_sum[1].income.toLocaleString() },
+            {
+              text: res.data.result_sum[1].count_vehicle_fine.toLocaleString(),
+            },
+            { text: res.data.result_sum[1].count_bill_fine.toLocaleString() },
+            { text: res.data.result_sum[1].income_fine.toLocaleString() },
           ],
           [
             { text: "C3" },
-            { text: res.data.result_sum[2].count_vehicle.toLocaleString() },
-            { text: res.data.result_sum[2].count_bill.toLocaleString() },
-            { text: res.data.result_sum[2].income.toLocaleString() },
+            {
+              text: res.data.result_sum[2].count_vehicle_fine.toLocaleString(),
+            },
+            { text: res.data.result_sum[2].count_bill_fine.toLocaleString() },
+            { text: res.data.result_sum[2].income_fine.toLocaleString() },
           ],
           [
             { text: "รวม" },
-            { text: res.data.result_sum[3].count_vehicle.toLocaleString() },
-            { text: res.data.result_sum[3].count_bill.toLocaleString() },
-            { text: res.data.result_sum[3].income.toLocaleString() },
+            {
+              text: res.data.result_sum[3].count_vehicle_fine.toLocaleString(),
+            },
+            { text: res.data.result_sum[3].count_bill_fine.toLocaleString() },
+            { text: res.data.result_sum[3].income_fine.toLocaleString() },
           ]
         );
         body2.push(
@@ -187,14 +195,16 @@ export default async function PdfFineMonthly(
           [
             { text: "C1" },
             {
-              text: res.data.result_classify[0].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[0].income_due.toLocaleString() },
-            {
-              text: res.data.result_classify[0].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[0].count_bill_fine_3.toLocaleString(),
             },
             {
-              text: res.data.result_classify[0].income_overdue.toLocaleString(),
+              text: res.data.result_classify[0].income_fine_3.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[0].count_bill_fine_13.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[0].income_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
@@ -206,14 +216,16 @@ export default async function PdfFineMonthly(
           [
             { text: "C2" },
             {
-              text: res.data.result_classify[1].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[1].income_due.toLocaleString() },
-            {
-              text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[1].count_bill_fine_3.toLocaleString(),
             },
             {
-              text: res.data.result_classify[1].income_overdue.toLocaleString(),
+              text: res.data.result_classify[1].income_fine_3.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[1].count_bill_fine_13.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[1].income_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].count_bill_remain.toLocaleString(),
@@ -225,14 +237,16 @@ export default async function PdfFineMonthly(
           [
             { text: "C3" },
             {
-              text: res.data.result_classify[2].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[2].income_due.toLocaleString() },
-            {
-              text: res.data.result_classify[2].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[2].count_bill_fine_3.toLocaleString(),
             },
             {
-              text: res.data.result_classify[2].income_overdue.toLocaleString(),
+              text: res.data.result_classify[2].income_fine_3.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[2].count_bill_fine_13.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[2].income_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
@@ -244,14 +258,16 @@ export default async function PdfFineMonthly(
           [
             { text: "รวม" },
             {
-              text: res.data.result_classify[3].count_bill_due.toLocaleString(),
-            },
-            { text: res.data.result_classify[3].income_due.toLocaleString() },
-            {
-              text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[3].count_bill_fine_3.toLocaleString(),
             },
             {
-              text: res.data.result_classify[3].income_overdue.toLocaleString(),
+              text: res.data.result_classify[3].income_fine_3.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[3].count_bill_fine_13.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[3].income_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].count_bill_remain.toLocaleString(),
@@ -279,7 +295,7 @@ export default async function PdfFineMonthly(
               alignment: "left",
             },
             {
-              text: res.data.result_sum[3].count_bill.toLocaleString(),
+              text: res.data.result_sum[3].count_bill_fine.toLocaleString(),
               border: [false, false, false, true],
               alignment: "right",
             },
@@ -293,8 +309,8 @@ export default async function PdfFineMonthly(
             },
             {
               text: (
-                res.data.result_classify[3].count_bill_due +
-                res.data.result_classify[3].count_bill_overdue
+                res.data.result_classify[3].count_bill_fine_3 +
+                res.data.result_classify[3].count_bill_fine_13
               ).toLocaleString(),
               border: [false, false, false, false],
               alignment: "right",
@@ -309,7 +325,7 @@ export default async function PdfFineMonthly(
               border: [true, false, false, false],
             },
             {
-              text: res.data.result_classify[3].count_bill_due.toLocaleString(),
+              text: res.data.result_classify[3].count_bill_fine_3.toLocaleString(),
               alignment: "right",
               border: [false, false, false, false],
             },
@@ -323,7 +339,7 @@ export default async function PdfFineMonthly(
               border: [true, false, false, true],
             },
             {
-              text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
+              text: res.data.result_classify[3].count_bill_fine_13.toLocaleString(),
               alignment: "right",
               margin: [10, 0, 0, 0],
               border: [false, false, false, true],
@@ -337,7 +353,7 @@ export default async function PdfFineMonthly(
               border: [true, false, false, true],
             },
             {
-              text: res.data.result_sum[3].income.toLocaleString(),
+              text: res.data.result_classify[3].count_bill_remain.toLocaleString(),
               alignment: "right",
               border: [false, false, false, true],
             },
@@ -363,7 +379,7 @@ export default async function PdfFineMonthly(
               alignment: "left",
             },
             {
-              text: res.data.result_sum[3].income.toLocaleString(),
+              text: res.data.result_sum[3].income_fine.toLocaleString(),
               alignment: "right",
             },
             { text: "บาท" },
@@ -376,8 +392,8 @@ export default async function PdfFineMonthly(
             },
             {
               text: (
-                res.data.result_classify[3].income_due +
-                res.data.result_classify[3].income_overdue
+                res.data.result_classify[3].income_fine_3 +
+                res.data.result_classify[3].income_fine_13
               ).toLocaleString(),
               border: [false, false, true, false],
               alignment: "right",
@@ -392,7 +408,7 @@ export default async function PdfFineMonthly(
               border: [true, false, true, false],
             },
             {
-              text: res.data.result_classify[3].income_due.toLocaleString(),
+              text: res.data.result_classify[3].income_fine_3.toLocaleString(),
               alignment: "right",
               border: [true, false, true, false],
             },
@@ -406,7 +422,7 @@ export default async function PdfFineMonthly(
               border: [true, false, true, true],
             },
             {
-              text: res.data.result_classify[3].income_overdue.toLocaleString(),
+              text: res.data.result_classify[3].income_fine_13.toLocaleString(),
               alignment: "right",
               margin: [10, 0, 0, 0],
               border: [false, false, true, true],
@@ -419,7 +435,7 @@ export default async function PdfFineMonthly(
               alignment: "left",
             },
             {
-              text: res.data.result_sum[3].income.toLocaleString(),
+              text: res.data.result_classify[3].income_remain.toLocaleString(),
               alignment: "right",
             },
             { text: "บาท" },

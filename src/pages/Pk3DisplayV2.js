@@ -500,7 +500,6 @@ export default function PK3DisplayV2() {
 
         {/* Card Section */}
         <Box
-          item
           style={{
             display: "flex",
             margin: "10px 0px 0px 0px",

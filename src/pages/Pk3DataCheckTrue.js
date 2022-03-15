@@ -24,6 +24,7 @@ import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+import SearchComponent from "../components/SearchComponent";
 
 const apiURL = axios.create({
   baseURL:
@@ -499,82 +500,85 @@ export default function PK3DataCheckTrue() {
 
         {/* Card Section */}
 
-        <Grid container component={Paper} className={classes.filterSection}>
-          <Box className={classes.cardSection}>
-            <Box style={{ marginRight: "0.8rem" }}>
-              <SearchComponent2
-                value={transactionId}
-                date={selectedDate}
-                handleOnChange={(e) => {
-                  setTransactionId(e.target.value);
-                  checkFormatSearch(e.target.value);
-                  // console.log(e.target.value);
-                }}
-                name="search"
-                label="transaction id"
-                setTable={setAllTsTable}
-                endpoint={endpoint}
-                setEyesStatus={setEyesStatus}
-                eyesStatus={eyesStatus}
-              />
-            </Box>
-
-            <Box
-              style={{
-                display: "flex",
-                // margin: "10px 0px 0px 0px",
-                justifyContent: "space-between",
+        <Box
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "center",
+          }}
+        >
+          <Box style={{ marginRight: "0.8rem" }}>
+            <SearchComponent
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
               }}
-            >
-              {dataCard.map((card, index) => (
-                <Paper
-                  className={classes.card}
-                  key={index}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint={endpoint}
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
+            />
+          </Box>
+
+          <Box
+            style={{
+              display: "flex",
+              // margin: "10px 0px 0px 0px",
+              justifyContent: "space-between",
+            }}
+          >
+            {dataCard.map((card, index) => (
+              <Paper
+                className={classes.card}
+                key={index}
+                style={{
+                  borderLeft:
+                    card.status === "total"
+                      ? "3px solid gray"
+                      : card.status === "normal"
+                      ? "3px solid green"
+                      : card.status === "unMatch"
+                      ? "3px solid orange"
+                      : "3px solid red",
+                }}
+              >
+                <Typography
                   style={{
-                    borderLeft:
+                    color:
                       card.status === "total"
-                        ? "3px solid gray"
+                        ? "gray"
                         : card.status === "normal"
-                        ? "3px solid green"
+                        ? "green"
                         : card.status === "unMatch"
-                        ? "3px solid orange"
-                        : "3px solid red",
+                        ? "orange"
+                        : "red",
+                    fontSize: "0.9rem",
                   }}
                 >
-                  <Typography
-                    style={{
-                      color:
-                        card.status === "total"
-                          ? "gray"
-                          : card.status === "normal"
-                          ? "green"
-                          : card.status === "unMatch"
-                          ? "orange"
-                          : "red",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    {card.label}
-                  </Typography>
-                  <Typography
-                    style={{
-                      fontSize: "1.15rem",
-                      fontWeight: 700,
-                      textAlign: "center",
-                    }}
-                  >
-                    {!!card.value ? card.value.toLocaleString() : []}
-                  </Typography>
-                  <Typography
-                    style={{ fontSize: "0.7rem", textAlign: "center" }}
-                  >
-                    {card.status === "revenue" ? " บาท" : " รายการ"}
-                  </Typography>
-                </Paper>
-              ))}
-            </Box>
+                  {card.label}
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "1.15rem",
+                    fontWeight: 700,
+                    textAlign: "center",
+                  }}
+                >
+                  {!!card.value ? card.value.toLocaleString() : []}
+                </Typography>
+                <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                  {card.status === "revenue" ? " บาท" : " รายการ"}
+                </Typography>
+              </Paper>
+            ))}
           </Box>
-        </Grid>
+        </Box>
+
         {/* Table Section */}
         <Grid
           container
