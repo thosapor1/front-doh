@@ -24,6 +24,7 @@ import {
   getDataFeeMonthly,
   getFineData,
   getDebtData,
+  getOverdueBalanceData,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -52,9 +53,6 @@ import TableMonthlyPayment1 from "../components/report/TableMonthlyPayment1";
 import TableMonthlyPayment2 from "../components/report/TableMonthlyPayment2";
 import TableMonthlyPayment3 from "../components/report/TableMonthlyPayment3 ";
 import TableMonthlyPayment4 from "../components/report/TableMonthlyPayment4";
-import TableDept1 from "../components/report/TableDebt1";
-import TableDept2 from "../components/report/TableDebt2";
-import TableDebt3 from "../components/report/TableDebt3";
 import TableGuarantee1 from "../components/report/TableGuarantee1";
 import TableGuarantee2 from "../components/report/TableGuarantee2";
 import TableGuarantee3 from "../components/report/TableGuarantee3";
@@ -71,6 +69,11 @@ import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
 import TablePressTheClaim3 from "../components/report/TablePressTheClaim3";
 import TablePressTheClaim4 from "../components/report/TablePressTheClaim4";
 import PdfPressTheClaim from "../components/report/PdfPressTheClaim";
+import TableDebt4 from "../components/report/TableDebt4";
+import TableDebt3 from "../components/report/TableDebt3";
+import TableDebt2 from "../components/report/TableDebt2";
+import TableDebt1 from "../components/report/TableDebt1";
+import TableDebt5 from "../components/report/TableDebt5";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -142,6 +145,7 @@ export default function Report() {
   const [feeMonthly, setFeeMonthly] = useState([]);
   const [fineData, setFineData] = useState([]);
   const [debtData, setDebtData] = useState([]);
+  const [overdueBalance, setOverdueBalance] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -408,6 +412,30 @@ export default function Report() {
 
     if (!!res && !!res.data.status) {
       setDebtData(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData10 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getOverdueBalanceData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setOverdueBalance(res.data);
     }
     Swal.close();
 
@@ -1107,7 +1135,7 @@ export default function Report() {
           <TabPanel value={value} index={9}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData10}
                 report={PdfDebt}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
@@ -1145,8 +1173,9 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableDept1 />
-                  <TableDept2 />
+                  <TableDebt1 dataList={overdueBalance} />
+                  <TableDebt2 dataList={overdueBalance} />
+                  <TableDebt3 dataList={overdueBalance} />
                 </div>
                 <div
                   style={{
@@ -1155,7 +1184,14 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableDebt3 />
+                  <TableDebt4
+                    dataList={overdueBalance}
+                    selectedDate={selectedDate}
+                  />
+                  <TableDebt5
+                    dataList={overdueBalance}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>

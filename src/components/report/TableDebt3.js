@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       fontFamily: "Sarabun",
-      padding: 10,
+      padding: 20,
     },
     th: {
       fontWeight: 700,
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 100,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 100,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 100,
+      width: 90,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -55,12 +55,6 @@ const useStyles = makeStyles((theme) => {
 
 export default function TableDebt3(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", car: 0, invoice: 0, expectIncome: 0 },
-  ]);
 
   const classes = useStyles();
   return (
@@ -69,82 +63,95 @@ export default function TableDebt3(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} colSpan={3}>
-                สรุปข้อมูลรถวันที่ 15 กุมภาพันธ์ 2565
+              <td className={classes.td} colSpan={4}>
+                รายการใบแจ้งหนี้ค่าทวงถาม
               </td>
+            </tr>
+            <tr>
+              <td className={classes.td} colSpan={2}>
+                ค่าทวงถามที่ชำระ
+              </td>
+              <td className={classes.td} colSpan={2}>
+                ค่าทวงถามคงค้าง
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td2}
+                style={{ borderLeft: "1px solid black" }}
+              >
+                ใบแจ้งหนี้
+              </td>
+              <td className={classes.td2}>ค่าทวงถาม</td>
+              <td className={classes.td2}>ใบแจ้งหนี้</td>
+              <td className={classes.td2}>ค่าทวงถาม</td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td3}
+                style={{ borderLeft: "1px solid black" }}
+              >
+                (รายการ)
+              </td>
+              <td className={classes.td3}>(บาท)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(บาท)</td>
             </tr>
 
             <tr>
-              <td
-                className={classes.td}
-                style={{ width: 200, textAlign: "left" }}
-              >
-                ใบแจ้งหนี้รถวิ่งผ่านทาง
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[0].bill_1 : "0"}
               </td>
-              <td
-                className={classes.td}
-                style={{
-                  textAlign: "right",
-                }}
-              >
-                0
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[0].demand_fee_1 : "0"}
               </td>
-              <td className={classes.td} style={{ textAlign: "left" }}>
-                รายการ
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[0].bill_2 : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[0].demand_fee_2 : "0"}
               </td>
             </tr>
             <tr>
-              <td
-                className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                  textAlign: "left",
-                }}
-              >
-                รายได้พึงได้รวม
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[1].bill_1 : "0"}
               </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                0
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[1].demand_fee_1 : "0"}
               </td>
-              <td
-                className={classes.td2}
-                style={{ textAlign: "left" }}
-                style={{ textAlign: "left" }}
-              >
-                บาท
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[1].bill_2 : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[1].demand_fee_2 : "0"}
               </td>
             </tr>
             <tr>
-              <td
-                className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                  textAlign: "left",
-                }}
-              >
-                ยอดชำระ
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[2].bill_1 : "0"}
               </td>
-              <td className={classes.td2} style={{ textAlign: "right" }}>
-                0
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[2].demand_fee_1 : "0"}
               </td>
-              <td className={classes.td2} style={{ textAlign: "left" }}>
-                บาท
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[2].bill_2 : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[2].demand_fee_2 : "0"}
               </td>
             </tr>
             <tr>
-              <td className={classes.td} style={{ textAlign: "left" }}>
-                หนี้คงค้าง
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[3].bill_1 : "0"}
               </td>
-              <td className={classes.td} style={{ textAlign: "right" }}>
-                0
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[3].demand_fee_1 : "0"}
               </td>
-              <td className={classes.td} style={{ textAlign: "left" }}>
-                บาท
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[3].bill_2 : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_3 ? dataList.result_3[3].demand_fee_2 : "0"}
               </td>
             </tr>
           </table>
