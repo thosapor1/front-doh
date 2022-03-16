@@ -87,23 +87,55 @@ export default function TablePressTheClaim1(props) {
 
             <tr>
               <td className={classes.td}>C1</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[0].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[0].demand_fee_amount.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[1].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[1].demand_fee_amount.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[2].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[2].demand_fee_amount.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>รวม</td>
-              <td className={classes.td}>0</td>
-              <td className={classes.td}>0</td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].count_bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].demand_fee_amount.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
           </table>
         </div>

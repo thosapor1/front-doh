@@ -87,7 +87,9 @@ export default function TablePressTheClaim3(props) {
                 className={classes.td2}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].count_bill.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2}>รายการ</td>
             </tr>
@@ -102,7 +104,9 @@ export default function TablePressTheClaim3(props) {
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].invoice_overdue.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>
@@ -121,7 +125,9 @@ export default function TablePressTheClaim3(props) {
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify_balance
+                  ? dataList.result_classify_balance[3].bill_balance.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>

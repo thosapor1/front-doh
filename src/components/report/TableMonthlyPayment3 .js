@@ -85,7 +85,9 @@ export default function TableMonthlyPayment3(props) {
                   textAlign: "right",
                 }}
               >
-                0
+                {!!dataList.result_sum
+                  ? dataList.result_sum[3].count_bill_fine.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ borderLeft: "0px" }}>
                 รายการ
@@ -106,7 +108,12 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td2}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify
+                  ? (
+                      dataList.result_classify[3].count_bill_fine_3 +
+                      dataList.result_classify[3].count_bill_fine_13
+                    ).toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2}>รายการ</td>
             </tr>
@@ -121,7 +128,9 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td2}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_fine_3.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2}>รายการ</td>
             </tr>
@@ -136,7 +145,9 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_fine_13.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>
@@ -155,7 +166,9 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_classify
+                  ? dataList.result_classify[3].count_bill_remain.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td3}>รายการ</td>
             </tr>

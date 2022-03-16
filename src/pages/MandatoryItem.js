@@ -60,7 +60,10 @@ const useStyles = makeStyles((theme) => {
     },
     card: {
       padding: "1rem",
-      height: 80,
+      height: 50,
+      paddingTop: 5,
+      width: 150,
+      marginRight: 10,
     },
     btn: {
       backgroundColor: "#46005E",
@@ -135,17 +138,13 @@ export default function MandatoryItem() {
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
   const [status_select, setStatus_select] = useState("0");
-  // const [status, setStatus] = useState(0);
-  // const [subState, setSubState] = useState(0);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [cardData, setCardData] = useState("");
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState("0");
   const [transactionId, setTransactionId] = useState("");
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date("Sep 01, 2021")
-  // );
+
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -155,6 +154,24 @@ export default function MandatoryItem() {
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(
     new Date("Aug 10, 2021 00:00:00")
   );
+
+  const dataCard = [
+    {
+      value: !!cardData.revenue ? cardData.revenue : "0",
+      status: "revenue",
+      label: "รายได้ประมาณการ",
+    },
+    {
+      value: !!cardData.paid ? cardData.paid : "0",
+      status: "paid",
+      label: "ชำระแล้ว",
+    },
+    {
+      value: !!cardData.overdue ? cardData.overdue : "0",
+      status: "overdue",
+      label: "ค้างชำระ",
+    },
+  ];
 
   const handlePageChange = (event, value) => {
     fetchData(value);
@@ -476,7 +493,13 @@ export default function MandatoryItem() {
         </Grid>
 
         {/* Card Section */}
-        <Box className={classes.cardSection}>
+        <Box
+          style={{
+            display: "flex",
+            margin: "10px 0px 0px 0px",
+            justifyContent: "center",
+          }}
+        >
           <Box>
             <SearchComponent
               value={transactionId}
@@ -491,20 +514,57 @@ export default function MandatoryItem() {
               endpoint="/audit-search"
             />
           </Box>
-          <Box style={{ display: "flex" }}>
-            <Paper className={classes.card} style={{ marginLeft: 10 }}>
-              <Typography className={classes.typography}>
-                {`รายได้ประมาณการ : ${
-                  !!cardData.revenue ? cardData.revenue.toLocaleString() : 0
-                }`}
-              </Typography>
-              <Typography className={classes.typography}>
-                ชำระแล้ว : 0
-              </Typography>
-              <Typography className={classes.typography}>
-                ค้างชำระ : 0
-              </Typography>
-            </Paper>
+          <Box
+            style={{
+              display: "flex",
+              margin: "0px 0px 0px 10px",
+              justifyContent: "space-between",
+            }}
+          >
+            {dataCard.map((card, index) => (
+              <Paper
+                className={classes.card}
+                key={index}
+                style={{
+                  borderLeft:
+                    card.status === "revenue"
+                      ? "3px solid gray"
+                      : card.status === "paid"
+                      ? "3px solid green"
+                      : card.status === "unMatch"
+                      ? "3px solid orange"
+                      : "3px solid red",
+                }}
+              >
+                <Typography
+                  style={{
+                    color:
+                      card.status === "revenue"
+                        ? "gray"
+                        : card.status === "paid"
+                        ? "green"
+                        : card.status === "unMatch"
+                        ? "orange"
+                        : "red",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {card.label}
+                </Typography>
+                <Typography
+                  style={{
+                    fontSize: "1.15rem",
+                    fontWeight: 700,
+                    textAlign: "center",
+                  }}
+                >
+                  {!!card.value ? card.value.toLocaleString() : []}
+                </Typography>
+                <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
+                  บาท
+                </Typography>
+              </Paper>
+            ))}
           </Box>
         </Box>
         {/* Table Section */}

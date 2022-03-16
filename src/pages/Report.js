@@ -20,9 +20,10 @@ import {
   getDataReportPayment,
   getDatainfoCheckpoint,
   getDataFeeDaily,
-  getDataTXFeeDaily,
   getDataFeeDaily2,
   getDataFeeMonthly,
+  getFineData,
+  getDebtData,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -139,6 +140,8 @@ export default function Report() {
   const [feeDaily, setFeeDaily] = useState([]);
   const [feeDaily2, setFeeDaily2] = useState([]);
   const [feeMonthly, setFeeMonthly] = useState([]);
+  const [fineData, setFineData] = useState([]);
+  const [debtData, setDebtData] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -357,6 +360,54 @@ export default function Report() {
 
     if (!!res && !!res.data.status) {
       setFeeMonthly(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData8 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getFineData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setFineData(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData9 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getDebtData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDebtData(res.data);
     }
     Swal.close();
 
@@ -928,7 +979,7 @@ export default function Report() {
           <TabPanel value={value} index={7}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData8}
                 report={PdfFineMonthly}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
@@ -966,8 +1017,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableMonthlyPayment1 />
-                  <TableMonthlyPayment2 />
+                  <TableMonthlyPayment1 dataList={fineData} />
+                  <TableMonthlyPayment2 dataList={fineData} />
                 </div>
                 <div
                   style={{
@@ -976,8 +1027,14 @@ export default function Report() {
                     marginRight: 214,
                   }}
                 >
-                  <TableMonthlyPayment3 selectedDate={selectedDate} />
-                  <TableMonthlyPayment4 selectedDate={selectedDate} />
+                  <TableMonthlyPayment3
+                    dataList={fineData}
+                    selectedDate={selectedDate}
+                  />
+                  <TableMonthlyPayment4
+                    dataList={fineData}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
@@ -986,7 +1043,7 @@ export default function Report() {
           <TabPanel value={value} index={8}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData9}
                 report={PdfPressTheClaim}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
@@ -1024,8 +1081,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TablePressTheClaim1 />
-                  <TablePressTheClaim2 />
+                  <TablePressTheClaim1 dataList={debtData} />
+                  <TablePressTheClaim2 dataList={debtData} />
                 </div>
                 <div
                   style={{
@@ -1034,8 +1091,14 @@ export default function Report() {
                     marginRight: 214,
                   }}
                 >
-                  <TablePressTheClaim3 selectedDate={selectedDate} />
-                  <TablePressTheClaim4 selectedDate={selectedDate} />
+                  <TablePressTheClaim3
+                    dataList={debtData}
+                    selectedDate={selectedDate}
+                  />
+                  <TablePressTheClaim4
+                    dataList={debtData}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
