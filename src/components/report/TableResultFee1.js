@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 85,
+      width: 127,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 85,
+      width: 127,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 85,
+      width: 127,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableDebt1(props) {
+export default function TableResultFee1(props) {
   const { dataList } = props;
 
   const classes = useStyles();
@@ -63,28 +63,32 @@ export default function TableDebt1(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} colSpan={4}>
-                รายการใบแจ้งหนี้ที่ชำระ
+              <td className={classes.td} colSpan={6}>
+                จำนวนรายการที่ต้องการชี้แจงจากฝ่ายจัดเก็บรายได้
               </td>
             </tr>
             <tr>
               <td className={classes.td} rowSpan={3}>
-                ประเภทรถ
+                ประเภทรถจากการตรวจสอบ
               </td>
-              <td className={classes.td} colSpan={3}>
-                รายได้พึงได้ที่ชำระ
+              <td className={classes.td} colSpan={5}>
+                ข้อมูลประเภทรถจากจัดเก็บ
               </td>
             </tr>
 
             <tr>
-              <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ค่าผ่านทาง</td>
-              <td className={classes.td2}>ค่าปรับ</td>
+              <td className={classes.td2}>C1</td>
+              <td className={classes.td2}>C2</td>
+              <td className={classes.td2}>C3</td>
+              <td className={classes.td2}>รถยกเว้น</td>
+              <td className={classes.td2}>รวม</td>
             </tr>
             <tr>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(บาท)</td>
-              <td className={classes.td3}>(บาท)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(รายการ)</td>
             </tr>
 
             <tr>
@@ -104,12 +108,32 @@ export default function TableDebt1(props) {
                   ? dataList.result_1[0].fine.toLocaleString()
                   : "0"}
               </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[0].fine.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[0].fine.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
                 {!!dataList.result_1
                   ? dataList.result_1[1].bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[1].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[1].fine.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
@@ -140,12 +164,32 @@ export default function TableDebt1(props) {
                   ? dataList.result_1[2].fine.toLocaleString()
                   : "0"}
               </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[2].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[2].fine.toLocaleString()
+                  : "0"}
+              </td>
             </tr>
             <tr>
-              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>รวมรายการ</td>
               <td className={classes.td}>
                 {!!dataList.result_1
                   ? dataList.result_1[3].bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[3].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_1
+                  ? dataList.result_1[3].fine.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>

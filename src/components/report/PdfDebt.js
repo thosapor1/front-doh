@@ -66,6 +66,7 @@ export default async function PdfDebt(
             {
               text: "ประเภทรถ",
               rowSpan: 3,
+              margin: [23, 0, 0, 0],
             },
             { text: "รายได้พึงได้ที่ชำระ", colSpan: 3 },
             {},
@@ -181,6 +182,7 @@ export default async function PdfDebt(
               text: "รายการใบแจ้งหนี้ค่าทวงถาม",
               colSpan: 4,
             },
+            {},
             {},
             {},
           ],
@@ -334,7 +336,7 @@ export default async function PdfDebt(
             },
             {
               text: (
-                res.data.result_1[3].bill_1 + res.data.result_2[3].bill_2
+                res.data.result_3[3].bill_1 + res.data.result_3[3].bill_2
               ).toLocaleString(),
               alignment: "right",
             },
@@ -589,7 +591,7 @@ export default async function PdfDebt(
 
           {
             style: "table",
-            margin: [10, 10, 0, 0],
+            margin: [11, 10, 0, 0],
             table: {
               widths: [45, 45, 45],
               body: body2,
@@ -597,7 +599,7 @@ export default async function PdfDebt(
           },
           {
             style: "table",
-            margin: [-110, 10, 0, 0],
+            margin: [-104, 10, 0, 0],
             table: {
               widths: [45, 45, 45, 45],
               body: body3,
@@ -610,7 +612,7 @@ export default async function PdfDebt(
         columns: [
           {
             style: "table2",
-            margin: [287, 10, 0, 0],
+            margin: [281, 10, 0, 0],
             table: {
               widths: [100, 40, 30],
               body: body4,

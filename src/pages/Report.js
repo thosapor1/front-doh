@@ -74,6 +74,8 @@ import TableDebt3 from "../components/report/TableDebt3";
 import TableDebt2 from "../components/report/TableDebt2";
 import TableDebt1 from "../components/report/TableDebt1";
 import TableDebt5 from "../components/report/TableDebt5";
+import PdfTxDebt from "../components/report/PdfTxDebt";
+import TableResultFee1 from "../components/report/TableResultFee1";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -146,6 +148,7 @@ export default function Report() {
   const [fineData, setFineData] = useState([]);
   const [debtData, setDebtData] = useState([]);
   const [overdueBalance, setOverdueBalance] = useState([]);
+  const [resultFeeData, setResultFeeData] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -442,6 +445,30 @@ export default function Report() {
     // console.log(res.data);
   };
 
+  const fetchData11 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getOverdueBalanceData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setResultFeeData(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
   useEffect(() => {
     // fetchData();
     setCarClass(carClass);
@@ -521,6 +548,11 @@ export default function Report() {
             <Tab
               label="สรุปประกันค่าผ่านทาง"
               {...a11yProps(10)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปการจัดเก็บค่าธรรมเนียม"
+              {...a11yProps(11)}
               className={classes.tab}
             />
 
@@ -1137,7 +1169,7 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData10}
                 report={PdfDebt}
-                transactionReport={PaymentTSPdf}
+                transactionReport={PdfTxDebt}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1249,6 +1281,70 @@ export default function Report() {
                   }}
                 >
                   <TableGuarantee3 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={11}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData11}
+                report={PdfGuarantee}
+                transactionReport={PaymentTSPdf}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปการตรวจสอบการจัดเก็บค่าธรรมเนียมผ่านทาง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableResultFee1 dataList={resultFeeData} />
+                  <TableDebt2 dataList={resultFeeData} />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableDebt4
+                    dataList={resultFeeData}
+                    selectedDate={selectedDate}
+                  />
+                  <TableDebt5
+                    dataList={resultFeeData}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>

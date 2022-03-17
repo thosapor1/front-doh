@@ -95,46 +95,70 @@ export default function TableDebt2(props) {
 
             <tr>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[0].bill : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[0].bill.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[0].fee : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[0].fee.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[0].fine : "0"}
-              </td>
-            </tr>
-            <tr>
-              <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[1].bill : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[1].fee : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[1].fine : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[0].fine.toLocaleString()
+                  : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[2].bill : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[1].bill.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[2].fee : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[1].fee.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[2].fine : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[1].fine.toLocaleString()
+                  : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[3].bill : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[2].bill.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[3].fee : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[2].fee.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_2 ? dataList.result_2[3].fine : "0"}
+                {!!dataList.result_2
+                  ? dataList.result_2[2].fine.toLocaleString()
+                  : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>
+                {!!dataList.result_2
+                  ? dataList.result_2[3].bill.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2
+                  ? dataList.result_2[3].fee.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2
+                  ? dataList.result_2[3].fine.toLocaleString()
+                  : "0"}
               </td>
             </tr>
           </table>
