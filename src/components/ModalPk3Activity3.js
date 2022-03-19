@@ -657,10 +657,10 @@ export default function ModalPK3Activity3(props) {
         TransactionsPeat: "",
         commentPK3: "",
         operation: "",
-        TransID: !!dataList.resultsDisplay[0].pk3_transactionId
+        TransID: !!dataList.resultsDisplay
           ? dataList.resultsDisplay[0].pk3_transactionId
           : "",
-        RefID: !!dataList.resultsDisplay[0].mf_lane_tranId
+        RefID: !!dataList.resultsDisplay
           ? dataList.resultsDisplay[0].mf_lane_tranId
           : "",
       });
