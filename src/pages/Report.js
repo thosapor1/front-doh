@@ -76,6 +76,10 @@ import TableDebt1 from "../components/report/TableDebt1";
 import TableDebt5 from "../components/report/TableDebt5";
 import PdfTxDebt from "../components/report/PdfTxDebt";
 import TableResultFee1 from "../components/report/TableResultFee1";
+import TableResultFee2 from "../components/report/TableResultFee2";
+import TableResultFee3 from "../components/report/TableResultFee3";
+import TableResultFee4 from "../components/report/TableResultFee4";
+import PdfResultFee from "../components/report/PdfResultFee";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -1290,7 +1294,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData11}
-                report={PdfGuarantee}
+                report={PdfResultFee}
                 transactionReport={PaymentTSPdf}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
@@ -1328,7 +1332,7 @@ export default function Report() {
                   }}
                 >
                   <TableResultFee1 dataList={resultFeeData} />
-                  <TableDebt2 dataList={resultFeeData} />
+                  <TableResultFee2 dataList={resultFeeData} />
                 </div>
                 <div
                   style={{
@@ -1337,11 +1341,11 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableDebt4
+                  <TableResultFee3
                     dataList={resultFeeData}
                     selectedDate={selectedDate}
                   />
-                  <TableDebt5
+                  <TableResultFee4
                     dataList={resultFeeData}
                     selectedDate={selectedDate}
                   />
