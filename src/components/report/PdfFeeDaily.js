@@ -48,7 +48,7 @@ export default async function PdfFeeDaily(
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-list-payment", sendData).then(async (res) => {
+      return apiURL.post("/report-payment", sendData).then(async (res) => {
         body.push(
           [
             {

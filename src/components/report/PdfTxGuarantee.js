@@ -23,7 +23,7 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default function PdfTxNumberOfCar(
+export default function PdfTxGuarantee(
   selectedDate,
   checkpoint,
   startTime,
@@ -43,17 +43,32 @@ export default function PdfTxNumberOfCar(
   let body = [
     [
       { text: "ลำดับ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "Transaction", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "วันที่ผ่านทาง", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "วันที่ออกใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "วันที่ชำระใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ประเภทผู้ใช้บริการ", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ทะเบียนรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ทะเบียนจังหวัด", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ชนิดรถผ่านทาง", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ด่าน", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "เวลาผ่านทาง", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ประเภทรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ค่าผ่านทาง", border: [true, true, true, false] },
+      {
+        text: "ประเภทรถ",
+        margin: [0, 8, 0, 0],
+        rowSpan: 2,
+      },
+      {
+        text: "ค่าธรรมเนียมผ่านทาง",
+        margin: [0, 8, 0, 0],
+        border: [true, true, true, false],
+      },
+      {
+        text: "สถานะการประกันจ่าย",
+        rowSpan: 2,
+        margin: [0, 8, 0, 0],
+      },
     ],
     [
+      {},
       {},
       {},
       {},
@@ -68,6 +83,7 @@ export default function PdfTxNumberOfCar(
         border: [true, false, true, true],
         margin: [0, -5, 0, 0],
       },
+      {},
     ],
   ];
 
@@ -76,13 +92,10 @@ export default function PdfTxNumberOfCar(
       try {
         pdfMake
           .createPdf(docDefinition)
-          .download(
-            "รายงานTransactionจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้.pdf",
-            () => {
-              console.log("generate");
-              resolve();
-            }
-          );
+          .download("รายงานTransactionสรุปประกันค่าผ่านทาง.pdf", () => {
+            console.log("generate");
+            resolve();
+          });
       } catch (err) {
         reject(err);
       }
@@ -92,35 +105,25 @@ export default function PdfTxNumberOfCar(
   const pushToBody = (res) => {
     return new Promise((resolve, reject) => {
       try {
-        for (let index = 0; index < 101; index++) {
+        for (let index = 0; index < res.data.length; index++) {
           // console.log(index);
           body.push([
             index + 1,
-            !!res.data[index].refTransactionId
-              ? res.data[index].refTransactionId
+            !!res.data[index].issueDate ? res.data[index].issueDate : "-",
+            "-",
+            !!res.data[index].demand_fee && res.data[index].demand_fee === "-"
+              ? "หนี้การผ่านทาง"
+              : "หนี้ทวงถาม",
+            !!res.data[index].issueDate ? res.data[index].issueDate : "-",
+            !!res.data[index].transactionType
+              ? res.data[index].transactionType
               : "-",
-            !!res.data[index].type ? res.data[index].type : "-",
-            !!res.data[index].cameras_plateNo1
-              ? res.data[index].cameras_plateNo1
-              : "-",
-            !!res.data[index].province_description
-              ? res.data[index].province_description
-              : "-",
-            !!res.data[index].match_real_vehicleClass
-              ? `C${res.data[index].match_real_vehicleClass}`
-              : "-",
-            !!res.data[index].original_plaza_name
-              ? res.data[index].original_plaza_name
-              : "-",
-            !!res.data[index].cameras_cameraTimestamp
-              ? res.data[index].cameras_cameraTimestamp.split(" ")[1]
-              : "-",
-            !!res.data[index].match_real_vehicleClass
-              ? `C${res.data[index].match_real_vehicleClass}`
-              : "-",
-            !!res.data[index].match_real_fee
-              ? res.data[index].match_real_fee
-              : "-",
+            "-",
+            "-",
+            !!res.data[index].totalAmount ? res.data[index].totalAmount : "-",
+            !!res.data[index].fine ? res.data[index].fine : "-",
+            !!res.data[index].demand_fee ? res.data[index].demand_fee : "-",
+            !!res.data[index].total ? res.data[index].total : "-",
           ]);
         }
         console.log("loop");
@@ -161,13 +164,13 @@ export default function PdfTxNumberOfCar(
         {
           columns: [
             {
-              text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
+              text: "รายงานสรุปหนี้คงค้าง",
               alignment: "left",
               fontSize: 9,
               margin: [40, 0, 0, 0],
             },
             {
-              text: "ตส.01",
+              text: "ตส.06",
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 0],
@@ -215,92 +218,92 @@ export default function PdfTxNumberOfCar(
         ],
       },
 
-      {
-        text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
-        margin: [20, 0, 0, 0],
-        fontSize: 14,
-      },
+      // {
+      //   text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
+      //   margin: [20, 0, 0, 0],
+      //   fontSize: 14,
+      // },
 
-      {
-        style: "table",
-        margin: [70, 10, 0, 0],
-        table: {
-          widths: [100, 190, 100, 190],
-          body: [
-            [
-              {
-                text: "ข้อมูล ณ วันที่ : ",
-                alignment: "left",
-              },
-              {
-                text: `วันที่ ${format(new Date(), "dd MMMM yyyy", {
-                  locale: th,
-                })}`,
-                alignment: "left",
-              },
-              {
-                text: "ข้อมูลเริ่มต้นวันที่ :",
-                alignment: "left",
-              },
-              {
-                text: `${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })} เวลา ${format(startTime, "HH:mm")} น.`,
-                alignment: "left",
-              },
-            ],
-            [
-              {
-                text: "สายทาง : ",
-                alignment: "left",
-              },
-              {
-                text: "ทางหลวงหมายเลข 9",
-                alignment: "left",
-              },
-              {
-                text: "ข้อมูลสิ้นสุดวันที่ :",
-                alignment: "left",
-              },
-              {
-                text: `${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })} เวลา ${format(endTime, "HH:mm")} น.`,
-                alignment: "left",
-              },
-            ],
-            [
-              {
-                text: "ด่าน : ",
-                alignment: "left",
-              },
-              {
-                text: `${
-                  checkpoint === 0
-                    ? "ทุกด่าน"
-                    : checkpoint === 1
-                    ? "ทับช้าง 1"
-                    : checkpoint === 2
-                    ? "ทับช้าง 2"
-                    : checkpoint === 3
-                    ? "ธัญบุรี 1"
-                    : checkpoint === 4
-                    ? "ธัญบุรี 2"
-                    : ""
-                }`,
-                alignment: "left",
-              },
-              {},
-              {},
-            ],
-          ],
-        },
-      },
+      // {
+      //   style: "table",
+      //   margin: [70, 10, 0, 0],
+      //   table: {
+      //     widths: [100, 190, 100, 190],
+      //     body: [
+      //       [
+      //         {
+      //           text: "ข้อมูล ณ วันที่ : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `วันที่ ${format(new Date(), "dd MMMM yyyy", {
+      //             locale: th,
+      //           })}`,
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ข้อมูลเริ่มต้นวันที่ :",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${format(selectedDate, "dd MMMM yyyy", {
+      //             locale: th,
+      //           })} เวลา ${format(startTime, "HH:mm")} น.`,
+      //           alignment: "left",
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "สายทาง : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ทางหลวงหมายเลข 9",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ข้อมูลสิ้นสุดวันที่ :",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${format(selectedDate, "dd MMMM yyyy", {
+      //             locale: th,
+      //           })} เวลา ${format(endTime, "HH:mm")} น.`,
+      //           alignment: "left",
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "ด่าน : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${
+      //             checkpoint === 0
+      //               ? "ทุกด่าน"
+      //               : checkpoint === 1
+      //               ? "ทับช้าง 1"
+      //               : checkpoint === 2
+      //               ? "ทับช้าง 2"
+      //               : checkpoint === 3
+      //               ? "ธัญบุรี 1"
+      //               : checkpoint === 4
+      //               ? "ธัญบุรี 2"
+      //               : ""
+      //           }`,
+      //           alignment: "left",
+      //         },
+      //         {},
+      //         {},
+      //       ],
+      //     ],
+      //   },
+      // },
 
       {
         style: "table2",
         table: {
-          widths: [30, 130, 55, 45, 55, 50, 30, 50, 40, 40],
+          widths: [30, 50, 130, 55, 57, 55, 35, 50, 40, 35, 65, 40],
           headerRows: 2,
           body: body,
         },
@@ -309,8 +312,8 @@ export default function PdfTxNumberOfCar(
     styles: {
       table: { marginTop: 20, alignment: "center", fontSize: 11 },
       table2: {
-        marginLeft: 70,
-        marginTop: 10,
+        marginLeft: 8,
+        marginTop: 20,
         alignment: "center",
         fontSize: 11,
       },
@@ -324,7 +327,7 @@ export default function PdfTxNumberOfCar(
     didOpen: async () => {
       Swal.showLoading();
       return apiURL
-        .post("/report-list-tx", sendData, {
+        .post("/report-balance-5.2", sendData, {
           onDownloadProgress: (ProgressEvent) => {
             document.getElementById(
               "swal2-title"

@@ -80,6 +80,7 @@ import TableResultFee2 from "../components/report/TableResultFee2";
 import TableResultFee3 from "../components/report/TableResultFee3";
 import TableResultFee4 from "../components/report/TableResultFee4";
 import PdfResultFee from "../components/report/PdfResultFee";
+import PdfTxGuarantee from "../components/report/PdfTxGuarantee";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -883,6 +884,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={false}
               />
               <Paper>
                 <Typography
@@ -943,6 +945,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={false}
               />
               <Paper>
                 <Typography
@@ -990,6 +993,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1054,6 +1058,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1118,6 +1123,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1182,6 +1188,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={false}
               />
               <Paper>
                 <Typography
@@ -1238,7 +1245,7 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData3}
                 report={PdfGuarantee}
-                transactionReport={PaymentTSPdf}
+                transactionReport={PdfTxGuarantee}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1247,6 +1254,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={false}
               />
               <Paper>
                 <Typography
@@ -1304,6 +1312,7 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
+                disabled={false}
               />
               <Paper>
                 <Typography
