@@ -92,7 +92,7 @@ export default function PdfTxFeeDaily(
   const pushToBody = (res) => {
     return new Promise((resolve, reject) => {
       try {
-        for (let index = 0; index < res.data.length; index++) {
+        for (let index = 0; index < 101; index++) {
           // console.log(index);
           body.push([
             index + 1,

@@ -550,7 +550,7 @@ export default function Report() {
               {...a11yProps(9)}
               className={classes.tab}
             />
-            <Tab
+            {/* <Tab
               label="สรุปประกันค่าผ่านทาง"
               {...a11yProps(10)}
               className={classes.tab}
@@ -559,7 +559,7 @@ export default function Report() {
               label="สรุปการจัดเก็บค่าธรรมเนียม"
               {...a11yProps(11)}
               className={classes.tab}
-            />
+            /> */}
 
             {/* <Tab
               label="รายงานสรุปจราจร"

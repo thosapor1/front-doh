@@ -136,12 +136,12 @@ export default function TablePaymentDaily2(props) {
               </td>
               <td className={classes.td} style={{ width: 150 }}>
                 {!!dataList.payment
-                  ? dataList.payment[1].payment_list.toLocaleString()
+                  ? dataList.payment[3].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
                 {!!dataList.payment
-                  ? dataList.payment[1].amount_received.toLocaleString()
+                  ? dataList.payment[3].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
@@ -190,12 +190,12 @@ export default function TablePaymentDaily2(props) {
               </td>
               <td className={classes.td} style={{ width: 150 }}>
                 {!!dataList.payment
-                  ? dataList.payment[5].payment_list.toLocaleString()
+                  ? dataList.payment[6].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}>
                 {!!dataList.payment
-                  ? dataList.payment[5].amount_received.toLocaleString()
+                  ? dataList.payment[6].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ width: 150 }}></td>
@@ -265,12 +265,12 @@ export default function TablePaymentDaily2(props) {
               >{`2)	ธนาคาร (Counter Bank)`}</td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[2].payment_list.toLocaleString()
+                  ? dataList.payment[4].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[2].amount_received.toLocaleString()
+                  ? dataList.payment[4].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}></td>
@@ -282,12 +282,12 @@ export default function TablePaymentDaily2(props) {
               >{`3)	อินเทอร์เน็ต (Internet/ CRD)`}</td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[6].payment_list.toLocaleString()
+                  ? dataList.payment[7].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[6].amount_received.toLocaleString()
+                  ? dataList.payment[7].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}></td>
@@ -299,12 +299,12 @@ export default function TablePaymentDaily2(props) {
               >{`4)	ตู้บริการเงินสด (ATM)`}</td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[6].payment_list.toLocaleString()
+                  ? dataList.payment[1].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[6].amount_received.toLocaleString()
+                  ? dataList.payment[1].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}></td>
@@ -316,12 +316,12 @@ export default function TablePaymentDaily2(props) {
               >{`5)	ผู้ให้บริการรับชำระเงิน (Counter Service)`}</td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[2].payment_list.toLocaleString()
+                  ? dataList.payment[5].payment_list.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}>
                 {!!dataList.payment
-                  ? dataList.payment[2].amount_received.toLocaleString()
+                  ? dataList.payment[5].amount_received.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td4}></td>
@@ -331,8 +331,16 @@ export default function TablePaymentDaily2(props) {
                 className={classes.td4}
                 style={{ textAlign: "left", paddingLeft: 25 }}
               >{`6)	ใบแจ้งการชำระเงิน (Bill Payment)`}</td>
-              <td className={classes.td4}>0</td>
-              <td className={classes.td4}>0</td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[2].payment_list.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td4}>
+                {!!dataList.payment
+                  ? dataList.payment[2].amount_received.toLocaleString()
+                  : "0"}
+              </td>
               <td className={classes.td4}></td>
             </tr>
 
