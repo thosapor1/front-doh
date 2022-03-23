@@ -87,7 +87,9 @@ export default function TableResultFee3(props) {
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                0
+                {!!dataList.result
+                  ? dataList.result[3].sum.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 รายการ
@@ -105,9 +107,43 @@ export default function TableResultFee3(props) {
                 จำนวนรถที่ผิดประเภท
               </td>
               <td className={classes.td2} style={{ textAlign: "right" }}>
-                0
+                {!!dataList.result
+                  ? (
+                      dataList.result[3].C2 + dataList.result[3].C3
+                    ).toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
+                รายการ
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td2}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  textAlign: "left",
+                }}
+              >
+                จำนวนรถที่มีข้อยกเว้นพิเศษ
+              </td>
+              <td
+                className={classes.td2}
+                style={{
+                  textAlign: "right",
+                }}
+              >
+                {!!dataList.result
+                  ? dataList.result[3].reject.toLocaleString()
+                  : "0"}
+              </td>
+              <td
+                className={classes.td2}
+                style={{
+                  textAlign: "left",
+                }}
+              >
                 รายการ
               </td>
             </tr>
@@ -121,7 +157,7 @@ export default function TableResultFee3(props) {
                   textAlign: "left",
                 }}
               >
-                จำนวนรถที่มีข้อยกเว้นพิเศษ
+                จำนวนรถสูญหายที่ตรวจสอบพบ
               </td>
               <td
                 className={classes.td2}
@@ -132,7 +168,9 @@ export default function TableResultFee3(props) {
                   textAlign: "right",
                 }}
               >
-                0
+                {!!dataList.result
+                  ? dataList.result[3].lost_vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td
                 className={classes.td2}

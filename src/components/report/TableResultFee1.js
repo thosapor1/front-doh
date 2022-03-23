@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 127,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 127,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 127,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -63,7 +63,7 @@ export default function TableResultFee1(props) {
         <div className={classes.root}>
           <table className={classes.table}>
             <tr>
-              <td className={classes.td} colSpan={6}>
+              <td className={classes.td} colSpan={7}>
                 จำนวนรายการที่ต้องการชี้แจงจากฝ่ายจัดเก็บรายได้
               </td>
             </tr>
@@ -71,8 +71,11 @@ export default function TableResultFee1(props) {
               <td className={classes.td} rowSpan={3}>
                 ประเภทรถจากการตรวจสอบ
               </td>
-              <td className={classes.td} colSpan={5}>
+              <td className={classes.td} colSpan={4}>
                 ข้อมูลประเภทรถจากจัดเก็บ
+              </td>
+              <td className={classes.td} colSpan={2}>
+                ข้อมูลเพิ่มเติมจากตรวจสอบ
               </td>
             </tr>
 
@@ -81,9 +84,11 @@ export default function TableResultFee1(props) {
               <td className={classes.td2}>C2</td>
               <td className={classes.td2}>C3</td>
               <td className={classes.td2}>รถยกเว้น</td>
+              <td className={classes.td2}>รถสูญหาย</td>
               <td className={classes.td2}>รวม</td>
             </tr>
             <tr>
+              <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(รายการ)</td>
@@ -94,112 +99,132 @@ export default function TableResultFee1(props) {
             <tr>
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[0].bill.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[0].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[0].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[0].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[0].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].lost_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[0].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[1].bill.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[1].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[1].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[1].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[1].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].lost_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[1].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[2].bill.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[2].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[2].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[2].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[2].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].lost_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[2].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>รวมรายการ</td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[3].bill.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[3].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[3].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[3].fee.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_1
-                  ? dataList.result_1[3].fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].lost_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result
+                  ? dataList.result[3].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>

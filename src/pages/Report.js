@@ -25,6 +25,7 @@ import {
   getFineData,
   getDebtData,
   getOverdueBalanceData,
+  getResultFeeData,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -81,6 +82,7 @@ import TableResultFee3 from "../components/report/TableResultFee3";
 import TableResultFee4 from "../components/report/TableResultFee4";
 import PdfResultFee from "../components/report/PdfResultFee";
 import PdfTxGuarantee from "../components/report/PdfTxGuarantee";
+import exportExcel2 from "../components/report/exportExcel2";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -464,7 +466,31 @@ export default function Report() {
       startTime: format(startTime, "HH:mm:ss"),
       endTime: format(endTime, "HH:mm:ss"),
     };
-    const res = await getOverdueBalanceData(sendData);
+    // const res = await getOverdueBalanceData(sendData);
+
+    // if (!!res && !!res.data.status) {
+    //   setResultFeeData(res.data);
+    // }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData12 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getResultFeeData(sendData);
 
     if (!!res && !!res.data.status) {
       setResultFeeData(res.data);
@@ -550,7 +576,7 @@ export default function Report() {
               {...a11yProps(9)}
               className={classes.tab}
             />
-            {/* <Tab
+            <Tab
               label="สรุปประกันค่าผ่านทาง"
               {...a11yProps(10)}
               className={classes.tab}
@@ -559,7 +585,7 @@ export default function Report() {
               label="สรุปการจัดเก็บค่าธรรมเนียม"
               {...a11yProps(11)}
               className={classes.tab}
-            /> */}
+            />
 
             {/* <Tab
               label="รายงานสรุปจราจร"
@@ -875,7 +901,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData5}
                 report={PdfNumberOfCarAndIncome}
-                transactionReport={PdfTxNumberOfCar}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-list-tx",
+                    "รายงานTransactionจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -884,7 +921,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={false}
               />
               <Paper>
                 <Typography
@@ -936,7 +972,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData6}
                 report={PdfFeeDaily}
-                transactionReport={PdfTxFeeDaily}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-list-payment",
+                    "รายงานTransactionการชำระค่าผ่านทางประจำวัน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -945,7 +992,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={false}
               />
               <Paper>
                 <Typography
@@ -984,7 +1030,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData7}
                 report={PdfFeeMonthly}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-3.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -993,7 +1050,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1058,7 +1114,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1123,7 +1178,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={true}
               />
               <Paper>
                 <Typography
@@ -1188,7 +1242,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={false}
               />
               <Paper>
                 <Typography
@@ -1243,9 +1296,9 @@ export default function Report() {
           <TabPanel value={value} index={10}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
-                report={PdfGuarantee}
-                transactionReport={PdfTxGuarantee}
+                onFetchData={fetchData11}
+                report={() => alert("กำลังดำเนินการ")}
+                transactionReport={() => alert("กำลังดำเนินการ")}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1254,7 +1307,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={false}
               />
               <Paper>
                 <Typography
@@ -1301,9 +1353,20 @@ export default function Report() {
           <TabPanel value={value} index={11}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData11}
+                onFetchData={fetchData12}
                 report={PdfResultFee}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-pk3-approve",
+                    "รายงานTransactionการจัดเก็บค่าธรรมเนียม"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1312,7 +1375,6 @@ export default function Report() {
                 setStartTime={setStartTime}
                 endTime={endTime}
                 setEndTime={setEndTime}
-                disabled={false}
               />
               <Paper>
                 <Typography

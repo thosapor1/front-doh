@@ -65,9 +65,13 @@ export default function TableResultFee4(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                {`สรุปข้อมูลวันที่ ${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })}`}
+                {`สรุปข้อมูลการตอบโต้วันที่ ${format(
+                  selectedDate,
+                  "dd MMMM yyyy",
+                  {
+                    locale: th,
+                  }
+                )}`}
               </td>
             </tr>
 
@@ -87,7 +91,12 @@ export default function TableResultFee4(props) {
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_2
+                  ? (
+                      dataList.result_2[3].interactive +
+                      dataList.result_2[3].no_interaction
+                    ).toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 รายการ
@@ -105,7 +114,9 @@ export default function TableResultFee4(props) {
                 จำนวนรายการที่ตอบโต้
               </td>
               <td className={classes.td2} style={{ textAlign: "right" }}>
-                0
+                {!!dataList.result_2
+                  ? dataList.result_2[3].interactive.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 รายการ
@@ -132,7 +143,9 @@ export default function TableResultFee4(props) {
                   textAlign: "right",
                 }}
               >
-                0
+                {!!dataList.result_2
+                  ? dataList.result_2[3].no_interaction.toLocaleString()
+                  : "0"}
               </td>
               <td
                 className={classes.td2}

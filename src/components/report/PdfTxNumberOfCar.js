@@ -5,6 +5,7 @@ import { image } from "../../image/logo_base64";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { th } from "date-fns/locale";
+import exportExcel2 from "./exportExcel2";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {

@@ -90,7 +90,6 @@ export default function FilterSection5(props) {
     endTime,
     setStartTime,
     setEndTime,
-    disabled,
   } = props;
   const classes = useStyles();
 
@@ -186,7 +185,6 @@ export default function FilterSection5(props) {
           onClick={() => {
             transactionReport(selectedDate, checkpoint, startTime, endTime);
           }}
-          disabled={disabled}
         >
           transaction pdf
         </StyledButtonRefresh>

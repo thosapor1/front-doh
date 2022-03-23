@@ -87,12 +87,12 @@ export default function TableResultFee2(props) {
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[0].fee.toLocaleString()
+                  ? dataList.result_2[0].interactive.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[0].fine.toLocaleString()
+                  ? dataList.result_2[0].no_interaction.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -100,12 +100,12 @@ export default function TableResultFee2(props) {
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[1].fee.toLocaleString()
+                  ? dataList.result_2[1].interactive.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[1].fine.toLocaleString()
+                  ? dataList.result_2[1].no_interaction.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -113,12 +113,12 @@ export default function TableResultFee2(props) {
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[2].fee.toLocaleString()
+                  ? dataList.result_2[2].interactive.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[2].fine.toLocaleString()
+                  ? dataList.result_2[2].no_interaction.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -126,12 +126,12 @@ export default function TableResultFee2(props) {
               <td className={classes.td}>รวมรายการ</td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[3].fee.toLocaleString()
+                  ? dataList.result_2[3].interactive.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_2
-                  ? dataList.result_2[3].fine.toLocaleString()
+                  ? dataList.result_2[3].no_interaction.toLocaleString()
                   : "0"}
               </td>
             </tr>

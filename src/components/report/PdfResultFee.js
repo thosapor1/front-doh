@@ -50,13 +50,14 @@ export default async function PdfResultFee(
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-tx", sendData).then(async (res) => {
+      return apiURL.post("/report-interactive", sendData).then(async (res) => {
         body1.push(
           [
             {
               text: "จำนวนรายการที่ต้องการการชี้แจงจากฝ่ายจัดเก็บรายได้",
-              colSpan: 6,
+              colSpan: 7,
             },
+            {},
             {},
             {},
             {},
@@ -65,10 +66,11 @@ export default async function PdfResultFee(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 19, 0, 0] },
-            { text: "ข้อมูลประเภทรถจากจัดเก็บ", colSpan: 5 },
+            { text: "ข้อมูลประเภทรถจากจัดเก็บ", colSpan: 4 },
             {},
             {},
             {},
+            { text: "ข้อมูลเพิ่มเติมจากตรวจสอบ", colSpan: 2 },
             {},
           ],
           [
@@ -77,6 +79,7 @@ export default async function PdfResultFee(
             { text: "C2", border: [true, true, true, false] },
             { text: "C3", border: [true, true, true, false] },
             { text: "รถยกเว้น", border: [true, true, true, false] },
+            { text: "รถสูญหาย", border: [true, true, true, false] },
             { text: "รวม", border: [true, true, true, false] },
           ],
           [
@@ -106,38 +109,47 @@ export default async function PdfResultFee(
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
+            {
+              text: "(รายการ)",
+              border: [true, false, true, true],
+              margin: [0, -5, 0, 0],
+            },
           ],
           [
             { text: "C1" },
-            { text: res.data.tx[0].non_member.toLocaleString() },
-            { text: res.data.tx[0].member.toLocaleString() },
-            { text: res.data.tx[0].illegal.toLocaleString() },
-            { text: res.data.tx[0].reject.toLocaleString() },
-            { text: res.data.tx[0].reject.toLocaleString() },
+            { text: res.data.result[0].C1.toLocaleString() },
+            { text: res.data.result[0].C2.toLocaleString() },
+            { text: res.data.result[0].C3.toLocaleString() },
+            { text: res.data.result[0].reject.toLocaleString() },
+            { text: res.data.result[0].lost_vehicle.toLocaleString() },
+            { text: res.data.result[0].sum.toLocaleString() },
           ],
           [
             { text: "C2" },
-            { text: res.data.tx[1].non_member.toLocaleString() },
-            { text: res.data.tx[1].member.toLocaleString() },
-            { text: res.data.tx[1].illegal.toLocaleString() },
-            { text: res.data.tx[1].reject.toLocaleString() },
-            { text: res.data.tx[1].reject.toLocaleString() },
+            { text: res.data.result[1].C1.toLocaleString() },
+            { text: res.data.result[1].C2.toLocaleString() },
+            { text: res.data.result[1].C3.toLocaleString() },
+            { text: res.data.result[1].reject.toLocaleString() },
+            { text: res.data.result[1].lost_vehicle.toLocaleString() },
+            { text: res.data.result[1].sum.toLocaleString() },
           ],
           [
             { text: "C3" },
-            { text: res.data.tx[2].non_member.toLocaleString() },
-            { text: res.data.tx[2].member.toLocaleString() },
-            { text: res.data.tx[2].illegal.toLocaleString() },
-            { text: res.data.tx[2].reject.toLocaleString() },
-            { text: res.data.tx[2].reject.toLocaleString() },
+            { text: res.data.result[2].C1.toLocaleString() },
+            { text: res.data.result[2].C2.toLocaleString() },
+            { text: res.data.result[2].C3.toLocaleString() },
+            { text: res.data.result[2].reject.toLocaleString() },
+            { text: res.data.result[2].lost_vehicle.toLocaleString() },
+            { text: res.data.result[2].sum.toLocaleString() },
           ],
           [
             { text: "รวมรายการ" },
-            { text: res.data.tx[3].non_member.toLocaleString() },
-            { text: res.data.tx[3].member.toLocaleString() },
-            { text: res.data.tx[3].illegal.toLocaleString() },
-            { text: res.data.tx[3].reject.toLocaleString() },
-            { text: res.data.tx[3].reject.toLocaleString() },
+            { text: res.data.result[3].C1.toLocaleString() },
+            { text: res.data.result[3].C2.toLocaleString() },
+            { text: res.data.result[3].C3.toLocaleString() },
+            { text: res.data.result[3].reject.toLocaleString() },
+            { text: res.data.result[3].lost_vehicle.toLocaleString() },
+            { text: res.data.result[3].sum.toLocaleString() },
           ]
         );
 
@@ -154,7 +166,7 @@ export default async function PdfResultFee(
             {
               text: "ประเภทรถจากการตรวจสอบ",
               rowSpan: 2,
-              margin: [0, 15, 0, 0],
+              margin: [0, 10, 0, 0],
             },
             {
               text: "จำนวนที่ตอบโต้",
@@ -182,36 +194,32 @@ export default async function PdfResultFee(
           ],
           [
             { text: "C1" },
-            { text: res.data.income[0].fee.toLocaleString() },
-            { text: res.data.income[0].member.toLocaleString() },
+            { text: res.data.result_2[0].interactive.toLocaleString() },
+            { text: res.data.result_2[0].no_interaction.toLocaleString() },
           ],
           [
             { text: "C2" },
-            { text: res.data.income[1].fee.toLocaleString() },
-            { text: res.data.income[1].member.toLocaleString() },
+            { text: res.data.result_2[1].interactive.toLocaleString() },
+            { text: res.data.result_2[1].no_interaction.toLocaleString() },
           ],
           [
             { text: "C3" },
-            { text: res.data.income[2].fee.toLocaleString() },
-            { text: res.data.income[2].member.toLocaleString() },
+            { text: res.data.result_2[2].interactive.toLocaleString() },
+            { text: res.data.result_2[2].no_interaction.toLocaleString() },
           ],
           [
             { text: "รวมรายการ" },
-            { text: res.data.income[3].member.toLocaleString() },
-            { text: res.data.income[3].member.toLocaleString() },
+            { text: res.data.result_2[3].interactive.toLocaleString() },
+            { text: res.data.result_2[3].no_interaction.toLocaleString() },
           ]
         );
 
         body3.push(
           [
             {
-              text: `สรุปข้อมูลรถวันที่ ${format(
-                selectedDate,
-                "dd MMMM yyyy",
-                {
-                  locale: th,
-                }
-              )}`,
+              text: `สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                locale: th,
+              })}`,
               colSpan: 3,
             },
             {},
@@ -224,7 +232,7 @@ export default async function PdfResultFee(
               border: [true, false, true, false],
             },
             {
-              text: res.data.count.count.toLocaleString(),
+              text: res.data.result[3].sum.toLocaleString(),
               alignment: "right",
               border: [true, false, true, false],
             },
@@ -237,7 +245,9 @@ export default async function PdfResultFee(
               alignment: "left",
             },
             {
-              text: res.data.count.count_reject.toLocaleString(),
+              text: (
+                res.data.result[3].C2 + res.data.result[3].C3
+              ).toLocaleString(),
               border: [false, false, true, false],
               alignment: "right",
             },
@@ -247,10 +257,23 @@ export default async function PdfResultFee(
             {
               text: "จำนวนรถที่มีข้อยกเว้นพิเศษ",
               alignment: "left",
+              border: [true, false, true, false],
+            },
+            {
+              text: res.data.result[3].reject.toLocaleString(),
+              alignment: "right",
+              border: [false, false, true, false],
+            },
+            { text: "รายการ", border: [false, false, true, false] },
+          ],
+          [
+            {
+              text: "จำนวนรถสูญหายที่ตรวจสอบพบ",
+              alignment: "left",
               border: [true, false, true, true],
             },
             {
-              text: res.data.count.count_pay_car.toLocaleString(),
+              text: res.data.result[3].lost_vehicle.toLocaleString(),
               alignment: "right",
               border: [true, false, true, true],
             },
@@ -280,7 +303,10 @@ export default async function PdfResultFee(
               border: [true, false, true, false],
             },
             {
-              text: res.data.count.count.toLocaleString(),
+              text: (
+                res.data.result_2[3].interactive +
+                res.data.result_2[3].no_interaction
+              ).toLocaleString(),
               alignment: "right",
               border: [true, false, true, false],
             },
@@ -293,7 +319,7 @@ export default async function PdfResultFee(
               alignment: "left",
             },
             {
-              text: res.data.count.count_reject.toLocaleString(),
+              text: res.data.result_2[3].interactive.toLocaleString(),
               border: [false, false, true, false],
               alignment: "right",
             },
@@ -306,7 +332,7 @@ export default async function PdfResultFee(
               border: [true, false, true, true],
             },
             {
-              text: res.data.count.count_pay_car.toLocaleString(),
+              text: res.data.result_2[3].no_interaction.toLocaleString(),
               alignment: "right",
               border: [true, false, true, true],
             },
@@ -508,7 +534,7 @@ export default async function PdfResultFee(
             margin: [70, 10, 0, 0],
             style: "table",
             table: {
-              widths: [49, 49, 49, 49, 49, 49],
+              widths: [49, 49, 49, 49, 49, 49, 49],
               body: body1,
             },
           },
@@ -517,7 +543,7 @@ export default async function PdfResultFee(
             style: "table",
             margin: [5, 10, 0, 0],
             table: {
-              widths: [85, 75, 75],
+              widths: [56, 46, 75],
               body: body2,
             },
           },
