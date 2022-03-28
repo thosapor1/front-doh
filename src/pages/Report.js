@@ -1188,7 +1188,7 @@ export default function Report() {
                       startTime: format(startTime, "HH:mm:ss"),
                       endTime: format(endTime, "HH:mm:ss"),
                     },
-                    "/report-income-fine-4.1.1",
+                    "/report-debt-4.2.1",
                     "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
                   )
                 }
@@ -1255,7 +1255,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData10}
                 report={PdfDebt}
-                transactionReport={PdfTxDebt}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-balance-5.2",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1385,7 +1396,7 @@ export default function Report() {
                       startTime: format(startTime, "HH:mm:ss"),
                       endTime: format(endTime, "HH:mm:ss"),
                     },
-                    "/report-pk3-approve",
+                    "/report-interactive",
                     "รายงานTransactionการจัดเก็บค่าธรรมเนียม"
                   )
                 }

@@ -61,31 +61,26 @@ export default function TabledataTX(props) {
                   : "ด่านทับช้าง 1 ML"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[0].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[0].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[0].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[0].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[0].count_mis_match_data.toLocaleString()
                   : 0}
@@ -98,31 +93,26 @@ export default function TabledataTX(props) {
                   : "ด่านทับช้าง 1 SL"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[1].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[1].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[1].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[1].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[1].count_mis_match_data.toLocaleString()
                   : 0}
@@ -135,31 +125,26 @@ export default function TabledataTX(props) {
                   : "ด่านทับช้าง 2 ML"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[2].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[2].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[2].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[2].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[2].count_mis_match_data.toLocaleString()
                   : 0}
@@ -172,31 +157,26 @@ export default function TabledataTX(props) {
                   : "ด่านทับช้าง 2 SL"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[3].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[3].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[3].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[3].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[3].count_mis_match_data.toLocaleString()
                   : 0}
@@ -209,31 +189,26 @@ export default function TabledataTX(props) {
                   : "ด่านธัญบุรี 1 ML"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[4].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[4].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[4].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[4].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[4].count_mis_match_data.toLocaleString()
                   : 0}
@@ -246,31 +221,26 @@ export default function TabledataTX(props) {
                   : "ด่านธัญบุรี 2 ML"}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[5].count_tvcs.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[5].count_audit.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[5].count_hq.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[5].count_match_data.toLocaleString()
                   : 0}
               </td>
               <td className={classes.td}>
-                {" "}
                 {!!dataList.result
                   ? dataList.result[5].count_mis_match_data.toLocaleString()
                   : 0}

@@ -26,12 +26,20 @@ export default function exportExcel2(sendData, endpoint, reportName) {
   apiURL.post(endpoint, sendData).then((res) => {
     console.log(res.data.result);
 
-    const ws = XLSX.utils.json_to_sheet(res.data.result);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "รายงาน");
-    /* generate XLSX file and send to client */
-    XLSX.writeFile(wb, `${reportName}.xlsx`);
-    Swal.close();
+    if (res.data.status === false) {
+      Swal.fire({
+        title: "ไม่มีข้อมูล",
+        allowOutsideClick: false,
+        icon: "warning",
+      });
+    } else {
+      const ws = XLSX.utils.json_to_sheet(res.data.result);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "รายงาน");
+      /* generate XLSX file and send to client */
+      XLSX.writeFile(wb, `${reportName}.xlsx`);
+      Swal.close();
+    }
   });
 
   return <></>;
