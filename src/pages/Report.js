@@ -1105,7 +1105,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData8}
                 report={PdfFineMonthly}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-fine-4.1.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1169,7 +1180,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData9}
                 report={PdfPressTheClaim}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-fine-4.1.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
