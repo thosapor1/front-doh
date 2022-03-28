@@ -84,8 +84,8 @@ export default function TableMFlow1(props) {
               <td className={classes.td}>รถยกเว้น</td>
             </tr>
             <tr>
-              <td className={classes.td2}>Non-Member</td>
               <td className={classes.td2}>Member</td>
+              <td className={classes.td2}>Non-Member</td>
               <td className={classes.td2}>จำนวนที่พบ</td>
               <td className={classes.td2}>จำนวนที่พบ</td>
             </tr>
@@ -99,12 +99,12 @@ export default function TableMFlow1(props) {
             <tr>
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[0].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
                 {!!dataList.tx
                   ? dataList.tx[0].non_member.toLocaleString()
                   : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.tx ? dataList.tx[0].member.toLocaleString() : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.tx ? dataList.tx[0].illegal.toLocaleString() : "0"}
@@ -115,13 +115,14 @@ export default function TableMFlow1(props) {
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
+
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[1].member.toLocaleString() : "0"}
+              </td>
               <td className={classes.td}>
                 {!!dataList.tx
                   ? dataList.tx[1].non_member.toLocaleString()
                   : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.tx ? dataList.tx[1].member.toLocaleString() : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.tx ? dataList.tx[1].illegal.toLocaleString() : "0"}
@@ -132,13 +133,14 @@ export default function TableMFlow1(props) {
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
+
+              <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[2].member.toLocaleString() : "0"}
+              </td>
               <td className={classes.td}>
                 {!!dataList.tx
                   ? dataList.tx[2].non_member.toLocaleString()
                   : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.tx ? dataList.tx[2].member.toLocaleString() : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.tx ? dataList.tx[2].illegal.toLocaleString() : "0"}
@@ -150,12 +152,12 @@ export default function TableMFlow1(props) {
             <tr>
               <td className={classes.td}>รวมรายการ</td>
               <td className={classes.td}>
+                {!!dataList.tx ? dataList.tx[3].member.toLocaleString() : "0"}
+              </td>
+              <td className={classes.td}>
                 {!!dataList.tx
                   ? dataList.tx[3].non_member.toLocaleString()
                   : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.tx ? dataList.tx[3].member.toLocaleString() : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.tx ? dataList.tx[3].illegal.toLocaleString() : "0"}

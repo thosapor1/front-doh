@@ -23,7 +23,7 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default async function PdfDebt(
+export default async function PdfPressTheClaim(
   selectedDate,
   checkpoint,
   startTime,
@@ -33,6 +33,7 @@ export default async function PdfDebt(
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
+
   const sendData = {
     date: format(selectedDate, "yyyy-MM-dd"),
     checkpoint: checkpoint.toString(),
@@ -44,49 +45,39 @@ export default async function PdfDebt(
   let body2 = [];
   let body3 = [];
   let body4 = [];
-  let body5 = [];
 
   Swal.fire({
     title: `กำลังสร้างรายงาน`,
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
-      return apiURL.post("/report-balance", sendData).then(async (res) => {
+      return apiURL.post("/report-debt", sendData).then(async (res) => {
         body1.push(
           [
             {
-              text: "รายการใบแจ้งหนี้ที่ชำระ",
-              colSpan: 4,
+              text: "จำนวนรถผ่านเข้าระบบ M-Flow",
+              colSpan: 3,
             },
-            {},
             {},
             {},
           ],
           [
+            { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
             {
-              text: "ประเภทรถ",
-              rowSpan: 3,
-              margin: [23, 0, 0, 0],
+              text: "ชำระเกินกำหนดวันที่ 13",
+              colSpan: 2,
             },
-            { text: "รายได้พึงได้ที่ชำระ", colSpan: 3 },
-            {},
             {},
           ],
           [
             {},
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-            { text: "ค่าปรับ", border: [true, true, true, false] },
+            { text: "ค่าทวงถามพึงได้", border: [true, true, true, false] },
           ],
           [
             {},
             {
               text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
-            },
-            {
-              text: "(บาท)",
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
@@ -98,46 +89,52 @@ export default async function PdfDebt(
           ],
           [
             { text: "C1" },
-            { text: res.data.result_1[0].bill.toLocaleString() },
-            { text: res.data.result_1[0].fee.toLocaleString() },
-            { text: res.data.result_1[0].fine.toLocaleString() },
+            { text: res.data.result_sum[0].count_bill.toLocaleString() },
+            { text: res.data.result_sum[0].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "C2" },
-            { text: res.data.result_1[1].bill.toLocaleString() },
-            { text: res.data.result_1[1].fee.toLocaleString() },
-            { text: res.data.result_1[1].fine.toLocaleString() },
+            { text: res.data.result_sum[1].count_bill.toLocaleString() },
+            { text: res.data.result_sum[1].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "C3" },
-            { text: res.data.result_1[2].bill.toLocaleString() },
-            { text: res.data.result_1[2].fee.toLocaleString() },
-            { text: res.data.result_1[2].fine.toLocaleString() },
+            { text: res.data.result_sum[2].count_bill.toLocaleString() },
+            { text: res.data.result_sum[2].demand_fee_amount.toLocaleString() },
           ],
           [
             { text: "รวม" },
-            { text: res.data.result_1[3].bill.toLocaleString() },
-            { text: res.data.result_1[3].fee.toLocaleString() },
-            { text: res.data.result_1[3].fine.toLocaleString() },
+            { text: res.data.result_sum[3].count_bill.toLocaleString() },
+            { text: res.data.result_sum[3].demand_fee_amount.toLocaleString() },
           ]
         );
-
         body2.push(
           [
             {
-              text: "รายการใบแจ้งหนี้ที่ค้างชำระ",
-              colSpan: 3,
+              text: "รายได้ค่าปรับการชำระช้าเกินกำหนด",
+              colSpan: 5,
             },
             {},
             {},
+            {},
+            {},
           ],
-          [{ text: "หนี้คงค้าง", colSpan: 3 }, {}, {}],
           [
+            { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
+            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 2 },
+            {},
+            { text: "คงเหลือ", colSpan: 2 },
+            {},
+          ],
+          [
+            {},
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-            { text: "ค่าปรับ", border: [true, true, true, false] },
+            { text: "ค่าทวงถาม", border: [true, true, true, false] },
+            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
+            { text: "ยอดเงิน", border: [true, true, true, false] },
           ],
           [
+            {},
             {
               text: "(รายการ)",
               border: [true, false, true, true],
@@ -149,109 +146,137 @@ export default async function PdfDebt(
               margin: [0, -5, 0, 0],
             },
             {
+              text: "(รายการ)",
+              border: [true, false, true, true],
+              margin: [0, -5, 0, 0],
+            },
+            {
               text: "(บาท)",
               border: [true, false, true, true],
               margin: [0, -5, 0, 0],
             },
           ],
           [
-            { text: res.data.result_2[0].bill.toLocaleString() },
-            { text: res.data.result_2[0].fee.toLocaleString() },
-            { text: res.data.result_2[0].fine.toLocaleString() },
+            { text: "C1" },
+            {
+              text: res.data.result_classify[0].invoice_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[0].amount.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[0].bill_balance.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[0].demand_balance.toLocaleString(),
+            },
           ],
           [
-            { text: res.data.result_2[1].bill.toLocaleString() },
-            { text: res.data.result_2[1].fee.toLocaleString() },
-            { text: res.data.result_2[1].fine.toLocaleString() },
+            { text: "C2" },
+            {
+              text: res.data.result_classify[1].invoice_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[1].amount.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[1].bill_balance.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[1].demand_balance.toLocaleString(),
+            },
           ],
           [
-            { text: res.data.result_2[2].bill.toLocaleString() },
-            { text: res.data.result_2[2].fee.toLocaleString() },
-            { text: res.data.result_2[2].fine.toLocaleString() },
+            { text: "C3" },
+            {
+              text: res.data.result_classify[2].invoice_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[2].amount.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[2].bill_balance.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[2].demand_balance.toLocaleString(),
+            },
           ],
           [
-            { text: res.data.result_2[3].bill.toLocaleString() },
-            { text: res.data.result_2[3].fee.toLocaleString() },
-            { text: res.data.result_2[3].fine.toLocaleString() },
+            { text: "รวม" },
+            {
+              text: res.data.result_classify[3].invoice_overdue.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify[3].amount.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[3].bill_balance.toLocaleString(),
+            },
+            {
+              text: res.data.result_classify_balance[3].demand_balance.toLocaleString(),
+            },
           ]
         );
-
         body3.push(
           [
             {
-              text: "รายการใบแจ้งหนี้ค่าทวงถาม",
-              colSpan: 4,
+              text: `สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                locale: th,
+              })}`,
+              colSpan: 3,
             },
             {},
             {},
-            {},
-          ],
-          [
-            { text: "ค่าทวงถามที่ชำระ", colSpan: 2 },
-            {},
-            { text: "ค่าทวงถามที่ชำระ", colSpan: 2 },
-            {},
-          ],
-          [
-            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าทวงถาม", border: [true, true, true, false] },
-            { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าทวงถาม", border: [true, true, true, false] },
           ],
           [
             {
-              text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
+              text: "จำนวนใบแจ้งหนี้ที่มีค่าทวงถาม",
+              alignment: "left",
+              border: [true, false, false, false],
             },
             {
-              text: "(บาท)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
+              text: res.data.result_classify_balance[2].demand_balance.toLocaleString(),
+              alignment: "right",
+              border: [false, false, false, false],
+            },
+            { text: "รายการ", border: [false, false, true, false] },
+          ],
+          [
+            {
+              text: "จำนวนใบแจ้งหนี้ที่ชำระค่าทวงถาม",
+              alignment: "left",
+              border: [true, false, false, true],
             },
             {
-              text: "(รายการ)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
+              text: res.data.result_classify[3].invoice_overdue.toLocaleString(),
+              alignment: "right",
+              margin: [10, 0, 0, 0],
+              border: [false, false, false, true],
+            },
+            { text: "รายการ", border: [false, false, true, true] },
+          ],
+          [
+            {
+              text: "คงเหลือ",
+              alignment: "left",
+              border: [true, false, false, true],
             },
             {
-              text: "(บาท)",
-              border: [true, false, true, true],
-              margin: [0, -5, 0, 0],
+              text: res.data.result_classify_balance[3].bill_balance.toLocaleString(),
+              alignment: "right",
+              border: [false, false, false, true],
             },
-          ],
-          [
-            { text: res.data.result_3[0].bill_1.toLocaleString() },
-            { text: res.data.result_3[0].demand_fee_1.toLocaleString() },
-            { text: res.data.result_3[0].bill_2.toLocaleString() },
-            { text: res.data.result_3[0].demand_fee_2.toLocaleString() },
-          ],
-          [
-            { text: res.data.result_3[1].bill_1.toLocaleString() },
-            { text: res.data.result_3[1].demand_fee_1.toLocaleString() },
-            { text: res.data.result_3[1].bill_2.toLocaleString() },
-            { text: res.data.result_3[1].demand_fee_2.toLocaleString() },
-          ],
-          [
-            { text: res.data.result_3[2].bill_1.toLocaleString() },
-            { text: res.data.result_3[2].demand_fee_1.toLocaleString() },
-            { text: res.data.result_3[2].bill_2.toLocaleString() },
-            { text: res.data.result_3[2].demand_fee_2.toLocaleString() },
-          ],
-          [
-            { text: res.data.result_3[3].bill_1.toLocaleString() },
-            { text: res.data.result_3[3].demand_fee_1.toLocaleString() },
-            { text: res.data.result_3[3].bill_2.toLocaleString() },
-            { text: res.data.result_3[3].demand_fee_2.toLocaleString() },
+            { text: "บาท", border: [false, false, true, true] },
           ]
         );
-
         body4.push(
           [
             {
-              text: `สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
-                locale: th,
-              })}`,
+              text: `สรุปข้อมูลยอดชำระวันที่ ${format(
+                selectedDate,
+                "dd MMMM yyyy",
+                { locale: th }
+              )}`,
               colSpan: 3,
             },
             {},
@@ -259,131 +284,38 @@ export default async function PdfDebt(
           ],
           [
             {
-              text: "ใบแจ้งหนี้รถวิ่งผ่านทาง",
+              text: "ยอดค่าทวงถามพึงได้",
               alignment: "left",
-            },
-            {
-              text: (
-                res.data.result_1[3].bill + res.data.result_2[3].bill
-              ).toLocaleString(),
-              alignment: "right",
-            },
-            { text: "รายการ" },
-          ],
-          [
-            {
-              text: "รายได้พึงได้รวม",
               border: [true, false, true, false],
-              alignment: "left",
             },
             {
-              text: (
-                res.data.result_1[3].fee +
-                res.data.result_2[3].fee +
-                res.data.result_1[3].fine +
-                res.data.result_2[3].fine
-              ).toLocaleString(),
-              border: [false, false, true, false],
+              text: res.data.result_sum[3].demand_fee_amount.toLocaleString(),
               alignment: "right",
+              border: [true, false, true, false],
             },
             { text: "บาท", border: [false, false, true, false] },
           ],
           [
             {
-              text: "ยอดชำระ",
+              text: "ยอดชำระค่าทวงถาม",
               alignment: "left",
               border: [true, false, true, true],
             },
             {
-              text: (
-                res.data.result_1[3].fee + res.data.result_1[3].fine
-              ).toLocaleString(),
+              text: res.data.result_classify[3].amount.toLocaleString(),
               alignment: "right",
-              border: [true, false, true, true],
+              margin: [10, 0, 0, 0],
+              border: [false, false, true, true],
             },
-            { text: "บาท", border: [true, false, true, true] },
+            { text: "บาท", border: [false, false, true, true] },
           ],
           [
             {
-              text: "หนี้คงค้าง",
+              text: "คงเหลือ",
               alignment: "left",
             },
             {
-              text: (
-                res.data.result_2[3].fee + res.data.result_2[3].fine
-              ).toLocaleString(),
-              alignment: "right",
-            },
-            { text: "บาท" },
-          ]
-        );
-
-        body5.push(
-          [
-            {
-              text: `สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
-                locale: th,
-              })}`,
-              colSpan: 3,
-            },
-            {},
-            {},
-          ],
-          [
-            {
-              text: "ใบแจ้งหนี้ค่าทวงถาม",
-              alignment: "left",
-            },
-            {
-              text: (
-                res.data.result_3[3].bill_1 + res.data.result_3[3].bill_2
-              ).toLocaleString(),
-              alignment: "right",
-            },
-            { text: "รายการ" },
-          ],
-          [
-            {
-              text: "รายได้พึงได้รวม",
-              border: [true, false, true, false],
-              alignment: "left",
-            },
-            {
-              text: (
-                res.data.result_1[3].fee +
-                res.data.result_2[3].fee +
-                res.data.result_1[3].fine +
-                res.data.result_2[3].fine
-              ).toLocaleString(),
-              border: [false, false, true, false],
-              alignment: "right",
-            },
-            { text: "บาท", border: [false, false, true, false] },
-          ],
-          [
-            {
-              text: "ยอดชำระ",
-              alignment: "left",
-              border: [true, false, true, true],
-            },
-            {
-              text: (
-                res.data.result_1[3].fee + res.data.result_1[3].fine
-              ).toLocaleString(),
-              alignment: "right",
-              border: [true, false, true, true],
-            },
-            { text: "บาท", border: [true, false, true, true] },
-          ],
-          [
-            {
-              text: "หนี้คงค้าง",
-              alignment: "left",
-            },
-            {
-              text: (
-                res.data.result_2[3].fee + res.data.result_2[3].fine
-              ).toLocaleString(),
+              text: res.data.result_classify_balance[3].demand_balance.toLocaleString(),
               alignment: "right",
             },
             { text: "บาท" },
@@ -404,7 +336,7 @@ export default async function PdfDebt(
         console.log("generate");
         pdfMake
           .createPdf(docDefinition)
-          .download("รายงานหนี้คงค้าง.pdf", () => {
+          .download("รายงานการชำระค่าผ่านทางสรุปรายเดือน.pdf", () => {
             resolve();
           });
       } catch (err) {
@@ -443,13 +375,13 @@ export default async function PdfDebt(
         {
           columns: [
             {
-              text: "รายงานหนี้คงค้าง",
+              text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
               alignment: "left",
               fontSize: 9,
               margin: [40, 0, 0, 0],
             },
             {
-              text: "ตส.05",
+              text: "ตส.04.2",
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 0],
@@ -497,7 +429,7 @@ export default async function PdfDebt(
       },
 
       {
-        text: "รายงานหนี้คงค้าง",
+        text: "รายงานการชำระค่าปรับสรุปรายเดือน (ค่าทวงถาม)",
         fontSize: 14,
         margin: [0, 20, 0, 0],
       },
@@ -584,53 +516,53 @@ export default async function PdfDebt(
             margin: [70, 10, 0, 0],
             style: "table",
             table: {
-              widths: [45, 45, 45, 45],
+              widths: [65, 65, 65],
               body: body1,
             },
           },
 
           {
             style: "table",
-            margin: [11, 10, 0, 0],
+            margin: [-70, 10, 0, 0],
             table: {
-              widths: [45, 45, 45],
+              widths: [66, 66, 66, 66, 66],
               body: body2,
-            },
-          },
-          {
-            style: "table",
-            margin: [-104, 10, 0, 0],
-            table: {
-              widths: [45, 45, 45, 45],
-              body: body3,
             },
           },
         ],
       },
-
       {
         columns: [
           {
             style: "table2",
-            margin: [281, 10, 0, 0],
+            margin: [263, 10, 0, 0],
             table: {
-              widths: [100, 40, 30],
-              body: body4,
+              widths: [110, 40, 30],
+              body: body3,
             },
           },
+
           {
             style: "table2",
             margin: [10, 10, 0, 0],
             table: {
-              widths: [100, 40, 30],
-              body: body5,
+              widths: [110, 40, 30],
+              body: body4,
             },
           },
         ],
       },
       {
-        text: "(____________________)",
-        margin: [580, 15, 0, 0],
+        columns: [
+          {
+            text: "*มีการยกเว้นค่าปรับถึงวันที่ 31 มีนาคม 2565",
+            margin: [70, 15, 0, 0],
+          },
+          {
+            text: "(____________________)",
+            margin: [200, 15, 0, 0],
+          },
+        ],
       },
       {
         text: "ผู้ตรวจสอบ",

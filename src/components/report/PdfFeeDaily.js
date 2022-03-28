@@ -30,7 +30,6 @@ export default async function PdfFeeDaily(
   endTime
 ) {
   // let win = window.open("", "_blank");
-  const date = format(selectedDate, "dd MMMM yyyy");
   const getDate = !!selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
   const ck = checkpoint;
   console.log(getDate, ck);
@@ -104,10 +103,10 @@ export default async function PdfFeeDaily(
             },
             { text: "AQDD", alignment: "left" },
             {
-              text: res.data.payment[2].payment_list.toLocaleString(),
+              text: res.data.payment[3].payment_list.toLocaleString(),
             },
             {
-              text: res.data.payment[2].amount_received.toLocaleString(),
+              text: res.data.payment[3].amount_received.toLocaleString(),
             },
             { text: "" },
           ],
@@ -119,10 +118,10 @@ export default async function PdfFeeDaily(
             },
             { text: "M-PASS", alignment: "left" },
             {
-              text: res.data.payment[7].payment_list.toLocaleString(),
+              text: res.data.payment[9].payment_list.toLocaleString(),
             },
             {
-              text: res.data.payment[7].amount_received.toLocaleString(),
+              text: res.data.payment[9].amount_received.toLocaleString(),
             },
             { text: "" },
           ],
@@ -134,10 +133,10 @@ export default async function PdfFeeDaily(
             },
             { text: "EASYPASS", alignment: "left" },
             {
-              text: res.data.payment[4].payment_list.toLocaleString(),
+              text: res.data.payment[6].payment_list.toLocaleString(),
             },
             {
-              text: res.data.payment[4].amount_received.toLocaleString(),
+              text: res.data.payment[6].amount_received.toLocaleString(),
             },
             { text: "" },
           ],
@@ -186,11 +185,11 @@ export default async function PdfFeeDaily(
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[6].payment_list.toLocaleString(),
+              text: res.data.payment[8].payment_list.toLocaleString(),
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[6].amount_received.toLocaleString(),
+              text: res.data.payment[8].amount_received.toLocaleString(),
               border: [true, false, true, false],
             },
             {
@@ -215,11 +214,11 @@ export default async function PdfFeeDaily(
               border: [true, false, true, false],
             },
             {
-              text: "0",
+              text: res.data.payment[4].payment_list.toLocaleString(),
               border: [true, false, true, false],
             },
             {
-              text: "0",
+              text: res.data.payment[4].amount_received.toLocaleString(),
               border: [true, false, true, false],
             },
             {
@@ -244,11 +243,11 @@ export default async function PdfFeeDaily(
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[5].payment_list.toLocaleString(),
+              text: res.data.payment[7].payment_list.toLocaleString(),
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[5].amount_received.toLocaleString(),
+              text: res.data.payment[7].amount_received.toLocaleString(),
               border: [true, false, true, false],
             },
             {
@@ -302,11 +301,11 @@ export default async function PdfFeeDaily(
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[3].payment_list.toLocaleString(),
+              text: res.data.payment[5].payment_list.toLocaleString(),
               border: [true, false, true, false],
             },
             {
-              text: res.data.payment[3].amount_received.toLocaleString(),
+              text: res.data.payment[5].amount_received.toLocaleString(),
               border: [true, false, true, false],
             },
             {
@@ -331,11 +330,11 @@ export default async function PdfFeeDaily(
               border: [true, false, true, true],
             },
             {
-              text: "0",
+              text: res.data.payment[2].payment_list.toLocaleString(),
               border: [true, false, true, true],
             },
             {
-              text: "0",
+              text: res.data.payment[2].amount_received.toLocaleString(),
               border: [true, false, true, true],
             },
             {
@@ -377,10 +376,10 @@ export default async function PdfFeeDaily(
               text: "",
             },
             {
-              text: res.data.payment[8].payment_list.toLocaleString(),
+              text: res.data.payment[10].payment_list.toLocaleString(),
             },
             {
-              text: res.data.payment[8].amount_received.toLocaleString(),
+              text: res.data.payment[10].amount_received.toLocaleString(),
             },
             {
               text: "",

@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyPayment4(props) {
+export default function TableDebt4(props) {
   const { dataList, selectedDate } = props;
 
   const classes = useStyles();
@@ -65,7 +65,7 @@ export default function TableMonthlyPayment4(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                {`สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                {`สรุปข้อมูลวันที่ ${format(selectedDate, "dd MMMM yyyy", {
                   locale: th,
                 })}`}
               </td>
@@ -74,27 +74,51 @@ export default function TableMonthlyPayment4(props) {
             <tr>
               <td
                 className={classes.td}
-                style={{
-                  width: 200,
-                  textAlign: "left",
-                  borderRight: "1px solid black",
-                }}
+                style={{ width: 200, textAlign: "left" }}
               >
-                ยอดค่าปรับพึงได้
+                ใบแจ้งหนี้รถวิ่งผ่านทาง
               </td>
               <td
                 className={classes.td}
                 style={{
-                  borderLeft: "0px",
-                  borderRight: "1px solid black",
                   textAlign: "right",
                 }}
               >
-                {!!dataList.result_sum
-                  ? dataList.result_sum[3].income_fine.toLocaleString()
+                {!!dataList.result_1
+                  ? (
+                      dataList.result_1[3].bill + dataList.result_2[3].bill
+                    ).toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ borderLeft: "0px" }}>
+              <td className={classes.td} style={{ textAlign: "left" }}>
+                รายการ
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td2}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  textAlign: "left",
+                }}
+              >
+                รายได้พึงได้รวม
+              </td>
+              <td
+                className={classes.td2}
+                style={{ borderRight: "1px solid black", textAlign: "right" }}
+              >
+                {!!dataList.result_1
+                  ? (
+                      dataList.result_1[3].fee +
+                      dataList.result_2[3].fee +
+                      dataList.result_1[3].fine +
+                      dataList.result_2[3].fine
+                    ).toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
               </td>
             </tr>
@@ -107,81 +131,33 @@ export default function TableMonthlyPayment4(props) {
                   textAlign: "left",
                 }}
               >
-                ยอดชำระค่าปรับ
+                ยอดชำระ
               </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
+              <td className={classes.td2} style={{ textAlign: "right" }}>
+                {!!dataList.result_1
                   ? (
-                      dataList.result_classify[3].income_fine_3 +
-                      dataList.result_classify[3].income_fine_13
+                      dataList.result_1[0].fee + dataList.result_2[0].fine
                     ).toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td2}>บาท</td>
+              <td className={classes.td2} style={{ textAlign: "left" }}>
+                บาท
+              </td>
             </tr>
             <tr>
-              <td
-                className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 3
+              <td className={classes.td} style={{ textAlign: "left" }}>
+                หนี้คงค้าง
               </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_3.toLocaleString()
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result_1
+                  ? (
+                      dataList.result_1[0].fee + dataList.result_2[0].fine
+                    ).toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td2}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td3}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 13
+              <td className={classes.td} style={{ textAlign: "left" }}>
+                บาท
               </td>
-              <td
-                className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_13.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td3}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td3}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                  textAlign: "left",
-                }}
-              >
-                คงเหลือ
-              </td>
-              <td
-                className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_remain.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td3}>บาท</td>
             </tr>
           </table>
         </div>

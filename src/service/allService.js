@@ -406,9 +406,43 @@ export const getDataFeeMonthly = (sendData) => {
 };
 
 export const getTxDailyIncome = (sendData) => {
-  const response = apiURLv1.post("/report-list-payment", sendData).catch((error) => {
+  const response = apiURLv1
+    .post("/report-list-payment", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getFineData = (sendData) => {
+  const response = apiURLv1
+    .post("/report-income-fine", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDebtData = (sendData) => {
+  const response = apiURLv1.post("/report-debt", sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
+  return response;
+};
+
+export const getOverdueBalanceData = (sendData) => {
+  const response = apiURLv1.post("/report-balance", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getResultFeeData = (sendData) => {
+  const response = apiURLv1
+    .post("/report-interactive", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
   return response;
 };
 

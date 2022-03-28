@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       fontFamily: "Sarabun",
-      padding: "0px 0px 10px 20px",
+      padding: 20,
     },
     th: {
       fontWeight: 700,
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 90,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 90,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 90,
+      width: 107,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow2(props) {
+export default function TableResultFee1(props) {
   const { dataList } = props;
 
   const classes = useStyles();
@@ -64,170 +64,167 @@ export default function TableMonthlyMFlow2(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={7}>
-                รายได้การชำระค่าธรรมเนียมผ่านทาง
+                จำนวนรายการที่ต้องการชี้แจงจากฝ่ายจัดเก็บรายได้
               </td>
             </tr>
             <tr>
               <td className={classes.td} rowSpan={3}>
-                ประเภทรถ
+                ประเภทรถจากการตรวจสอบ
+              </td>
+              <td className={classes.td} colSpan={4}>
+                ข้อมูลประเภทรถจากจัดเก็บ
               </td>
               <td className={classes.td} colSpan={2}>
-                ขำระตามกำหนด
-              </td>
-              <td className={classes.td} colSpan={2}>
-                ขำระเกินกำหนด
-              </td>
-              <td className={classes.td} colSpan={2}>
-                คงเหลือ
+                ข้อมูลเพิ่มเติมจากตรวจสอบ
               </td>
             </tr>
 
             <tr>
-              <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ยอดเงิน</td>
-              <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ยอดเงิน</td>
-              <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ยอดเงิน</td>
+              <td className={classes.td2}>C1</td>
+              <td className={classes.td2}>C2</td>
+              <td className={classes.td2}>C3</td>
+              <td className={classes.td2}>รถยกเว้น</td>
+              <td className={classes.td2}>รถสูญหาย</td>
+              <td className={classes.td2}>รวม</td>
             </tr>
             <tr>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(รายการ)</td>
-              <td className={classes.td3}>(บาท)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>(รายการ)</td>
             </tr>
 
             <tr>
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].count_bill_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].income_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].count_bill_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].income_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].count_bill_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].lost_vehicle.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[0].income_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[0].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].count_bill_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].income_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].count_bill_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].income_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].count_bill_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].lost_vehicle.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[1].income_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[1].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].count_bill_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].income_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].count_bill_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].income_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].count_bill_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].lost_vehicle.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[2].income_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[2].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>
             <tr>
-              <td className={classes.td}>รวม</td>
+              <td className={classes.td}>รวมรายการ</td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C1.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_due.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C2.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].C3.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_overdue.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].reject.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].lost_vehicle.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].sum.toLocaleString()
                   : "0"}
               </td>
             </tr>

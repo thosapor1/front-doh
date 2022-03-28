@@ -23,7 +23,7 @@ const apiURL = axios.create({
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
 
-export default function PdfTxFeeDaily(
+export default function PdfTxDebt(
   selectedDate,
   checkpoint,
   startTime,
@@ -43,16 +43,34 @@ export default function PdfTxFeeDaily(
   let body = [
     [
       { text: "ลำดับ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "วันที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "เลขที่ใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ทะเบียนรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ทะเบียนจังหวัด", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "ประเภทใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "ประเภทหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "วันที่ออกใบแจ้งหนี้", rowSpan: 2, margin: [0, 8, 0, 0] },
+      { text: "ประเภทผู้ใช้บริการ", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ด่าน", rowSpan: 2, margin: [0, 8, 0, 0] },
       { text: "ประเภทรถ", rowSpan: 2, margin: [0, 8, 0, 0] },
-      { text: "ค่าผ่านทาง ", border: [true, true, true, false] },
-      { text: "วิธีการชำระเงิน", colSpan: 3 },
-      {},
-      {},
+      {
+        text: "ค่าธรรมเนียม",
+        margin: [0, 8, 0, 0],
+        border: [true, true, true, false],
+      },
+      {
+        text: "ค่าปรับ",
+        margin: [0, 8, 0, 0],
+        border: [true, true, true, false],
+      },
+      {
+        text: "ค่าทวงถาม",
+        margin: [0, 8, 0, 0],
+        border: [true, true, true, false],
+      },
+      {
+        text: "รวมยอดเงิน",
+        margin: [0, 8, 0, 0],
+        border: [true, true, true, false],
+      },
+      { text: "สถานะการชำระ", rowSpan: 2, margin: [0, 8, 0, 0] },
     ],
     [
       {},
@@ -62,15 +80,28 @@ export default function PdfTxFeeDaily(
       {},
       {},
       {},
+      {},
       {
         text: "(บาท)",
-        border: [true, false, false, true],
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
       },
-      { text: "รูปแบบ" },
       {
-        text: "ประเภท",
+        text: "(บาท)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
       },
-      { text: "ช่องทาง" },
+      {
+        text: "(บาท)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+      {
+        text: "(บาท)",
+        border: [true, false, true, true],
+        margin: [0, -5, 0, 0],
+      },
+      {},
     ],
   ];
 
@@ -79,7 +110,7 @@ export default function PdfTxFeeDaily(
       try {
         pdfMake
           .createPdf(docDefinition)
-          .download("รายงานTransactionการชำระค่าผ่านทางประจำวัน.pdf", () => {
+          .download("รายงานTransactionสรุปหนี้คงค้าง.pdf", () => {
             console.log("generate");
             resolve();
           });
@@ -96,32 +127,22 @@ export default function PdfTxFeeDaily(
           // console.log(index);
           body.push([
             index + 1,
-            !!res.data[index].billing_issueDate
-              ? res.data[index].billing_issueDate
+            !!res.data[index].invoiceNo ? res.data[index].invoiceNo : "-",
+            "-",
+            !!res.data[index].demand_fee && res.data[index].demand_fee === "-"
+              ? "หนี้การผ่านทาง"
+              : "หนี้ทวงถาม",
+            !!res.data[index].issueDate ? res.data[index].issueDate : "-",
+            !!res.data[index].transactionType
+              ? res.data[index].transactionType
               : "-",
-            !!res.data[index].billing_invoiceNo
-              ? res.data[index].billing_invoiceNo
-              : "-",
-            !!res.data[index].license_plate
-              ? res.data[index].license_plate
-              : "-",
-            !!res.data[index].province_description
-              ? res.data[index].province_description
-              : "-",
-            !!res.data[index].origin_plaza_name
-              ? res.data[index].origin_plaza_name
-              : "-",
-            !!res.data[index].match_real_vehicleClass
-              ? res.data[index].match_real_vehicleClass
-              : "-",
-            !!res.data[index].match_real_fee
-              ? res.data[index].match_real_fee
-              : "-",
-            !!res.data[index].type_1 ? res.data[index].type_1 : "-",
-            !!res.data[index].type_2 ? res.data[index].type_2 : "-",
-            !!res.data[index].payment_paymentChannel_code
-              ? res.data[index].payment_paymentChannel_code
-              : "-",
+            "-",
+            "-",
+            !!res.data[index].totalAmount ? res.data[index].totalAmount : "-",
+            !!res.data[index].fine ? res.data[index].fine : "-",
+            !!res.data[index].demand_fee ? res.data[index].demand_fee : "-",
+            !!res.data[index].total ? res.data[index].total : "-",
+            "ยังไม่ชำระ",
           ]);
         }
         console.log("loop");
@@ -162,13 +183,13 @@ export default function PdfTxFeeDaily(
         {
           columns: [
             {
-              text: "รายงานสรุปการชำระค่าผ่านทางประจำวัน",
+              text: "รายงานสรุปหนี้คงค้าง",
               alignment: "left",
               fontSize: 9,
               margin: [40, 0, 0, 0],
             },
             {
-              text: "ตส.01",
+              text: "ตส.05-2",
               alignment: "right",
               fontSize: 9,
               margin: [0, 0, 40, 0],
@@ -216,68 +237,92 @@ export default function PdfTxFeeDaily(
         ],
       },
 
-      {
-        text: "รายงานสรุปการชำระค่าผ่านทางประจำวัน",
-        margin: [20, 0, 0, 0],
-        fontSize: 14,
-      },
+      // {
+      //   text: "รายงานสรุปจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้",
+      //   margin: [20, 0, 0, 0],
+      //   fontSize: 14,
+      // },
 
-      {
-        style: "table",
-        margin: [70, 10, 0, 0],
-        table: {
-          widths: [100, 190, 100, 190],
-          body: [
-            [
-              {
-                text: "ข้อมูล ณ วันที่ : ",
-                alignment: "left",
-              },
-              {
-                text: `วันที่ ${format(new Date(), "dd MMMM yyyy", {
-                  locale: th,
-                })}`,
-                alignment: "left",
-              },
-              {
-                text: "ข้อมูลเริ่มต้นวันที่ :",
-                alignment: "left",
-              },
-              {
-                text: `${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })} เวลา ${format(startTime, "HH:mm")} น.`,
-                alignment: "left",
-              },
-            ],
-            [
-              {
-                text: "สายทาง : ",
-                alignment: "left",
-              },
-              {
-                text: "ทางหลวงหมายเลข 9",
-                alignment: "left",
-              },
-              {
-                text: "ข้อมูลสิ้นสุดวันที่ :",
-                alignment: "left",
-              },
-              {
-                text: `${format(selectedDate, "dd MMMM yyyy", {
-                  locale: th,
-                })} เวลา ${format(endTime, "HH:mm")} น.`,
-                alignment: "left",
-              },
-            ],
-          ],
-        },
-      },
+      // {
+      //   style: "table",
+      //   margin: [70, 10, 0, 0],
+      //   table: {
+      //     widths: [100, 190, 100, 190],
+      //     body: [
+      //       [
+      //         {
+      //           text: "ข้อมูล ณ วันที่ : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `วันที่ ${format(new Date(), "dd MMMM yyyy", {
+      //             locale: th,
+      //           })}`,
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ข้อมูลเริ่มต้นวันที่ :",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${format(selectedDate, "dd MMMM yyyy", {
+      //             locale: th,
+      //           })} เวลา ${format(startTime, "HH:mm")} น.`,
+      //           alignment: "left",
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "สายทาง : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ทางหลวงหมายเลข 9",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: "ข้อมูลสิ้นสุดวันที่ :",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${format(selectedDate, "dd MMMM yyyy", {
+      //             locale: th,
+      //           })} เวลา ${format(endTime, "HH:mm")} น.`,
+      //           alignment: "left",
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "ด่าน : ",
+      //           alignment: "left",
+      //         },
+      //         {
+      //           text: `${
+      //             checkpoint === 0
+      //               ? "ทุกด่าน"
+      //               : checkpoint === 1
+      //               ? "ทับช้าง 1"
+      //               : checkpoint === 2
+      //               ? "ทับช้าง 2"
+      //               : checkpoint === 3
+      //               ? "ธัญบุรี 1"
+      //               : checkpoint === 4
+      //               ? "ธัญบุรี 2"
+      //               : ""
+      //           }`,
+      //           alignment: "left",
+      //         },
+      //         {},
+      //         {},
+      //       ],
+      //     ],
+      //   },
+      // },
 
       {
         style: "table2",
         table: {
-          widths: [25, 50, 80, 45, 55, 40, 40, 40, 40, 40, 60],
+          widths: [30, 130, 55, 45, 55, 55, 30, 35, 40, 35, 35, 35, 50],
           headerRows: 2,
           body: body,
         },
@@ -286,8 +331,8 @@ export default function PdfTxFeeDaily(
     styles: {
       table: { marginTop: 20, alignment: "center", fontSize: 11 },
       table2: {
-        marginLeft: 70,
-        marginTop: 10,
+        marginLeft: 8,
+        marginTop: 20,
         alignment: "center",
         fontSize: 11,
       },
@@ -301,7 +346,7 @@ export default function PdfTxFeeDaily(
     didOpen: async () => {
       Swal.showLoading();
       return apiURL
-        .post("/report-list-payment", sendData, {
+        .post("/report-balance-5.2", sendData, {
           onDownloadProgress: (ProgressEvent) => {
             document.getElementById(
               "swal2-title"
