@@ -657,6 +657,7 @@ export default function ModalPK3Activity3(props) {
         TransactionsPeat: "",
         commentPK3: "",
         operation: "",
+
         TransID:
           !!dataList.resultsDisplay &&
           dataList.resultsDisplay[0].pk3_transactionId
@@ -666,6 +667,7 @@ export default function ModalPK3Activity3(props) {
           !!dataList.resultsDisplay && dataList.resultsDisplay[0].mf_lane_tranId
             ? dataList.resultsDisplay[0].mf_lane_tranId
             : "",
+
       });
       setFileName("");
       setVehicleClass(
