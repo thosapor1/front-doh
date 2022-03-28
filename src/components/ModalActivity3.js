@@ -301,7 +301,7 @@ export default function ModalActivity3(props) {
   const [open23, setOpen23] = useState(false);
   const [open24, setOpen24] = useState(false);
 
-  const { dataList, dropdown, checkDate, page ,onClick} = props;
+  const { dataList, dropdown, checkDate, page, onClick } = props;
 
   const [value1, setValue1] = useState(2);
   const [value2, setValue2] = useState(2);
@@ -951,18 +951,10 @@ export default function ModalActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>ยี่ห้อ</TableCell>
+                  <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
-                      ? resultDisplay.brand_description
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>สี</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.colors_description
-                      ? resultDisplay.colors_description
+                    {!!resultDisplay.vehicleClass
+                      ? `C${resultDisplay.vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>

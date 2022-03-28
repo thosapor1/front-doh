@@ -810,18 +810,10 @@ export default function ModalPK3Activity2(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>ยี่ห้อ</TableCell>
+                  <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
-                      ? resultDisplay.brand_description
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>สี</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.colors_description
-                      ? resultDisplay.colors_description
+                    {!!resultDisplay.vehicleClass
+                      ? `C${resultDisplay.vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
