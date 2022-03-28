@@ -430,6 +430,22 @@ export const getDebtData = (sendData) => {
   return response;
 };
 
+export const getOverdueBalanceData = (sendData) => {
+  const response = apiURLv1.post("/report-balance", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const getResultFeeData = (sendData) => {
+  const response = apiURLv1
+    .post("/report-interactive", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //ExportData page
 export const exportData = (sendData) => {
   const response = apiURLv1.post("/", sendData).catch((error) => {

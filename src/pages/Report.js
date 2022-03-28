@@ -24,6 +24,8 @@ import {
   getDataFeeMonthly,
   getFineData,
   getDebtData,
+  getOverdueBalanceData,
+  getResultFeeData,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -52,9 +54,6 @@ import TableMonthlyPayment1 from "../components/report/TableMonthlyPayment1";
 import TableMonthlyPayment2 from "../components/report/TableMonthlyPayment2";
 import TableMonthlyPayment3 from "../components/report/TableMonthlyPayment3 ";
 import TableMonthlyPayment4 from "../components/report/TableMonthlyPayment4";
-import TableDept1 from "../components/report/TableDebt1";
-import TableDept2 from "../components/report/TableDebt2";
-import TableDebt3 from "../components/report/TableDebt3";
 import TableGuarantee1 from "../components/report/TableGuarantee1";
 import TableGuarantee2 from "../components/report/TableGuarantee2";
 import TableGuarantee3 from "../components/report/TableGuarantee3";
@@ -71,6 +70,19 @@ import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
 import TablePressTheClaim3 from "../components/report/TablePressTheClaim3";
 import TablePressTheClaim4 from "../components/report/TablePressTheClaim4";
 import PdfPressTheClaim from "../components/report/PdfPressTheClaim";
+import TableDebt4 from "../components/report/TableDebt4";
+import TableDebt3 from "../components/report/TableDebt3";
+import TableDebt2 from "../components/report/TableDebt2";
+import TableDebt1 from "../components/report/TableDebt1";
+import TableDebt5 from "../components/report/TableDebt5";
+import PdfTxDebt from "../components/report/PdfTxDebt";
+import TableResultFee1 from "../components/report/TableResultFee1";
+import TableResultFee2 from "../components/report/TableResultFee2";
+import TableResultFee3 from "../components/report/TableResultFee3";
+import TableResultFee4 from "../components/report/TableResultFee4";
+import PdfResultFee from "../components/report/PdfResultFee";
+import PdfTxGuarantee from "../components/report/PdfTxGuarantee";
+import exportExcel2 from "../components/report/exportExcel2";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -142,6 +154,8 @@ export default function Report() {
   const [feeMonthly, setFeeMonthly] = useState([]);
   const [fineData, setFineData] = useState([]);
   const [debtData, setDebtData] = useState([]);
+  const [overdueBalance, setOverdueBalance] = useState([]);
+  const [resultFeeData, setResultFeeData] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -414,6 +428,78 @@ export default function Report() {
     // console.log(res.data);
   };
 
+  const fetchData10 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getOverdueBalanceData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setOverdueBalance(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData11 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    // const res = await getOverdueBalanceData(sendData);
+
+    // if (!!res && !!res.data.status) {
+    //   setResultFeeData(res.data);
+    // }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData12 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+      checkpoint: checkpoint.toString(),
+      startTime: format(startTime, "HH:mm:ss"),
+      endTime: format(endTime, "HH:mm:ss"),
+    };
+    const res = await getResultFeeData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setResultFeeData(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
   useEffect(() => {
     // fetchData();
     setCarClass(carClass);
@@ -493,6 +579,11 @@ export default function Report() {
             <Tab
               label="สรุปประกันค่าผ่านทาง"
               {...a11yProps(10)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปการจัดเก็บค่าธรรมเนียม"
+              {...a11yProps(11)}
               className={classes.tab}
             />
 
@@ -810,7 +901,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData5}
                 report={PdfNumberOfCarAndIncome}
-                transactionReport={PdfTxNumberOfCar}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-list-tx",
+                    "รายงานTransactionจำนวนรถวิ่งผ่านด่าน M-Flow และรายได้พึงได้"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -870,7 +972,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData6}
                 report={PdfFeeDaily}
-                transactionReport={PdfTxFeeDaily}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-list-payment",
+                    "รายงานTransactionการชำระค่าผ่านทางประจำวัน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -917,7 +1030,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData7}
                 report={PdfFeeMonthly}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-3.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -981,7 +1105,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData8}
                 report={PdfFineMonthly}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-fine-4.1.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1045,7 +1180,18 @@ export default function Report() {
               <FilterSection5
                 onFetchData={fetchData9}
                 report={PdfPressTheClaim}
-                transactionReport={PaymentTSPdf}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-income-fine-4.1.1",
+                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1107,9 +1253,9 @@ export default function Report() {
           <TabPanel value={value} index={9}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
+                onFetchData={fetchData10}
                 report={PdfDebt}
-                transactionReport={PaymentTSPdf}
+                transactionReport={PdfTxDebt}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1145,8 +1291,9 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableDept1 />
-                  <TableDept2 />
+                  <TableDebt1 dataList={overdueBalance} />
+                  <TableDebt2 dataList={overdueBalance} />
+                  <TableDebt3 dataList={overdueBalance} />
                 </div>
                 <div
                   style={{
@@ -1155,7 +1302,14 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableDebt3 />
+                  <TableDebt4
+                    dataList={overdueBalance}
+                    selectedDate={selectedDate}
+                  />
+                  <TableDebt5
+                    dataList={overdueBalance}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
@@ -1164,9 +1318,9 @@ export default function Report() {
           <TabPanel value={value} index={10}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData3}
-                report={PdfGuarantee}
-                transactionReport={PaymentTSPdf}
+                onFetchData={fetchData11}
+                report={() => alert("กำลังดำเนินการ")}
+                transactionReport={() => alert("กำลังดำเนินการ")}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1213,6 +1367,81 @@ export default function Report() {
                   }}
                 >
                   <TableGuarantee3 />
+                </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={11}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData12}
+                report={PdfResultFee}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-pk3-approve",
+                    "รายงานTransactionการจัดเก็บค่าธรรมเนียม"
+                  )
+                }
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปการตรวจสอบการจัดเก็บค่าธรรมเนียมผ่านทาง
+                </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TopTable
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    checkpoint={checkpoint}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TableResultFee1 dataList={resultFeeData} />
+                  <TableResultFee2 dataList={resultFeeData} />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    marginRight: 215,
+                  }}
+                >
+                  <TableResultFee3
+                    dataList={resultFeeData}
+                    selectedDate={selectedDate}
+                  />
+                  <TableResultFee4
+                    dataList={resultFeeData}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>
