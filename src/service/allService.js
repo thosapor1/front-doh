@@ -446,6 +446,15 @@ export const getResultFeeData = (sendData) => {
   return response;
 };
 
+export const getGuaranteeData = (sendData) => {
+  const response = apiURLv1
+    .post("/report-toll-insurance", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //ExportData page
 export const exportData = (sendData) => {
   const response = apiURLv1.post("/", sendData).catch((error) => {

@@ -26,6 +26,7 @@ import {
   getDebtData,
   getOverdueBalanceData,
   getResultFeeData,
+  getGuaranteeData,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -154,6 +155,7 @@ export default function Report() {
   const [feeMonthly, setFeeMonthly] = useState([]);
   const [fineData, setFineData] = useState([]);
   const [debtData, setDebtData] = useState([]);
+  const [guarantee, setGuarantee] = useState([]);
   const [overdueBalance, setOverdueBalance] = useState([]);
   const [resultFeeData, setResultFeeData] = useState([]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
@@ -252,10 +254,18 @@ export default function Report() {
     };
     const res = await getDataReportBilling(sendData);
 
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        title: "ไม่มีข้อมูล",
+        allowOutsideClick: false,
+        icon: "warning",
+      });
+    }
+
     if (!!res && !!res.data.status) {
       setDailyBilling(res.data);
+      Swal.close();
     }
-    Swal.close();
 
     // console.log(res.data);
   };
@@ -466,11 +476,11 @@ export default function Report() {
       startTime: format(startTime, "HH:mm:ss"),
       endTime: format(endTime, "HH:mm:ss"),
     };
-    // const res = await getOverdueBalanceData(sendData);
+    const res = await getGuaranteeData(sendData);
 
-    // if (!!res && !!res.data.status) {
-    //   setResultFeeData(res.data);
-    // }
+    if (!!res && !!res.data.status) {
+      setGuarantee(res.data);
+    }
     Swal.close();
 
     // console.log(res.data);
@@ -1330,8 +1340,16 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData11}
-                report={() => alert("กำลังดำเนินการ")}
-                transactionReport={() => alert("กำลังดำเนินการ")}
+                report={PdfGuarantee}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                    },
+                    "/report-toll-insurance-6.1",
+                    "รายงานTransactionการประกันค่าธรรมเนียมผ่านทาง"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1367,8 +1385,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableGuarantee1 />
-                  <TableGuarantee2 />
+                  <TableGuarantee1 dataList={guarantee} />
+                  <TableGuarantee2 dataList={guarantee} />
                 </div>
                 <div
                   style={{
@@ -1377,7 +1395,7 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableGuarantee3 />
+                  <TableGuarantee3 dataList={guarantee} />
                 </div>
               </Paper>
             </Container>
