@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyPayment4(props) {
+export default function TableResultFee3(props) {
   const { dataList, selectedDate } = props;
 
   const classes = useStyles();
@@ -65,7 +65,7 @@ export default function TableMonthlyPayment4(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                {`สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                {`สรุปข้อมูลวันที่ ${format(selectedDate, "dd MMMM yyyy", {
                   locale: th,
                 })}`}
               </td>
@@ -73,29 +73,26 @@ export default function TableMonthlyPayment4(props) {
 
             <tr>
               <td
-                className={classes.td}
+                className={classes.td2}
                 style={{
-                  width: 200,
-                  textAlign: "left",
+                  borderLeft: "1px solid black",
                   borderRight: "1px solid black",
+                  textAlign: "left",
+                  width: 200,
                 }}
               >
-                ยอดค่าปรับพึงได้
+                จำนวนรถที่ตรวจสอบทั้งหมด
               </td>
               <td
-                className={classes.td}
-                style={{
-                  borderLeft: "0px",
-                  borderRight: "1px solid black",
-                  textAlign: "right",
-                }}
+                className={classes.td2}
+                style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                {!!dataList.result_sum
-                  ? dataList.result_sum[3].income_fine.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].sum.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ borderLeft: "0px" }}>
-                บาท
+              <td className={classes.td2} style={{ textAlign: "left" }}>
+                รายการ
               </td>
             </tr>
             <tr>
@@ -107,81 +104,85 @@ export default function TableMonthlyPayment4(props) {
                   textAlign: "left",
                 }}
               >
-                ยอดชำระค่าปรับ
+                จำนวนรถที่ผิดประเภท
               </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
+              <td className={classes.td2} style={{ textAlign: "right" }}>
+                {!!dataList.result
                   ? (
-                      dataList.result_classify[3].income_fine_3 +
-                      dataList.result_classify[3].income_fine_13
+                      dataList.result[3].C2 + dataList.result[3].C3
                     ).toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td2}>บาท</td>
+              <td className={classes.td2} style={{ textAlign: "left" }}>
+                รายการ
+              </td>
             </tr>
             <tr>
               <td
                 className={classes.td2}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 3
-              </td>
-              <td
-                className={classes.td2}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_3.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td2}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td3}
-                style={{
-                  borderLeft: "1px solid black",
-                  borderRight: "1px solid black",
-                }}
-              >
-                - ชำระเกินกำหนดวันที่ 13
-              </td>
-              <td
-                className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
-              >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_13.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td3}>บาท</td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td3}
                 style={{
                   borderLeft: "1px solid black",
                   borderRight: "1px solid black",
                   textAlign: "left",
                 }}
               >
-                คงเหลือ
+                จำนวนรถที่มีข้อยกเว้นพิเศษ
               </td>
               <td
-                className={classes.td3}
-                style={{ borderRight: "1px solid black", textAlign: "right" }}
+                className={classes.td2}
+                style={{
+                  textAlign: "right",
+                }}
               >
-                {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_remain.toLocaleString()
+                {!!dataList.result
+                  ? dataList.result[3].reject.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td3}>บาท</td>
+              <td
+                className={classes.td2}
+                style={{
+                  textAlign: "left",
+                }}
+              >
+                รายการ
+              </td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td2}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
+                  textAlign: "left",
+                }}
+              >
+                จำนวนรถสูญหายที่ตรวจสอบพบ
+              </td>
+              <td
+                className={classes.td2}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
+                  textAlign: "right",
+                }}
+              >
+                {!!dataList.result
+                  ? dataList.result[3].lost_vehicle.toLocaleString()
+                  : "0"}
+              </td>
+              <td
+                className={classes.td2}
+                style={{
+                  borderLeft: "1px solid black",
+                  borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
+                  textAlign: "left",
+                }}
+              >
+                รายการ
+              </td>
             </tr>
           </table>
         </div>

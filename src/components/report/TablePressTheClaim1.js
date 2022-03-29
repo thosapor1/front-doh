@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       fontFamily: "Sarabun",
-      padding: "0px 20px 0px 0px",
+      padding: "0px 20px 10px 0px",
     },
     th: {
       fontWeight: 700,
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
     td: {
       fontWeight: 400,
       border: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
     td2: {
       fontWeight: 400,
       borderRight: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 400,
       borderRight: "1px solid black",
       borderBottom: "1px solid black",
-      width: 90,
+      width: 128,
       fontSize: 14,
       padding: "5px",
       textAlign: "center",
@@ -53,8 +53,9 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function TableMonthlyMFlow1(props) {
+export default function TablePressTheClaim1(props) {
   const { dataList } = props;
+
   const classes = useStyles();
   return (
     <>
@@ -70,18 +71,16 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td} rowSpan={3}>
                 ประเภทรถ
               </td>
-              <td className={classes.td} colSpan={3}>
-                รถที่คิดค่าธรรมเนียมผ่านทาง
+              <td className={classes.td} colSpan={2}>
+                ชำระเกินกำหนดวันที่ 13
               </td>
             </tr>
 
             <tr>
-              <td className={classes.td2}>จำนวน</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>รายได้พึงได้</td>
+              <td className={classes.td2}>ค่าทวงถามพึงได้</td>
             </tr>
             <tr>
-              <td className={classes.td3}>(คัน)</td>
               <td className={classes.td3}>(รายการ)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
@@ -90,17 +89,12 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[0].count_vehicle.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_sum
                   ? dataList.result_sum[0].count_bill.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[0].income.toLocaleString()
+                  ? dataList.result_sum[0].demand_fee_amount.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -108,17 +102,12 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[1].count_vehicle.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_sum
                   ? dataList.result_sum[1].count_bill.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[1].income.toLocaleString()
+                  ? dataList.result_sum[1].demand_fee_amount.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -126,17 +115,12 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[2].count_vehicle.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_sum
                   ? dataList.result_sum[2].count_bill.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[2].income.toLocaleString()
+                  ? dataList.result_sum[2].demand_fee_amount.toLocaleString()
                   : "0"}
               </td>
             </tr>
@@ -144,17 +128,12 @@ export default function TableMonthlyMFlow1(props) {
               <td className={classes.td}>รวม</td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[3].count_vehicle.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td}>
-                {!!dataList.result_sum
                   ? dataList.result_sum[3].count_bill.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_sum
-                  ? dataList.result_sum[3].income.toLocaleString()
+                  ? dataList.result_sum[3].demand_fee_amount.toLocaleString()
                   : "0"}
               </td>
             </tr>

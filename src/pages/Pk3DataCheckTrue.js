@@ -18,12 +18,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import SearchComponent from "../components/SearchComponent";
-import TablePK3display3 from "../components/TablePK3display3";
+import SearchComponent2 from "../components/SearchComponent2";
+import TablePk3CheckTrue from "../components/TablePk3CheckTrue";
 import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+import SearchComponent from "../components/SearchComponent";
 
 const apiURL = axios.create({
   baseURL:
@@ -52,8 +53,9 @@ const useStyles = makeStyles((theme) => {
     },
     cardSection: {
       display: "flex",
-      justifyContent: "space-between",
-      marginTop: 10,
+      margin: "10px 0px 0px 0px",
+      justifyContent: "center",
+      columnGap: 8,
     },
     gateAndClassSection: {
       marginTop: 10,
@@ -121,19 +123,20 @@ const valueStatus = [
   },
 ];
 
-export default function PK3DisplayV2() {
+export default function PK3DataCheckTrue() {
   // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  const [status_select, setStatus_select] = useState("3");
+  // const [status_select, setStatus_select] = useState("3");
   const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
-  const [tsType, setTsType] = useState(0);
+  // const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [eyesStatus, setEyesStatus] = useState([]);
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -159,6 +162,17 @@ export default function PK3DisplayV2() {
     });
   };
 
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
+
   const fetchData = async (pageId = 1) => {
     let eyes = [];
     Swal.fire({
@@ -182,19 +196,19 @@ export default function PK3DisplayV2() {
     // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
-      checkpoint: checkpoint,
-      gate: selectGate,
-      state: status_select,
+      checkpoint_id: checkpoint,
+      gate_id: selectGate,
+      state: "0",
       vehicleClass: selectCarType,
       date: date,
       startTime: timeStart,
       endTime: timeEnd,
-      status: tsType.toString(),
+      status: "0",
     };
-    console.log(sendData);
+    // console.log(sendData);
 
-    apiURLv10
-      .post("/display-pk3", sendData)
+    apiURL
+      .post("/pk3-approve-display", sendData)
       .then((res) => {
         Swal.close();
         setAllTsTable({
@@ -206,6 +220,7 @@ export default function PK3DisplayV2() {
           },
           ts_table: [],
         });
+        console.log(res.data);
         console.log(
           "res: ",
           res.data,
@@ -251,7 +266,7 @@ export default function PK3DisplayV2() {
 
     setSelectedDate(new Date().setDate(new Date().getDate() - 1));
     setCheckpoint(0);
-    setStatus_select(0);
+    // setStatus_select(0);
     setSelectedTimeStart(new Date("Aug 10, 2021 00:00:00"));
     setSelectedTimeEnd(new Date("Aug 10, 2021 00:00:00"));
     const timeStart = "00:00:00";
@@ -283,18 +298,18 @@ export default function PK3DisplayV2() {
           },
           ts_table: [],
         });
-        console.log(
-          "res: ",
-          res.data,
-          "tsClass:",
-          res.data.ts_class,
-          "tsGate: ",
-          res.data.ts_gate_table,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
+        // console.log(
+        //   "res: ",
+        //   res.data,
+        //   "tsClass:",
+        //   res.data.ts_class,
+        //   "tsGate: ",
+        //   res.data.ts_gate_table,
+        //   "ts_Table:",
+        //   res.data.ts_table,
+        //   "Summary: ",
+        //   res.data.summary
+        // );
         setAllTsTable(res.data.status !== false ? res.data : []);
       })
       .catch((error) => {
@@ -308,25 +323,10 @@ export default function PK3DisplayV2() {
 
   const dataCard = [
     {
-      value: !!summary.ts_count ? summary.ts_count : "0",
+      value: !!summary.ts_not_normal ? summary.ts_not_normal : "0",
       status: "checklist",
       label: "รายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
   ];
 
   useEffect(() => {
@@ -339,7 +339,7 @@ export default function PK3DisplayV2() {
     <>
       <Container maxWidth="xl" className={classes.root}>
         <Typography variant="h6" style={{ fontSize: "0.9rem" }}>
-          รายการตรวจสอบ
+          รายการตรวจสอบแล้ว
         </Typography>
 
         {/* Filter Section */}
@@ -398,7 +398,7 @@ export default function PK3DisplayV2() {
               : []}
           </TextField>
 
-          <TextField
+          {/* <TextField
             select
             variant="outlined"
             label="สถานะ"
@@ -440,7 +440,7 @@ export default function PK3DisplayV2() {
                     </MenuItem>
                   ))
               : []}
-          </TextField>
+          </TextField> */}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -499,6 +499,7 @@ export default function PK3DisplayV2() {
         </Grid>
 
         {/* Card Section */}
+
         <Box
           style={{
             display: "flex",
@@ -512,12 +513,15 @@ export default function PK3DisplayV2() {
               date={selectedDate}
               handleOnChange={(e) => {
                 setTransactionId(e.target.value);
-                console.log(transactionId);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
               }}
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint="/audit-search"
+              endpoint={endpoint}
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
             />
           </Box>
 
@@ -574,6 +578,7 @@ export default function PK3DisplayV2() {
             ))}
           </Box>
         </Box>
+
         {/* Table Section */}
         <Grid
           container
@@ -581,7 +586,7 @@ export default function PK3DisplayV2() {
           className={classes.gateAndClassSection}
         >
           <Grid item md={12} sm={12} lg={12} className={classes.allTsTable}>
-            <TablePK3display3
+            <TablePk3CheckTrue
               dataList={allTsTable}
               page={page}
               onChange={handlePageChange}

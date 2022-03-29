@@ -21,6 +21,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CameraEnhanceTwoToneIcon from "@material-ui/icons/CameraEnhanceTwoTone";
 import noImage from "../image/noImageFound.jpg";
+import noImageMFlow from "../image/noImageFound-mflow.jpg";
 import CancelTwoToneIcon from "@material-ui/icons/CancelTwoTone";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
@@ -30,6 +31,8 @@ import ModalExpandedImage from "./ModalExpandedImage";
 import ModalExpandedImage2 from "./ModalExpandedImage2";
 import { operation } from "../service/allService";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ModalExpandedImage3 from "./ModalExpandedImage3";
+import ModalExpandedImage4 from "./ModalExpandedImage4";
 
 const apiURLv1 = axios.create({
   baseURL:
@@ -298,7 +301,7 @@ export default function ModalActivity3(props) {
   const [open23, setOpen23] = useState(false);
   const [open24, setOpen24] = useState(false);
 
-  const { dataList, dropdown, checkDate, page } = props;
+  const { dataList, dropdown, checkDate, page, onClick } = props;
 
   const [value1, setValue1] = useState(2);
   const [value2, setValue2] = useState(2);
@@ -785,7 +788,7 @@ export default function ModalActivity3(props) {
           <Tooltip title="close">
             <CancelTwoToneIcon
               onClick={() => {
-                props.onClick();
+                onClick();
                 setCommentAudit("");
                 setFileName("");
               }}
@@ -948,18 +951,10 @@ export default function ModalActivity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>ยี่ห้อ</TableCell>
+                  <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
-                      ? resultDisplay.brand_description
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>สี</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.colors_description
-                      ? resultDisplay.colors_description
+                    {!!resultDisplay.vehicleClass
+                      ? `C${resultDisplay.vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1652,12 +1647,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hp_picFull_2
                     ? `data:image/png;base64, ${dataList.hp_picFull_2}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen17(true)}
               />
-              <ModalExpandedImage2
+              <ModalExpandedImage3
                 dataList={dataList.hp_picFull_2}
                 open={open17}
                 onClose={() => setOpen17(false)}
@@ -1671,12 +1666,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hp_picFull_1
                     ? `data:image/png;base64, ${dataList.hp_picFull_1}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen18(true)}
               />
-              <ModalExpandedImage2
+              <ModalExpandedImage3
                 dataList={dataList.hp_picFull_1}
                 open={open18}
                 onClose={() => setOpen18(false)}
@@ -1690,12 +1685,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hp_picFull
                     ? `data:image/png;base64, ${dataList.hp_picFull}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen19(true)}
               />
-              <ModalExpandedImage2
+              <ModalExpandedImage3
                 dataList={dataList.hp_picFull}
                 open={open19}
                 onClose={() => setOpen19(false)}
@@ -1709,12 +1704,12 @@ export default function ModalActivity3(props) {
                 src={
                   mockPic !== 0
                     ? `data:image/png;base64, ${dataList.audi_pic_full}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen20(true)}
               />
-              <ModalExpandedImage2
+              <ModalExpandedImage3
                 dataList={dataList.audi_pic_full}
                 open={open20}
                 onClose={() => setOpen20(false)}
@@ -1865,12 +1860,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hq_picCrop_2
                     ? `data:image/png;base64, ${dataList.hq_picCrop_2}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen21(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage4
                 dataList={dataList.hq_picCrop_2}
                 open={open21}
                 onClose={() => setOpen21(false)}
@@ -1884,12 +1879,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hq_picCrop_1
                     ? `data:image/png;base64, ${dataList.hq_picCrop_1}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen22(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage4
                 dataList={dataList.hq_picCrop_1}
                 open={open22}
                 onClose={() => setOpen22(false)}
@@ -1903,12 +1898,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!dataList.hq_picCrop
                     ? `data:image/png;base64, ${dataList.hq_picCrop}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen23(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage4
                 dataList={dataList.hq_picCrop}
                 open={open23}
                 onClose={() => setOpen23(false)}
@@ -1922,12 +1917,12 @@ export default function ModalActivity3(props) {
                 src={
                   !!mockPic
                     ? `data:image/png;base64, ${dataList.audit_pic}`
-                    : noImage
+                    : noImageMFlow
                 }
                 className={classes.image}
                 onClick={() => setOpen24(true)}
               />
-              <ModalExpandedImage
+              <ModalExpandedImage4
                 dataList={dataList.audit_pic}
                 open={open24}
                 onClose={() => setOpen24(false)}
@@ -2003,9 +1998,9 @@ export default function ModalActivity3(props) {
     <div>
       <Modal
         open={props.open}
-        onClose={() => {
-          props.onClose();
-        }}
+        // onClose={() => {
+        //   props.onClose();
+        // }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         style={{

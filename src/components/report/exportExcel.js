@@ -3,10 +3,15 @@ import { format } from "date-fns";
 import React from "react";
 import XLSX from "xlsx";
 
+const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+
 export default function exportExcel(selectedDate, checkpoint) {
   //   console.log(fileType);
-  let endpoint =
-    "http://1d32-45-117-208-162.ap.ngrok.io/audit/api/v1/export-xlsx";
   const header = {
     "Content-Type": "application",
     responseType: "arraybuffer",
@@ -16,7 +21,7 @@ export default function exportExcel(selectedDate, checkpoint) {
     checkpoint: checkpoint.toString(),
   };
 
-  axios.post(endpoint, sendData).then((res) => {
+  apiURL.post("/export-xlsx", sendData).then((res) => {
     console.log(res.data.results);
 
     const ws = XLSX.utils.json_to_sheet(res.data.results);

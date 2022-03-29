@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  IconButton,
   makeStyles,
   Table,
   TableBody,
@@ -7,25 +9,30 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   TextField,
-  Button,
   Tooltip,
-  IconButton,
+  Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import React, { useState } from "react";
 import { Pagination } from "@material-ui/lab";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ModalActivity3 from "./ModalActivity3";
-import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
+import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 
 // import format from "date-fns/format";
 
 const apiURL = axios.create({
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
+      : `${process.env.REACT_APP_BASE_URL_V1}`,
+});
+const apiURLv10 = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
@@ -67,11 +74,6 @@ const detailStatus = [
     state: 7,
     color: "lightblue",
     label: "รอจัดเก็บยืนยัน",
-  },
-  {
-    state: 8,
-    color: "lightgreen",
-    label: "ตรวจสอบแล้ว",
   },
 ];
 const useStyles = makeStyles((theme) => {
@@ -175,11 +177,22 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function TablePK3display(props) {
+export default function TablePk3CheckTrue(props) {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [dataForActivity, SetDataForActivity] = useState({});
   const [selectedPage, setSelectedPage] = useState("");
+  const [rowID, setRowID] = useState("");
+  const {
+    dataList,
+    page,
+    onChange,
+    dropdown,
+    checkDate,
+    onFetchData,
+    eyesStatus,
+    setEyesStatus,
+  } = props;
 
   const fetchData = async (ts, State, timeStamp) => {
     Swal.fire({
@@ -199,7 +212,7 @@ export default function TablePK3display(props) {
     endpoint = "/display-pk3-activity";
     setOpen(true);
 
-    apiURL
+    apiURLv10
       .post(endpoint, sendData)
       .then((res) => {
         Swal.close();
@@ -227,8 +240,15 @@ export default function TablePK3display(props) {
     setOpen1(false);
   };
 
+  const ChangeEyeStatus = (index) => {
+    setEyesStatus(
+      !!eyesStatus[index] && [...eyesStatus, (eyesStatus[index].readFlag = 1)]
+    );
+
+    console.log(eyesStatus);
+  };
+
   const classes = useStyles();
-  const { dataList, page, onChange, dropdown, checkDate, onFetchData } = props;
 
   return (
     <div>
@@ -245,10 +265,7 @@ export default function TablePK3display(props) {
               onChange={(e) => setSelectedPage(e.target.value)}
             />
             <StyledButtonGoToPage
-              onClick={() => {
-                onFetchData(parseInt(selectedPage));
-                setSelectedPage("");
-              }}
+              onClick={() => onFetchData(parseInt(selectedPage))}
             >
               Go
             </StyledButtonGoToPage>
@@ -264,21 +281,6 @@ export default function TablePK3display(props) {
             />
           </Box>
         </Box>
-
-        {/* detail box */}
-        {/* <Box style={{ display: "flex", paddingTop: 4 }}>
-          {detailStatus.map((item) => (
-            <Box style={{ paddingLeft: 10 }}>
-              <FiberManualRecordIcon
-                className={classes.dot}
-                style={{ color: item.color }}
-              />
-              <Typography className={classes.detailStatus}>
-                {item.label}
-              </Typography>
-            </Box>
-          ))}
-        </Box> */}
       </Box>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
@@ -294,19 +296,25 @@ export default function TablePK3display(props) {
                 ช่อง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                เวลาเข้าด่าน
+                เวลาส่งคำร้อง Audit
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                เวลาตอบโต้ PK3
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                เวลารถเข้าด่าน
               </TableCell>
               <TableCell colSpan={4} align="center" className={classes.header}>
                 ประเภทรถ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                ประเภท TS
+                ประเภทความผิดปกติ
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 ค่าผ่านทาง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
-                หมายเหตุ
+                เพิ่ม refTransaction (ถ้า HQ สูญหาย)
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 สถานะ
@@ -329,7 +337,7 @@ export default function TablePK3display(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data) => (
+              ? dataList.resultsDisplay.map((data, index) => (
                   <StyledTableRow
                     key={data.transactionId}
                     className={classes.tableRow}
@@ -344,6 +352,14 @@ export default function TablePK3display(props) {
                       {!!data.match_gate ? data.match_gate : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_approve_date
+                        ? data.audit_approve_date
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.pk3_approve_date ? data.pk3_approve_date : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
                         ? data.match_timestamp.split(" ").pop()
                         : "-"}
@@ -354,8 +370,8 @@ export default function TablePK3display(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_check_vehicleClass
-                        ? `C${data.audit_check_vehicleClass}`
+                      {!!data.audit_vehicleClass
+                        ? `C${data.audit_vehicleClass}`
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
@@ -375,32 +391,38 @@ export default function TablePK3display(props) {
                       {!!data.match_real_fee ? data.match_real_fee : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
+                      {!!data.refTransactionId ? data.refTransactionId : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      <FiberManualRecordIcon
-                        style={{
-                          // fontSize: "0.8rem",
-                          color:
-                            data.state === 1
-                              ? "lightgray"
-                              : data.state === 2
-                              ? "#FF2400"
-                              : data.state === 3
-                              ? "blue"
-                              : data.state === 4
-                              ? "orange"
-                              : data.state === 5
-                              ? "black"
-                              : data.state === 6
-                              ? "darkviolet"
-                              : data.state === 7
-                              ? "lightblue"
-                              : "rgba(0,0,0,0)",
-                        }}
-                      />
+                      {!!eyesStatus[index] &&
+                      eyesStatus[index].readFlag === 1 &&
+                      eyesStatus[index].state === 3 ? (
+                        <VisibilityIcon style={{ color: "blue" }} />
+                      ) : (
+                        <FiberManualRecordIcon
+                          style={{
+                            // fontSize: "0.8rem",
+                            color:
+                              data.state === 1
+                                ? "lightgray"
+                                : data.state === 2
+                                ? "#FF2400"
+                                : data.state === 3
+                                ? "blue"
+                                : data.state === 4
+                                ? "orange"
+                                : data.state === 5
+                                ? "black"
+                                : data.state === 6
+                                ? "darkviolet"
+                                : data.state === 7
+                                ? "lightblue"
+                                : data.state === 8
+                                ? "lightgreen"
+                                : "rgba(0,0,0,0)",
+                          }}
+                        />
+                      )}
                       <Tooltip title="ดูข้อมูล" arrow>
                         <IconButton
                           aria-label="ดูข้อมูล"
@@ -420,6 +442,8 @@ export default function TablePK3display(props) {
                                 data.state,
                                 data.match_timestamp
                               );
+                              // setRowID(index);
+                              ChangeEyeStatus(index);
                             }}
                           />
                         </IconButton>

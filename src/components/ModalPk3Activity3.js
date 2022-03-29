@@ -326,8 +326,17 @@ export default function ModalPK3Activity3(props) {
     commentSuper: "",
     commentPK3: "",
     TransactionsPeat: "",
+    TransID: "",
+    RefID: "",
   });
-  const { commentSuper, operation, commentPK3, TransactionsPeat } = state;
+  const {
+    commentSuper,
+    operation,
+    commentPK3,
+    TransactionsPeat,
+    RefID,
+    TransID,
+  } = state;
 
   const [vehicleClass, setVehicleClass] = useState(0);
   const [audit_feeAmount, setAudit_feeAmount] = useState("");
@@ -578,6 +587,62 @@ export default function ModalPK3Activity3(props) {
     });
   };
 
+  const handleUpdate3 = () => {
+    // console.log(RefID);
+    // console.log(TransID);
+    let endPointURL = "/updateRefTxAndHqTx";
+
+    const date = format(checkDate, "yyyy-MM-dd");
+
+    const sendData = {
+      date: date,
+      match_tx_id: dataList.resultsDisplay[0].transactionId.toString(),
+      refTx_id: RefID.toString(),
+      hqTx_id: TransID.toString(),
+    };
+
+    Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      zIndex: 1300,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiURLv1
+          .post(endPointURL, sendData)
+          .then((res) => {
+            if (res.data.status === true) {
+              Swal.fire({
+                title: "Success",
+                text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            } else {
+              Swal.fire({
+                title: "Fail",
+                text: "บันทึกข้อมูลไม่สำเร็จ",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .then(() => {})
+          .catch((error) => {
+            // handleClose();
+            Swal.fire({
+              icon: "error",
+              text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ในขณะนี้",
+            });
+          });
+      }
+    });
+  };
+
   useEffect(() => {
     if (dataList) {
       setState(dataList);
@@ -592,6 +657,16 @@ export default function ModalPK3Activity3(props) {
         TransactionsPeat: "",
         commentPK3: "",
         operation: "",
+
+        TransID:
+          !!dataList.resultsDisplay &&
+          dataList.resultsDisplay[0].pk3_transactionId
+            ? dataList.resultsDisplay[0].pk3_transactionId
+            : "",
+        RefID:
+          !!dataList.resultsDisplay && dataList.resultsDisplay[0].mf_lane_tranId
+            ? dataList.resultsDisplay[0].mf_lane_tranId
+            : "",
       });
       setFileName("");
       setVehicleClass(
@@ -606,6 +681,7 @@ export default function ModalPK3Activity3(props) {
       );
 
       console.log("dataList", dataList);
+      console.log("RefID", dataList.resultsDisplay);
     }
   }, [dataList]);
 
@@ -861,18 +937,10 @@ export default function ModalPK3Activity3(props) {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>ยี่ห้อ</TableCell>
+                  <TableCell>ประเภท</TableCell>
                   <TableCell>
-                    {!!resultDisplay.brand_description
-                      ? resultDisplay.brand_description
-                      : "-"}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>สี</TableCell>
-                  <TableCell>
-                    {!!resultDisplay.colors_description
-                      ? resultDisplay.colors_description
+                    {!!resultDisplay.vehicleClass
+                      ? `C${resultDisplay.vehicleClass}`
                       : "-"}
                   </TableCell>
                 </TableRow>
@@ -1128,6 +1196,59 @@ export default function ModalPK3Activity3(props) {
               />
             </div>
           </TabPanel4>
+
+          <TableContainer className={classes.tableContainer}></TableContainer>
+          <TableContainer>
+            <table className={classes.table}>
+              <TableHead>
+                <TableRow className={classes.tableHead1}>
+                  <TableCell colSpan={2} className={classes.headTable}>
+                    ปรับปรุง TransactionID
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>refTransactionID</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="RefID"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={RefID}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>transactionID</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="outlined-basic"
+                      name="TransID"
+                      variant="outlined"
+                      onChange={handleChange}
+                      className={classes.smallText}
+                      value={TransID}
+                    />
+                  </TableCell>
+                </TableRow>
+                <div>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "#C51162",
+                    }}
+                    className={classes.btn}
+                    onClick={handleUpdate3}
+                  >
+                    บันทึก
+                  </Button>
+                </div>
+              </TableBody>
+            </table>
+          </TableContainer>
         </Grid>
 
         {/* ML (LP) Block */}
@@ -1509,8 +1630,8 @@ export default function ModalPK3Activity3(props) {
                     colSpan={2}
                     style={{ fontSize: "0.75rem", wordBreak: "break-word" }}
                   >
-                    {!!resultDisplay.refTransactionId
-                      ? resultDisplay.refTransactionId
+                    {!!resultDisplay.pk3_transactionId
+                      ? resultDisplay.pk3_transactionId
                       : "-"}
                   </TableCell>
                 </TableRow>

@@ -5,6 +5,7 @@ import { image } from "../../image/logo_base64";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { th } from "date-fns/locale";
+import exportExcel2 from "./exportExcel2";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -92,7 +93,7 @@ export default function PdfTxNumberOfCar(
   const pushToBody = (res) => {
     return new Promise((resolve, reject) => {
       try {
-        for (let index = 0; index < res.data.length; index++) {
+        for (let index = 0; index < 101; index++) {
           // console.log(index);
           body.push([
             index + 1,
