@@ -50,238 +50,249 @@ export default async function PdfGuarantee(
     didOpen: () => {
       Swal.showLoading();
       return apiURL
-        .post("/report-toll-insurance-6", sendData)
+        .post("/report-toll-insurance", sendData)
         .then(async (res) => {
-          body1.push(
-            [
-              {
-                text: "จำนวนรถผ่านเข้าระบบ M-Flow",
-                colSpan: 5,
-              },
-              {},
-              {},
-              {},
-              {},
-            ],
-            [
-              { text: "ประเภทรถ", rowSpan: 3, margin: [0, 19, 0, 0] },
-              { text: "หนี้คงค้าง", colSpan: 4 },
-              {},
-              {},
-              {},
-            ],
-            [
-              {},
-              { text: "รถผ่านทาง", border: [true, true, true, false] },
-              { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-              { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-              { text: "ค่าปรับ", border: [true, true, true, false] },
-            ],
-            [
-              {},
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(รายการ)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-            ],
-            [
-              { text: "C1" },
-              { text: res.data.tx[0].non_member.toLocaleString() },
-              { text: res.data.tx[0].member.toLocaleString() },
-              { text: res.data.tx[0].illegal.toLocaleString() },
-              { text: res.data.tx[0].reject.toLocaleString() },
-            ],
-            [
-              { text: "C2" },
-              { text: res.data.tx[1].non_member.toLocaleString() },
-              { text: res.data.tx[1].member.toLocaleString() },
-              { text: res.data.tx[1].illegal.toLocaleString() },
-              { text: res.data.tx[1].reject.toLocaleString() },
-            ],
-            [
-              { text: "C3" },
-              { text: res.data.tx[2].non_member.toLocaleString() },
-              { text: res.data.tx[2].member.toLocaleString() },
-              { text: res.data.tx[2].illegal.toLocaleString() },
-              { text: res.data.tx[2].reject.toLocaleString() },
-            ],
-            [
-              { text: "รวม" },
-              { text: res.data.tx[3].non_member.toLocaleString() },
-              { text: res.data.tx[3].member.toLocaleString() },
-              { text: res.data.tx[3].illegal.toLocaleString() },
-              { text: res.data.tx[3].reject.toLocaleString() },
-            ]
-          );
-
-          body2.push(
-            [
-              {
-                text: "การประกันจ่ายค่าธรรมเนียมผ่านทาง",
-                colSpan: 5,
-              },
-              {},
-              {},
-              {},
-              {},
-            ],
-            [
-              { text: "ประเภทรถ", rowSpan: 3, margin: [0, 19, 0, 0] },
-              { text: "ยอดการชำระของผ่านจัดเก็บรายได้", colSpan: 4 },
-              {},
-              {},
-              {},
-            ],
-            [
-              {},
-              { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-              { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-              { text: "ค่าผ่านทาง", border: [true, true, true, false] },
-              { text: "ค่าปรับ", border: [true, true, true, false] },
-            ],
-            [
-              {},
-              {
-                text: "(คัน)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(รายการ)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-              {
-                text: "(บาท)",
-                border: [true, false, true, true],
-                margin: [0, -5, 0, 0],
-              },
-            ],
-            [
-              { text: "C1" },
-              { text: res.data.income[0].fee.toLocaleString() },
-              { text: res.data.income[0].member.toLocaleString() },
-              { text: res.data.income[0].non_member.toLocaleString() },
-              {
-                text: "ไม่รับประกันค่าปรับ",
-                rowSpan: 4,
-                margin: [0, 20, 0, 0],
-              },
-            ],
-            [
-              { text: "C2" },
-              { text: res.data.income[1].fee.toLocaleString() },
-              { text: res.data.income[1].member.toLocaleString() },
-              { text: res.data.income[1].non_member.toLocaleString() },
-              {},
-            ],
-            [
-              { text: "C3" },
-              { text: res.data.income[2].fee.toLocaleString() },
-              { text: res.data.income[2].member.toLocaleString() },
-              { text: res.data.income[2].non_member.toLocaleString() },
-              {},
-            ],
-            [
-              { text: "รวม" },
-              { text: res.data.income[3].member.toLocaleString() },
-              { text: res.data.income[3].member.toLocaleString() },
-              { text: res.data.income[3].non_member.toLocaleString() },
-              {},
-            ]
-          );
-
-          body3.push(
-            [
-              {
-                text: `สรุปข้อมูลรถประจำเดือน ${format(
-                  selectedDate,
-                  "MMMM yyyy",
-                  {
-                    locale: th,
-                  }
-                )}`,
-                colSpan: 3,
-              },
-              {},
-              {},
-            ],
-            [
-              {
-                text: "จำนวนรถคงค้าง",
-                alignment: "left",
-                border: [true, false, true, false],
-              },
-              {
-                text: res.data.count.count.toLocaleString(),
-                alignment: "right",
-                border: [true, false, true, false],
-              },
-              { text: "คัน", border: [true, false, true, false] },
-            ],
-            [
-              {
-                text: "จำนวนใบแจ้งหนี้คงค้าง",
-                border: [true, false, true, false],
-                alignment: "left",
-              },
-              {
-                text: res.data.count.count_reject.toLocaleString(),
-                border: [false, false, true, false],
-                alignment: "right",
-              },
-              { text: "รายการ", border: [false, false, true, false] },
-            ],
-            [
-              {
-                text: "หนี้คงค้างค่าผ่านทาง",
-                alignment: "left",
-                border: [true, false, true, true],
-              },
-              {
-                text: res.data.count.count_pay_car.toLocaleString(),
-                alignment: "right",
-                border: [true, false, true, true],
-              },
-              { text: "บาท", border: [true, false, true, true] },
-            ],
-            [
-              {
-                text: "ยอดประกันค่าผ่านทาง",
-                alignment: "left",
-              },
-              {
-                text: res.data.count.count_income.toLocaleString(),
-                alignment: "right",
-              },
-              { text: "บาท" },
-            ]
-          );
-          setTimeout(async () => {
-            await pdfGenDownload(docDefinition);
+          if (!res.data.status) {
             Swal.close();
-          }, 1000);
+            Swal.fire({
+              title: "ไม่มีข้อมูล",
+              allowOutsideClick: false,
+              icon: "warning",
+            });
+          }
+          if (!!res.data.status && !!res.data.result) {
+            body1.push(
+              [
+                {
+                  text: "จำนวนรถผ่านเข้าระบบ M-Flow",
+                  colSpan: 5,
+                },
+                {},
+                {},
+                {},
+                {},
+              ],
+              [
+                { text: "ประเภทรถ", rowSpan: 3, margin: [0, 19, 0, 0] },
+                { text: "หนี้คงค้าง", colSpan: 4 },
+                {},
+                {},
+                {},
+              ],
+              [
+                {},
+                { text: "รถผ่านทาง", border: [true, true, true, false] },
+                { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
+                { text: "ค่าผ่านทาง", border: [true, true, true, false] },
+                { text: "ค่าปรับ", border: [true, true, true, false] },
+              ],
+              [
+                {},
+                {
+                  text: "(คัน)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(รายการ)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(บาท)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(บาท)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+              ],
+              [
+                { text: "C1" },
+                { text: res.data.result[0].vehicle.toLocaleString() },
+                { text: res.data.result[0].bill.toLocaleString() },
+                { text: res.data.result[0].fee.toLocaleString() },
+                { text: res.data.result[0].demand_fee.toLocaleString() },
+              ],
+              [
+                { text: "C2" },
+                { text: res.data.result[1].vehicle.toLocaleString() },
+                { text: res.data.result[1].bill.toLocaleString() },
+                { text: res.data.result[1].fee.toLocaleString() },
+                { text: res.data.result[1].demand_fee.toLocaleString() },
+              ],
+              [
+                { text: "C3" },
+                { text: res.data.result[2].vehicle.toLocaleString() },
+                { text: res.data.result[2].bill.toLocaleString() },
+                { text: res.data.result[2].fee.toLocaleString() },
+                { text: res.data.result[2].demand_fee.toLocaleString() },
+              ],
+              [
+                { text: "รวม" },
+                { text: res.data.result[3].vehicle.toLocaleString() },
+                { text: res.data.result[3].bill.toLocaleString() },
+                { text: res.data.result[3].fee.toLocaleString() },
+                { text: res.data.result[3].demand_fee.toLocaleString() },
+              ]
+            );
+
+            body2.push(
+              [
+                {
+                  text: "การประกันจ่ายค่าธรรมเนียมผ่านทาง",
+                  colSpan: 5,
+                },
+                {},
+                {},
+                {},
+                {},
+              ],
+              [
+                { text: "ประเภทรถ", rowSpan: 3, margin: [0, 19, 0, 0] },
+                { text: "ยอดการชำระของผ่านจัดเก็บรายได้", colSpan: 4 },
+                {},
+                {},
+                {},
+              ],
+              [
+                {},
+                { text: "ค่าผ่านทาง", border: [true, true, true, false] },
+                { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
+                { text: "ค่าผ่านทาง", border: [true, true, true, false] },
+                { text: "ค่าปรับ", border: [true, true, true, false] },
+              ],
+              [
+                {},
+                {
+                  text: "(คัน)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(รายการ)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(บาท)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+                {
+                  text: "(บาท)",
+                  border: [true, false, true, true],
+                  margin: [0, -5, 0, 0],
+                },
+              ],
+              [
+                { text: "C1" },
+                { text: res.data.result_2[0].vehicle.toLocaleString() },
+                { text: res.data.result_2[0].bill.toLocaleString() },
+                { text: res.data.result_2[0].demand_fee.toLocaleString() },
+                {
+                  text: "ไม่รับประกันค่าปรับ",
+                  rowSpan: 4,
+                  margin: [0, 20, 0, 0],
+                },
+              ],
+              [
+                { text: "C2" },
+                { text: res.data.result_2[1].vehicle.toLocaleString() },
+                { text: res.data.result_2[1].bill.toLocaleString() },
+                { text: res.data.result_2[1].demand_fee.toLocaleString() },
+                {},
+              ],
+              [
+                { text: "C3" },
+                { text: res.data.result_2[2].vehicle.toLocaleString() },
+                { text: res.data.result_2[2].bill.toLocaleString() },
+                { text: res.data.result_2[2].demand_fee.toLocaleString() },
+                {},
+              ],
+              [
+                { text: "รวม" },
+                { text: res.data.result_2[3].vehicle.toLocaleString() },
+                { text: res.data.result_2[3].bill.toLocaleString() },
+                { text: res.data.result_2[3].demand_fee.toLocaleString() },
+                {},
+              ]
+            );
+
+            body3.push(
+              [
+                {
+                  text: `สรุปข้อมูลรถประจำเดือน ${format(
+                    selectedDate,
+                    "MMMM yyyy",
+                    {
+                      locale: th,
+                    }
+                  )}`,
+                  colSpan: 3,
+                },
+                {},
+                {},
+              ],
+              [
+                {
+                  text: "จำนวนรถคงค้าง",
+                  alignment: "left",
+                  border: [true, false, true, false],
+                },
+                {
+                  text: res.data.result_2[3].vehicle.toLocaleString(),
+                  alignment: "right",
+                  border: [true, false, true, false],
+                },
+                { text: "คัน", border: [true, false, true, false] },
+              ],
+              [
+                {
+                  text: "จำนวนใบแจ้งหนี้คงค้าง",
+                  border: [true, false, true, false],
+                  alignment: "left",
+                },
+                {
+                  text: res.data.result_2[3].bill.toLocaleString(),
+                  border: [false, false, true, false],
+                  alignment: "right",
+                },
+                { text: "รายการ", border: [false, false, true, false] },
+              ],
+              [
+                {
+                  text: "หนี้คงค้างค่าผ่านทาง",
+                  alignment: "left",
+                  border: [true, false, true, true],
+                },
+                {
+                  text: res.data.result_2[3].demand_fee.toLocaleString(),
+                  alignment: "right",
+                  border: [true, false, true, true],
+                },
+                { text: "บาท", border: [true, false, true, true] },
+              ],
+              [
+                {
+                  text: "ยอดประกันค่าผ่านทาง",
+                  alignment: "left",
+                },
+                {
+                  text: res.data.result_2[3].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
+                { text: "บาท" },
+              ]
+            );
+            setTimeout(async () => {
+              await pdfGenDownload(docDefinition);
+              Swal.close();
+            }, 1000);
+          }
+
           // console.log();
         });
     },

@@ -55,12 +55,6 @@ const useStyles = makeStyles((theme) => {
 
 export default function TableGuarantee1(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", fee: 0, invoice: 0, feeAmount: 0, fine: 0 },
-    { class: "C2", fee: 0, invoice: 0, feeAmount: 0, fine: 0 },
-    { class: "C3", fee: 0, invoice: 0, feeAmount: 0, fine: 0 },
-    { class: "Total", fee: 0, invoice: 0, feeAmount: 0, fine: 0 },
-  ]);
 
   const classes = useStyles();
   return (
@@ -94,19 +88,67 @@ export default function TableGuarantee1(props) {
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.fee}</td>
-                    <td className={classes.td}>{row.invoice}</td>
-                    <td className={classes.td}>{row.feeAmount}</td>
-                    <td className={classes.td}>{row.fine}</td>
-                  </tr>
-                ))
-              : []}
+
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[0].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[0].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[0].fee : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[0].demand_fee : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[1].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[1].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[1].fee : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[1].demand_fee : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[2].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[2].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[2].fee : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[2].demand_fee : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวมทั้งหมด</td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[3].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[3].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[3].fee : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result ? dataList.result[3].demand_fee : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>
