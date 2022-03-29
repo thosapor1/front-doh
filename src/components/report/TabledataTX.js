@@ -1,6 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
-import React from "react";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -38,6 +38,57 @@ const useStyles = makeStyles((theme) => {
 
 export default function TabledataTX(props) {
   const { dataList } = props;
+
+  const [rowData, setRowData] = useState([
+    {
+      gate: "ด่านทับช้าง 1 ML",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+    {
+      gate: "ด่านทับช้าง 1 SL",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+    {
+      gate: "ด่านทับช้าง 2 ML",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+    {
+      gate: "ด่านทับช้าง 2 SL",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+    {
+      gate: "ด่านธัญบุรี 1 ML",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+    {
+      gate: "ด่านธัญบุรี 2 ML",
+      tvcs: "0",
+      audit: "0",
+      hq: "0",
+      match: "0",
+      miss: "0",
+    },
+  ]);
 
   const classes = useStyles();
   return (

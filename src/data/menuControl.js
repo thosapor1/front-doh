@@ -9,26 +9,22 @@ export const menuItemsForSuperAdmin = [
     icon: "leaderboard",
     path: "/dashboard2",
   },
-  {
-    text: "รายการฐานข้อมูล",
-    icon: "receipt_long",
-    path: "/rawTransaction",
-  },
   // {
-  //   text: "รายได้พึงได้รายวัน",
-  //   icon: "task",
-  //   path: "/expectIncome",
+  //   text: "รายการฐานข้อมูล",
+  //   icon: "receipt_long",
+  //   path: "/rawTransaction",
   // },
+
   {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
     path: "/expectIncomeV2",
   },
-  {
-    text: "รายได้รายวัน",
-    icon: "poll",
-    path: "/auditDisplay",
-  },
+  // {
+  //   text: "รายได้รายวัน",
+  //   icon: "poll",
+  //   path: "/auditDisplay",
+  // },
   {
     text: "รายการแจ้งหนี้จาก PK3",
     icon: "MonetizationOnIcon",
@@ -103,11 +99,11 @@ export const menuConfigForSuperAdmin = [
     icon: "manage_accounts",
     path: "/user",
   },
-  {
-    text: "สำรองช้อมูล",
-    icon: "backup",
-    path: "/5",
-  },
+  // {
+  //   text: "สำรองช้อมูล",
+  //   icon: "backup",
+  //   path: "/5",
+  // },
   {
     text: "ค่าภายในระบบ",
     icon: "settings_applications",
@@ -164,11 +160,11 @@ export const menuConfigForAdmin = [
     icon: "manage_accounts",
     path: "/user",
   },
-  {
-    text: "สำรองช้อมูล",
-    icon: "backup",
-    path: "/5",
-  },
+  // {
+  //   text: "สำรองช้อมูล",
+  //   icon: "backup",
+  //   path: "/5",
+  // },
   {
     text: "ค่าภายในระบบ",
     icon: "settings_applications",
