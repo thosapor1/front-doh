@@ -1,23 +1,14 @@
 import {
-  Box,
-  Button,
-  CardMedia,
-  Grid,
   makeStyles,
-  MenuItem,
   Modal,
-  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Tabs,
-  TextField,
-  Typography,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
 import { withStyles } from "@material-ui/styles";
@@ -45,19 +36,12 @@ const useStyle = makeStyles((theme) => {
       border: "1px solid lightgray",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      // [theme.breakpoints.only("md")]: {
-      //   marginTop: "1%",
-      // },
-      // [theme.breakpoints.only("sm")]: {
-      //   marginTop: "20%",
-      // },
     },
     header: {
       backgroundColor: "#7C85BFff",
       border: "1px solid white",
       color: "white",
       fontSize: "0.8rem",
-      // padding: "6px",
       zIndex: 1,
     },
     header2: {
@@ -87,7 +71,6 @@ const useStyle = makeStyles((theme) => {
       paddingTop: 5,
     },
     tableCell: {
-      cursor: "pointer",
       fontSize: "0.75rem",
       padding: "6px",
       height: 28,

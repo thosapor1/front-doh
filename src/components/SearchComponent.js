@@ -44,6 +44,7 @@ export default function SearchComponent(props) {
     setTable,
     endpoint,
     setEyesStatus,
+    setSummary,
   } = props;
 
   const onClickHandle = async () => {
@@ -65,6 +66,7 @@ export default function SearchComponent(props) {
 
       res = await searchByInvoiceId(endpoint, sendData);
       setTable(!!res ? res.data : []);
+
       Swal.close();
 
       if (
@@ -80,16 +82,17 @@ export default function SearchComponent(props) {
     } else if (endpoint === "/search-payment") {
       sendData = {
         date: format(date, "yyyy-MM-dd"),
-        paymentNo: value,
+        invoiceNo: value,
       };
 
       res = await searchByPayment(endpoint, sendData);
       setTable(!!res ? res.data : []);
+      setSummary(!!res.data ? res.data.summary[0] : []);
       Swal.close();
 
       if (
         (!!res && !res.data.status) ||
-        (!!res && !res.data.resultsDisplay[0])
+        (!!res && !res.data.result_payment[0])
       ) {
         Swal.fire({
           title: "Fail",

@@ -472,8 +472,8 @@ export const getDataPk3V10 = (sendData) => {
 };
 
 //Payment page
-export const searchByPayment = (sendData) => {
-  const response = apiURLv1.post("/search-payment", sendData).catch((error) => {
+export const searchByPayment = (endpoint, sendData) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;

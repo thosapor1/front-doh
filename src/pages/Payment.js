@@ -343,6 +343,7 @@ export default function Payment() {
               name="search"
               label="Payment No."
               setTable={setTable}
+              setSummary={setSummary}
               endpoint="/search-payment"
             />
           </Box>
