@@ -55,12 +55,6 @@ const useStyles = makeStyles((theme) => {
 
 export default function TableGuarantee3(props) {
   const { dataList } = props;
-  const [data, setData] = useState([
-    { class: "C1", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C2", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "C3", car: 0, invoice: 0, expectIncome: 0 },
-    { class: "Total", car: 0, invoice: 0, expectIncome: 0 },
-  ]);
 
   const classes = useStyles();
   return (
@@ -93,7 +87,7 @@ export default function TableGuarantee3(props) {
                   borderLeft: "1px solid black",
                 }}
               >
-                0
+                {!!dataList.result_2 ? dataList.result[3].vehicle : "0"}
               </td>
               <td
                 className={classes.td2}
@@ -117,7 +111,7 @@ export default function TableGuarantee3(props) {
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                0
+                {!!dataList.result_2 ? dataList.result[3].bill : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
@@ -135,7 +129,7 @@ export default function TableGuarantee3(props) {
                 หนี้คงค้างค่าผ่านทาง
               </td>
               <td className={classes.td2} style={{ textAlign: "right" }}>
-                0
+                {!!dataList.result_2 ? dataList.result[3].demand_fee : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
@@ -146,7 +140,7 @@ export default function TableGuarantee3(props) {
                 ยอดประกันค่าผ่านทาง
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
-                0
+                {!!dataList.result_2 ? dataList.result[3].demand_fee : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "left" }}>
                 บาท

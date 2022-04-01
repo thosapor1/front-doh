@@ -94,19 +94,57 @@ export default function TableGuarantee2(props) {
               <td className={classes.td3}>(บาท)</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
-            {!!data
-              ? data.map((row) => (
-                  <tr>
-                    <td className={classes.td}>
-                      {row.class === "Total" ? "รวมทั้งหมด" : row.class}
-                    </td>
-                    <td className={classes.td}>{row.fee}</td>
-                    <td className={classes.td}>{row.invoice}</td>
-                    <td className={classes.td}>{row.feeAmount}</td>
-                    <td className={classes.td}>{row.fine}</td>
-                  </tr>
-                ))
-              : []}
+            <tr>
+              <td className={classes.td}>C1</td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[0].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[0].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[0].demand_fee : "0"}
+              </td>
+              <td className={classes.td} rowSpan={4}>
+                ไม่ประกันค่าปรับ
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C2</td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[1].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[1].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[1].demand_fee : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>C3</td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[2].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[2].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[2].demand_fee : "0"}
+              </td>
+            </tr>
+            <tr>
+              <td className={classes.td}>รวมทั้งหมด</td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[3].vehicle : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[3].bill : "0"}
+              </td>
+              <td className={classes.td}>
+                {!!dataList.result_2 ? dataList.result[3].demand_fee : "0"}
+              </td>
+            </tr>
           </table>
         </div>
       </Box>

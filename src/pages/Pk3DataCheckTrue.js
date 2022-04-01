@@ -32,12 +32,6 @@ const apiURL = axios.create({
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
 });
-const apiURLv10 = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
-      : `${process.env.REACT_APP_BASE_URL_V10}`,
-});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -70,7 +64,6 @@ const useStyles = makeStyles((theme) => {
       padding: "1rem",
       height: 50,
       paddingTop: 5,
-      width: "100%",
     },
     input: {
       "& .MuiInputBase-input": {
@@ -114,14 +107,6 @@ const useStyles = makeStyles((theme) => {
     },
   };
 });
-
-const valueStatus = [
-  {
-    id: 1,
-    value: 3,
-    label: "รอจัดเก็บตรวจสอบ",
-  },
-];
 
 export default function PK3DataCheckTrue() {
   // const [open, setOpen] = useState(false);
@@ -324,8 +309,18 @@ export default function PK3DataCheckTrue() {
   const dataCard = [
     {
       value: !!summary.ts_not_normal ? summary.ts_not_normal : "0",
-      status: "checklist",
+      status: "total",
       label: "รายการตรวจสอบ",
+    },
+    {
+      value: !!summary.sla_pass ? summary.sla_pass : "0",
+      status: "pass",
+      label: "รายการผ่านSLA",
+    },
+    {
+      value: !!summary.sla_not_pass ? summary.sla_not_pass : "0",
+      status: "notPass",
+      label: "รายการไม่ผ่านSLA",
     },
   ];
 
@@ -530,6 +525,7 @@ export default function PK3DataCheckTrue() {
               display: "flex",
               // margin: "10px 0px 0px 0px",
               justifyContent: "space-between",
+              columnGap: 5,
             }}
           >
             {dataCard.map((card, index) => (
@@ -540,9 +536,9 @@ export default function PK3DataCheckTrue() {
                   borderLeft:
                     card.status === "total"
                       ? "3px solid gray"
-                      : card.status === "normal"
+                      : card.status === "pass"
                       ? "3px solid green"
-                      : card.status === "unMatch"
+                      : card.status === "notPass"
                       ? "3px solid orange"
                       : "3px solid red",
                 }}
@@ -552,9 +548,9 @@ export default function PK3DataCheckTrue() {
                     color:
                       card.status === "total"
                         ? "gray"
-                        : card.status === "normal"
+                        : card.status === "pass"
                         ? "green"
-                        : card.status === "unMatch"
+                        : card.status === "notPass"
                         ? "orange"
                         : "red",
                     fontSize: "0.9rem",
