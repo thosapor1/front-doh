@@ -369,7 +369,7 @@ export default function TablePk3CheckTrue(props) {
                       {!!data.time_diff ? data.time_diff : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {"-"}
+                      {!!data.sla && data.sla === 1 ? "Not Pass" : "Pass"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp

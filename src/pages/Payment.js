@@ -392,7 +392,7 @@ export default function Payment() {
                 {!!card.value ? card.value.toLocaleString() : []}
               </Typography>
               <Typography style={{ fontSize: "0.7rem", textAlign: "center" }}>
-                {card.status === "revenue" ? " บาท" : " รายการ"}
+                {card.type === "money" ? " บาท" : " รายการ"}
               </Typography>
             </Paper>
           ))}
