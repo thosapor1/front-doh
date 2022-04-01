@@ -302,6 +302,12 @@ export default function TablePk3CheckTrue(props) {
                 เวลาตอบโต้ PK3
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
+                ระยะเวลาตอบโต้
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                SLA
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
                 เวลารถเข้าด่าน
               </TableCell>
               <TableCell colSpan={4} align="center" className={classes.header}>
@@ -358,6 +364,12 @@ export default function TablePk3CheckTrue(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.pk3_approve_date ? data.pk3_approve_date : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.time_diff ? data.time_diff : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {"-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
