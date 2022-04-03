@@ -517,7 +517,7 @@ export default function PK3DisplayV2() {
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint="/audit-search"
+              endpoint="/pk3-search"
             />
           </Box>
 

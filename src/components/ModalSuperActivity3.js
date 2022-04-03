@@ -360,6 +360,7 @@ export default function ModalSuperActivity3(props) {
   };
 
   const downloadConsider = () => {
+    let fileType = resultDisplay.audit_upload_file.split("/")[4];
     const header = {
       "Content-Type": "application",
       responseType: "blob",
@@ -372,7 +373,7 @@ export default function ModalSuperActivity3(props) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "downloadFile");
+      link.setAttribute("download", `${fileType}`);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);

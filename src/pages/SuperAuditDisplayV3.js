@@ -501,7 +501,7 @@ export default function SuperAuditDisplayV3() {
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint="/audit-search"
+              endpoint="/super-audit-search"
             />
           </Box>
 
