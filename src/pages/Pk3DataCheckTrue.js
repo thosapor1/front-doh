@@ -24,7 +24,6 @@ import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
-import SearchComponent from "../components/SearchComponent";
 
 const apiURL = axios.create({
   baseURL:
@@ -64,6 +63,7 @@ const useStyles = makeStyles((theme) => {
       padding: "1rem",
       height: 50,
       paddingTop: 5,
+      width: 180,
     },
     input: {
       "& .MuiInputBase-input": {
@@ -109,22 +109,16 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function PK3DataCheckTrue() {
-  // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  // const [status_select, setStatus_select] = useState("3");
   const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
-  // const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [eyesStatus, setEyesStatus] = useState([]);
   const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date("Sep 01, 2021")
-  // );
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -175,10 +169,6 @@ export default function PK3DataCheckTrue() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    // console.log(checkpoint);
-    // console.log(selectGate);
-    // console.log(selectCarType);
-    // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
       checkpoint_id: checkpoint,
@@ -190,7 +180,6 @@ export default function PK3DataCheckTrue() {
       endTime: timeEnd,
       status: "0",
     };
-    // console.log(sendData);
 
     apiURL
       .post("/pk3-approve-display", sendData)
@@ -283,18 +272,6 @@ export default function PK3DataCheckTrue() {
           },
           ts_table: [],
         });
-        // console.log(
-        //   "res: ",
-        //   res.data,
-        //   "tsClass:",
-        //   res.data.ts_class,
-        //   "tsGate: ",
-        //   res.data.ts_gate_table,
-        //   "ts_Table:",
-        //   res.data.ts_table,
-        //   "Summary: ",
-        //   res.data.summary
-        // );
         setAllTsTable(res.data.status !== false ? res.data : []);
       })
       .catch((error) => {
@@ -393,50 +370,6 @@ export default function PK3DataCheckTrue() {
               : []}
           </TextField>
 
-          {/* <TextField
-            select
-            variant="outlined"
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              setStatus_select(e.target.value);
-            }}
-            className={classes.input1}
-            name="status_select"
-          >
-            {!!valueStatus
-              ? valueStatus.map((item, index) => (
-                  <MenuItem key={index} value={item.value}>
-                    {item.label}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ประเภทTS"
-            value={tsType}
-            onChange={(e) => {
-              setTsType(e.target.value);
-            }}
-            className={classes.input1}
-            name="tsType"
-          >
-            {!!dropdown.ts_status
-              ? dropdown.ts_status
-                  .filter(
-                    (item) => item.id === 0 || item.id === 2 || item.id === 3
-                  )
-                  .map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))
-              : []}
-          </TextField> */}
-
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.input}
@@ -502,7 +435,7 @@ export default function PK3DataCheckTrue() {
             justifyContent: "center",
           }}
         >
-          <Box style={{ marginRight: "0.8rem" }}>
+          {/* <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
               value={transactionId}
               date={selectedDate}
@@ -518,7 +451,7 @@ export default function PK3DataCheckTrue() {
               setEyesStatus={setEyesStatus}
               eyesStatus={eyesStatus}
             />
-          </Box>
+          </Box> */}
 
           <Box
             style={{

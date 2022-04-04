@@ -163,7 +163,7 @@ export default function PK3DisplayV2() {
 
   const checkFormatSearch = (e) => {
     if (/^m/gi.test(e)) {
-      setEndpoint("/search-transaction-match");
+      setEndpoint("/pk3-search");
     } else if (/^t/gi.test(e)) {
       setEndpoint("/search-transaction-hq");
     } else if (/\d{6}/.test(e)) {
@@ -507,22 +507,8 @@ export default function PK3DisplayV2() {
               endpoint={endpoint}
               setEyesStatus={setEyesStatus}
               eyesStatus={eyesStatus}
-            />
-            {/* <SearchComponent
-              value={transactionId}
-              date={selectedDate}
-              handleOnChange={(e) => {
-                setTransactionId(e.target.value);
-                console.log(transactionId);
-              }}
-              name="search"
-              label="transaction id"
-              setTable={setAllTsTable}
-              endpoint="/pk3-search"
-              setEyesStatus={setEyesStatus}
-              eyesStatus={eyesStatus}
               setSummary={setSummary}
-            /> */}
+            />
           </Box>
 
           <Box

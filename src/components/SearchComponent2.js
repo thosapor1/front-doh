@@ -1,9 +1,14 @@
-import { Box, Button, Paper, TextField } from "@material-ui/core";
+import { Paper, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
-import { searchByMatchTS, searchOnExpectIncome } from "../service/allService";
+import {
+  searchByMatchTS,
+  searchOnExpectIncome,
+  searchPk3V2,
+  searchSuperAudit,
+} from "../service/allService";
 import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
@@ -40,6 +45,7 @@ export default function SearchComponent2(props) {
     setTable,
     endpoint,
     setEyesStatus,
+    setSummary
   } = props;
 
   const setDataExpectIncome = async (res, eyes) => {
@@ -77,19 +83,17 @@ export default function SearchComponent2(props) {
 
     if (endpoint === "/search-transaction-match") {
       res = await searchByMatchTS(endpoint, sendData);
+      setDataExpectIncome(res, eyes);
+    } else if (endpoint === "/pk3-search") {
+      res = await searchPk3V2(endpoint, sendData);
+      setDataExpectIncome(res, eyes);
+    } else if (endpoint === "/super-audit-search") {
+      res = await searchSuperAudit(endpoint, sendData);
+      setDataExpectIncome(res, eyes);
     } else {
       res = await searchOnExpectIncome(endpoint, sendData);
+      setDataExpectIncome(res, eyes);
     }
-
-    setDataExpectIncome(res, sendData, eyes);
-
-    // else {
-    //   Swal.fire({
-    //     title: "Fail",
-    //     text: "ไม่มีข้อมูล",
-    //     icon: "warning",
-    //   });
-    // }
   };
 
   return (
