@@ -1,7 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
@@ -19,10 +18,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableSuperdisplay2 from "../components/TableSuperdisplay2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import { getDataSuperAudit, getDataSuperAuditV3 } from "../service/allService";
+import { getDataSuperAuditV3 } from "../service/allService";
 import TableSuperdisplay3 from "../components/TableSuperdisplay3";
 import {
   StyledButtonInformation,
@@ -304,21 +301,6 @@ export default function SuperAuditDisplayV3() {
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
   ];
 
   useEffect(() => {
@@ -502,6 +484,7 @@ export default function SuperAuditDisplayV3() {
               label="transaction id"
               setTable={setAllTsTable}
               endpoint="/super-audit-search"
+              setSummary={setSummary}
             />
           </Box>
 

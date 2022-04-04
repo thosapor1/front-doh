@@ -8,23 +8,6 @@ import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
 const useStyle = makeStyles((theme) => {
   return {
-    root: {},
-    input: {
-      "& .MuiInputBase-input": {
-        fontSize: "0.8rem",
-      },
-      "& .MuiSelect-selectMenu": {
-        height: 15,
-      },
-      "& .MuiInputBase-root": {
-        height: 40,
-      },
-      width: 150,
-      margin: theme.spacing(1),
-      [theme.breakpoints.down("lg")]: {
-        width: 150,
-      },
-    },
     input1: {
       "& .MuiInputBase-input": {
         fontSize: "0.8rem",
@@ -42,13 +25,6 @@ const useStyle = makeStyles((theme) => {
       "& .MuiInputLabel-shrink": {
         transform: "translate(14px, -6px) scale(0.75)",
       },
-
-      margin: theme.spacing(1),
-    },
-    button: {
-      height: 40,
-      fontSize: "0.7rem",
-      margin: theme.spacing(1),
     },
   };
 });
@@ -65,6 +41,25 @@ export default function SearchComponent2(props) {
     endpoint,
     setEyesStatus,
   } = props;
+
+  const setDataExpectIncome = async (res, eyes) => {
+    if ((!!res && !res.data.status) || (!!res && !res.data.resultsDisplay[0])) {
+      Swal.fire({
+        title: "Fail",
+        text: "transaction ไม่ถูกต้อง",
+        icon: "warning",
+      });
+    } else if (!!res && !!res.data.resultsDisplay[0] && !!res.data.status) {
+      eyes.push({
+        state: res.data.resultsDisplay[0].state,
+        readFlag: res.data.resultsDisplay[0].readFlag,
+        transactionId: res.data.resultsDisplay[0].transactionId,
+      });
+      setEyesStatus(eyes);
+      setTable(!!res.data.status ? res.data : []);
+      Swal.close();
+    }
+  };
 
   const onClickHandle = async () => {
     const sendData = {
@@ -86,22 +81,7 @@ export default function SearchComponent2(props) {
       res = await searchOnExpectIncome(endpoint, sendData);
     }
 
-    if ((!!res && !res.data.status) || (!!res && !res.data.resultsDisplay[0])) {
-      Swal.fire({
-        title: "Fail",
-        text: "transaction ไม่ถูกต้อง",
-        icon: "warning",
-      });
-    } else if (!!res && !!res.data.resultsDisplay[0] && !!res.data.status) {
-      eyes.push({
-        state: res.data.resultsDisplay[0].state,
-        readFlag: res.data.resultsDisplay[0].readFlag,
-        transactionId: res.data.resultsDisplay[0].transactionId,
-      });
-      setEyesStatus(eyes);
-      setTable(!!res.data.status ? res.data : []);
-      Swal.close();
-    }
+    setDataExpectIncome(res, sendData, eyes);
 
     // else {
     //   Swal.fire({
@@ -114,7 +94,7 @@ export default function SearchComponent2(props) {
 
   return (
     <>
-      <Box style={{ height: 60, display: "flex" }}>
+      <Paper style={{ display: "flex", height: 51, padding: 10 }}>
         <TextField
           variant="outlined"
           className={classes.input1}
@@ -123,10 +103,13 @@ export default function SearchComponent2(props) {
           name={name}
           onChange={handleOnChange}
         />
-        <StyledButtonSearch onClick={onClickHandle}>
+        <StyledButtonSearch
+          style={{ margin: "0px 0px 0px 10px" }}
+          onClick={onClickHandle}
+        >
           {`Search`}
         </StyledButtonSearch>
-      </Box>
+      </Paper>
     </>
   );
 }

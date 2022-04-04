@@ -24,6 +24,7 @@ import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+import SearchComponent2 from "../components/SearchComponent2";
 
 const apiURL = axios.create({
   baseURL:
@@ -134,6 +135,7 @@ export default function PK3DisplayV2() {
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [eyesStatus, setEyesStatus] = useState([]);
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
   // const [selectedDate, setSelectedDate] = useState(
   //   new Date("Sep 01, 2021")
   // );
@@ -159,6 +161,17 @@ export default function PK3DisplayV2() {
     });
   };
 
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/search-transaction-match");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
+  };
+
   const fetchData = async (pageId = 1) => {
     let eyes = [];
     Swal.fire({
@@ -176,10 +189,6 @@ export default function PK3DisplayV2() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    // console.log(checkpoint);
-    // console.log(selectGate);
-    // console.log(selectCarType);
-    // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
       checkpoint: checkpoint,
@@ -206,14 +215,6 @@ export default function PK3DisplayV2() {
           },
           ts_table: [],
         });
-        console.log(
-          "res: ",
-          res.data,
-          "ts_Table:",
-          res.data.ts_table,
-          "Summary: ",
-          res.data.summary
-        );
 
         setAllTsTable(res.data.status !== false ? res.data : []);
         setSummary(res.data.status !== false ? res.data.summary : []);
@@ -312,21 +313,6 @@ export default function PK3DisplayV2() {
       status: "checklist",
       label: "รายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
   ];
 
   useEffect(() => {
@@ -507,7 +493,22 @@ export default function PK3DisplayV2() {
           }}
         >
           <Box style={{ marginRight: "0.8rem" }}>
-            <SearchComponent
+            <SearchComponent2
+              value={transactionId}
+              date={selectedDate}
+              handleOnChange={(e) => {
+                setTransactionId(e.target.value);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
+              }}
+              name="search"
+              label="transaction id"
+              setTable={setAllTsTable}
+              endpoint={endpoint}
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
+            />
+            {/* <SearchComponent
               value={transactionId}
               date={selectedDate}
               handleOnChange={(e) => {
@@ -518,7 +519,10 @@ export default function PK3DisplayV2() {
               label="transaction id"
               setTable={setAllTsTable}
               endpoint="/pk3-search"
-            />
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
+              setSummary={setSummary}
+            /> */}
           </Box>
 
           <Box
