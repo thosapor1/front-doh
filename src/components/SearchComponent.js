@@ -7,6 +7,8 @@ import {
   searchByInvoiceId,
   searchByPayment,
   searchOnExpectIncome,
+  searchPk3V2,
+  searchSuperAudit,
 } from "../service/allService";
 import { StyledButtonSearch } from "../styledComponent/StyledButton";
 
@@ -97,6 +99,56 @@ export default function SearchComponent(props) {
         Swal.fire({
           title: "Fail",
           text: "Payment No. ไม่ถูกต้อง",
+          icon: "warning",
+        });
+      }
+    } else if (endpoint === "/super-audit-search") {
+      sendData = {
+        date: format(date, "yyyy-MM-dd"),
+        transactionId: value,
+      };
+
+      res = await searchSuperAudit(endpoint, sendData);
+      setTable(!!res ? res.data : []);
+      setSummary(!!res.data && !!res.data.summary ? res.data.summary[0] : []);
+      Swal.close();
+
+      if (
+        (!!res && !res.data.status) ||
+        (!!res && !res.data.resultsDisplay[0])
+      ) {
+        Swal.fire({
+          title: "Fail",
+          text: "Transactionไม่ถูกต้อง",
+          icon: "warning",
+        });
+      }
+    } else if (endpoint === "/pk3-search") {
+      sendData = {
+        date: format(date, "yyyy-MM-dd"),
+        transactionId: value,
+      };
+
+      res = await searchPk3V2(endpoint, sendData);
+      if (!!res && !!res.data.status) {
+        eye.push({
+          state: res.data.resultsDisplay[0].state,
+          readFlag: res.data.resultsDisplay[0].readFlag,
+          transactionId: res.data.resultsDisplay[0].transactionId,
+        });
+        setEyesStatus(eye);
+      }
+      setTable(!!res ? res.data : []);
+      setSummary(!!res.data ? res.data.summary[0] : []);
+      Swal.close();
+
+      if (
+        (!!res && !res.data.status) ||
+        (!!res && !res.data.result_payment[0])
+      ) {
+        Swal.fire({
+          title: "Fail",
+          text: "Transactionไม่ถูกต้อง",
           icon: "warning",
         });
       }

@@ -1,7 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
@@ -19,15 +18,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
-import TableSuperdisplay2 from "../components/TableSuperdisplay2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import SearchComponent from "../components/SearchComponent";
-import { getDataSuperAudit, getDataSuperAuditV3 } from "../service/allService";
+import { getDataSuperAuditV3 } from "../service/allService";
 import TableSuperdisplay3 from "../components/TableSuperdisplay3";
 import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
+import SearchComponent2 from "../components/SearchComponent2";
 
 const apiURL = axios.create({
   baseURL:
@@ -145,6 +143,7 @@ export default function SuperAuditDisplayV3() {
   const [dropdown, setDropdown] = useState([]);
   const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
+  const [endpoint, setEndpoint] = useState("/search-transaction-hq");
 
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
@@ -166,6 +165,17 @@ export default function SuperAuditDisplayV3() {
       console.log(res.data);
       setDropdown(res.data);
     });
+  };
+
+  const checkFormatSearch = (e) => {
+    if (/^m/gi.test(e)) {
+      setEndpoint("/super-audit-search");
+    } else if (/^t/gi.test(e)) {
+      setEndpoint("/search-transaction-hq");
+    } else if (/\d{6}/.test(e)) {
+      setEndpoint("/search-transaction-audit");
+    }
+    console.log(endpoint);
   };
 
   const fetchData = async (pageId = 1) => {
@@ -304,21 +314,6 @@ export default function SuperAuditDisplayV3() {
       status: "checklist",
       label: "จำนวนรายการตรวจสอบ",
     },
-    // {
-    //   value: !!summary.normal ? summary.normal : 0,
-    //   status: "normal",
-    //   label: "รายการปกติ",
-    // },
-    // {
-    //   value: !!summary.unMatch ? summary.unMatch : 0,
-    //   status: "unMatch",
-    //   label: "รายการข้อมูลไม่ตรงกัน",
-    // },
-    // {
-    //   value: !!summary.miss ? summary.miss : 0,
-    //   status: "miss",
-    //   label: "รายการสูญหาย",
-    // },
   ];
 
   useEffect(() => {
@@ -373,24 +368,6 @@ export default function SuperAuditDisplayV3() {
                 ))
               : []}
           </TextField>
-
-          {/* <TextField
-            select
-            variant="outlined"
-            label="ประเภทรถ"
-            value={selectCarType}
-            onChange={(e) => setSelectCarType(e.target.value)}
-            className={classes.input1}
-            name="carType"
-          >
-            {!!dropdown.vehicle
-              ? dropdown.vehicle.map((item, index) => (
-                  <MenuItem key={index} value={item.id}>
-                    {item.class}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField> */}
 
           <TextField
             select
@@ -491,17 +468,21 @@ export default function SuperAuditDisplayV3() {
         {/* Card Section */}
         <Box className={classes.cardSection}>
           <Box style={{ marginRight: "0.8rem" }}>
-            <SearchComponent
+            <SearchComponent2
               value={transactionId}
               date={selectedDate}
               handleOnChange={(e) => {
                 setTransactionId(e.target.value);
-                console.log(transactionId);
+                checkFormatSearch(e.target.value);
+                // console.log(e.target.value);
               }}
               name="search"
               label="transaction id"
               setTable={setAllTsTable}
-              endpoint="/audit-search"
+              endpoint={endpoint}
+              setEyesStatus={setEyesStatus}
+              eyesStatus={eyesStatus}
+              setSummary={setSummary}
             />
           </Box>
 
