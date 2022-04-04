@@ -99,8 +99,8 @@ export default function UserLogsTAble(props) {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {!!dataList.log_record
-              ? dataList.log_record.map((data, index) => (
+            {!!dataList.result
+              ? dataList.result.map((data, index) => (
                   <StyledTableRow key={index} className={classes.tableRow}>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.username}
@@ -118,11 +118,13 @@ export default function UserLogsTAble(props) {
                       {data.stateAfter === 0 ? "-" : data.stateAfter}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      {data.timestamp}
+                      {data.timestamp === 0
+                        ? "-"
+                        : data.timestamp.split(" ")[1]}
                     </TableCell>
                   </StyledTableRow>
                 ))
-              :[]}
+              : []}
           </TableBody>
         </Table>
       </TableContainer>

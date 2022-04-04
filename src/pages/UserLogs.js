@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
+  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import axios from "axios";
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => {
       paddingTop: 20,
     },
     filterSection: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
       marginTop: 10,
       justifyContent: "center",
       alignItems: "center",
@@ -66,10 +67,13 @@ const useStyles = makeStyles((theme) => {
       "& .MuiSelect-selectMenu": {
         height: 15,
       },
-      width: 150,
+      "& .MuiInputBase-root": {
+        height: 40,
+      },
+      width: 160,
       margin: theme.spacing(1),
       [theme.breakpoints.down("lg")]: {
-        width: 150,
+        width: 160,
       },
     },
   };
@@ -80,10 +84,15 @@ export default function UserLogs() {
 
   const [dropDrawUser, setDropDrawUser] = useState([]);
   const [dropDrawEvent, setDropDrawEvent] = useState([]);
-  const [username, setUserName] = useState("");
-  const [event, setEvent] = useState("");
+  const [username, setUserName] = useState("0");
+  const [event, setEvent] = useState("0");
   const [selectedDateStart, setSelectedDateStart] = useState(new Date());
-  const [selectedDateEnd, setSelectedDateEnd] = useState(new Date());
+  const [selectedTimeStart, setSelectedTimeStart] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
+  const [selectedTimeEnd, setSelectedTimeEnd] = useState(
+    new Date("Aug 10, 2021 00:00:00")
+  );
 
   const [page, setPage] = useState(1);
   const [dataForTable, setDataForTable] = useState([]);
@@ -105,14 +114,16 @@ export default function UserLogs() {
     }
 
     const startDate = format(selectedDateStart, "yyyy-MM-dd");
-    const endDate = format(selectedDateEnd, "yyyy-MM-dd");
+    const timeStart = format(selectedTimeStart, "HH:mm:ss");
+    const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
     const sendData = {
       page: pageId,
-      user_id: username,
-      eventSelect: event,
-      startDate: startDate,
-      endDate: endDate,
+      date: startDate,
+      user_id: username.toString(),
+      events: event.toString(),
+      startTime: timeStart,
+      endTime: timeEnd,
     };
     console.log("sendData", sendData);
 
@@ -198,20 +209,32 @@ export default function UserLogs() {
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            className={classes.input}
-            disableToolbar
-            variant="inlined"
+          <KeyboardTimePicker
             inputVariant="outlined"
-            format="dd/MM/yyyy"
-            margin="normal"
-            id="endDate"
-            label="วันที่สิ้นสุด"
-            value={selectedDateEnd}
-            onChange={(date) => setSelectedDateEnd(date)}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
+            ampm={false}
+            variant="inline"
+            label="เวลาเริ่มต้น"
+            openTo="hours"
+            views={["hours", "minutes", "seconds"]}
+            format="HH:mm:ss"
+            value={selectedTimeStart}
+            onChange={setSelectedTimeStart}
+            className={classes.input}
+          />
+        </MuiPickersUtilsProvider>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardTimePicker
+            inputVariant="outlined"
+            ampm={false}
+            variant="inline"
+            label="เวลาสิ้นสุด"
+            openTo="hours"
+            views={["hours", "minutes", "seconds"]}
+            format="HH:mm:ss"
+            value={selectedTimeEnd}
+            onChange={setSelectedTimeEnd}
+            className={classes.input}
           />
         </MuiPickersUtilsProvider>
 
