@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "#9A0049",
-      zIndex: 1,
+      // zIndex: 1,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
