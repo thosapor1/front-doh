@@ -1,25 +1,20 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
-  MenuItem,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
-  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import Swal from "sweetalert2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import TableMonitor from "../components/TableMonitorData";
 import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
@@ -123,7 +118,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function MonitorData() {
-  const creactObject = (name) => {
+  const createObject = (name) => {
     return {
       name: `${name}`,
 
@@ -154,16 +149,16 @@ export default function MonitorData() {
     };
   };
 
-  let TableDataHQ = creactObject("MFLane");
-  let TableDataHQ2 = creactObject("HQ");
-  let TableDataHQ3 = creactObject("ผลต่างข้อมูล(MF-HQ)");
-  let TableDataTypeHQ = creactObject("Member");
-  let TableDataTypeHQ2 = creactObject("Non-Member");
-  let TableDataTypeHQ3 = creactObject("Non-Charge");
-  let TableDataTypeHQ4 = creactObject("Illegal");
-  let TableDataTypeHQ5 = creactObject("ป้ายแดง");
-  let TableDataTypeHQ6 = creactObject("อ่านทะเบียนไม่ได้");
-  let TableDataTSFull = creactObject("TS Full Audit");
+  let TableDataHQ = createObject("MFLane");
+  let TableDataHQ2 = createObject("HQ");
+  let TableDataHQ3 = createObject("ผลต่างข้อมูล(MF-HQ)");
+  let TableDataTypeHQ = createObject("Member");
+  let TableDataTypeHQ2 = createObject("Non-Member");
+  let TableDataTypeHQ3 = createObject("Non-Charge");
+  let TableDataTypeHQ4 = createObject("Illegal");
+  let TableDataTypeHQ5 = createObject("ป้ายแดง");
+  let TableDataTypeHQ6 = createObject("อ่านทะเบียนไม่ได้");
+  let TableDataTSFull = createObject("TS Full Audit");
 
   const [TableHQ, setTableHQ] = useState([
     TableDataHQ,

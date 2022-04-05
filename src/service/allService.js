@@ -194,6 +194,13 @@ export const getDataSuperauditActivity = (sendData) => {
   return response;
 };
 
+export const searchSuperAudit = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //superAdminDisplayV3 page
 export const getDataSuperAuditV3 = (sendData) => {
   const response = apiURLv10
@@ -466,6 +473,13 @@ export const exportData = (sendData) => {
 //Pk3DisplayV2 page
 export const getDataPk3V10 = (sendData) => {
   const response = apiURLv10.post("/display-pk3", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
+export const searchPk3V2 = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;

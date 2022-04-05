@@ -500,7 +500,7 @@ export default function MandatoryItem() {
             justifyContent: "center",
           }}
         >
-          <Box>
+          {/* <Box>
             <SearchComponent
               value={transactionId}
               date={selectedDate}
@@ -513,7 +513,7 @@ export default function MandatoryItem() {
               setTable={setAllTsTable}
               endpoint="/audit-search"
             />
-          </Box>
+          </Box> */}
           <Box
             style={{
               display: "flex",
