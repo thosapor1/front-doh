@@ -155,13 +155,22 @@ export default function TableDataVolume(props) {
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.audit_count &&
+                      data.audit_count !== "0000-00-00 00:00:00"
+                        ? data.audit_count
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.audit_first &&
+                      data.audit_first !== "0000-00-00 00:00:00"
+                        ? data.audit_first
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
-                      -
+                      {!!data.audit_last &&
+                      data.audit_last !== "0000-00-00 00:00:00"
+                        ? data.audit_last
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.hq_count ? data.hq_count.toLocaleString() : "-"}
