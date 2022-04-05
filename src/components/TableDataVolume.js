@@ -59,6 +59,18 @@ const headerCells = [
     label: "lastTimeStampLane",
   },
   {
+    id: "Audit_AD",
+    label: "จำนวน Audit",
+  },
+  {
+    id: "first_Time_AD",
+    label: "firstTimeStampAD",
+  },
+  {
+    id: "last_Time_AD",
+    label: "lastTimeStampAD",
+  },
+  {
     id: "number_of_TS_HQ",
     label: "จำนวน TS HQ",
   },
@@ -70,6 +82,7 @@ const headerCells = [
     id: "last_Time_HQ",
     label: "lastTimeStampHQ",
   },
+
   {
     id: "Verify",
     label: "รอ Verify",
@@ -139,6 +152,24 @@ export default function TableDataVolume(props) {
                       {!!data.lane_last &&
                       data.lane_last !== "0000-00-00 00:00:00"
                         ? data.lane_last
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_count &&
+                      data.audit_count !== "0000-00-00 00:00:00"
+                        ? data.audit_count
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_first &&
+                      data.audit_first !== "0000-00-00 00:00:00"
+                        ? data.audit_first
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.audit_last &&
+                      data.audit_last !== "0000-00-00 00:00:00"
+                        ? data.audit_last
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
