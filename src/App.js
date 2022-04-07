@@ -15,7 +15,6 @@ import DashBoard2 from "./pages/DashBoard2";
 import SuperAuditDisplay2 from "./pages/SuperAuditDisplay2";
 import DataVolume from "./pages/DataVolume";
 import MandatoryItem from "./pages/MandatoryItem";
-import ExpectIncome from "./pages/ExpectIncome";
 import CollectFromPk3 from "./pages/CollectFromPk3";
 import MenuDataMonitor from "./pages/MenuDataMonitor";
 import MonitorData from "./pages/MonitorData";
