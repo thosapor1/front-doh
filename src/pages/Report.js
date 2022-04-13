@@ -61,10 +61,8 @@ import TableGuarantee3 from "../components/report/TableGuarantee3";
 import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncome";
 import PdfFeeDaily from "../components/report/PdfFeeDaily";
 import PdfFeeMonthly from "../components/report/PdfFeeMonthly";
-import PdfTxNumberOfCar from "../components/report/PdfTxNumberOfCar";
 import PdfFineMonthly from "../components/report/PdfFineMonthly";
 import PdfDebt from "../components/report/PdfDebt";
-import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
 import PdfGuarantee from "../components/report/PdfGuarantee";
 import TablePressTheClaim1 from "../components/report/TablePressTheClaim1";
 import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
@@ -76,14 +74,13 @@ import TableDebt3 from "../components/report/TableDebt3";
 import TableDebt2 from "../components/report/TableDebt2";
 import TableDebt1 from "../components/report/TableDebt1";
 import TableDebt5 from "../components/report/TableDebt5";
-import PdfTxDebt from "../components/report/PdfTxDebt";
 import TableResultFee1 from "../components/report/TableResultFee1";
 import TableResultFee2 from "../components/report/TableResultFee2";
 import TableResultFee3 from "../components/report/TableResultFee3";
 import TableResultFee4 from "../components/report/TableResultFee4";
 import PdfResultFee from "../components/report/PdfResultFee";
-import PdfTxGuarantee from "../components/report/PdfTxGuarantee";
 import exportExcel2 from "../components/report/exportExcel2";
+import TableSLA from "../components/report/tableSLA";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -596,6 +593,7 @@ export default function Report() {
               {...a11yProps(11)}
               className={classes.tab}
             />
+            <Tab label="SLA" {...a11yProps(12)} className={classes.tab} />
 
             {/* <Tab
               label="รายงานสรุปจราจร"
@@ -1472,6 +1470,46 @@ export default function Report() {
                     selectedDate={selectedDate}
                   />
                 </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={12}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData12}
+                report={PdfResultFee}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                      checkpoint: checkpoint.toString(),
+                      startTime: format(startTime, "HH:mm:ss"),
+                      endTime: format(endTime, "HH:mm:ss"),
+                    },
+                    "/report-interactive",
+                    "รายงานTransactionการจัดเก็บค่าธรรมเนียม"
+                  )
+                }
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  การประเมินระดับการให้บริการ (SLA)
+                </Typography>
+                <Box>
+                  <TableSLA />
+                </Box>
               </Paper>
             </Container>
           </TabPanel>
