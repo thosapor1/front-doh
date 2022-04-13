@@ -350,7 +350,7 @@ export default function ModalPK3Activity3(props) {
   const [fileName, setFileName] = useState("");
 
   const downloadConsider = () => {
-    let fileType = resultDisplay.pk3_upload_file.split("/")[4];
+    let fileType = resultDisplay.audit_upload_file.split("/")[4];
     const header = {
       "Content-Type": "application",
       responseType: "blob",
@@ -373,7 +373,7 @@ export default function ModalPK3Activity3(props) {
   };
 
   const downloadSuper = () => {
-    let fileType = resultDisplay.pk3_upload_file.split("/")[4];
+    let fileType = resultDisplay.super_audit_upload_file.split("/")[4];
     const header = {
       "Content-Type": "application",
       responseType: "blob",
