@@ -27,6 +27,7 @@ import {
   getOverdueBalanceData,
   getResultFeeData,
   getGuaranteeData,
+  getDataSLa,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -155,6 +156,20 @@ export default function Report() {
   const [guarantee, setGuarantee] = useState([]);
   const [overdueBalance, setOverdueBalance] = useState([]);
   const [resultFeeData, setResultFeeData] = useState([]);
+  const [dataColumnChart, setdataColumnChart] = useState([
+    ["period", "รถผ่านทาง", { role: "annotation" }],
+    ["0-8 Min", 20, 20],
+    ["8-15 Min", 20, 20],
+    ["15-20 Min", 0, 0],
+    ["20-30 Min", 0, 0],
+    ["30-60 Min", 0, 0],
+    ["60+ Min", 0, 0],
+  ]);
+  const [dataDonutChart, setdataDonutChart] = useState([
+    ["type", "amount", { role: "annotation" }],
+    ["On SLA", 10, 10],
+    ["Over SLA", 30, 30],
+  ]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -498,6 +513,27 @@ export default function Report() {
       endTime: format(endTime, "HH:mm:ss"),
     };
     const res = await getResultFeeData(sendData);
+
+    if (!!res && !!res.data.status) {
+      setResultFeeData(res.data);
+    }
+    Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData13 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+    };
+    const res = await getDataSLa(sendData);
 
     if (!!res && !!res.data.status) {
       setResultFeeData(res.data);
@@ -1477,20 +1513,11 @@ export default function Report() {
           <TabPanel value={value} index={12}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
-                onFetchData={fetchData12}
+                onFetchData={fetchData13}
                 report={PdfResultFee}
-                transactionReport={() =>
-                  exportExcel2(
-                    {
-                      date: format(selectedDate, "yyyy-MM-dd"),
-                      checkpoint: checkpoint.toString(),
-                      startTime: format(startTime, "HH:mm:ss"),
-                      endTime: format(endTime, "HH:mm:ss"),
-                    },
-                    "/report-interactive",
-                    "รายงานTransactionการจัดเก็บค่าธรรมเนียม"
-                  )
-                }
+                transactionReport={() => {
+                  alert("test");
+                }}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1508,7 +1535,13 @@ export default function Report() {
                   การประเมินระดับการให้บริการ (SLA)
                 </Typography>
                 <Box>
-                  <TableSLA />
+                  <TableSLA
+                    dataColumnChart={dataColumnChart}
+                    dataDonutChart={dataDonutChart}
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                  />
                 </Box>
               </Paper>
             </Container>
