@@ -82,6 +82,8 @@ import TableResultFee4 from "../components/report/TableResultFee4";
 import PdfResultFee from "../components/report/PdfResultFee";
 import exportExcel2 from "../components/report/exportExcel2";
 import TableSLA from "../components/report/tableSLA";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -193,6 +195,18 @@ export default function Report() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const slaPDF = () => {
+    const input = document.getElementById("tableSLA");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png",);
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140,);
+      pdf.save("slaReport.pdf");
+    });
   };
 
   const fetchData = async () => {
@@ -1490,7 +1504,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData13}
-                report={PdfResultFee}
+                report={slaPDF}
                 transactionReport={() => {
                   alert("test");
                 }}
