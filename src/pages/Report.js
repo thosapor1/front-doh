@@ -156,19 +156,20 @@ export default function Report() {
   const [guarantee, setGuarantee] = useState([]);
   const [overdueBalance, setOverdueBalance] = useState([]);
   const [resultFeeData, setResultFeeData] = useState([]);
-  const [dataColumnChart, setdataColumnChart] = useState([
+  const [dataSLA, setDataSLA] = useState([]);
+  const [dataColumnChart, setDataColumnChart] = useState([
     ["period", "รถผ่านทาง", { role: "annotation" }],
-    ["0-8 Min", 20, 20],
-    ["8-15 Min", 20, 20],
+    ["0-8 Min", 0, 0],
+    ["8-15 Min", 0, 0],
     ["15-20 Min", 0, 0],
     ["20-30 Min", 0, 0],
     ["30-60 Min", 0, 0],
     ["60+ Min", 0, 0],
   ]);
-  const [dataDonutChart, setdataDonutChart] = useState([
+  const [dataDonutChart, setDataDonutChart] = useState([
     ["type", "amount", { role: "annotation" }],
-    ["On SLA", 10, 10],
-    ["Over SLA", 30, 30],
+    ["On SLA", 0, 0],
+    ["Over SLA", 0, 0],
   ]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
@@ -536,7 +537,59 @@ export default function Report() {
     const res = await getDataSLa(sendData);
 
     if (!!res && !!res.data.status) {
-      setResultFeeData(res.data);
+      setDataSLA(res.data);
+      setDataDonutChart([
+        ["type", "amount", { role: "annotation" }],
+        ["On SLA", res.data.sla_831[0].onSla, res.data.sla_831[0].onSla],
+        ["Over SLA", res.data.sla_831[0].overSla, res.data.sla_831[0].overSla],
+      ]);
+      let array = [0, res.data.sla_831[0].onSla, 0];
+      setDataColumnChart([
+        ["period", "รถผ่านทาง", { role: "annotation" }],
+        ["0-8 Min", res.data.sla_831[0]["8min"], res.data.sla_831[0]["8min"]],
+        [
+          "8-15 Min",
+          res.data.sla_831[0]["8To15min"],
+          res.data.sla_831[0]["8To15min"],
+        ],
+        [
+          "15-20 Min",
+          res.data.sla_831[0]["15To20min"],
+          res.data.sla_831[0]["15To20min"],
+        ],
+        [
+          "20-30 Min",
+          res.data.sla_831[0]["20To30min"],
+          res.data.sla_831[0]["20To30min"],
+        ],
+        [
+          "30-60 Min",
+          res.data.sla_831[0]["30To60min"],
+          res.data.sla_831[0]["30To60min"],
+        ],
+        [
+          "60+ Min",
+          res.data.sla_831[0].moreThan60,
+          res.data.sla_831[0].moreThan60,
+        ],
+      ]);
+    }
+    if (!!res && !res.data.status) {
+      setDataDonutChart([
+        ["type", "amount", { role: "annotation" }],
+        ["On SLA", 0, 0],
+        ["Over SLA", 0, 0],
+      ]);
+
+      setDataColumnChart([
+        ["period", "รถผ่านทาง", { role: "annotation" }],
+        ["0-8 Min", 0, 0],
+        ["8-15 Min", 0, 0],
+        ["15-20 Min", 0, 0],
+        ["20-30 Min", 0, 0],
+        ["30-60 Min", 0, 0],
+        ["60+ Min", 0, 0],
+      ]);
     }
     Swal.close();
 
@@ -630,14 +683,6 @@ export default function Report() {
               className={classes.tab}
             />
             <Tab label="SLA" {...a11yProps(12)} className={classes.tab} />
-
-            {/* <Tab
-              label="รายงานสรุปจราจร"
-              {...a11yProps(4)}
-              className={classes.tab}
-            />
-
-            <Tab label="testPDF" {...a11yProps(5)} className={classes.tab} /> */}
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -768,7 +813,6 @@ export default function Report() {
                     <TableBillingDaily2 dataList={dailyBilling} />
                   </div>
                 </div>
-                {/* <TableReportSumMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
@@ -868,77 +912,9 @@ export default function Report() {
                     <TabledataTX dataList={dataTX} />
                   </div>
                 </div>
-
-                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
-
-          {/* <TabPanel value={value} index={4}>
-            <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
-              <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
-
-                <BlockTrafficReport />
-
-                <TableReportTrafficMonthly dataList={allTsTable3} />
-              </Paper>
-            </Container>
-          </TabPanel> */}
-
-          {/* <TabPanel value={value} index={5}>
-            <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection3
-                onFetchData={fetchData}
-                report={TestPDF}
-                exportExcel={exportExcel}
-              />
-              <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
-
-                <BlockTestPDF /> */}
-
-          {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
-          {/* </Paper>
-            </Container>
-          </TabPanel> */}
 
           <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
@@ -1536,6 +1512,7 @@ export default function Report() {
                 </Typography>
                 <Box>
                   <TableSLA
+                    dataList={dataSLA}
                     dataColumnChart={dataColumnChart}
                     dataDonutChart={dataDonutChart}
                     selectedDate={selectedDate}

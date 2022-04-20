@@ -150,23 +150,33 @@ export default function TableSLA(props) {
             <td className={classes.td}>จำนวนค่าปรับ (บาท)</td>
             <td>{null}</td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
           </tr>
           <tr>
-            <td className={classes.td}>data</td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td} colSpan={2}>
-              data
+            <td className={classes.td}>
+              {!!dataList.sla_831
+                ? dataList.sla_831[0].onSla.toLocaleString()
+                : 0}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_831
+                ? dataList.sla_831[0].overSla.toLocaleString()
+                : "0"}
             </td>
             <td className={classes.td} colSpan={2}>
-              data
+              {!!dataList.sla_831 ? dataList.sla_831[0].onSlaAvgTime : "0"}
             </td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td}>data</td>
+            <td className={classes.td} colSpan={2}>
+              {!!dataList.sla_831 ? dataList.sla_831[0].overSlaAvgTime : "0"}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_831 ? dataList.sla_831[0].overSlaAvgMin : "0"}
+            </td>
+            <td className={classes.td}>0</td>
           </tr>
           <tr>
             <td className={classes.td} colSpan={3} align="center">
@@ -195,9 +205,6 @@ export default function TableSLA(props) {
                 options={{
                   title: "ค่าเฉลี่ยการสร้างรายการผ่านทาง (แบ่งช่วงเวลา)",
                   vAxis: {
-                    viewWindow: {
-                      min: 0,
-                    },
                     gridlines: { color: "transparent" },
                   },
                   legend: { position: "none" },
@@ -267,28 +274,28 @@ export default function TableSLA(props) {
             <td className={classes.td}>SLA</td>
             <td>{null}</td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
           </tr>
           <tr>
             <td className={classes.td} style={{ backgroundColor: "pink" }}>
-              data
+              0
             </td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td}>data</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+              0
             </td>
-            <td className={classes.td}>data</td>
+            <td className={classes.td}>0</td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+              0
             </td>
-            <td className={classes.td}>data</td>
+            <td className={classes.td}>0</td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+              0
             </td>
             <td>{null}</td>
           </tr>
@@ -355,28 +362,38 @@ export default function TableSLA(props) {
             <td className={classes.td}>เวลาเฉลี่ย (ชั่วโมง)</td>
             <td>{null}</td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
             <td className={classes.td} rowSpan={2}>
-              data
+              0
             </td>
           </tr>
           <tr>
             <td className={classes.td} style={{ backgroundColor: "pink" }}>
-              data
+              0
             </td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+            <td className={classes.td}>
+              {!!dataList.sla_833 ? dataList.sla_833[0].on12HourAvgTime : 0}
             </td>
-            <td className={classes.td}>data</td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+            <td className={classes.td}>
+              {!!dataList.sla_833 ? dataList.sla_833[0].countOn12Hour : 0}
             </td>
-            <td className={classes.td}>data</td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              data
+              {!!dataList.sla_833 ? dataList.sla_833[0].on12HourAvgTime : 0}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_833 ? dataList.sla_833[0].countOver24Hour : 0}
+            </td>
+            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
+              {!!dataList.sla_833 ? dataList.sla_833[0].To24HourAvgTime : 0}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_833 ? dataList.sla_833[0].countOver24Hour : 0}
+            </td>
+            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
+              {!!dataList.sla_833
+                ? dataList.sla_833[0].over24HourCost.toLocaleString()
+                : 0}
             </td>
             <td>{null}</td>
           </tr>
