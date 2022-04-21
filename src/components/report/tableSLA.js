@@ -282,20 +282,28 @@ export default function TableSLA(props) {
           </tr>
           <tr>
             <td className={classes.td} style={{ backgroundColor: "pink" }}>
-              0
+              {!!dataList.sla_832_1 ? dataList.sla_832_1.slaPercent : "0"}
             </td>
-            <td className={classes.td}>0</td>
-            <td className={classes.td}>0</td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              0
+            <td className={classes.td}>
+              {!!dataList.sla_832_1 ? dataList.sla_832_1.slaDueDateTime : "0"}
             </td>
-            <td className={classes.td}>0</td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              0
+            <td className={classes.td}>
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[0].sla : "0"}
             </td>
-            <td className={classes.td}>0</td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              0
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[0].dateTime : "0"}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].sla : "0"}
+            </td>
+            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].dateTime : "0"}
+            </td>
+            <td className={classes.td}>
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[2].sla : "0"}
+            </td>
+            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
+              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].dateTime : "0"}
             </td>
             <td>{null}</td>
           </tr>
