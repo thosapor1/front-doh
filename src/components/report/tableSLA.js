@@ -378,7 +378,7 @@ export default function TableSLA(props) {
           </tr>
           <tr>
             <td className={classes.td} style={{ backgroundColor: "pink" }}>
-              0
+              {!!dataList.sla_833 ? dataList.sla_833[0].over24Percent : 0}
             </td>
             <td className={classes.td}>
               {!!dataList.sla_833 ? dataList.sla_833[0].on12HourAvgTime : 0}
@@ -390,10 +390,12 @@ export default function TableSLA(props) {
               {!!dataList.sla_833 ? dataList.sla_833[0].on12HourAvgTime : 0}
             </td>
             <td className={classes.td}>
-              {!!dataList.sla_833 ? dataList.sla_833[0].countOver24Hour : 0}
+              {!!dataList.sla_833 ? dataList.sla_833[0].count12To24Hour : 0}
             </td>
             <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              {!!dataList.sla_833 ? dataList.sla_833[0].To24HourAvgTime : 0}
+              {!!dataList.sla_833
+                ? dataList.sla_833[0]["12To24HourAvgTime"]
+                : 0}
             </td>
             <td className={classes.td}>
               {!!dataList.sla_833 ? dataList.sla_833[0].countOver24Hour : 0}

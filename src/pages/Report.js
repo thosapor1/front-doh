@@ -200,11 +200,11 @@ export default function Report() {
   const slaPDF = () => {
     const input = document.getElementById("tableSLA");
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png",);
+      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
         orientation: "landscape",
       });
-      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140,);
+      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140);
       pdf.save("slaReport.pdf");
     });
   };
@@ -587,8 +587,14 @@ export default function Report() {
           res.data.sla_831[0].moreThan60,
         ],
       ]);
+      Swal.close();
     }
     if (!!res && !res.data.status) {
+      Swal.fire({
+        title: "ไม่มีข้อมูล",
+        icon: "warning",
+      });
+      setDataSLA({});
       setDataDonutChart([
         ["type", "amount", { role: "annotation" }],
         ["On SLA", 0, 0],
@@ -605,7 +611,6 @@ export default function Report() {
         ["60+ Min", 0, 0],
       ]);
     }
-    Swal.close();
 
     // console.log(res.data);
   };
