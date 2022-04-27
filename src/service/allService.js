@@ -194,6 +194,13 @@ export const getDataSuperauditActivity = (sendData) => {
   return response;
 };
 
+export const searchSuperAudit = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //superAdminDisplayV3 page
 export const getDataSuperAuditV3 = (sendData) => {
   const response = apiURLv10
@@ -446,6 +453,26 @@ export const getResultFeeData = (sendData) => {
   return response;
 };
 
+export const getGuaranteeData = (sendData) => {
+  const response = apiURLv1
+    .post("/report-toll-insurance", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+export const getDataSLa = (sendData) => {
+  const response = apiURLv1
+    .post("/report-sla", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
+
+
 //ExportData page
 export const exportData = (sendData) => {
   const response = apiURLv1.post("/", sendData).catch((error) => {
@@ -462,9 +489,16 @@ export const getDataPk3V10 = (sendData) => {
   return response;
 };
 
+export const searchPk3V2 = (endpoint, sendData) => {
+  const response = apiURLv2.post(endpoint, sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
+  return response;
+};
+
 //Payment page
-export const searchByPayment = (sendData) => {
-  const response = apiURLv1.post("/search-payment", sendData).catch((error) => {
+export const searchByPayment = (endpoint, sendData) => {
+  const response = apiURLv1.post(endpoint, sendData).catch((error) => {
     Swal.fire(cannotConnectNetWork);
   });
   return response;

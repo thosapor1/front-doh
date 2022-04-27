@@ -1,25 +1,20 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Box,
-  Button,
   Container,
   Grid,
   makeStyles,
-  MenuItem,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import {
   KeyboardDatePicker,
-  KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import Swal from "sweetalert2";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
 import TableMonitor from "../components/TableMonitorData";
 import { StyledButtonInformation } from "../styledComponent/StyledButton";
 
@@ -123,7 +118,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function MonitorData() {
-  const creactObject = (name) => {
+  const createObject = (name) => {
     return {
       name: `${name}`,
 
@@ -154,16 +149,16 @@ export default function MonitorData() {
     };
   };
 
-  let TableDataHQ = creactObject("MFLane");
-  let TableDataHQ2 = creactObject("HQ");
-  let TableDataHQ3 = creactObject("ผลต่างข้อมูล(MF-HQ)");
-  let TableDataTypeHQ = creactObject("Member");
-  let TableDataTypeHQ2 = creactObject("Non-Member");
-  let TableDataTypeHQ3 = creactObject("Non-Charge");
-  let TableDataTypeHQ4 = creactObject("Illegal");
-  let TableDataTypeHQ5 = creactObject("ป้ายแดง");
-  let TableDataTypeHQ6 = creactObject("อ่านทะเบียนไม่ได้");
-  let TableDataTSFull = creactObject("TS Full Audit");
+  let TableDataHQ = createObject("MFLane");
+  let TableDataHQ2 = createObject("HQ");
+  let TableDataHQ3 = createObject("ผลต่างข้อมูล(MF-HQ)");
+  let TableDataTypeHQ = createObject("Member");
+  let TableDataTypeHQ2 = createObject("Non-Member");
+  let TableDataTypeHQ3 = createObject("Non-Charge");
+  let TableDataTypeHQ4 = createObject("Illegal");
+  let TableDataTypeHQ5 = createObject("ป้ายแดง");
+  let TableDataTypeHQ6 = createObject("อ่านทะเบียนไม่ได้");
+  let TableDataTSFull = createObject("TS Full Audit");
 
   const [TableHQ, setTableHQ] = useState([
     TableDataHQ,
@@ -208,7 +203,7 @@ export default function MonitorData() {
         // setTableTSFull(TableTSFull[0] = {});
         setSummaryMFLane(res.data.card[0]);
         setSummaryHQ(res.data.card[0]);
-        setSummaryTSFull(0);
+        setSummaryTSFull(res.data.card[0]);
 
         let dataHQ1 = [
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -219,6 +214,10 @@ export default function MonitorData() {
           0,
         ];
         let dataHQ3 = [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0,
+        ];
+        let dataTSFull = [
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0,
         ];
@@ -252,6 +251,7 @@ export default function MonitorData() {
             dataHQ1[0] = res.data.sql[index].lane;
             dataHQ2[0] = res.data.sql[index].hq;
             dataHQ3[0] = res.data.sql[index].dif_count;
+            dataTSFull[0] = res.data.sql[index].audit;
             dataTypeHQ1[0] = res.data.sql[index].mem;
             dataTypeHQ2[0] = res.data.sql[index].non_mem;
             dataTypeHQ3[0] = res.data.sql[index].non_charge;
@@ -264,6 +264,7 @@ export default function MonitorData() {
             dataHQ1[1] = res.data.sql[index].lane;
             dataHQ2[1] = res.data.sql[index].hq;
             dataHQ3[1] = res.data.sql[index].dif_count;
+            dataTSFull[1] = res.data.sql[index].audit;
             dataTypeHQ1[1] = res.data.sql[index].mem;
             dataTypeHQ2[1] = res.data.sql[index].non_mem;
             dataTypeHQ3[1] = res.data.sql[index].non_charge;
@@ -276,6 +277,7 @@ export default function MonitorData() {
             dataHQ1[2] = res.data.sql[index].lane;
             dataHQ2[2] = res.data.sql[index].hq;
             dataHQ3[2] = res.data.sql[index].dif_count;
+            dataTSFull[2] = res.data.sql[index].audit;
             dataTypeHQ1[2] = res.data.sql[index].mem;
             dataTypeHQ2[2] = res.data.sql[index].non_mem;
             dataTypeHQ3[2] = res.data.sql[index].non_charge;
@@ -288,6 +290,7 @@ export default function MonitorData() {
             dataHQ1[3] = res.data.sql[index].lane;
             dataHQ2[3] = res.data.sql[index].hq;
             dataHQ3[3] = res.data.sql[index].dif_count;
+            dataTSFull[3] = res.data.sql[index].audit;
             dataTypeHQ1[4] = res.data.sql[index].mem;
             dataTypeHQ2[4] = res.data.sql[index].non_mem;
             dataTypeHQ3[4] = res.data.sql[index].non_charge;
@@ -300,6 +303,7 @@ export default function MonitorData() {
             dataHQ1[4] = res.data.sql[index].lane;
             dataHQ2[4] = res.data.sql[index].hq;
             dataHQ3[4] = res.data.sql[index].dif_count;
+            dataTSFull[4] = res.data.sql[index].audit;
             dataTypeHQ1[4] = res.data.sql[index].mem;
             dataTypeHQ2[4] = res.data.sql[index].non_mem;
             dataTypeHQ3[4] = res.data.sql[index].non_charge;
@@ -312,6 +316,7 @@ export default function MonitorData() {
             dataHQ1[5] = res.data.sql[index].lane;
             dataHQ2[5] = res.data.sql[index].hq;
             dataHQ3[5] = res.data.sql[index].dif_count;
+            dataTSFull[5] = res.data.sql[index].audit;
             dataTypeHQ1[5] = res.data.sql[index].mem;
             dataTypeHQ2[5] = res.data.sql[index].non_mem;
             dataTypeHQ3[5] = res.data.sql[index].non_charge;
@@ -324,6 +329,7 @@ export default function MonitorData() {
             dataHQ1[6] = res.data.sql[index].lane;
             dataHQ2[6] = res.data.sql[index].hq;
             dataHQ3[6] = res.data.sql[index].dif_count;
+            dataTSFull[6] = res.data.sql[index].audit;
             dataTypeHQ1[6] = res.data.sql[index].mem;
             dataTypeHQ2[6] = res.data.sql[index].non_mem;
             dataTypeHQ3[6] = res.data.sql[index].non_charge;
@@ -336,6 +342,7 @@ export default function MonitorData() {
             dataHQ1[7] = res.data.sql[index].lane;
             dataHQ2[7] = res.data.sql[index].hq;
             dataHQ3[7] = res.data.sql[index].dif_count;
+            dataTSFull[7] = res.data.sql[index].audit;
             dataTypeHQ1[7] = res.data.sql[index].mem;
             dataTypeHQ2[7] = res.data.sql[index].non_mem;
             dataTypeHQ3[7] = res.data.sql[index].non_charge;
@@ -348,6 +355,7 @@ export default function MonitorData() {
             dataHQ1[8] = res.data.sql[index].lane;
             dataHQ2[8] = res.data.sql[index].hq;
             dataHQ3[8] = res.data.sql[index].dif_count;
+            dataTSFull[8] = res.data.sql[index].audit;
             dataTypeHQ1[8] = res.data.sql[index].mem;
             dataTypeHQ2[8] = res.data.sql[index].non_mem;
             dataTypeHQ3[8] = res.data.sql[index].non_charge;
@@ -360,6 +368,7 @@ export default function MonitorData() {
             dataHQ1[9] = res.data.sql[index].lane;
             dataHQ2[9] = res.data.sql[index].hq;
             dataHQ3[9] = res.data.sql[index].dif_count;
+            dataTSFull[9] = res.data.sql[index].audit;
             dataTypeHQ1[9] = res.data.sql[index].mem;
             dataTypeHQ2[9] = res.data.sql[index].non_mem;
             dataTypeHQ3[9] = res.data.sql[index].non_charge;
@@ -372,6 +381,7 @@ export default function MonitorData() {
             dataHQ1[10] = res.data.sql[index].lane;
             dataHQ2[10] = res.data.sql[index].hq;
             dataHQ3[10] = res.data.sql[index].dif_count;
+            dataTSFull[10] = res.data.sql[index].audit;
             dataTypeHQ1[10] = res.data.sql[index].mem;
             dataTypeHQ2[10] = res.data.sql[index].non_mem;
             dataTypeHQ3[10] = res.data.sql[index].non_charge;
@@ -384,6 +394,7 @@ export default function MonitorData() {
             dataHQ1[11] = res.data.sql[index].lane;
             dataHQ2[11] = res.data.sql[index].hq;
             dataHQ3[11] = res.data.sql[index].dif_count;
+            dataTSFull[11] = res.data.sql[index].audit;
             dataTypeHQ1[11] = res.data.sql[index].mem;
             dataTypeHQ2[11] = res.data.sql[index].non_mem;
             dataTypeHQ3[11] = res.data.sql[index].non_charge;
@@ -396,6 +407,7 @@ export default function MonitorData() {
             dataHQ1[12] = res.data.sql[index].lane;
             dataHQ2[12] = res.data.sql[index].hq;
             dataHQ3[12] = res.data.sql[index].dif_count;
+            dataTSFull[12] = res.data.sql[index].audit;
             dataTypeHQ1[12] = res.data.sql[index].mem;
             dataTypeHQ2[12] = res.data.sql[index].non_mem;
             dataTypeHQ3[12] = res.data.sql[index].non_charge;
@@ -408,6 +420,7 @@ export default function MonitorData() {
             dataHQ1[13] = res.data.sql[index].lane;
             dataHQ2[13] = res.data.sql[index].hq;
             dataHQ3[13] = res.data.sql[index].dif_count;
+            dataTSFull[13] = res.data.sql[index].audit;
             dataTypeHQ1[13] = res.data.sql[index].mem;
             dataTypeHQ2[13] = res.data.sql[index].non_mem;
             dataTypeHQ3[13] = res.data.sql[index].non_charge;
@@ -420,6 +433,7 @@ export default function MonitorData() {
             dataHQ1[14] = res.data.sql[index].lane;
             dataHQ2[14] = res.data.sql[index].hq;
             dataHQ3[14] = res.data.sql[index].dif_count;
+            dataTSFull[14] = res.data.sql[index].audit;
             dataTypeHQ1[14] = res.data.sql[index].mem;
             dataTypeHQ2[14] = res.data.sql[index].non_mem;
             dataTypeHQ3[14] = res.data.sql[index].non_charge;
@@ -432,6 +446,7 @@ export default function MonitorData() {
             dataHQ1[15] = res.data.sql[index].lane;
             dataHQ2[15] = res.data.sql[index].hq;
             dataHQ3[15] = res.data.sql[index].dif_count;
+            dataTSFull[15] = res.data.sql[index].audit;
             dataTypeHQ1[15] = res.data.sql[index].mem;
             dataTypeHQ2[15] = res.data.sql[index].non_mem;
             dataTypeHQ3[15] = res.data.sql[index].non_charge;
@@ -444,6 +459,7 @@ export default function MonitorData() {
             dataHQ1[16] = res.data.sql[index].lane;
             dataHQ2[16] = res.data.sql[index].hq;
             dataHQ3[16] = res.data.sql[index].dif_count;
+            dataTSFull[16] = res.data.sql[index].audit;
             dataTypeHQ1[16] = res.data.sql[index].mem;
             dataTypeHQ2[16] = res.data.sql[index].non_mem;
             dataTypeHQ3[16] = res.data.sql[index].non_charge;
@@ -456,6 +472,7 @@ export default function MonitorData() {
             dataHQ1[17] = res.data.sql[index].lane;
             dataHQ2[17] = res.data.sql[index].hq;
             dataHQ3[17] = res.data.sql[index].dif_count;
+            dataTSFull[17] = res.data.sql[index].audit;
             dataTypeHQ1[17] = res.data.sql[index].mem;
             dataTypeHQ2[17] = res.data.sql[index].non_mem;
             dataTypeHQ3[17] = res.data.sql[index].non_charge;
@@ -468,6 +485,7 @@ export default function MonitorData() {
             dataHQ1[18] = res.data.sql[index].lane;
             dataHQ2[18] = res.data.sql[index].hq;
             dataHQ3[18] = res.data.sql[index].dif_count;
+            dataTSFull[18] = res.data.sql[index].audit;
             dataTypeHQ1[18] = res.data.sql[index].mem;
             dataTypeHQ2[18] = res.data.sql[index].non_mem;
             dataTypeHQ3[18] = res.data.sql[index].non_charge;
@@ -480,6 +498,7 @@ export default function MonitorData() {
             dataHQ1[19] = res.data.sql[index].lane;
             dataHQ2[19] = res.data.sql[index].hq;
             dataHQ3[19] = res.data.sql[index].dif_count;
+            dataTSFull[19] = res.data.sql[index].audit;
             dataTypeHQ1[19] = res.data.sql[index].mem;
             dataTypeHQ2[19] = res.data.sql[index].non_mem;
             dataTypeHQ3[19] = res.data.sql[index].non_charge;
@@ -492,6 +511,7 @@ export default function MonitorData() {
             dataHQ1[20] = res.data.sql[index].lane;
             dataHQ2[20] = res.data.sql[index].hq;
             dataHQ3[20] = res.data.sql[index].dif_count;
+            dataTSFull[20] = res.data.sql[index].audit;
             dataTypeHQ1[20] = res.data.sql[index].mem;
             dataTypeHQ2[20] = res.data.sql[index].non_mem;
             dataTypeHQ3[20] = res.data.sql[index].non_charge;
@@ -504,6 +524,7 @@ export default function MonitorData() {
             dataHQ1[21] = res.data.sql[index].lane;
             dataHQ2[21] = res.data.sql[index].hq;
             dataHQ3[21] = res.data.sql[index].dif_count;
+            dataTSFull[21] = res.data.sql[index].audit;
             dataTypeHQ1[21] = res.data.sql[index].mem;
             dataTypeHQ2[21] = res.data.sql[index].non_mem;
             dataTypeHQ3[21] = res.data.sql[index].non_charge;
@@ -516,6 +537,7 @@ export default function MonitorData() {
             dataHQ1[22] = res.data.sql[index].lane;
             dataHQ2[22] = res.data.sql[index].hq;
             dataHQ3[22] = res.data.sql[index].dif_count;
+            dataTSFull[22] = res.data.sql[index].audit;
             dataTypeHQ1[22] = res.data.sql[index].mem;
             dataTypeHQ2[22] = res.data.sql[index].non_mem;
             dataTypeHQ3[22] = res.data.sql[index].non_charge;
@@ -528,6 +550,7 @@ export default function MonitorData() {
             dataHQ1[23] = res.data.sql[index].lane;
             dataHQ2[23] = res.data.sql[index].hq;
             dataHQ3[23] = res.data.sql[index].dif_count;
+            dataTSFull[23] = res.data.sql[index].audit;
             dataTypeHQ1[23] = res.data.sql[index].mem;
             dataTypeHQ2[23] = res.data.sql[index].non_mem;
             dataTypeHQ3[23] = res.data.sql[index].non_charge;
@@ -622,7 +645,34 @@ export default function MonitorData() {
             "23:00": dataHQ3[23].toLocaleString(),
             "00:00": dataHQ3[0].toLocaleString(),
           },
-          TableDataTSFull,
+          {
+            ...TableDataTSFull,
+
+            "01:00": dataTSFull[1].toLocaleString(),
+            "02:00": dataTSFull[2].toLocaleString(),
+            "03:00": dataTSFull[3].toLocaleString(),
+            "04:00": dataTSFull[4].toLocaleString(),
+            "05:00": dataTSFull[5].toLocaleString(),
+            "06:00": dataTSFull[6].toLocaleString(),
+            "07:00": dataTSFull[7].toLocaleString(),
+            "08:00": dataTSFull[8].toLocaleString(),
+            "09:00": dataTSFull[9].toLocaleString(),
+            "10:00": dataTSFull[10].toLocaleString(),
+            "11:00": dataTSFull[11].toLocaleString(),
+            "12:00": dataTSFull[12].toLocaleString(),
+            "13:00": dataTSFull[13].toLocaleString(),
+            "14:00": dataTSFull[14].toLocaleString(),
+            "15:00": dataTSFull[15].toLocaleString(),
+            "16:00": dataTSFull[16].toLocaleString(),
+            "17:00": dataTSFull[17].toLocaleString(),
+            "18:00": dataTSFull[18].toLocaleString(),
+            "19:00": dataTSFull[19].toLocaleString(),
+            "20:00": dataTSFull[20].toLocaleString(),
+            "21:00": dataTSFull[21].toLocaleString(),
+            "22:00": dataTSFull[22].toLocaleString(),
+            "23:00": dataTSFull[23].toLocaleString(),
+            "00:00": dataTSFull[0].toLocaleString(),
+          },
           {
             ...TableDataTypeHQ,
 
@@ -819,7 +869,9 @@ export default function MonitorData() {
       color: "green",
     },
     {
-      value: !!summaryTSFull ? summaryTSFull.toLocaleString().toString() : "0",
+      value: !!summaryTSFull.count_audit
+        ? summaryTSFull.count_audit.toLocaleString().toString()
+        : "0",
       status: "checklist",
       label: "TS Full Audit",
       color: "blue",

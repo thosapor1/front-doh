@@ -24,19 +24,12 @@ import {
   StyledButtonInformation,
   StyledButtonRefresh,
 } from "../styledComponent/StyledButton";
-import SearchComponent from "../components/SearchComponent";
 
 const apiURL = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? `${process.env.REACT_APP_BASE_URL_PROD_V1}`
       : `${process.env.REACT_APP_BASE_URL_V1}`,
-});
-const apiURLv10 = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? `${process.env.REACT_APP_BASE_URL_PROD_V10}`
-      : `${process.env.REACT_APP_BASE_URL_V10}`,
 });
 
 const useStyles = makeStyles((theme) => {
@@ -70,7 +63,7 @@ const useStyles = makeStyles((theme) => {
       padding: "1rem",
       height: 50,
       paddingTop: 5,
-      width: "100%",
+      width: 180,
     },
     input: {
       "& .MuiInputBase-input": {
@@ -115,31 +108,17 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const valueStatus = [
-  {
-    id: 1,
-    value: 3,
-    label: "รอจัดเก็บตรวจสอบ",
-  },
-];
-
 export default function PK3DataCheckTrue() {
-  // const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [allTsTable, setAllTsTable] = useState([]);
   const [checkpoint, setCheckpoint] = useState("0");
-  // const [status_select, setStatus_select] = useState("3");
   const [summary, setSummary] = useState([]);
   const [selectGate, setSelectGate] = useState("0");
   const [selectCarType, setSelectCarType] = useState("0");
   const [dropdown, setDropdown] = useState([]);
-  // const [tsType, setTsType] = useState(0);
   const [transactionId, setTransactionId] = useState("");
   const [eyesStatus, setEyesStatus] = useState([]);
   const [endpoint, setEndpoint] = useState("/search-transaction-hq");
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date("Sep 01, 2021")
-  // );
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
   );
@@ -190,10 +169,6 @@ export default function PK3DataCheckTrue() {
     const timeStart = format(selectedTimeStart, "HH:mm:ss");
     const timeEnd = format(selectedTimeEnd, "HH:mm:ss");
 
-    // console.log(checkpoint);
-    // console.log(selectGate);
-    // console.log(selectCarType);
-    // console.log(status_select);
     const sendData = {
       page: pageId.toString(),
       checkpoint_id: checkpoint,
@@ -205,7 +180,6 @@ export default function PK3DataCheckTrue() {
       endTime: timeEnd,
       status: "0",
     };
-    // console.log(sendData);
 
     apiURL
       .post("/pk3-approve-display", sendData)
@@ -298,18 +272,6 @@ export default function PK3DataCheckTrue() {
           },
           ts_table: [],
         });
-        // console.log(
-        //   "res: ",
-        //   res.data,
-        //   "tsClass:",
-        //   res.data.ts_class,
-        //   "tsGate: ",
-        //   res.data.ts_gate_table,
-        //   "ts_Table:",
-        //   res.data.ts_table,
-        //   "Summary: ",
-        //   res.data.summary
-        // );
         setAllTsTable(res.data.status !== false ? res.data : []);
       })
       .catch((error) => {
@@ -324,8 +286,18 @@ export default function PK3DataCheckTrue() {
   const dataCard = [
     {
       value: !!summary.ts_not_normal ? summary.ts_not_normal : "0",
-      status: "checklist",
+      status: "total",
       label: "รายการตรวจสอบ",
+    },
+    {
+      value: !!summary.sla_pass ? summary.sla_pass : "0",
+      status: "pass",
+      label: "รายการผ่านSLA",
+    },
+    {
+      value: !!summary.sla_not_pass ? summary.sla_not_pass : "0",
+      status: "notPass",
+      label: "รายการไม่ผ่านSLA",
     },
   ];
 
@@ -398,50 +370,6 @@ export default function PK3DataCheckTrue() {
               : []}
           </TextField>
 
-          {/* <TextField
-            select
-            variant="outlined"
-            label="สถานะ"
-            value={status_select}
-            onChange={(e) => {
-              setStatus_select(e.target.value);
-            }}
-            className={classes.input1}
-            name="status_select"
-          >
-            {!!valueStatus
-              ? valueStatus.map((item, index) => (
-                  <MenuItem key={index} value={item.value}>
-                    {item.label}
-                  </MenuItem>
-                ))
-              : []}
-          </TextField>
-
-          <TextField
-            select
-            variant="outlined"
-            label="ประเภทTS"
-            value={tsType}
-            onChange={(e) => {
-              setTsType(e.target.value);
-            }}
-            className={classes.input1}
-            name="tsType"
-          >
-            {!!dropdown.ts_status
-              ? dropdown.ts_status
-                  .filter(
-                    (item) => item.id === 0 || item.id === 2 || item.id === 3
-                  )
-                  .map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))
-              : []}
-          </TextField> */}
-
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.input}
@@ -507,7 +435,7 @@ export default function PK3DataCheckTrue() {
             justifyContent: "center",
           }}
         >
-          <Box style={{ marginRight: "0.8rem" }}>
+          {/* <Box style={{ marginRight: "0.8rem" }}>
             <SearchComponent
               value={transactionId}
               date={selectedDate}
@@ -523,13 +451,14 @@ export default function PK3DataCheckTrue() {
               setEyesStatus={setEyesStatus}
               eyesStatus={eyesStatus}
             />
-          </Box>
+          </Box> */}
 
           <Box
             style={{
               display: "flex",
               // margin: "10px 0px 0px 0px",
               justifyContent: "space-between",
+              columnGap: 5,
             }}
           >
             {dataCard.map((card, index) => (
@@ -540,9 +469,9 @@ export default function PK3DataCheckTrue() {
                   borderLeft:
                     card.status === "total"
                       ? "3px solid gray"
-                      : card.status === "normal"
+                      : card.status === "pass"
                       ? "3px solid green"
-                      : card.status === "unMatch"
+                      : card.status === "notPass"
                       ? "3px solid orange"
                       : "3px solid red",
                 }}
@@ -552,9 +481,9 @@ export default function PK3DataCheckTrue() {
                     color:
                       card.status === "total"
                         ? "gray"
-                        : card.status === "normal"
+                        : card.status === "pass"
                         ? "green"
-                        : card.status === "unMatch"
+                        : card.status === "notPass"
                         ? "orange"
                         : "red",
                     fontSize: "0.9rem",

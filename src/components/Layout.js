@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
-  Button,
   CardMedia,
   Divider,
   Icon,
@@ -121,7 +120,7 @@ const useStyles = makeStyles((theme) => {
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       background: "#9A0049",
-      zIndex: 1,
+      // zIndex: 1,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
@@ -220,7 +219,6 @@ export default function Layout({ children }) {
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("lg"));
-  const department = Cookies.get("department_id");
 
   const toggleDrawer = () => {
     setOpen(true);

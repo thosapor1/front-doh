@@ -26,6 +26,8 @@ import {
   getDebtData,
   getOverdueBalanceData,
   getResultFeeData,
+  getGuaranteeData,
+  getDataSLa,
 } from "../service/allService";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
@@ -60,10 +62,8 @@ import TableGuarantee3 from "../components/report/TableGuarantee3";
 import PdfNumberOfCarAndIncome from "../components/report/PdfNumberOfCarAndIncome";
 import PdfFeeDaily from "../components/report/PdfFeeDaily";
 import PdfFeeMonthly from "../components/report/PdfFeeMonthly";
-import PdfTxNumberOfCar from "../components/report/PdfTxNumberOfCar";
 import PdfFineMonthly from "../components/report/PdfFineMonthly";
 import PdfDebt from "../components/report/PdfDebt";
-import PdfTxFeeDaily from "../components/report/PdfTxFeeDaily";
 import PdfGuarantee from "../components/report/PdfGuarantee";
 import TablePressTheClaim1 from "../components/report/TablePressTheClaim1";
 import TablePressTheClaim2 from "../components/report/TablePressTheClaim2";
@@ -75,14 +75,15 @@ import TableDebt3 from "../components/report/TableDebt3";
 import TableDebt2 from "../components/report/TableDebt2";
 import TableDebt1 from "../components/report/TableDebt1";
 import TableDebt5 from "../components/report/TableDebt5";
-import PdfTxDebt from "../components/report/PdfTxDebt";
 import TableResultFee1 from "../components/report/TableResultFee1";
 import TableResultFee2 from "../components/report/TableResultFee2";
 import TableResultFee3 from "../components/report/TableResultFee3";
 import TableResultFee4 from "../components/report/TableResultFee4";
 import PdfResultFee from "../components/report/PdfResultFee";
-import PdfTxGuarantee from "../components/report/PdfTxGuarantee";
 import exportExcel2 from "../components/report/exportExcel2";
+import TableSLA from "../components/report/tableSLA";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -154,8 +155,24 @@ export default function Report() {
   const [feeMonthly, setFeeMonthly] = useState([]);
   const [fineData, setFineData] = useState([]);
   const [debtData, setDebtData] = useState([]);
+  const [guarantee, setGuarantee] = useState([]);
   const [overdueBalance, setOverdueBalance] = useState([]);
   const [resultFeeData, setResultFeeData] = useState([]);
+  const [dataSLA, setDataSLA] = useState([]);
+  const [dataColumnChart, setDataColumnChart] = useState([
+    ["period", "รถผ่านทาง", { role: "annotation" }],
+    ["0-8 Min", 0, 0],
+    ["8-15 Min", 0, 0],
+    ["15-20 Min", 0, 0],
+    ["20-30 Min", 0, 0],
+    ["30-60 Min", 0, 0],
+    ["60+ Min", 0, 0],
+  ]);
+  const [dataDonutChart, setDataDonutChart] = useState([
+    ["type", "amount", { role: "annotation" }],
+    ["On SLA", 0, 0],
+    ["Over SLA", 0, 0],
+  ]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
@@ -178,6 +195,18 @@ export default function Report() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const slaPDF = () => {
+    const input = document.getElementById("tableSLA");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140);
+      pdf.save("slaReport.pdf");
+    });
   };
 
   const fetchData = async () => {
@@ -252,10 +281,18 @@ export default function Report() {
     };
     const res = await getDataReportBilling(sendData);
 
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        title: "ไม่มีข้อมูล",
+        allowOutsideClick: false,
+        icon: "warning",
+      });
+    }
+
     if (!!res && !!res.data.status) {
       setDailyBilling(res.data);
+      Swal.close();
     }
-    Swal.close();
 
     // console.log(res.data);
   };
@@ -466,11 +503,11 @@ export default function Report() {
       startTime: format(startTime, "HH:mm:ss"),
       endTime: format(endTime, "HH:mm:ss"),
     };
-    // const res = await getOverdueBalanceData(sendData);
+    const res = await getGuaranteeData(sendData);
 
-    // if (!!res && !!res.data.status) {
-    //   setResultFeeData(res.data);
-    // }
+    if (!!res && !!res.data.status) {
+      setGuarantee(res.data);
+    }
     Swal.close();
 
     // console.log(res.data);
@@ -496,6 +533,84 @@ export default function Report() {
       setResultFeeData(res.data);
     }
     Swal.close();
+
+    // console.log(res.data);
+  };
+
+  const fetchData13 = async () => {
+    Swal.fire({
+      title: "Loading",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const date = format(selectedDate, "yyyy-MM-dd");
+    const sendData = {
+      date: date,
+    };
+    const res = await getDataSLa(sendData);
+
+    if (!!res && !!res.data.status) {
+      setDataSLA(res.data);
+      setDataDonutChart([
+        ["type", "amount", { role: "annotation" }],
+        ["On SLA", res.data.sla_831[0].onSla, res.data.sla_831[0].onSla],
+        ["Over SLA", res.data.sla_831[0].overSla, res.data.sla_831[0].overSla],
+      ]);
+      let array = [0, res.data.sla_831[0].onSla, 0];
+      setDataColumnChart([
+        ["period", "รถผ่านทาง", { role: "annotation" }],
+        ["0-8 Min", res.data.sla_831[0]["8min"], res.data.sla_831[0]["8min"]],
+        [
+          "8-15 Min",
+          res.data.sla_831[0]["8To15min"],
+          res.data.sla_831[0]["8To15min"],
+        ],
+        [
+          "15-20 Min",
+          res.data.sla_831[0]["15To20min"],
+          res.data.sla_831[0]["15To20min"],
+        ],
+        [
+          "20-30 Min",
+          res.data.sla_831[0]["20To30min"],
+          res.data.sla_831[0]["20To30min"],
+        ],
+        [
+          "30-60 Min",
+          res.data.sla_831[0]["30To60min"],
+          res.data.sla_831[0]["30To60min"],
+        ],
+        [
+          "60+ Min",
+          res.data.sla_831[0].moreThan60,
+          res.data.sla_831[0].moreThan60,
+        ],
+      ]);
+      Swal.close();
+    }
+    if (!!res && !res.data.status) {
+      Swal.fire({
+        title: "ไม่มีข้อมูล",
+        icon: "warning",
+      });
+      setDataSLA({});
+      setDataDonutChart([
+        ["type", "amount", { role: "annotation" }],
+        ["On SLA", 0, 0],
+        ["Over SLA", 0, 0],
+      ]);
+
+      setDataColumnChart([
+        ["period", "รถผ่านทาง", { role: "annotation" }],
+        ["0-8 Min", 0, 0],
+        ["8-15 Min", 0, 0],
+        ["15-20 Min", 0, 0],
+        ["20-30 Min", 0, 0],
+        ["30-60 Min", 0, 0],
+        ["60+ Min", 0, 0],
+      ]);
+    }
 
     // console.log(res.data);
   };
@@ -586,14 +701,7 @@ export default function Report() {
               {...a11yProps(11)}
               className={classes.tab}
             />
-
-            {/* <Tab
-              label="รายงานสรุปจราจร"
-              {...a11yProps(4)}
-              className={classes.tab}
-            />
-
-            <Tab label="testPDF" {...a11yProps(5)} className={classes.tab} /> */}
+            <Tab label="SLA" {...a11yProps(12)} className={classes.tab} />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -724,7 +832,6 @@ export default function Report() {
                     <TableBillingDaily2 dataList={dailyBilling} />
                   </div>
                 </div>
-                {/* <TableReportSumMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
@@ -824,77 +931,9 @@ export default function Report() {
                     <TabledataTX dataList={dataTX} />
                   </div>
                 </div>
-
-                {/* <TableReportRemainMonthly dataList={allTsTable3} /> */}
               </Paper>
             </Container>
           </TabPanel>
-
-          {/* <TabPanel value={value} index={4}>
-            <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection2 onFetchData={fetchData} report={PdfTraffic} />
-              <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
-
-                <BlockTrafficReport />
-
-                <TableReportTrafficMonthly dataList={allTsTable3} />
-              </Paper>
-            </Container>
-          </TabPanel> */}
-
-          {/* <TabPanel value={value} index={5}>
-            <Container maxWidth="xl" className={classes.inTab}>
-              <FilterSection3
-                onFetchData={fetchData}
-                report={TestPDF}
-                exportExcel={exportExcel}
-              />
-              <Paper style={{ marginTop: 20 }}>
-                <Typography
-                  style={{
-                    paddingTop: 20,
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  ทับช้าง1
-                </Typography>
-                <Typography
-                  style={{
-                    paddingLeft: 20,
-                    fontWeight: 600,
-                    fontFamily: "sarabun",
-                  }}
-                >
-                  เอกสาร ตรวจสอบความถูกต้องของการตรวจสอบรายได้ประจำเดือน
-                </Typography>
-
-                <BlockTestPDF /> */}
-
-          {/* <TableReportTrafficMonthly dataList={allTsTable3} /> */}
-          {/* </Paper>
-            </Container>
-          </TabPanel> */}
 
           <TabPanel value={value} index={4}>
             <Container maxWidth="xl" className={classes.inTab}>
@@ -1330,8 +1369,16 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData11}
-                report={() => alert("กำลังดำเนินการ")}
-                transactionReport={() => alert("กำลังดำเนินการ")}
+                report={PdfGuarantee}
+                transactionReport={() =>
+                  exportExcel2(
+                    {
+                      date: format(selectedDate, "yyyy-MM-dd"),
+                    },
+                    "/report-toll-insurance-6.1",
+                    "รายงานTransactionการประกันค่าธรรมเนียมผ่านทาง"
+                  )
+                }
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
                 checkpoint={checkpoint}
@@ -1367,8 +1414,8 @@ export default function Report() {
                     justifyContent: "center",
                   }}
                 >
-                  <TableGuarantee1 />
-                  <TableGuarantee2 />
+                  <TableGuarantee1 dataList={guarantee} />
+                  <TableGuarantee2 dataList={guarantee} />
                 </div>
                 <div
                   style={{
@@ -1377,7 +1424,7 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableGuarantee3 />
+                  <TableGuarantee3 dataList={guarantee} />
                 </div>
               </Paper>
             </Container>
@@ -1454,6 +1501,44 @@ export default function Report() {
                     selectedDate={selectedDate}
                   />
                 </div>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={12}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData13}
+                report={slaPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  การประเมินระดับการให้บริการ (SLA)
+                </Typography>
+                <Box>
+                  <TableSLA
+                    dataList={dataSLA}
+                    dataColumnChart={dataColumnChart}
+                    dataDonutChart={dataDonutChart}
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                  />
+                </Box>
               </Paper>
             </Container>
           </TabPanel>
