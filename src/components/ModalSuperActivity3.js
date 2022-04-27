@@ -463,19 +463,6 @@ export default function ModalSuperActivity3(props) {
       setOperation = 8;
     }
 
-    // if (
-    //   dataList.resultsDisplay[0].state === 4 &&
-    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 8)
-    // ) {
-    //   setOperation = 8;
-    // } else {
-    //   setOperation = 8;
-    // }
-
     const sendData = {
       date: date,
       user_id: Cookies.get("userId"),
@@ -524,91 +511,13 @@ export default function ModalSuperActivity3(props) {
     }
   };
 
-  const handleUpdate2 = async () => {
-    const date = format(checkDate, "yyyy-MM-dd");
-
-    let setOperation = 9;
-
-    // if (
-    //   dataList.resultsDisplay[0].state === 4 &&
-    //   (dataList.resultsDisplay[0].match_transaction_type === 2 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 3 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 7 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 6 ||
-    //     dataList.resultsDisplay[0].match_transaction_type === 8)
-    // ) {
-    //   setOperation = 9;
-    // } else {
-    //   setOperation = 0;
-    // }
-
-    const sendData = {
-      date: date,
-      user_id: Cookies.get("userId"),
-      transactionId: dataList.resultsDisplay[0].transactionId,
-      state: dataList.resultsDisplay[0].state,
-      vehicleClass: vehicleClass,
-      fee: audit_feeAmount,
-      status: dataList.resultsDisplay[0].match_transaction_type,
-      operation: setOperation.toString(),
-      pk3_comment: state.commentPK3,
-      super_audit_comment: commentSuper,
-      ts_duplication: state.TransactionsPeat,
-      match_transaction_type:
-        dataList.resultsDisplay[0].match_transaction_type.toString(),
-    };
-
-    const result = await Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonText: "ยกเลิก",
-    });
-
-    const res = await operation(sendData);
-    if (result.isConfirmed) {
-      if (!!res && res.data.status === true) {
-        Swal.close();
-        await Swal.fire({
-          title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
-          icon: "success",
-        });
-        await props.onClick();
-        await props.onFetchData(page);
-      } else {
-        Swal.close();
-        await Swal.fire({
-          title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
-          icon: "error",
-        });
-      }
-    }
-  };
-
   useEffect(() => {
     if (dataList) {
       setState(dataList);
-      // setVehicleClass(dataList.vehicleClass);
-      // setAudit_feeAmount(dataList.audit_feeAmount);
       setAudit_vehicleClass_id(dataList.audit_vehicleClass_id);
       setResultDisplay(
         !!dataList.resultsDisplay ? dataList.resultsDisplay[0] : []
       );
-      // setVehicleClass(
-      //   !!dataList.resultsDisplay
-      //     ? dataList.resultsDisplay[0].match_real_vehicleClass
-      //     : 0
-      // );
-      // setAudit_feeAmount(
-      //   !!dataList.resultsDisplay
-      //     ? dataList.resultsDisplay[0].match_real_fee
-      //     : 0
-      // );
       setCommentSuper("");
       setFileName("");
       console.log("dataList", dataList);
