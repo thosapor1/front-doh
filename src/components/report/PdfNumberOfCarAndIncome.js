@@ -101,9 +101,18 @@ export default async function PdfNumberOfCarAndIncome(
           [
             { text: "C1" },
             { text: res.data.tx[0].non_member.toLocaleString() },
-            { text: res.data.tx[0].member.toLocaleString() },
-            { text: res.data.tx[0].illegal.toLocaleString() },
-            { text: res.data.tx[0].reject.toLocaleString() },
+            {
+              text: res.data.tx[0].member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.tx[0].illegal.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.tx[0].reject.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "C2" },
@@ -501,6 +510,7 @@ export default async function PdfNumberOfCarAndIncome(
     styles: {
       table: { marginTop: 10, alignment: "center", fontSize: 11 },
       table2: { marginTop: 10, alignment: "center", fontSize: 11 },
+      cellRight: { alignment: "right" },
     },
     defaultStyle: { font: "THSarabun" },
   };
