@@ -92,61 +92,93 @@ export default function TableGuarantee1(props) {
             <tr>
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[0].vehicle : "0"}
+                {!!dataList.result
+                  ? dataList.result[0].vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[0].bill : "0"}
+                {!!dataList.result
+                  ? dataList.result[0].bill.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[0].fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[0].fee.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[0].demand_fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[0].demand_fee.toLocaleString()
+                  : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[1].vehicle : "0"}
+                {!!dataList.result
+                  ? dataList.result[1].vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[1].bill : "0"}
+                {!!dataList.result
+                  ? dataList.result[1].bill.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[1].fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[1].fee.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[1].demand_fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[1].demand_fee.toLocaleString()
+                  : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[2].vehicle : "0"}
+                {!!dataList.result
+                  ? dataList.result[2].vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[2].bill : "0"}
+                {!!dataList.result
+                  ? dataList.result[2].bill.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[2].fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[2].fee.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[2].demand_fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[2].demand_fee.toLocaleString()
+                  : "0"}
               </td>
             </tr>
             <tr>
               <td className={classes.td}>รวมทั้งหมด</td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[3].vehicle : "0"}
+                {!!dataList.result
+                  ? dataList.result[3].vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td}>
-                {!!dataList.result ? dataList.result[3].bill : "0"}
+                {!!dataList.result
+                  ? dataList.result[3].bill.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[3].fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[3].fee.toLocaleString()
+                  : "0"}
               </td>
-              <td className={classes.td}>
-                {!!dataList.result ? dataList.result[3].demand_fee : "0"}
+              <td className={classes.td} style={{ textAlign: "right" }}>
+                {!!dataList.result
+                  ? dataList.result[3].demand_fee.toLocaleString()
+                  : "0"}
               </td>
             </tr>
           </table>

@@ -99,7 +99,7 @@ export default function TableMonthlyPayment1(props) {
                   ? dataList.result_sum[0].count_bill_fine.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[0].income_fine.toLocaleString()
                   : "0"}
@@ -117,7 +117,7 @@ export default function TableMonthlyPayment1(props) {
                   ? dataList.result_sum[1].count_bill_fine.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[1].income_fine.toLocaleString()
                   : "0"}
@@ -135,7 +135,7 @@ export default function TableMonthlyPayment1(props) {
                   ? dataList.result_sum[2].count_bill_fine.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[2].income_fine.toLocaleString()
                   : "0"}
@@ -153,7 +153,7 @@ export default function TableMonthlyPayment1(props) {
                   ? dataList.result_sum[3].count_bill_fine.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[3].income_fine.toLocaleString()
                   : "0"}

@@ -99,26 +99,50 @@ export default async function PdfDebt(
           [
             { text: "C1" },
             { text: res.data.result_1[0].bill.toLocaleString() },
-            { text: res.data.result_1[0].fee.toLocaleString() },
-            { text: res.data.result_1[0].fine.toLocaleString() },
+            {
+              text: res.data.result_1[0].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_1[0].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C2" },
             { text: res.data.result_1[1].bill.toLocaleString() },
-            { text: res.data.result_1[1].fee.toLocaleString() },
-            { text: res.data.result_1[1].fine.toLocaleString() },
+            {
+              text: res.data.result_1[1].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_1[1].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C3" },
             { text: res.data.result_1[2].bill.toLocaleString() },
-            { text: res.data.result_1[2].fee.toLocaleString() },
-            { text: res.data.result_1[2].fine.toLocaleString() },
+            {
+              text: res.data.result_1[2].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_1[2].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "รวม" },
             { text: res.data.result_1[3].bill.toLocaleString() },
-            { text: res.data.result_1[3].fee.toLocaleString() },
-            { text: res.data.result_1[3].fine.toLocaleString() },
+            {
+              text: res.data.result_1[3].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_1[3].fine.toLocaleString(),
+              alignment: "right",
+            },
           ]
         );
 
@@ -156,23 +180,47 @@ export default async function PdfDebt(
           ],
           [
             { text: res.data.result_2[0].bill.toLocaleString() },
-            { text: res.data.result_2[0].fee.toLocaleString() },
-            { text: res.data.result_2[0].fine.toLocaleString() },
+            {
+              text: res.data.result_2[0].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_2[0].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_2[1].bill.toLocaleString() },
-            { text: res.data.result_2[1].fee.toLocaleString() },
-            { text: res.data.result_2[1].fine.toLocaleString() },
+            {
+              text: res.data.result_2[1].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_2[1].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_2[2].bill.toLocaleString() },
-            { text: res.data.result_2[2].fee.toLocaleString() },
-            { text: res.data.result_2[2].fine.toLocaleString() },
+            {
+              text: res.data.result_2[2].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_2[2].fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_2[3].bill.toLocaleString() },
-            { text: res.data.result_2[3].fee.toLocaleString() },
-            { text: res.data.result_2[3].fine.toLocaleString() },
+            {
+              text: res.data.result_2[3].fee.toLocaleString(),
+              alignment: "right",
+            },
+            {
+              text: res.data.result_2[3].fine.toLocaleString(),
+              alignment: "right",
+            },
           ]
         );
 
@@ -222,27 +270,51 @@ export default async function PdfDebt(
           ],
           [
             { text: res.data.result_3[0].bill_1.toLocaleString() },
-            { text: res.data.result_3[0].demand_fee_1.toLocaleString() },
+            {
+              text: res.data.result_3[0].demand_fee_1.toLocaleString(),
+              alignment: "right",
+            },
             { text: res.data.result_3[0].bill_2.toLocaleString() },
-            { text: res.data.result_3[0].demand_fee_2.toLocaleString() },
+            {
+              text: res.data.result_3[0].demand_fee_2.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_3[1].bill_1.toLocaleString() },
-            { text: res.data.result_3[1].demand_fee_1.toLocaleString() },
+            {
+              text: res.data.result_3[1].demand_fee_1.toLocaleString(),
+              alignment: "right",
+            },
             { text: res.data.result_3[1].bill_2.toLocaleString() },
-            { text: res.data.result_3[1].demand_fee_2.toLocaleString() },
+            {
+              text: res.data.result_3[1].demand_fee_2.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_3[2].bill_1.toLocaleString() },
-            { text: res.data.result_3[2].demand_fee_1.toLocaleString() },
+            {
+              text: res.data.result_3[2].demand_fee_1.toLocaleString(),
+              alignment: "right",
+            },
             { text: res.data.result_3[2].bill_2.toLocaleString() },
-            { text: res.data.result_3[2].demand_fee_2.toLocaleString() },
+            {
+              text: res.data.result_3[2].demand_fee_2.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: res.data.result_3[3].bill_1.toLocaleString() },
-            { text: res.data.result_3[3].demand_fee_1.toLocaleString() },
+            {
+              text: res.data.result_3[3].demand_fee_1.toLocaleString(),
+              alignment: "right",
+            },
             { text: res.data.result_3[3].bill_2.toLocaleString() },
-            { text: res.data.result_3[3].demand_fee_2.toLocaleString() },
+            {
+              text: res.data.result_3[3].demand_fee_2.toLocaleString(),
+              alignment: "right",
+            },
           ]
         );
 

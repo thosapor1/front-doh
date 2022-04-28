@@ -1153,7 +1153,7 @@ export default function Report() {
                       endTime: format(endTime, "HH:mm:ss"),
                     },
                     "/report-income-fine-4.1.1",
-                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                    "รายงานTransactionการชำระค่าปรับรายเดือน"
                   )
                 }
                 selectedDate={selectedDate}
@@ -1303,7 +1303,7 @@ export default function Report() {
                       endTime: format(endTime, "HH:mm:ss"),
                     },
                     "/report-balance-5.2",
-                    "รายงานTransactionการชำระค่าผ่านทางรายเดือน"
+                    "รายงานTransactionรายการหนี้คงค้าง"
                   )
                 }
                 selectedDate={selectedDate}
@@ -1424,7 +1424,10 @@ export default function Report() {
                     marginRight: 215,
                   }}
                 >
-                  <TableGuarantee3 dataList={guarantee} />
+                  <TableGuarantee3
+                    dataList={guarantee}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </Paper>
             </Container>

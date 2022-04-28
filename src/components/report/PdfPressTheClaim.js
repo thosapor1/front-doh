@@ -64,7 +64,7 @@ export default async function PdfPressTheClaim(
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
             {
-              text: "ชำระเกินกำหนดวันที่ 13",
+              text: "ชำระเกินกำหนดหลังวันที่ 16",
               colSpan: 2,
             },
             {},
@@ -90,22 +90,34 @@ export default async function PdfPressTheClaim(
           [
             { text: "C1" },
             { text: res.data.result_sum[0].count_bill.toLocaleString() },
-            { text: res.data.result_sum[0].demand_fee_amount.toLocaleString() },
+            {
+              text: res.data.result_sum[0].demand_fee_amount.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C2" },
             { text: res.data.result_sum[1].count_bill.toLocaleString() },
-            { text: res.data.result_sum[1].demand_fee_amount.toLocaleString() },
+            {
+              text: res.data.result_sum[1].demand_fee_amount.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C3" },
             { text: res.data.result_sum[2].count_bill.toLocaleString() },
-            { text: res.data.result_sum[2].demand_fee_amount.toLocaleString() },
+            {
+              text: res.data.result_sum[2].demand_fee_amount.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "รวม" },
             { text: res.data.result_sum[3].count_bill.toLocaleString() },
-            { text: res.data.result_sum[3].demand_fee_amount.toLocaleString() },
+            {
+              text: res.data.result_sum[3].demand_fee_amount.toLocaleString(),
+              alignment: "right",
+            },
           ]
         );
         body2.push(
@@ -121,7 +133,7 @@ export default async function PdfPressTheClaim(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 2 },
+            { text: "ชำระเกินกำหนดหลังวันที่ 16", colSpan: 2 },
             {},
             { text: "คงเหลือ", colSpan: 2 },
             {},
@@ -163,12 +175,14 @@ export default async function PdfPressTheClaim(
             },
             {
               text: res.data.result_classify[0].amount.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify_balance[0].bill_balance.toLocaleString(),
             },
             {
               text: res.data.result_classify_balance[0].demand_balance.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -178,12 +192,14 @@ export default async function PdfPressTheClaim(
             },
             {
               text: res.data.result_classify[1].amount.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify_balance[1].bill_balance.toLocaleString(),
             },
             {
               text: res.data.result_classify_balance[1].demand_balance.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -193,12 +209,14 @@ export default async function PdfPressTheClaim(
             },
             {
               text: res.data.result_classify[2].amount.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify_balance[2].bill_balance.toLocaleString(),
             },
             {
               text: res.data.result_classify_balance[2].demand_balance.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -208,12 +226,14 @@ export default async function PdfPressTheClaim(
             },
             {
               text: res.data.result_classify[3].amount.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify_balance[3].bill_balance.toLocaleString(),
             },
             {
               text: res.data.result_classify_balance[3].demand_balance.toLocaleString(),
+              alignment: "right",
             },
           ]
         );
