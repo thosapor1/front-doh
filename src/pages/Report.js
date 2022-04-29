@@ -992,9 +992,10 @@ export default function Report() {
                 </div>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    marginRight: 206,
+                    // display: "flex",
+                    // justifyContent: "center",
+                    // marginRight: 206,
+                    marginLeft: "82.5vh",
                   }}
                 >
                   <TableSumMFlow1
