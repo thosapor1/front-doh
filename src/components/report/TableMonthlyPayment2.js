@@ -103,22 +103,22 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td}>C1</td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[0].count_bill_fine_3.toLocaleString()
+                  ? dataList.result_classify[0].count_bill_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[0].income_fine_3.toLocaleString()
+                  ? dataList.result_classify[0].income_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[0].count_bill_fine_13.toLocaleString()
+                  ? dataList.result_classify[0].count_bill_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[0].income_fine_13.toLocaleString()
+                  ? dataList.result_classify[0].income_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
@@ -136,22 +136,22 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td}>C2</td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[1].count_bill_fine_3.toLocaleString()
+                  ? dataList.result_classify[1].count_bill_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[1].income_fine_3.toLocaleString()
+                  ? dataList.result_classify[1].income_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[1].count_bill_fine_13.toLocaleString()
+                  ? dataList.result_classify[1].count_bill_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[1].income_fine_13.toLocaleString()
+                  ? dataList.result_classify[1].income_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
@@ -169,22 +169,22 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td}>C3</td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[2].count_bill_fine_3.toLocaleString()
+                  ? dataList.result_classify[2].count_bill_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[2].income_fine_3.toLocaleString()
+                  ? dataList.result_classify[2].income_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[2].count_bill_fine_13.toLocaleString()
+                  ? dataList.result_classify[2].count_bill_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[2].income_fine_13.toLocaleString()
+                  ? dataList.result_classify[2].income_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
@@ -202,22 +202,22 @@ export default function TableMonthlyPayment2(props) {
               <td className={classes.td}>รวม</td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_fine_3.toLocaleString()
+                  ? dataList.result_classify[3].count_bill_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_3.toLocaleString()
+                  ? dataList.result_classify[3].income_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_fine_13.toLocaleString()
+                  ? dataList.result_classify[3].count_bill_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_13.toLocaleString()
+                  ? dataList.result_classify[3].income_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td}>
