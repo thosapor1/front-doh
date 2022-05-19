@@ -84,6 +84,7 @@ import exportExcel2 from "../components/report/exportExcel2";
 import TableSLA from "../components/report/tableSLA";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import TableSLABilling from "../components/report/tableSLABilling";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -702,6 +703,8 @@ export default function Report() {
               className={classes.tab}
             />
             <Tab label="SLA" {...a11yProps(12)} className={classes.tab} />
+            <Tab label="SLA (Billing)" {...a11yProps(13)} className={classes.tab} />
+            <Tab label="SLA (Payment)" {...a11yProps(14)} className={classes.tab} />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -1510,6 +1513,82 @@ export default function Report() {
           </TabPanel>
 
           <TabPanel value={value} index={12}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData13}
+                report={slaPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  การประเมินระดับการให้บริการ (SLA)
+                </Typography>
+                <Box>
+                  <TableSLA
+                    dataList={dataSLA}
+                    dataColumnChart={dataColumnChart}
+                    dataDonutChart={dataDonutChart}
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                  />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={13}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection5
+                onFetchData={fetchData13}
+                report={slaPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                endTime={endTime}
+                setEndTime={setEndTime}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  การประเมินระดับการให้บริการ (SLA)
+                </Typography>
+                <Box>
+                  <TableSLABilling
+                    dataList={dataSLA}
+                    dataColumnChart={dataColumnChart}
+                    dataDonutChart={dataDonutChart}
+                    selectedDate={selectedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                  />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={14}>
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData13}
