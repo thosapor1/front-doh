@@ -88,7 +88,7 @@ export default function TableRemainMonthly(props) {
     {
       type: "all",
       member: { car: 4562, amount: 140040 },
-      nonMem: { car: 1178, amount: 3565620 },
+      nonMem: { car: 117894, amount: 3565620 },
     },
   ];
 
@@ -195,8 +195,8 @@ export default function TableRemainMonthly(props) {
                         : "0"}
                     </td>
                     <td className={classes.td} style={{ textAlign: "right" }}>
-                      {!!item.nonMem.car
-                        ? item.nonMem.car.toLocaleString()
+                      {!!item.nonMem.amount
+                        ? item.nonMem.amount.toLocaleString()
                         : "0"}
                     </td>
                   </tr>
