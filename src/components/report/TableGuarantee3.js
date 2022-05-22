@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
+import { th } from "date-fns/locale";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => {
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function TableGuarantee3(props) {
-  const { dataList } = props;
+  const { dataList, selectedDate } = props;
 
   const classes = useStyles();
   return (
@@ -64,7 +65,9 @@ export default function TableGuarantee3(props) {
           <table className={classes.table}>
             <tr>
               <td className={classes.td} colSpan={3}>
-                สรุปข้อมูลรถวันที่ 15 กุมภาพันธ์ 2565
+                {`สรุปข้อมูลรถวันที่ ${format(selectedDate, "dd MMMM yyyy", {
+                  locale: th,
+                })}`}
               </td>
             </tr>
 
@@ -87,7 +90,9 @@ export default function TableGuarantee3(props) {
                   borderLeft: "1px solid black",
                 }}
               >
-                {!!dataList.result_2 ? dataList.result[3].vehicle : "0"}
+                {!!dataList.result_2
+                  ? dataList.result[3].vehicle.toLocaleString()
+                  : "0"}
               </td>
               <td
                 className={classes.td2}
@@ -111,7 +116,9 @@ export default function TableGuarantee3(props) {
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
-                {!!dataList.result_2 ? dataList.result[3].bill : "0"}
+                {!!dataList.result_2
+                  ? dataList.result[3].bill.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
@@ -129,7 +136,9 @@ export default function TableGuarantee3(props) {
                 หนี้คงค้างค่าผ่านทาง
               </td>
               <td className={classes.td2} style={{ textAlign: "right" }}>
-                {!!dataList.result_2 ? dataList.result[3].demand_fee : "0"}
+                {!!dataList.result_2
+                  ? dataList.result[3].demand_fee.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td2} style={{ textAlign: "left" }}>
                 บาท
@@ -140,7 +149,9 @@ export default function TableGuarantee3(props) {
                 ยอดประกันค่าผ่านทาง
               </td>
               <td className={classes.td} style={{ textAlign: "right" }}>
-                {!!dataList.result_2 ? dataList.result[3].demand_fee : "0"}
+                {!!dataList.result_2
+                  ? dataList.result[3].demand_fee.toLocaleString()
+                  : "0"}
               </td>
               <td className={classes.td} style={{ textAlign: "left" }}>
                 บาท

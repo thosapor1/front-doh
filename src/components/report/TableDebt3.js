@@ -104,7 +104,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[0].bill_1.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[0].demand_fee_1.toLocaleString()
                   : "0"}
@@ -114,7 +114,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[0].bill_2.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[0].demand_fee_2.toLocaleString()
                   : "0"}
@@ -126,7 +126,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[1].bill_1.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[1].demand_fee_1.toLocaleString()
                   : "0"}
@@ -136,7 +136,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[1].bill_2.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[1].demand_fee_2.toLocaleString()
                   : "0"}
@@ -148,7 +148,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[2].bill_1.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[2].demand_fee_1.toLocaleString()
                   : "0"}
@@ -158,7 +158,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[2].bill_2.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[2].demand_fee_2.toLocaleString()
                   : "0"}
@@ -170,7 +170,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[3].bill_1.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[3].demand_fee_1.toLocaleString()
                   : "0"}
@@ -180,7 +180,7 @@ export default function TableDebt3(props) {
                   ? dataList.result_3[3].bill_2.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_3
                   ? dataList.result_3[3].demand_fee_2.toLocaleString()
                   : "0"}

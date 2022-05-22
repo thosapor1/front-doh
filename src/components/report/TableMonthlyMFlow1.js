@@ -98,7 +98,7 @@ export default function TableMonthlyMFlow1(props) {
                   ? dataList.result_sum[0].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[0].income.toLocaleString()
                   : "0"}
@@ -116,7 +116,7 @@ export default function TableMonthlyMFlow1(props) {
                   ? dataList.result_sum[1].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[1].income.toLocaleString()
                   : "0"}
@@ -134,7 +134,7 @@ export default function TableMonthlyMFlow1(props) {
                   ? dataList.result_sum[2].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[2].income.toLocaleString()
                   : "0"}
@@ -152,7 +152,7 @@ export default function TableMonthlyMFlow1(props) {
                   ? dataList.result_sum[3].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[3].income.toLocaleString()
                   : "0"}

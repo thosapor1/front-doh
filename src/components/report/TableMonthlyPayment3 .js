@@ -110,8 +110,8 @@ export default function TableMonthlyPayment3(props) {
               >
                 {!!dataList.result_classify
                   ? (
-                      dataList.result_classify[3].count_bill_fine_3 +
-                      dataList.result_classify[3].count_bill_fine_13
+                      dataList.result_classify[3].count_bill_fine7to15 +
+                      dataList.result_classify[3].count_bill_moreThan15
                     ).toLocaleString()
                   : "0"}
               </td>
@@ -122,14 +122,14 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td2}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - ชำระเกินกำหนดวันที่ 3
+                - ชำระเกินกำหนดวันที่ 8
               </td>
               <td
                 className={classes.td2}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_fine_3.toLocaleString()
+                  ? dataList.result_classify[3].count_bill_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td2}>รายการ</td>
@@ -139,14 +139,14 @@ export default function TableMonthlyPayment3(props) {
                 className={classes.td3}
                 style={{ borderLeft: "1px solid black", borderRight: "0px" }}
               >
-                - ชำระเกินกำหนดวันที่ 13
+                - ชำระเกินกำหนดวันที่ 16
               </td>
               <td
                 className={classes.td3}
                 style={{ borderRight: "0px", textAlign: "right" }}
               >
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].count_bill_fine_13.toLocaleString()
+                  ? dataList.result_classify[3].count_bill_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td3}>รายการ</td>

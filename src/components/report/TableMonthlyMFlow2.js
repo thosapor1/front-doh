@@ -72,10 +72,10 @@ export default function TableMonthlyMFlow2(props) {
                 ประเภทรถ
               </td>
               <td className={classes.td} colSpan={2}>
-                ขำระตามกำหนด
+                ขำระภายใน 7 วัน
               </td>
               <td className={classes.td} colSpan={2}>
-                ขำระเกินกำหนด
+                ขำระเกินกำหนดหลังวันที่ 8
               </td>
               <td className={classes.td} colSpan={2}>
                 คงเหลือ
@@ -106,7 +106,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[0].count_bill_due.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[0].income_due.toLocaleString()
                   : "0"}
@@ -116,7 +116,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[0].count_bill_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[0].income_overdue.toLocaleString()
                   : "0"}
@@ -126,7 +126,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[0].count_bill_remain.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[0].income_remain.toLocaleString()
                   : "0"}
@@ -139,7 +139,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[1].count_bill_due.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[1].income_due.toLocaleString()
                   : "0"}
@@ -149,7 +149,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[1].count_bill_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[1].income_overdue.toLocaleString()
                   : "0"}
@@ -159,7 +159,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[1].count_bill_remain.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[1].income_remain.toLocaleString()
                   : "0"}
@@ -172,7 +172,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[2].count_bill_due.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[2].income_due.toLocaleString()
                   : "0"}
@@ -182,7 +182,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[2].count_bill_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[2].income_overdue.toLocaleString()
                   : "0"}
@@ -192,7 +192,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[2].count_bill_remain.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[2].income_remain.toLocaleString()
                   : "0"}
@@ -205,7 +205,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[3].count_bill_due.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[3].income_due.toLocaleString()
                   : "0"}
@@ -215,7 +215,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[3].count_bill_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[3].income_overdue.toLocaleString()
                   : "0"}
@@ -225,7 +225,7 @@ export default function TableMonthlyMFlow2(props) {
                   ? dataList.result_classify[3].count_bill_remain.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[3].income_remain.toLocaleString()
                   : "0"}

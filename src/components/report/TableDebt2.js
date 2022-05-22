@@ -99,12 +99,12 @@ export default function TableDebt2(props) {
                   ? dataList.result_2[0].bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[0].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[0].fine.toLocaleString()
                   : "0"}
@@ -116,12 +116,12 @@ export default function TableDebt2(props) {
                   ? dataList.result_2[1].bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[1].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[1].fine.toLocaleString()
                   : "0"}
@@ -133,12 +133,12 @@ export default function TableDebt2(props) {
                   ? dataList.result_2[2].bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[2].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[2].fine.toLocaleString()
                   : "0"}
@@ -150,12 +150,12 @@ export default function TableDebt2(props) {
                   ? dataList.result_2[3].bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[3].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_2
                   ? dataList.result_2[3].fine.toLocaleString()
                   : "0"}

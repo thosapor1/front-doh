@@ -72,7 +72,7 @@ export default function TablePressTheClaim2(props) {
                 ประเภทรถ
               </td>
               <td className={classes.td} colSpan={2}>
-                ชำระเกินกำหนดวันที่ 13
+                ชำระเกินกำหนดหลังวันที่ 16
               </td>
               <td className={classes.td} colSpan={2}>
                 คงเหลือ
@@ -83,7 +83,7 @@ export default function TablePressTheClaim2(props) {
               <td className={classes.td2}>ใบแจ้งหนี้</td>
               <td className={classes.td2}>ค่าทวงถาม</td>
               <td className={classes.td2}>ใบแจ้งหนี้</td>
-              <td className={classes.td2}>ยอดเงิน</td>
+              <td className={classes.td2}>ค่าทวงถาม</td>
             </tr>
             <tr>
               <td className={classes.td3}>(รายการ)</td>
@@ -99,7 +99,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify[0].invoice_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[0].amount.toLocaleString()
                   : "0"}
@@ -109,7 +109,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify_balance[0].bill_balance.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify_balance
                   ? dataList.result_classify_balance[0].demand_balance.toLocaleString()
                   : "0"}
@@ -122,7 +122,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify[1].invoice_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[1].amount.toLocaleString()
                   : "0"}
@@ -132,7 +132,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify_balance[1].bill_balance.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify_balance
                   ? dataList.result_classify_balance[1].demand_balance.toLocaleString()
                   : "0"}
@@ -145,7 +145,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify[2].invoice_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[2].amount.toLocaleString()
                   : "0"}
@@ -155,7 +155,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify_balance[2].bill_balance.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify_balance
                   ? dataList.result_classify_balance[2].demand_balance.toLocaleString()
                   : "0"}
@@ -168,7 +168,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify[3].invoice_overdue.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify
                   ? dataList.result_classify[3].amount.toLocaleString()
                   : "0"}
@@ -178,7 +178,7 @@ export default function TablePressTheClaim2(props) {
                   ? dataList.result_classify_balance[3].bill_balance.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_classify_balance
                   ? dataList.result_classify_balance[3].demand_balance.toLocaleString()
                   : "0"}
