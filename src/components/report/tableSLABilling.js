@@ -51,7 +51,7 @@ export default function TableSLABilling(props) {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.root} id="tableSLA">
+      <div className={classes.root} id="tableSLABilling">
         <table className={classes.table}>
           <tr>
             <th
@@ -216,8 +216,8 @@ export default function TableSLABilling(props) {
                 height="200px"
                 data={dataDonutChart}
                 options={{
-                  title: "การสร้างรายการผ่านทางภายใน 8 นาที",
-                  pieHole: 0.2,
+                  title: "แจ้งการชำระเฉลี่ยไม่เกิน 10 นาที",
+                  pieHole: 0.3,
                   is3D: false,
                   legend: "left",
                   titleTextStyle: {
@@ -233,8 +233,8 @@ export default function TableSLABilling(props) {
                 height="200px"
                 data={dataDonutChart}
                 options={{
-                  title: "การสร้างรายการผ่านทางภายใน 8 นาที",
-                  pieHole: 0.2,
+                  title: "แจ้งการชำระแต่ละรายการไม่เกิน 90 นาที",
+                  pieHole: 0.3,
                   is3D: false,
                   legend: "left",
                   titleTextStyle: {
@@ -250,8 +250,8 @@ export default function TableSLABilling(props) {
                 height="200px"
                 data={dataDonutChart}
                 options={{
-                  title: "การสร้างรายการผ่านทางภายใน 8 นาที",
-                  pieHole: 0.2,
+                  title: "แจ้งการชำระรอบบอลภายใน 6 ชม.",
+                  pieHole: 0.3,
                   is3D: false,
                   legend: "left",
                   titleTextStyle: {
@@ -260,17 +260,20 @@ export default function TableSLABilling(props) {
                 }}
               />
             </td>
+            <td>{null}</td>
+            <td className={classes.td}></td>
+            <td className={classes.td}></td>
           </tr>
           <tr>
-            <th
+            <td
               className={classes.th}
-              colSpan={9}
-              align="left"
+              colSpan={14}
               style={{ backgroundColor: "lightgray" }}
             >
-              SLA 8.3.2 การส่งรายงานสรุปรายงานผ่านทางรายวันของระบบ M-Flow
-              (M-Flow transaction Report) ภายใน 6 ชั่วโมง หลังเวลาตัดรอบผ่านทาง
-            </th>
+              SLA 8.4.2
+              การแจ้งเรียกเก็บค่าธรรมเนียมผ่านทางจากผู้ใช้บริการในรูปแบบการชำระผ่านระบบอัตโนมัติ
+              (Automatic Payment)
+            </td>
             <td>{null}</td>
             <td
               className={classes.th}
@@ -278,34 +281,32 @@ export default function TableSLABilling(props) {
               align="center"
               style={{ backgroundColor: "lightgray" }}
             >
-              SLA 8.3.2
+              SLA 8.4.2
             </td>
           </tr>
+
           <tr>
-            <td className={classes.td} rowSpan={3}>
-              SLA 8.3.2
+            <td className={classes.td} rowSpan={4}>
+              SLA 8.4.2
             </td>
-            <td className={classes.td} rowSpan={2}>
-              รายงาน #2
+            <td className={classes.td} colSpan={4}>
+              {`แจ้งการชำระแบบอิเลคทรอนิสก์`} <br />
+              {`ทั้งหมดเฉลี่ยไม่เกิน 10 นาที`}
             </td>
-            <td className={classes.td} rowSpan={2}>
-              เวลาตามข้อกำหนด
+            <td className={classes.td} colSpan={5}>
+              {`แจ้งการชำระเป็นรายครั้งแต่ละรายการ`} <br />
+              {`ภายในระยะเวลา 90 นาที่`}
             </td>
-            <td className={classes.td} colSpan={2}>
-              (#2) ALPR_MLPR_06
-            </td>
-            <td className={classes.td} colSpan={2}>
-              (#2) ALPR_MLPR_07
-            </td>
-            <td className={classes.td} colSpan={2}>
-              (#2) ALPR_MLPR_08
+            <td className={classes.td} colSpan={4}>
+              {`วิธีการชำระเงินเป็นรอบบิล`} <br />
+              {`ภายในระยะเวลา 6 ชั่วโมงหลังจากวันตัดยอด`}
             </td>
             <td>{null}</td>
             <td
               className={classes.td}
               style={{ backgroundColor: "darkgray", color: "white" }}
             >
-              ยอดวันที่ 1-22
+              ยอดวันที่ 1-16
             </td>
             <td
               className={classes.td}
@@ -315,12 +316,46 @@ export default function TableSLABilling(props) {
             </td>
           </tr>
           <tr>
-            <td className={classes.td}>เวลาที่แจ้งรายงาน</td>
-            <td className={classes.td}>SLA</td>
-            <td className={classes.td}>เวลาที่แจ้งรายงาน</td>
-            <td className={classes.td}>SLA</td>
-            <td className={classes.td}>เวลาที่แจ้งรายงาน</td>
-            <td className={classes.td}>SLA</td>
+            <td className={classes.td}>
+              {`ภายในเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>
+              {`เกินเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>เวลาเฉลี่ย</td>
+            <td className={classes.td}>ค่าปรับ</td>
+            <td className={classes.td}>
+              {`ภายในเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>
+              {`เกินเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>
+              {`รายการที่เกิน`} <br />
+              {`เวลาเฉลี่ย`}
+            </td>
+            <td className={classes.td}>
+              {`รายการเกินเวลา`} <br />
+              {`ร้อยละ`}
+            </td>
+            <td className={classes.td}>ค่าปรับ</td>
+            <td className={classes.td}>
+              {`ภายในเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>
+              {`เกินเวลา`} <br />
+              {`รายการ`}
+            </td>
+            <td className={classes.td}>
+              {`รายการที่เกิน`} <br />
+              {`เวลาเฉลี่ย`}
+            </td>
+            <td className={classes.td}>ค่าปรับ</td>
             <td>{null}</td>
             <td className={classes.td} rowSpan={2}>
               0
@@ -330,31 +365,75 @@ export default function TableSLABilling(props) {
             </td>
           </tr>
           <tr>
-            <td className={classes.td} style={{ backgroundColor: "pink" }}>
-              {!!dataList.sla_832_1 ? dataList.sla_832_1.slaPercent : "0"}
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+            <td className={classes.td}>0</td>
+          </tr>
+          <tr>
+            <td className={classes.td} colSpan={4} align="center">
+              <Chart
+                chartType="PieChart"
+                width="350px"
+                height="200px"
+                data={dataDonutChart}
+                options={{
+                  title: "แจ้งการชำระเฉลี่ยไม่เกิน 10 นาที",
+                  pieHole: 0.3,
+                  is3D: false,
+                  legend: "left",
+                  titleTextStyle: {
+                    fontSize: 12,
+                  },
+                }}
+              />
             </td>
-            <td className={classes.td}>
-              {!!dataList.sla_832_1 ? dataList.sla_832_1.slaDueDateTime : "0"}
+            <td className={classes.td} colSpan={5} align="center">
+              <Chart
+                chartType="PieChart"
+                width="400px"
+                height="200px"
+                data={dataDonutChart}
+                options={{
+                  title: "แจ้งการชำระแต่ละรายการไม่เกิน 90 นาที",
+                  pieHole: 0.3,
+                  is3D: false,
+                  legend: "left",
+                  titleTextStyle: {
+                    fontSize: 12,
+                  },
+                }}
+              />
             </td>
-            <td className={classes.td}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[0].sla : "0"}
-            </td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[0].dateTime : "0"}
-            </td>
-            <td className={classes.td}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].sla : "0"}
-            </td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].dateTime : "0"}
-            </td>
-            <td className={classes.td}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[2].sla : "0"}
-            </td>
-            <td className={classes.td} style={{ backgroundColor: "#ffcd38" }}>
-              {!!dataList.sla_832_2 ? dataList.sla_832_2[1].dateTime : "0"}
+            <td className={classes.td} colSpan={4} align="center">
+              <Chart
+                chartType="PieChart"
+                width="350px"
+                height="200px"
+                data={dataDonutChart}
+                options={{
+                  title: "แจ้งการชำระรอบบอลภายใน 6 ชม.",
+                  pieHole: 0.3,
+                  is3D: false,
+                  legend: "left",
+                  titleTextStyle: {
+                    fontSize: 12,
+                  },
+                }}
+              />
             </td>
             <td>{null}</td>
+            <td className={classes.td}></td>
+            <td className={classes.td}></td>
           </tr>
         </table>
       </div>

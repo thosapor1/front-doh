@@ -85,6 +85,12 @@ import TableSLA from "../components/report/tableSLA";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import TableSLABilling from "../components/report/tableSLABilling";
+import TableSLAPayment from "../components/report/tableSLAPayment";
+import FilterSection6 from "../components/report/FilterSection6";
+import { th } from "date-fns/locale";
+import TableRemainMonthly from "../components/report/TableRemainMonthly";
+import TableNumberOfCarTransactionMonthly from "../components/report/TableNumberOfCarTransactionMonthly";
+import TableReportMockMonthly from "../components/report/TableReportMockMonthly";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -146,6 +152,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
   const classes = useStyles();
+
   const [value, setValue] = useState(0);
   const [dailyTransaction, setDailyTransaction] = useState([]);
   const [dailyBilling, setDailyBilling] = useState([]);
@@ -171,13 +178,16 @@ export default function Report() {
   ]);
   const [dataDonutChart, setDataDonutChart] = useState([
     ["type", "amount", { role: "annotation" }],
-    ["On SLA", 0, 0],
-    ["Over SLA", 0, 0],
+    ["On SLA", 10, 10],
+    ["Over SLA", 20, 20],
   ]);
   const [startTime, setStartTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [endTime, setEndTime] = useState(new Date("Aug 10, 2021 00:00:00"));
   const [selectedDate, setSelectedDate] = useState(
     new Date().setDate(new Date().getDate() - 1)
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().setDate(new Date().getDate())
   );
   const [checkpoint, setCheckpoint] = useState(0);
   const [carClass, setCarClass] = useState([
@@ -194,12 +204,41 @@ export default function Report() {
     { class: "total", count: 0, illegal: 0, normal: 0, reject: 0 },
   ]);
 
+  const checkMonth = () => {
+    let month = "";
+    month = format(selectedDate, "MMM");
+    return month;
+  };
+  const month = checkMonth().toString();
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const slaPDF = () => {
     const input = document.getElementById("tableSLA");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140);
+      pdf.save("slaReport.pdf");
+    });
+  };
+  const slaBillingPDF = () => {
+    const input = document.getElementById("tableSLABilling");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 30, 297, 140);
+      pdf.save("slaReport.pdf");
+    });
+  };
+  const slaPaymentPDF = () => {
+    const input = document.getElementById("tableSLAPayment");
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
@@ -620,6 +659,7 @@ export default function Report() {
     // fetchData();
     setCarClass(carClass);
     setCarClass2(carClass2);
+    // checkMonth()
   }, []);
 
   return (
@@ -654,7 +694,6 @@ export default function Report() {
               {...a11yProps(2)}
               className={classes.tab}
             />
-
             <Tab
               label="สรุปข้อมูล TX"
               {...a11yProps(3)}
@@ -703,8 +742,26 @@ export default function Report() {
               className={classes.tab}
             />
             <Tab label="SLA" {...a11yProps(12)} className={classes.tab} />
-            <Tab label="SLA (Billing)" {...a11yProps(13)} className={classes.tab} />
-            <Tab label="SLA (Payment)" {...a11yProps(14)} className={classes.tab} />
+            <Tab
+              label="SLA (Billing)"
+              {...a11yProps(13)}
+              className={classes.tab}
+            />
+            <Tab
+              label="SLA (Payment)"
+              {...a11yProps(14)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปยอดคงค้างประจำเดือน"
+              {...a11yProps(15)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุป Transaction ประจำเดือน"
+              {...a11yProps(16)}
+              className={classes.tab}
+            />
           </Tabs>
 
           <TabPanel value={value} index={0}>
@@ -1554,7 +1611,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection5
                 onFetchData={fetchData13}
-                report={slaPDF}
+                report={slaBillingPDF}
                 transactionReport={() => {
                   alert("test");
                 }}
@@ -1613,13 +1670,95 @@ export default function Report() {
                   การประเมินระดับการให้บริการ (SLA)
                 </Typography>
                 <Box>
-                  <TableSLA
+                  <TableSLAPayment
                     dataList={dataSLA}
                     dataColumnChart={dataColumnChart}
                     dataDonutChart={dataDonutChart}
                     selectedDate={selectedDate}
                     startTime={startTime}
                     endTime={endTime}
+                  />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={15}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection6
+                onFetchData={fetchData13}
+                report={slaPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                startDate={selectedDate}
+                setStartDate={setSelectedDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  {`ทุกด่าน`} <br />
+                  {`เอกสารสรุปยอดคงค้างประจำวันที่ ${format(
+                    selectedDate,
+                    "dd/MM/yy",
+                    {
+                      locale: th,
+                    }
+                  )} - ${format(endDate, "dd/MM/yy", { locale: th })}`}
+                </Typography>
+                <Box>
+                  <TableRemainMonthly
+                    startDate={selectedDate}
+                    checkMonth={month}
+                  />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={16}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection6
+                onFetchData={fetchData13}
+                report={slaPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                startDate={selectedDate}
+                setStartDate={setSelectedDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
+              <Paper>
+                <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  {`ทุกด่าน`} <br />
+                  {`เอกสารสรุป Transaction ประจำวันที่ ${format(
+                    selectedDate,
+                    "dd/MM/yy",
+                    {
+                      locale: th,
+                    }
+                  )} - ${format(endDate, "dd/MM/yy", { locale: th })}`}
+                </Typography>
+                <Box style={{ display: "flex", justifyContent: "center" }}>
+                  <TableNumberOfCarTransactionMonthly
+                    startDate={selectedDate}
+                    checkMonth={month}
+                  />
+                  <TableReportMockMonthly
+                    startDate={selectedDate}
+                    checkMonth={month}
                   />
                 </Box>
               </Paper>
