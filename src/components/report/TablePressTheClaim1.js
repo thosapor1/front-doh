@@ -72,7 +72,7 @@ export default function TablePressTheClaim1(props) {
                 ประเภทรถ
               </td>
               <td className={classes.td} colSpan={2}>
-                ชำระเกินกำหนดวันที่ 13
+                ชำระเกินกำหนดหลังวันที่ 16
               </td>
             </tr>
 
@@ -92,7 +92,7 @@ export default function TablePressTheClaim1(props) {
                   ? dataList.result_sum[0].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[0].demand_fee_amount.toLocaleString()
                   : "0"}
@@ -105,7 +105,7 @@ export default function TablePressTheClaim1(props) {
                   ? dataList.result_sum[1].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[1].demand_fee_amount.toLocaleString()
                   : "0"}
@@ -118,7 +118,7 @@ export default function TablePressTheClaim1(props) {
                   ? dataList.result_sum[2].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[2].demand_fee_amount.toLocaleString()
                   : "0"}
@@ -131,7 +131,7 @@ export default function TablePressTheClaim1(props) {
                   ? dataList.result_sum[3].count_bill.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.result_sum
                   ? dataList.result_sum[3].demand_fee_amount.toLocaleString()
                   : "0"}

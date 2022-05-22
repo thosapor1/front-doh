@@ -109,17 +109,17 @@ export default function TableExpectIncome(props) {
                   ? dataList.income[0].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[0].member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[0].non_member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[0].illegal.toLocaleString()
                   : "0"}
@@ -132,17 +132,17 @@ export default function TableExpectIncome(props) {
                   ? dataList.income[1].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[1].member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[1].non_member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[1].illegal.toLocaleString()
                   : "0"}
@@ -155,17 +155,17 @@ export default function TableExpectIncome(props) {
                   ? dataList.income[2].fee.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[2].member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[2].non_member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[2].illegal.toLocaleString()
                   : "0"}
@@ -176,17 +176,17 @@ export default function TableExpectIncome(props) {
                 รวมจำนวนเงิน
               </td>
 
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[3].member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[3].non_member.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td}>
+              <td className={classes.td} style={{ textAlign: "right" }}>
                 {!!dataList.income
                   ? dataList.income[3].illegal.toLocaleString()
                   : "0"}

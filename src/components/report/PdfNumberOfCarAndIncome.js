@@ -101,9 +101,15 @@ export default async function PdfNumberOfCarAndIncome(
           [
             { text: "C1" },
             { text: res.data.tx[0].non_member.toLocaleString() },
-            { text: res.data.tx[0].member.toLocaleString() },
-            { text: res.data.tx[0].illegal.toLocaleString() },
-            { text: res.data.tx[0].reject.toLocaleString() },
+            {
+              text: res.data.tx[0].member.toLocaleString(),
+            },
+            {
+              text: res.data.tx[0].illegal.toLocaleString(),
+            },
+            {
+              text: res.data.tx[0].reject.toLocaleString(),
+            },
           ],
           [
             { text: "C2" },
@@ -175,30 +181,66 @@ export default async function PdfNumberOfCarAndIncome(
           [
             { text: "C1" },
             { text: res.data.income[0].fee.toLocaleString() },
-            { text: res.data.income[0].member.toLocaleString() },
-            { text: res.data.income[0].non_member.toLocaleString() },
-            { text: res.data.income[0].illegal.toLocaleString() },
+            {
+              text: res.data.income[0].member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[0].non_member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[0].illegal.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "C2" },
             { text: res.data.income[1].fee.toLocaleString() },
-            { text: res.data.income[1].member.toLocaleString() },
-            { text: res.data.income[1].non_member.toLocaleString() },
-            { text: res.data.income[1].illegal.toLocaleString() },
+            {
+              text: res.data.income[1].member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[1].non_member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[1].illegal.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "C3" },
             { text: res.data.income[2].fee.toLocaleString() },
-            { text: res.data.income[2].member.toLocaleString() },
-            { text: res.data.income[2].non_member.toLocaleString() },
-            { text: res.data.income[2].illegal.toLocaleString() },
+            {
+              text: res.data.income[2].member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[2].non_member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[2].illegal.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "รวมจำนวนเงิน", colSpan: 2 },
             {},
-            { text: res.data.income[3].member.toLocaleString() },
-            { text: res.data.income[3].non_member.toLocaleString() },
-            { text: res.data.income[3].illegal.toLocaleString() },
+            {
+              text: res.data.income[3].member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[3].non_member.toLocaleString(),
+              style: "cellRight",
+            },
+            {
+              text: res.data.income[3].illegal.toLocaleString(),
+              style: "cellRight",
+            },
           ]
         );
 
@@ -501,6 +543,7 @@ export default async function PdfNumberOfCarAndIncome(
     styles: {
       table: { marginTop: 10, alignment: "center", fontSize: 11 },
       table2: { marginTop: 10, alignment: "center", fontSize: 11 },
+      cellRight: { alignment: "right" },
     },
     defaultStyle: { font: "THSarabun" },
   };

@@ -101,7 +101,10 @@ export default async function PdfFineMonthly(
               text: res.data.result_sum[0].count_vehicle_fine.toLocaleString(),
             },
             { text: res.data.result_sum[0].count_bill_fine.toLocaleString() },
-            { text: res.data.result_sum[0].income_fine.toLocaleString() },
+            {
+              text: res.data.result_sum[0].income_fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C2" },
@@ -109,7 +112,10 @@ export default async function PdfFineMonthly(
               text: res.data.result_sum[1].count_vehicle_fine.toLocaleString(),
             },
             { text: res.data.result_sum[1].count_bill_fine.toLocaleString() },
-            { text: res.data.result_sum[1].income_fine.toLocaleString() },
+            {
+              text: res.data.result_sum[1].income_fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "C3" },
@@ -117,7 +123,10 @@ export default async function PdfFineMonthly(
               text: res.data.result_sum[2].count_vehicle_fine.toLocaleString(),
             },
             { text: res.data.result_sum[2].count_bill_fine.toLocaleString() },
-            { text: res.data.result_sum[2].income_fine.toLocaleString() },
+            {
+              text: res.data.result_sum[2].income_fine.toLocaleString(),
+              alignment: "right",
+            },
           ],
           [
             { text: "รวม" },
@@ -125,7 +134,10 @@ export default async function PdfFineMonthly(
               text: res.data.result_sum[3].count_vehicle_fine.toLocaleString(),
             },
             { text: res.data.result_sum[3].count_bill_fine.toLocaleString() },
-            { text: res.data.result_sum[3].income_fine.toLocaleString() },
+            {
+              text: res.data.result_sum[3].income_fine.toLocaleString(),
+              alignment: "right",
+            },
           ]
         );
         body2.push(
@@ -143,9 +155,9 @@ export default async function PdfFineMonthly(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            { text: "ชำระเกินกำหนดวันที่ 3", colSpan: 2 },
+            { text: "ชำระเกินกำหนดหลังวันที่ 8", colSpan: 2 },
             {},
-            { text: "ชำระเกินกำหนดวันที่ 13", colSpan: 2 },
+            { text: "ชำระเกินกำหนดหลังวันที่ 16", colSpan: 2 },
             {},
             { text: "คงเหลือ", colSpan: 2 },
             {},
@@ -153,11 +165,11 @@ export default async function PdfFineMonthly(
           [
             {},
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ยอดเงิน", border: [true, true, true, false] },
+            { text: "ค่าปรับ", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ค่าทวงถาม", border: [true, true, true, false] },
+            { text: "ค่าปรับ", border: [true, true, true, false] },
             { text: "ใบแจ้งหนี้", border: [true, true, true, false] },
-            { text: "ยอดเงิน", border: [true, true, true, false] },
+            { text: "ค่าปรับ", border: [true, true, true, false] },
           ],
           [
             {},
@@ -199,18 +211,21 @@ export default async function PdfFineMonthly(
             },
             {
               text: res.data.result_classify[0].income_fine_3.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[0].count_bill_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[0].income_fine_13.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[0].income_remain.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -220,18 +235,21 @@ export default async function PdfFineMonthly(
             },
             {
               text: res.data.result_classify[1].income_fine_3.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[1].count_bill_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_fine_13.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[1].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_remain.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -241,18 +259,21 @@ export default async function PdfFineMonthly(
             },
             {
               text: res.data.result_classify[2].income_fine_3.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[2].count_bill_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[2].income_fine_13.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[2].income_remain.toLocaleString(),
+              alignment: "right",
             },
           ],
           [
@@ -262,18 +283,21 @@ export default async function PdfFineMonthly(
             },
             {
               text: res.data.result_classify[3].income_fine_3.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[3].count_bill_fine_13.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_fine_13.toLocaleString(),
+              alignment: "right",
             },
             {
               text: res.data.result_classify[3].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_remain.toLocaleString(),
+              alignment: "right",
             },
           ]
         );
@@ -456,7 +480,7 @@ export default async function PdfFineMonthly(
         console.log("generate");
         pdfMake
           .createPdf(docDefinition)
-          .download("รายงานการชำระค่าผ่านทางสรุปรายเดือน.pdf", () => {
+          .download("รายงานการชำระค่าปรับสรุปรายเดือน.pdf", () => {
             resolve();
           });
       } catch (err) {

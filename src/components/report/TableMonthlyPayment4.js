@@ -115,8 +115,8 @@ export default function TableMonthlyPayment4(props) {
               >
                 {!!dataList.result_classify
                   ? (
-                      dataList.result_classify[3].income_fine_3 +
-                      dataList.result_classify[3].income_fine_13
+                      dataList.result_classify[3].income_fine7to15 +
+                      dataList.result_classify[3].income_moreThan15
                     ).toLocaleString()
                   : "0"}
               </td>
@@ -130,14 +130,14 @@ export default function TableMonthlyPayment4(props) {
                   borderRight: "1px solid black",
                 }}
               >
-                - ชำระเกินกำหนดวันที่ 3
+                - ชำระเกินกำหนดวันที่ 7
               </td>
               <td
                 className={classes.td2}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_3.toLocaleString()
+                  ? dataList.result_classify[3].income_fine7to15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td2}>บาท</td>
@@ -150,14 +150,14 @@ export default function TableMonthlyPayment4(props) {
                   borderRight: "1px solid black",
                 }}
               >
-                - ชำระเกินกำหนดวันที่ 13
+                - ชำระเกินกำหนดวันที่ 16
               </td>
               <td
                 className={classes.td3}
                 style={{ borderRight: "1px solid black", textAlign: "right" }}
               >
                 {!!dataList.result_classify
-                  ? dataList.result_classify[3].income_fine_13.toLocaleString()
+                  ? dataList.result_classify[3].income_moreThan15.toLocaleString()
                   : "0"}
               </td>
               <td className={classes.td3}>บาท</td>

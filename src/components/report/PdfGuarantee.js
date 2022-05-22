@@ -113,29 +113,53 @@ export default async function PdfGuarantee(
                 { text: "C1" },
                 { text: res.data.result[0].vehicle.toLocaleString() },
                 { text: res.data.result[0].bill.toLocaleString() },
-                { text: res.data.result[0].fee.toLocaleString() },
-                { text: res.data.result[0].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result[0].fee.toLocaleString(),
+                  alignment: "right",
+                },
+                {
+                  text: res.data.result[0].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
               ],
               [
                 { text: "C2" },
                 { text: res.data.result[1].vehicle.toLocaleString() },
                 { text: res.data.result[1].bill.toLocaleString() },
-                { text: res.data.result[1].fee.toLocaleString() },
-                { text: res.data.result[1].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result[1].fee.toLocaleString(),
+                  alignment: "right",
+                },
+                {
+                  text: res.data.result[1].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
               ],
               [
                 { text: "C3" },
                 { text: res.data.result[2].vehicle.toLocaleString() },
                 { text: res.data.result[2].bill.toLocaleString() },
-                { text: res.data.result[2].fee.toLocaleString() },
-                { text: res.data.result[2].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result[2].fee.toLocaleString(),
+                  alignment: "right",
+                },
+                {
+                  text: res.data.result[2].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
               ],
               [
                 { text: "รวม" },
                 { text: res.data.result[3].vehicle.toLocaleString() },
                 { text: res.data.result[3].bill.toLocaleString() },
-                { text: res.data.result[3].fee.toLocaleString() },
-                { text: res.data.result[3].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result[3].fee.toLocaleString(),
+                  alignment: "right",
+                },
+                {
+                  text: res.data.result[3].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
               ]
             );
 
@@ -191,7 +215,10 @@ export default async function PdfGuarantee(
                 { text: "C1" },
                 { text: res.data.result_2[0].vehicle.toLocaleString() },
                 { text: res.data.result_2[0].bill.toLocaleString() },
-                { text: res.data.result_2[0].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result_2[0].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
                 {
                   text: "ไม่รับประกันค่าปรับ",
                   rowSpan: 4,
@@ -202,21 +229,30 @@ export default async function PdfGuarantee(
                 { text: "C2" },
                 { text: res.data.result_2[1].vehicle.toLocaleString() },
                 { text: res.data.result_2[1].bill.toLocaleString() },
-                { text: res.data.result_2[1].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result_2[1].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
                 {},
               ],
               [
                 { text: "C3" },
                 { text: res.data.result_2[2].vehicle.toLocaleString() },
                 { text: res.data.result_2[2].bill.toLocaleString() },
-                { text: res.data.result_2[2].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result_2[2].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
                 {},
               ],
               [
                 { text: "รวม" },
                 { text: res.data.result_2[3].vehicle.toLocaleString() },
                 { text: res.data.result_2[3].bill.toLocaleString() },
-                { text: res.data.result_2[3].demand_fee.toLocaleString() },
+                {
+                  text: res.data.result_2[3].demand_fee.toLocaleString(),
+                  alignment: "right",
+                },
                 {},
               ]
             );

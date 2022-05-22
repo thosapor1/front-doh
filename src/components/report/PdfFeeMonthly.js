@@ -100,25 +100,37 @@ export default async function PdfFeeMonthly(
             { text: "C1" },
             { text: res.data.result_sum[0].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[0].count_bill.toLocaleString() },
-            { text: res.data.result_sum[0].income.toLocaleString() },
+            {
+              text: res.data.result_sum[0].income.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "C2" },
             { text: res.data.result_sum[1].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[1].count_bill.toLocaleString() },
-            { text: res.data.result_sum[1].income.toLocaleString() },
+            {
+              text: res.data.result_sum[1].income.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "C3" },
             { text: res.data.result_sum[2].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[2].count_bill.toLocaleString() },
-            { text: res.data.result_sum[2].income.toLocaleString() },
+            {
+              text: res.data.result_sum[2].income.toLocaleString(),
+              style: "cellRight",
+            },
           ],
           [
             { text: "รวม" },
             { text: res.data.result_sum[3].count_vehicle.toLocaleString() },
             { text: res.data.result_sum[3].count_bill.toLocaleString() },
-            { text: res.data.result_sum[3].income.toLocaleString() },
+            {
+              text: res.data.result_sum[3].income.toLocaleString(),
+              style: "cellRight",
+            },
           ]
         );
         body2.push(
@@ -136,9 +148,9 @@ export default async function PdfFeeMonthly(
           ],
           [
             { text: "ประเภทรถ", rowSpan: 3, margin: [0, 23, 0, 0] },
-            { text: "ชำระตามกำหนด", colSpan: 2 },
+            { text: "ขำระภายใน 7 วัน", colSpan: 2 },
             {},
-            { text: "ชำระเกินกำหนด", colSpan: 2 },
+            { text: "ขำระเกินกำหนดหลังวันที่ 8", colSpan: 2 },
             {},
             { text: "คงเหลือ", colSpan: 2 },
             {},
@@ -190,18 +202,23 @@ export default async function PdfFeeMonthly(
             {
               text: res.data.result_classify[0].count_bill_due.toLocaleString(),
             },
-            { text: res.data.result_classify[0].income_due.toLocaleString() },
+            {
+              text: res.data.result_classify[0].income_due.toLocaleString(),
+              style: "cellRight",
+            },
             {
               text: res.data.result_classify[0].count_bill_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[0].income_overdue.toLocaleString(),
+              style: "cellRight",
             },
             {
               text: res.data.result_classify[0].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[0].income_remain.toLocaleString(),
+              style: "cellRight",
             },
           ],
           [
@@ -209,18 +226,23 @@ export default async function PdfFeeMonthly(
             {
               text: res.data.result_classify[1].count_bill_due.toLocaleString(),
             },
-            { text: res.data.result_classify[1].income_due.toLocaleString() },
+            {
+              text: res.data.result_classify[1].income_due.toLocaleString(),
+              style: "cellRight",
+            },
             {
               text: res.data.result_classify[1].count_bill_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_overdue.toLocaleString(),
+              style: "cellRight",
             },
             {
               text: res.data.result_classify[1].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[1].income_remain.toLocaleString(),
+              style: "cellRight",
             },
           ],
           [
@@ -228,18 +250,23 @@ export default async function PdfFeeMonthly(
             {
               text: res.data.result_classify[2].count_bill_due.toLocaleString(),
             },
-            { text: res.data.result_classify[2].income_due.toLocaleString() },
+            {
+              text: res.data.result_classify[2].income_due.toLocaleString(),
+              style: "cellRight",
+            },
             {
               text: res.data.result_classify[2].count_bill_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[2].income_overdue.toLocaleString(),
+              style: "cellRight",
             },
             {
               text: res.data.result_classify[2].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[2].income_remain.toLocaleString(),
+              style: "cellRight",
             },
           ],
           [
@@ -247,18 +274,23 @@ export default async function PdfFeeMonthly(
             {
               text: res.data.result_classify[3].count_bill_due.toLocaleString(),
             },
-            { text: res.data.result_classify[3].income_due.toLocaleString() },
+            {
+              text: res.data.result_classify[3].income_due.toLocaleString(),
+              style: "cellRight",
+            },
             {
               text: res.data.result_classify[3].count_bill_overdue.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_overdue.toLocaleString(),
+              style: "cellRight",
             },
             {
               text: res.data.result_classify[3].count_bill_remain.toLocaleString(),
             },
             {
               text: res.data.result_classify[3].income_remain.toLocaleString(),
+              style: "cellRight",
             },
           ]
         );
@@ -647,6 +679,7 @@ export default async function PdfFeeMonthly(
     styles: {
       table: { marginTop: 10, alignment: "center", fontSize: 11 },
       table2: { marginTop: 10, alignment: "center", fontSize: 11 },
+      cellRight: { alignment: "right" },
     },
     defaultStyle: { font: "THSarabun" },
   };
