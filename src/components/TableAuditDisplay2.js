@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   IconButton,
   makeStyles,
   Table,
@@ -33,6 +34,9 @@ import {
 import ModalOperation from "./ModalOperation";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 // import format from "date-fns/format";
+import CollectionsIcon from "@material-ui/icons/Collections";
+import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
+import ZoomOutMapTwoToneIcon from "@material-ui/icons/ZoomOutMapTwoTone";
 
 const detailStatus = [
   {
@@ -202,6 +206,7 @@ export default function TableAuditDisplay2(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
   const location = useLocation();
+  const [checked, setChecked] = useState(false);
 
   const {
     dataList,
@@ -213,6 +218,10 @@ export default function TableAuditDisplay2(props) {
     eyesStatus,
     setEyesStatus,
   } = props;
+
+  const handleChange = (event, index) => {
+    setChecked(event.target.checked);
+  };
 
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
@@ -302,9 +311,26 @@ export default function TableAuditDisplay2(props) {
               className={classes.pagination}
             />
           </Box>
-          <StyledButtonOperation onClick={() => setOpenOperation(true)}>
+          <Box style={{ marginTop: -7 }}>
+            <Tooltip title="รวม Transaction">
+              <IconButton style={{ margin: "0px 0.3rem" }}>
+                <CollectionsIcon style={{ color: "lightgreen" }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="ลบ Transaction">
+              <IconButton style={{ margin: "0px 0.3rem" }}>
+                <DeleteForeverTwoToneIcon color="secondary" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="แยก Transaction">
+              <IconButton style={{ margin: "0px 0.3rem" }}>
+                <ZoomOutMapTwoToneIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          {/* <StyledButtonOperation onClick={() => setOpenOperation(true)}>
             ดำเนินการ
-          </StyledButtonOperation>
+          </StyledButtonOperation> */}
         </Box>
 
         {/* detail box */}
@@ -326,6 +352,9 @@ export default function TableAuditDisplay2(props) {
         <Table stickyHeader>
           <TableHead>
             <StyledTableRow>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
+                {null}
+              </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
                 transaction
               </TableCell>
@@ -384,6 +413,13 @@ export default function TableAuditDisplay2(props) {
                     selected={rowID === index}
                     className={classes.selected}
                   >
+                    <Checkbox
+                      checked={checked}
+                      onChange={(e) => handleChange(e, index)}
+                      color="default"
+                      name={`checkbox${index}`}
+                      // inputProps={{ "aria-label": "primary checkbox" }}
+                    />
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
