@@ -413,13 +413,15 @@ export default function TableAuditDisplay2(props) {
                     selected={rowID === index}
                     className={classes.selected}
                   >
-                    <Checkbox
-                      checked={checked}
-                      onChange={(e) => handleChange(e, index)}
-                      color="default"
-                      name={`checkbox${index}`}
-                      // inputProps={{ "aria-label": "primary checkbox" }}
-                    />
+                    <TableCell align="center" className={classes.tableCell}>
+                      <Checkbox
+                        checked={checked}
+                        onChange={(e) => handleChange(e, index)}
+                        color="default"
+                        name={`checkbox${index}`}
+                        // inputProps={{ "aria-label": "primary checkbox" }}
+                      />
+                    </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {data.transactionId}
                     </TableCell>
