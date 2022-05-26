@@ -254,7 +254,7 @@ export default function TableAuditDisplay2(props) {
     console.log(sendData);
 
     const result = await Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
+      text: "คุณต้องการรวมทรานแซคชั่น!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -269,7 +269,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          text: "รวมทรานแซคชั่นสำเร็จ",
           icon: "success",
         });
         handleCloseOperation();
@@ -279,7 +279,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
+          text: "รวมทรานแซคชั่นไม่สำเร็จ",
           icon: "error",
         });
       }
@@ -295,7 +295,7 @@ export default function TableAuditDisplay2(props) {
     console.log("sendData : ", sendData);
 
     const result = await Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
+      text: "คุณต้องการลบทรานแซคชั่น!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -310,7 +310,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          text: "ลบทรานแซคชั่นสำเร็จ",
           icon: "success",
         });
         handleCloseOperation();
@@ -320,7 +320,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
+          text: "ลบทรานแซคชั่นไม่สำเร็จ",
           icon: "error",
         });
       }
@@ -336,7 +336,7 @@ export default function TableAuditDisplay2(props) {
     console.log(sendData);
 
     const result = await Swal.fire({
-      text: "คุณต้องการบันทึกข้อมูล!",
+      text: "คุณต้องการแยกทรานแซคชั่น!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -351,7 +351,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Success",
-          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          text: "แยกทรานแซคชั่นสำเร็จ",
           icon: "success",
         });
         handleCloseOperation();
@@ -361,7 +361,7 @@ export default function TableAuditDisplay2(props) {
         Swal.close();
         await Swal.fire({
           title: "Fail",
-          text: "บันทึกข้อมูลไม่สำเร็จ",
+          text: "แยกทรานแซคชั่นไม่สำเร็จ",
           icon: "error",
         });
       }
