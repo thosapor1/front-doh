@@ -27,16 +27,18 @@ import AttachMoneySharpIcon from "@material-ui/icons/AttachMoneySharp";
 import { getDataExpectIncomeActivity } from "../service/allService";
 import { getDataExpectIncomeActivityV2 } from "../service/allService";
 import { useLocation } from "react-router-dom";
-import {
-  StyledButtonGoToPage,
-  StyledButtonOperation,
-} from "../styledComponent/StyledButton";
+import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 import ModalOperation from "./ModalOperation";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 // import format from "date-fns/format";
-import CollectionsIcon from "@material-ui/icons/Collections";
+import CallMergeIcon from "@material-ui/icons/CallMerge";
 import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
-import ZoomOutMapTwoToneIcon from "@material-ui/icons/ZoomOutMapTwoTone";
+import CallSplitIcon from "@material-ui/icons/CallSplit";
+import {
+  removeMatch,
+  separateTransaction,
+  mergeTransaction,
+} from "../service/allService";
 
 const detailStatus = [
   {
@@ -206,7 +208,7 @@ export default function TableAuditDisplay2(props) {
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
   const location = useLocation();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState([]);
 
   const {
     dataList,
@@ -220,7 +222,150 @@ export default function TableAuditDisplay2(props) {
   } = props;
 
   const handleChange = (event, index) => {
-    setChecked(event.target.checked);
+    const checkedIndex = checked.indexOf(index);
+    let newChecked = [];
+
+    if (checkedIndex === -1 && checked.length < 2) {
+      newChecked = newChecked.concat(checked, index);
+    } else if (checkedIndex === 0) {
+      newChecked = newChecked.concat(checked.slice(1));
+    } else if (checkedIndex === checked.length - 1) {
+      newChecked = newChecked.concat(checked.slice(0, -1));
+    } else if (checkedIndex > 0) {
+      newChecked = newChecked.concat(
+        checked.slice(0, checkedIndex),
+        checked.slice(checkedIndex + 1)
+      );
+    } else if (checked.length === 2) {
+      newChecked = newChecked.concat(checked.slice(0, 2));
+    }
+
+    console.log(checkedIndex);
+    setChecked(newChecked);
+    console.log(checked);
+  };
+
+  const merge = async () => {
+    const sendData = {
+      date: format(checkDate, "yyyy-MM-dd").toString(),
+      transactionId: checked,
+    };
+
+    console.log(sendData);
+
+    const result = await Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (result.isConfirmed) {
+      const res = await mergeTransaction(sendData);
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+        });
+        handleCloseOperation();
+        setChecked([]);
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
+  };
+
+  const deleteTransaction = async () => {
+    const sendData = {
+      date: format(checkDate, "yyyyMMdd"),
+      txId: checked[0].toString(),
+    };
+
+    console.log("sendData : ", sendData);
+
+    const result = await Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (result.isConfirmed) {
+      const res = await removeMatch(sendData);
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+        });
+        handleCloseOperation();
+        setChecked([]);
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
+  };
+
+  const separate = async () => {
+    const sendData = {
+      date: format(checkDate, "yyyy-MM-dd").toString(),
+      transactionId: checked[0].toString(),
+    };
+
+    console.log(sendData);
+
+    const result = await Swal.fire({
+      text: "คุณต้องการบันทึกข้อมูล!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (result.isConfirmed) {
+      const res = await separateTransaction(sendData);
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "ข้อมูลของท่านถูกบันทึกแล้ว",
+          icon: "success",
+        });
+        handleCloseOperation();
+        setChecked([]);
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "บันทึกข้อมูลไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
   };
 
   const fetchData = async (ts, index1, index2) => {
@@ -278,6 +423,9 @@ export default function TableAuditDisplay2(props) {
     );
   };
 
+  const isChecked = (transactionId) =>
+    checked.indexOf(transactionId) !== -1 && checked.indexOf(transactionId) < 2;
+
   return (
     <div>
       <Box className={classes.box}>
@@ -313,18 +461,36 @@ export default function TableAuditDisplay2(props) {
           </Box>
           <Box style={{ marginTop: -7 }}>
             <Tooltip title="รวม Transaction">
-              <IconButton style={{ margin: "0px 0.3rem" }}>
-                <CollectionsIcon style={{ color: "lightgreen" }} />
+              <IconButton
+                style={{ margin: "0px 0.3rem" }}
+                disabled={checked.length < 2}
+                onClick={() => {
+                  merge();
+                }}
+              >
+                <CallMergeIcon style={{ color: "green" }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="ลบ Transaction">
-              <IconButton style={{ margin: "0px 0.3rem" }}>
+              <IconButton
+                style={{ margin: "0px 0.3rem" }}
+                disabled={checked.length < 1 || checked.length === 2}
+                onClick={() => {
+                  deleteTransaction();
+                }}
+              >
                 <DeleteForeverTwoToneIcon color="secondary" />
               </IconButton>
             </Tooltip>
             <Tooltip title="แยก Transaction">
-              <IconButton style={{ margin: "0px 0.3rem" }}>
-                <ZoomOutMapTwoToneIcon color="primary" />
+              <IconButton
+                style={{ margin: "0px 0.3rem" }}
+                disabled={checked.length < 1 || checked.length === 2}
+                onClick={() => {
+                  separate();
+                }}
+              >
+                <CallSplitIcon color="primary" />
               </IconButton>
             </Tooltip>
           </Box>
@@ -406,128 +572,132 @@ export default function TableAuditDisplay2(props) {
           </TableHead>
           <TableBody>
             {!!dataList.resultsDisplay
-              ? dataList.resultsDisplay.map((data, index) => (
-                  <StyledTableRow
-                    key={data.transactionId}
-                    // className={classes.tableRow}
-                    selected={rowID === index}
-                    className={classes.selected}
-                  >
-                    <TableCell align="center" className={classes.tableCell}>
-                      <Checkbox
-                        checked={checked}
-                        onChange={(e) => handleChange(e, index)}
-                        color="default"
-                        name={`checkbox${index}`}
-                        // inputProps={{ "aria-label": "primary checkbox" }}
-                      />
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.transactionId}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_checkpoint ? data.match_checkpoint : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_gate ? data.match_gate : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_timestamp
-                        ? data.match_timestamp.split(" ").pop()
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_vehicleClass
-                        ? `C${data.match_real_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.audit_vehicleClass
-                        ? `C${data.audit_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {data.mf_lane_vehicleClass
-                        ? `C${data.mf_lane_vehicleClass}`
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.status ? data.status : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.match_real_fee ? data.match_real_fee : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!data.forceFlag && data.forceFlag === 1
-                        ? "บังคับ"
-                        : "-"}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                      {!!eyesStatus[index] &&
-                      eyesStatus[index].readFlag === 1 &&
-                      eyesStatus[index].state === 2 ? (
-                        <VisibilityIcon style={{ color: "red" }} />
-                      ) : (
-                        <FiberManualRecordIcon
-                          style={{
-                            color:
-                              data.state === 1
-                                ? "lightgray"
-                                : data.state === 2
-                                ? "#FF2400"
-                                : data.state === 3
-                                ? "blue"
-                                : data.state === 4
-                                ? "orange"
-                                : data.state === 5
-                                ? "black"
-                                : data.state === 6
-                                ? "darkviolet"
-                                : data.state === 7
-                                ? "lightblue"
-                                : data.state === 8
-                                ? "lightgreen"
-                                : "rgba(0,0,0,0)",
-                          }}
+              ? dataList.resultsDisplay.map((data, index) => {
+                  const isCheckboxChecked = isChecked(data.transactionId);
+
+                  return (
+                    <StyledTableRow
+                      key={data.transactionId}
+                      // className={classes.tableRow}
+                      selected={rowID === index}
+                      className={classes.selected}
+                    >
+                      <TableCell align="center" className={classes.tableCell}>
+                        <Checkbox
+                          checked={isCheckboxChecked}
+                          onChange={(e) => handleChange(e, data.transactionId)}
+                          color="default"
+                          name={`checkbox${index}`}
+                          // inputProps={{ "aria-label": "primary checkbox" }}
                         />
-                      )}
-                      <Tooltip title="ดูข้อมูล" arrow>
-                        <IconButton
-                          aria-label="ดูข้อมูล"
-                          style={{
-                            marginLeft: "1rem",
-                            marginTop: -15,
-                            padding: 5,
-                          }}
-                        >
-                          <DescriptionRoundedIcon
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {data.transactionId}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_checkpoint ? data.match_checkpoint : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_gate ? data.match_gate : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_timestamp
+                          ? data.match_timestamp.split(" ").pop()
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_real_vehicleClass
+                          ? `C${data.match_real_vehicleClass}`
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.audit_vehicleClass
+                          ? `C${data.audit_vehicleClass}`
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {data.mf_lane_vehicleClass
+                          ? `C${data.mf_lane_vehicleClass}`
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.vehicleClass ? `C${data.vehicleClass}` : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.status ? data.status : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.match_real_fee ? data.match_real_fee : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.billingInvoiceNo ? data.billingInvoiceNo : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.hasPayment ? <AttachMoneySharpIcon /> : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!data.forceFlag && data.forceFlag === 1
+                          ? "บังคับ"
+                          : "-"}
+                      </TableCell>
+                      <TableCell align="center" className={classes.tableCell}>
+                        {!!eyesStatus[index] &&
+                        eyesStatus[index].readFlag === 1 &&
+                        eyesStatus[index].state === 2 ? (
+                          <VisibilityIcon style={{ color: "red" }} />
+                        ) : (
+                          <FiberManualRecordIcon
                             style={{
-                              color: "gray",
-                            }}
-                            onClick={() => {
-                              fetchData(
-                                data.transactionId,
-                                index - 1,
-                                index - 2
-                              );
-                              setRowID(index);
-                              ChangeEyeStatus(index);
+                              color:
+                                data.state === 1
+                                  ? "lightgray"
+                                  : data.state === 2
+                                  ? "#FF2400"
+                                  : data.state === 3
+                                  ? "blue"
+                                  : data.state === 4
+                                  ? "orange"
+                                  : data.state === 5
+                                  ? "black"
+                                  : data.state === 6
+                                  ? "darkviolet"
+                                  : data.state === 7
+                                  ? "lightblue"
+                                  : data.state === 8
+                                  ? "lightgreen"
+                                  : "rgba(0,0,0,0)",
                             }}
                           />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </StyledTableRow>
-                ))
+                        )}
+                        <Tooltip title="ดูข้อมูล" arrow>
+                          <IconButton
+                            aria-label="ดูข้อมูล"
+                            style={{
+                              marginLeft: "1rem",
+                              marginTop: -15,
+                              padding: 5,
+                            }}
+                          >
+                            <DescriptionRoundedIcon
+                              style={{
+                                color: "gray",
+                              }}
+                              onClick={() => {
+                                fetchData(
+                                  data.transactionId,
+                                  index - 1,
+                                  index - 2
+                                );
+                                setRowID(index);
+                                ChangeEyeStatus(index);
+                              }}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    </StyledTableRow>
+                  );
+                })
               : []}
           </TableBody>
         </Table>
