@@ -93,6 +93,7 @@ import TableNumberOfCarTransactionMonthly from "../components/report/TableNumber
 import TableReportMockMonthly from "../components/report/TableReportMockMonthly";
 import FilterSection7 from "../components/report/FilterSection7";
 import TableReconcile from "../components/report/TableReconcile";
+import TableAmountPayment from "../components/report/TableAmountPayment";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -1824,21 +1825,10 @@ export default function Report() {
                   className={classes.typography}
                   style={{ marginTop: 20 }}
                 >
-                  {`ทุกด่าน`} <br />
-                  {`เอกสารสรุป Transaction ประจำวันที่ ${format(
-                    selectedDate,
-                    "dd/MM/yy",
-                    {
-                      locale: th,
-                    }
-                  )} - ${format(endDate, "dd/MM/yy", { locale: th })}`}
+                  รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน
                 </Typography>
                 <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <TableNumberOfCarTransactionMonthly
-                    startDate={selectedDate}
-                    checkMonth={month}
-                  />
-                  <TableReportMockMonthly
+                  <TableAmountPayment
                     startDate={selectedDate}
                     checkMonth={month}
                   />
