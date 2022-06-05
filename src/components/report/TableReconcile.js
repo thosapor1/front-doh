@@ -1,4 +1,4 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, CardMedia, makeStyles, Typography } from "@material-ui/core";
 import format from "date-fns/format";
 import { th } from "date-fns/locale";
 import React from "react";
@@ -8,6 +8,7 @@ import mockData3 from "../../data/mockdata3.json";
 import mockData7 from "../../data/mockdata7.json";
 import mockData8 from "../../data/mockdata8.json";
 import mockData9 from "../../data/mockdata9.json";
+import logoHighways from "../../image/logo_doh1.png";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme) => {
     table: {
       borderCollapse: "collapse",
     },
+    typography: {
+      fontFamily: "Sarabun",
+    },
   };
 });
 
@@ -69,7 +73,37 @@ export default function TableReconcile(props) {
   return (
     <>
       <Box>
-        <div className={classes.root}>
+        <div className={classes.root} id="tableReconcile">
+          <Box style={{ display: "flex", flexWrap: "wrap" }}>
+            <CardMedia
+              component="img"
+              src={logoHighways}
+              alt="logo_highways"
+              style={{ width: 100, marginBottom: 30, marginRight: 20 }}
+            />
+            <Box style={{ paddingTop: 15 }}>
+              <Typography
+                className={classes.typography}
+                style={{ fontSize: "1.2rem" }}
+              >
+                ฝ่ายตรวจสอบรายได้
+              </Typography>
+              <hr style={{ width: "370%" }} />
+              <Typography
+                className={classes.typography}
+                style={{ fontSize: "1.2rem" }}
+              >
+                กองทางหลวงพิเศษระหว่างเมือง กรมทางหลวง
+              </Typography>
+            </Box>
+          </Box>
+          <Typography
+            className={classes.typography}
+            style={{ marginBottom: 10 }}
+          >
+            รายงานสรุปกระทบยอดการชำระค่าผ่านทางประจำเดือน
+          </Typography>
+
           <table className={classes.table}>
             <tr>
               <th
@@ -303,6 +337,30 @@ export default function TableReconcile(props) {
               </tr>
             ))}
           </table>
+          <Box
+            style={{
+              margin: "40px 30px 120px 0px",
+              float: "right",
+              textAlign: "center",
+            }}
+          >
+            <Typography className={classes.typography}>
+              (............................................)
+            </Typography>
+            <Typography className={classes.typography}>ผู้ตรวจสอบ</Typography>
+          </Box>
+          <hr style={{ backgroundColor: "black", width: "100%" }} />
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography className={classes.typography}>
+              รายงานสรุปการชำระค่าผ่านทางประจำวัน
+            </Typography>
+            <Typography className={classes.typography}>ตส.07</Typography>
+          </Box>
         </div>
       </Box>
     </>

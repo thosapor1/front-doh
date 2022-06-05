@@ -94,6 +94,7 @@ import TableReportMockMonthly from "../components/report/TableReportMockMonthly"
 import FilterSection7 from "../components/report/FilterSection7";
 import TableReconcile from "../components/report/TableReconcile";
 import TableAmountPayment from "../components/report/TableAmountPayment";
+import PdfReconcile from "../components/report/PdfReconcile";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -249,6 +250,30 @@ export default function Report() {
       });
       pdf.addImage(imgData, "JPEG", 0, 30, 297, 140);
       pdf.save("slaReport.pdf");
+    });
+  };
+
+  const reconcilePDF = () => {
+    const input = document.getElementById("tableReconcile");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 10, 297, 180);
+      pdf.save("รายงานสรุปกระทบยอดชำระค่าผ่านทางประจำเดือน.pdf");
+    });
+  };
+
+  const amountPaymentPDF = () => {
+    const input = document.getElementById("tableAmountPayment");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 5, 297, 200);
+      pdf.save("รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน.pdf");
     });
   };
 
@@ -1780,7 +1805,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection7
                 onFetchData={fetchData13}
-                report={slaPDF}
+                report={reconcilePDF}
                 transactionReport={() => {
                   alert("test");
                 }}
@@ -1792,12 +1817,12 @@ export default function Report() {
                 setCheckpoint={setCheckpoint}
               />
               <Paper>
-                <Typography
+                {/* <Typography
                   className={classes.typography}
                   style={{ marginTop: 20 }}
                 >
                   รายงานสรุปกระทบยอดการชำระค่าผ่านทางประจำเดือน
-                </Typography>
+                </Typography> */}
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <TableReconcile startDate={selectedDate} checkMonth={month} />
                 </Box>
@@ -1809,7 +1834,7 @@ export default function Report() {
             <Container maxWidth="xl" className={classes.inTab}>
               <FilterSection7
                 onFetchData={fetchData13}
-                report={slaPDF}
+                report={amountPaymentPDF}
                 transactionReport={() => {
                   alert("test");
                 }}
@@ -1821,12 +1846,12 @@ export default function Report() {
                 setCheckpoint={setCheckpoint}
               />
               <Paper>
-                <Typography
+                {/* <Typography
                   className={classes.typography}
                   style={{ marginTop: 20 }}
                 >
                   รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน
-                </Typography>
+                </Typography> */}
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <TableAmountPayment
                     startDate={selectedDate}
