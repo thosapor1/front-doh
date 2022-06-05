@@ -5,6 +5,9 @@ import React from "react";
 import mockData1 from "../../data/mockdata1.json";
 import mockData2 from "../../data/mockdata2.json";
 import mockData3 from "../../data/mockdata3.json";
+import mockData7 from "../../data/mockdata7.json";
+import mockData8 from "../../data/mockdata8.json";
+import mockData9 from "../../data/mockdata9.json";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -46,15 +49,20 @@ const useStyles = makeStyles((theme) => {
 export default function TableReconcile(props) {
   const { checkMonth, startDate } = props;
   let dataList = [];
+  let dataList2 = "";
 
   if (checkMonth === "Feb") {
     dataList = mockData1;
+    dataList2 = mockData7;
   } else if (checkMonth === "Mar") {
     dataList = mockData2;
+    dataList2 = mockData8;
   } else if (checkMonth === "Apr") {
     dataList = mockData3;
+    dataList2 = mockData9;
   } else {
     dataList = [];
+    dataList2 = "";
   }
 
   const classes = useStyles();
@@ -119,16 +127,20 @@ export default function TableReconcile(props) {
               </tr>
               <tr>
                 <td className={classes.td} align="center">
-                  0
+                  {dataList2 ? dataList2.m1.toLocaleString() : ""}
                 </td>
-                <td className={classes.td} align="center">
-                  0
+                <td className={classes.td} align="right">
+                  {dataList2 ? dataList2.m2.toLocaleString() : ""}
                 </td>
-                <td className={classes.td} align="center">
-                  0
+                <td className={classes.td} align="right">
+                  {dataList2 ? dataList2.highway.toLocaleString() : ""}
                 </td>
-                <td className={classes.td} align="center">
-                  0
+                <td
+                  className={classes.td}
+                  align="right"
+                  style={dataList2.diff < 2 ? { color: "red" } : {}}
+                >
+                  {dataList2 ? dataList2.diff.toLocaleString() : ""}
                 </td>
               </tr>
             </table>
@@ -142,6 +154,7 @@ export default function TableReconcile(props) {
               <td className={classes.td} colSpan={4} align="center">
                 ยอดรวมสะสม
               </td>
+              <td></td>
               <td
                 className={classes.td}
                 colSpan={8}
@@ -149,11 +162,19 @@ export default function TableReconcile(props) {
               >{`ยอดประจำเดือน ${format(startDate, "MMMM yyyy", {
                 locale: th,
               })}`}</td>
+              <td></td>
               <td className={classes.td} colSpan={3} align="center">
                 ประกันรายได้
               </td>
             </tr>
             <tr>
+              <td className={classes.td} align="center">
+                รถชำระเงิน
+              </td>
+              <td className={classes.td} colSpan={3} align="center">
+                ยอดเงินรับชำระ(บาท)
+              </td>
+              <td></td>
               <td className={classes.td} align="center">
                 รถชำระเงิน
               </td>
@@ -166,12 +187,7 @@ export default function TableReconcile(props) {
               <td className={classes.td} colSpan={3} align="center">
                 ยอดเงินค้างชำระ(บาท)
               </td>
-              <td className={classes.td} align="center">
-                รถชำระเงิน
-              </td>
-              <td className={classes.td} colSpan={3} align="center">
-                ยอดเงินค้างชำระ(บาท)
-              </td>
+              <td></td>
               <td className={classes.td} align="center">
                 รถค้างชำระ
               </td>
@@ -195,6 +211,7 @@ export default function TableReconcile(props) {
               <td className={classes.td} align="center">
                 ค่าทวงถาม
               </td>
+              <td></td>
               <td className={classes.td} align="center">
                 (รายการ)
               </td>
@@ -219,6 +236,7 @@ export default function TableReconcile(props) {
               <td className={classes.td} align="center">
                 ค่าทวงถาม
               </td>
+              <td></td>
               <td className={classes.td} align="center">
                 (รายการ)
               </td>
@@ -247,6 +265,7 @@ export default function TableReconcile(props) {
                 <td className={classes.td} align="right">
                   {row[4].toLocaleString()}
                 </td>
+                <td></td>
                 <td className={classes.td} align="center">
                   {row[5].toLocaleString()}
                 </td>
@@ -271,6 +290,7 @@ export default function TableReconcile(props) {
                 <td className={classes.td} align="right">
                   {row[12].toLocaleString()}
                 </td>
+                <td></td>
                 <td className={classes.td} align="center">
                   {row[13].toLocaleString()}
                 </td>

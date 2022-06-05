@@ -152,97 +152,75 @@ export default function TableAmountPayment(props) {
                 <td>{null}</td>
               </tr>
               {dataList
-                .filter((row, index) => index < 16)
-                .map((row) => (
-                  <tr>
-                    <td className={classes.td} align="center">
-                      {row.day}
-                    </td>
-                    <td className={classes.td} align="center">
-                      0
-                    </td>
-                    <td className={classes.td} align="center">
-                      0
-                    </td>
-                    <td className={classes.td} align="center">
-                      0
-                    </td>
-                    <td className={classes.td} align="center">
-                      0
-                    </td>
-                  </tr>
-                ))}
+                ? dataList
+                    .filter((row, index) => index < 16)
+                    .map((row) => (
+                      <tr>
+                        <td className={classes.td} align="center">
+                          {row.day}
+                        </td>
+                        <td className={classes.td} align="center">
+                          {row.receive.toLocaleString()}
+                        </td>
+                        <td className={classes.td} align="right">
+                          {row.mflow.toLocaleString()}
+                        </td>
+                        <td className={classes.td} align="right">
+                          {row.highways.toLocaleString()}
+                        </td>
+                        <td className={classes.td} align="right">
+                          {row.diff.toLocaleString()}
+                        </td>
+                      </tr>
+                    ))
+                : []}
             </table>
 
             <table className={classes.table}>
               <tr>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                  rowSpan={2}
-                >
+                <td className={classes.td} align="center" rowSpan={2}>
                   วันที่
                 </td>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                  rowSpan={2}
-                >
+                <td className={classes.td} align="center" rowSpan={2}>
                   {`รายการรับชำระ`} <br /> {`(รายการ)`}
                 </td>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                  colSpan={2}
-                >
+                <td className={classes.td} align="center" colSpan={2}>
                   ยอดเงินรับชำระ (บาท)
                 </td>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                  rowSpan={2}
-                >
+                <td className={classes.td} align="center" rowSpan={2}>
                   {`ส่วนต่างยอดเงิน`} <br /> {`(บาท)`}
                 </td>
               </tr>
               <tr>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                >
+                <td className={classes.td} align="center">
                   ระบบ M-Flow
                 </td>
-                <td
-                  className={classes.td}
-                  style={{ height: 10 }}
-                  align="center"
-                >
+                <td className={classes.td} align="center">
                   กรมทางหลวง
                 </td>
               </tr>
               {dataList
-                .filter((row, index) => index > 16)
+                .filter((row, index) => index > 15)
                 .map((row) => (
                   <tr>
                     <td className={classes.td} align="center">
                       {row.day}
                     </td>
                     <td className={classes.td} align="center">
-                      0
+                      {row.receive.toLocaleString()}
                     </td>
-                    <td className={classes.td} align="center">
-                      0
+                    <td className={classes.td} align="right">
+                      {row.mflow.toLocaleString()}
                     </td>
-                    <td className={classes.td} align="center">
-                      0
+                    <td className={classes.td} align="right">
+                      {row.highways.toLocaleString()}
                     </td>
-                    <td className={classes.td} align="center">
-                      0
+                    <td
+                      className={classes.td}
+                      align="right"
+                      style={row.diff !== 0 ? { color: "red" } : {}}
+                    >
+                      {row.diff.toLocaleString()}
                     </td>
                   </tr>
                 ))}
