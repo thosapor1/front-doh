@@ -84,71 +84,47 @@ export default function TablePaymentDaily2(props) {
                 ช่องทางรับชำระเงิน
               </td>
               <td className={classes.td2}>รายการรับชำระ</td>
-              <td className={classes.td2}>ยอดเงินรับชำระ</td>
-              <td className={classes.td} rowSpan={2}>
-                หมายเหตุ
+              <td className={classes.td} colSpan={2}>
+                ยอดเงินรับชำระ
               </td>
+              <td className={classes.td2}>ส่วนต่าง</td>
             </tr>
             <tr>
-              <td className={classes.td3}>(รายการ)</td>
+              <td className={classes.td3}>M-Flow(รายการ)</td>
+              <td className={classes.td3}>M-Flow</td>
+              <td className={classes.td3}>กรมทางหลวง</td>
               <td className={classes.td3}>(บาท)</td>
             </tr>
             <tr>
               <td className={classes.td}>1</td>
               <td
                 className={classes.td}
-                style={{ width: 320, textAlign: "left" }}
+                style={{ width: 300, textAlign: "left" }}
               >
-                บัญชีธนาคาร (Account)
+                ผู้ให้บริการรับชำระเงิน (Counter Service)
               </td>
               <td
                 className={classes.td}
-                style={{ width: 214, textAlign: "left" }}
+                style={{ width: 120, textAlign: "left" }}
               >
-                BPDDT
+                Counter Service
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[0].payment_list.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[0].amount_received.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
 
             <tr>
               <td className={classes.td}>2</td>
-              <td
-                className={classes.td}
-                style={{ width: 270, textAlign: "left" }}
-              >
-                บัตรเครดิต/เดบิต (Credit/Debit Card)
-              </td>
-              <td
-                className={classes.td}
-                style={{ width: 214, textAlign: "left" }}
-              >
-                AQDD
-              </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                {!!dataList.payment
-                  ? dataList.payment[3].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td} style={{ width: 150 }}>
-                {!!dataList.payment
-                  ? dataList.payment[3].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
-            </tr>
-
-            <tr>
-              <td className={classes.td}>3</td>
               <td
                 className={classes.td}
                 style={{ width: 270, textAlign: "left" }}
@@ -161,21 +137,22 @@ export default function TablePaymentDaily2(props) {
               >
                 M-PASS
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
-                  ? dataList.payment[9].payment_list.toLocaleString()
+                  ? dataList.payment[3].payment_list.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
-                  ? dataList.payment[9].amount_received.toLocaleString()
+                  ? dataList.payment[3].amount_received.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
 
             <tr>
-              <td className={classes.td}>4</td>
+              <td className={classes.td}>3</td>
               <td
                 className={classes.td}
                 style={{ width: 270, textAlign: "left" }}
@@ -188,17 +165,46 @@ export default function TablePaymentDaily2(props) {
               >
                 EASYPASS
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
+                {!!dataList.payment
+                  ? dataList.payment[9].payment_list.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td} style={{ width: 115 }}>
+                {!!dataList.payment
+                  ? dataList.payment[9].amount_received.toLocaleString()
+                  : "0"}
+              </td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+            </tr>
+
+            <tr>
+              <td className={classes.td}>4</td>
+              <td
+                className={classes.td}
+                style={{ width: 270, textAlign: "left" }}
+              >
+                บัตรเครดิต/เดบิต (Credit/Debit Card)
+              </td>
+              <td
+                className={classes.td}
+                style={{ width: 214, textAlign: "left" }}
+              >
+                AQDD (FAST PAY)
+              </td>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[6].payment_list.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[6].amount_received.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
 
             <tr>
@@ -209,179 +215,96 @@ export default function TablePaymentDaily2(props) {
                 5
               </td>
               <td
+                className={classes.td}
+                style={{ width: 270, textAlign: "left" }}
+              >
+                การจ่ายผ่านบิล (Bill Payment)
+              </td>
+              <td
+                className={classes.td}
+                style={{ width: 214, textAlign: "left" }}
+              >
+                SPODD (BILL PAYMENT)
+              </td>
+              <td className={classes.td2} style={{ width: 115 }}>
+                0
+              </td>
+              <td className={classes.td2} style={{ width: 115 }}>
+                0
+              </td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+            </tr>
+            <tr>
+              <td
+                className={classes.td4}
+                style={{ borderLeft: "1px solid black" }}
+              >
+                6
+              </td>
+              <td
                 className={classes.td4}
                 style={{ width: 270, textAlign: "left" }}
               >
-                การจ่ายผ่านบิล
+                บัญชีธนาคาร (Account)
               </td>
               <td
                 className={classes.td4}
                 style={{ width: 214, textAlign: "left" }}
               >
-                SPODD
+                BPDDT (DIRECT DEBIT)
               </td>
-              <td className={classes.td2} style={{ width: 150 }}>
-                {null}
+              <td className={classes.td2} style={{ width: 115 }}>
+                0
               </td>
-              <td className={classes.td2} style={{ width: 150 }}>
-                {null}
+              <td className={classes.td2} style={{ width: 115 }}>
+                0
               </td>
-              <td className={classes.td2} style={{ width: 150 }}>
-                {null}
-              </td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
 
             <tr>
+              <td className={classes.td}>7</td>
               <td
-                className={classes.td4}
-                rowSpan={6}
-                style={{ borderLeft: "1px solid black" }}
-              >
-                {null}
-              </td>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`1) โมบายแบงค์กิ้ง (Mobile Banking)`}</td>
-              <td className={classes.td4} rowSpan={6}>
-                {null}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[8].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[8].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`2)	ธนาคาร (Counter Bank)`}</td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[4].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[4].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`3)	อินเทอร์เน็ต (Internet/ CRD)`}</td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[7].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[7].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`4)	ตู้บริการเงินสด (ATM)`}</td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[1].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[1].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`5)	ผู้ให้บริการรับชำระเงิน (Counter Service)`}</td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[5].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[5].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-            <tr>
-              <td
-                className={classes.td4}
-                style={{ textAlign: "left", paddingLeft: 25 }}
-              >{`6)	ใบแจ้งการชำระเงิน (Bill Payment)`}</td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[2].payment_list.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}>
-                {!!dataList.payment
-                  ? dataList.payment[2].amount_received.toLocaleString()
-                  : "0"}
-              </td>
-              <td className={classes.td4}></td>
-            </tr>
-
-            <tr>
-              <td className={classes.td}>6</td>
-              <td
+                colSpan={2}
                 className={classes.td}
                 style={{ width: 270, textAlign: "left" }}
               >
                 อื่นๆ
               </td>
-              <td className={classes.td}>{null}</td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 0
               </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
 
             <tr>
               <td className={classes.td}>{null}</td>
               <td
+                colSpan={2}
                 className={classes.td}
-                style={{ width: 270, textAlign: "left" }}
+                style={{ width: 270, textAlign: "right" }}
               >
                 รวมทั้งสิ้น
               </td>
-              <td className={classes.td}>{null}</td>
-              <td className={classes.td} style={{ width: 150 }}>
+
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[10].payment_list.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}>
+              <td className={classes.td} style={{ width: 115 }}>
                 {!!dataList.payment
                   ? dataList.payment[10].amount_received.toLocaleString()
                   : "0"}
               </td>
-              <td className={classes.td} style={{ width: 150 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
+              <td className={classes.td} style={{ width: 115 }}></td>
             </tr>
           </table>
         </div>

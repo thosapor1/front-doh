@@ -1,0 +1,226 @@
+[
+  {
+    "day": 1,
+    "receive": 49597,
+    "mflow": 2416894,
+    "highways": 2558770,
+    "diff": -141876
+  },
+  {
+    "day": 2,
+    "receive": 62296,
+    "mflow": 3816964,
+    "highways": 3670936,
+    "diff": 146028
+  },
+  {
+    "day": 3,
+    "receive": 37113,
+    "mflow": 1532922,
+    "highways": 1517890,
+    "diff": 15032
+  },
+  {
+    "day": 4,
+    "receive": 50806,
+    "mflow": 1621326,
+    "highways": 1606704,
+    "diff": 14622
+  },
+  {
+    "day": 5,
+    "receive": 56828,
+    "mflow": 1847372,
+    "highways": 1700426,
+    "diff": 146946
+  },
+  {
+    "day": 6,
+    "receive": 45498,
+    "mflow": 1409783,
+    "highways": 1279641.2,
+    "diff": 130141.8
+  },
+  {
+    "day": 7,
+    "receive": 49202,
+    "mflow": 1554582,
+    "highways": 1720616,
+    "diff": -166034
+  },
+  {
+    "day": 8,
+    "receive": 55325,
+    "mflow": 1751148,
+    "highways": 1884810,
+    "diff": -133662
+  },
+  {
+    "day": 9,
+    "receive": 52804,
+    "mflow": 3050594,
+    "highways": 2817858,
+    "diff": 232736
+  },
+  {
+    "day": 10,
+    "receive": 45675,
+    "mflow": 2228161,
+    "highways": 2084184,
+    "diff": 143977
+  },
+  {
+    "day": 11,
+    "receive": 14728,
+    "mflow": 635970,
+    "highways": 3278228,
+    "diff": -2642258
+  },
+  {
+    "day": 12,
+    "receive": 11234,
+    "mflow": 890935,
+    "highways": 1862200,
+    "diff": -971265
+  },
+  {
+    "day": 13,
+    "receive": 10556,
+    "mflow": 829506,
+    "highways": 817582,
+    "diff": 11924
+  },
+  {
+    "day": 14,
+    "receive": 7325,
+    "mflow": 654272,
+    "highways": 634504,
+    "diff": 19768
+  },
+  {
+    "day": 15,
+    "receive": 6168,
+    "mflow": 625652,
+    "highways": 605348,
+    "diff": 20304
+  },
+  {
+    "day": 16,
+    "receive": 5706,
+    "mflow": 740598,
+    "highways": 739688,
+    "diff": 910
+  },
+  {
+    "day": 17,
+    "receive": 20181,
+    "mflow": 2851084,
+    "highways": 2823772,
+    "diff": 27312
+  },
+  {
+    "day": 18,
+    "receive": "82,44",
+    "mflow": 1548912,
+    "highways": 1829322,
+    "diff": -280410
+  },
+  {
+    "day": 19,
+    "receive": 3676,
+    "mflow": 479944,
+    "highways": 1800560,
+    "diff": -1320616
+  },
+  {
+    "day": 20,
+    "receive": 25710,
+    "mflow": 2797588,
+    "highways": 3390484,
+    "diff": -592896
+  },
+  {
+    "day": 21,
+    "receive": 51485,
+    "mflow": 5317578,
+    "highways": 5174590,
+    "diff": 142988
+  },
+  {
+    "day": 22,
+    "receive": 55087,
+    "mflow": 5724957,
+    "highways": 5697428,
+    "diff": 27529
+  },
+  {
+    "day": 23,
+    "receive": 51624,
+    "mflow": 4287558,
+    "highways": 4014224,
+    "diff": 273334
+  },
+  {
+    "day": 24,
+    "receive": 45162,
+    "mflow": 2963264,
+    "highways": 2729242,
+    "diff": 234022
+  },
+  {
+    "day": 25,
+    "receive": 54695,
+    "mflow": 4430504,
+    "highways": 4993336,
+    "diff": -562832
+  },
+  {
+    "day": 26,
+    "receive": 55143,
+    "mflow": 4103729,
+    "highways": 3938908,
+    "diff": 164821
+  },
+  {
+    "day": 27,
+    "receive": 51995,
+    "mflow": 3008478,
+    "highways": 3138572,
+    "diff": -130094
+  },
+  {
+    "day": 28,
+    "receive": 50426,
+    "mflow": 2854995,
+    "highways": 2946246,
+    "diff": -91251
+  },
+  {
+    "day": 29,
+    "receive": 53123,
+    "mflow": 2857942,
+    "highways": 2605396,
+    "diff": 252546
+  },
+  {
+    "day": 30,
+    "receive": 61427,
+    "mflow": 3042204,
+    "highways": 2801754,
+    "diff": 240450
+  },
+  {
+    "day": "-",
+    "receive": "-",
+    "mflow": "-",
+    "highways": "-",
+    "diff": "-"
+  },
+  {
+    "day": "รวม",
+    "receive": 1140595,
+    "mflow": 71875416,
+    "highways": 76663219.2,
+    "diff": -4787803.2
+  }
+]
