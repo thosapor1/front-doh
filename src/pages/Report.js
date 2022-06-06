@@ -91,6 +91,10 @@ import { th } from "date-fns/locale";
 import TableRemainMonthly from "../components/report/TableRemainMonthly";
 import TableNumberOfCarTransactionMonthly from "../components/report/TableNumberOfCarTransactionMonthly";
 import TableReportMockMonthly from "../components/report/TableReportMockMonthly";
+import FilterSection7 from "../components/report/FilterSection7";
+import TableReconcile from "../components/report/TableReconcile";
+import TableAmountPayment from "../components/report/TableAmountPayment";
+import PdfReconcile from "../components/report/PdfReconcile";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -249,6 +253,30 @@ export default function Report() {
     });
   };
 
+  const reconcilePDF = () => {
+    const input = document.getElementById("tableReconcile");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 10, 297, 180);
+      pdf.save("รายงานสรุปกระทบยอดชำระค่าผ่านทางประจำเดือน.pdf");
+    });
+  };
+
+  const amountPaymentPDF = () => {
+    const input = document.getElementById("tableAmountPayment");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+      });
+      pdf.addImage(imgData, "JPEG", 0, 5, 297, 200);
+      pdf.save("รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน.pdf");
+    });
+  };
+
   const fetchData = async () => {
     Swal.fire({
       title: "Loading",
@@ -289,8 +317,6 @@ export default function Report() {
           }
         }
       }
-      console.log("carClass1: ", carClass);
-      console.log("carClass2:", carClass2);
     }
 
     if (!!res && !res.data.status) {
@@ -760,6 +786,16 @@ export default function Report() {
             <Tab
               label="สรุป Transaction ประจำเดือน"
               {...a11yProps(16)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปกระทบยอดการชำระประจำเดือน"
+              {...a11yProps(17)}
+              className={classes.tab}
+            />
+            <Tab
+              label="สรุปการชำระค่าผ่านทางในแต่ละวัน"
+              {...a11yProps(18)}
               className={classes.tab}
             />
           </Tabs>
@@ -1757,6 +1793,67 @@ export default function Report() {
                     checkMonth={month}
                   />
                   <TableReportMockMonthly
+                    startDate={selectedDate}
+                    checkMonth={month}
+                  />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={17}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection7
+                onFetchData={fetchData13}
+                report={reconcilePDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                startDate={selectedDate}
+                setStartDate={setSelectedDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
+              <Paper>
+                {/* <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปกระทบยอดการชำระค่าผ่านทางประจำเดือน
+                </Typography> */}
+                <Box style={{ display: "flex", justifyContent: "center" }}>
+                  <TableReconcile startDate={selectedDate} checkMonth={month} />
+                </Box>
+              </Paper>
+            </Container>
+          </TabPanel>
+
+          <TabPanel value={value} index={18}>
+            <Container maxWidth="xl" className={classes.inTab}>
+              <FilterSection7
+                onFetchData={fetchData13}
+                report={amountPaymentPDF}
+                transactionReport={() => {
+                  alert("test");
+                }}
+                startDate={selectedDate}
+                setStartDate={setSelectedDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                checkpoint={checkpoint}
+                setCheckpoint={setCheckpoint}
+              />
+              <Paper>
+                {/* <Typography
+                  className={classes.typography}
+                  style={{ marginTop: 20 }}
+                >
+                  รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน
+                </Typography> */}
+                <Box style={{ display: "flex", justifyContent: "center" }}>
+                  <TableAmountPayment
                     startDate={selectedDate}
                     checkMonth={month}
                   />
