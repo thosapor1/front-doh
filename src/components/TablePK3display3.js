@@ -366,7 +366,7 @@ export default function TablePK3display3(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.auditor_send_request_date
-                        ? data.auditor_send_request_date.split(" ").pop()
+                        ? data.auditor_send_request_date
                         : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
