@@ -312,6 +312,9 @@ export default function TablePK3display3(props) {
                 ช่อง
               </TableCell>
               <TableCell rowSpan={2} align="center" className={classes.header}>
+                เวลา AD ส่ง
+              </TableCell>
+              <TableCell rowSpan={2} align="center" className={classes.header}>
                 เวลาเข้าด่าน
               </TableCell>
               <TableCell colSpan={4} align="center" className={classes.header}>
@@ -360,6 +363,11 @@ export default function TablePK3display3(props) {
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_gate ? data.match_gate : "-"}
+                    </TableCell>
+                    <TableCell align="center" className={classes.tableCell}>
+                      {!!data.auditor_send_request_date
+                        ? data.auditor_send_request_date.split(" ").pop()
+                        : "-"}
                     </TableCell>
                     <TableCell align="center" className={classes.tableCell}>
                       {!!data.match_timestamp
