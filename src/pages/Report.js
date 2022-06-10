@@ -261,7 +261,7 @@ export default function Report() {
         orientation: "landscape",
       });
       pdf.addImage(imgData, "JPEG", 0, 10, 297, 180);
-      pdf.save("รายงานสรุปกระทบยอดชำระค่าผ่านทางประจำเดือน.pdf");
+      pdf.save("reconcileReport.pdf");
     });
   };
 
@@ -273,7 +273,7 @@ export default function Report() {
         orientation: "landscape",
       });
       pdf.addImage(imgData, "JPEG", 0, 5, 297, 200);
-      pdf.save("รายงานสรุปการชำระค่าผ่านทางในแต่ละวัน.pdf");
+      pdf.save("amountPaymentReport.pdf");
     });
   };
 

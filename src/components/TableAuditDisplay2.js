@@ -30,6 +30,7 @@ import { useLocation } from "react-router-dom";
 import { StyledButtonGoToPage } from "../styledComponent/StyledButton";
 import ModalOperation from "./ModalOperation";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
+import SettingsBackupRestoreRoundedIcon from "@material-ui/icons/SettingsBackupRestoreRounded";
 // import format from "date-fns/format";
 import CallMergeIcon from "@material-ui/icons/CallMerge";
 import DeleteForeverTwoToneIcon from "@material-ui/icons/DeleteForeverTwoTone";
@@ -39,6 +40,7 @@ import {
   separateTransaction,
   mergeTransaction,
 } from "../service/allService";
+import ModalReverseTransaction from "./ModalReverseTrasction";
 
 const detailStatus = [
   {
@@ -204,6 +206,7 @@ export default function TableAuditDisplay2(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openOperation, setOpenOperation] = useState(false);
+  const [openModelReverse, setOpenModelReverse] = useState(false);
   const [selectedPage, setSelectedPage] = useState("");
   const [dataForActivity, SetDataForActivity] = useState({});
   const [rowID, setRowID] = useState("");
@@ -368,6 +371,51 @@ export default function TableAuditDisplay2(props) {
     }
   };
 
+  const reverse = async () => {
+    const sendData = {
+      date: format(checkDate, "yyyy-MM-dd").toString(),
+      transactionId: checked[0].toString(),
+      stateBefore: "3",
+      statusBefore: "2",
+      stateAfter: "2",
+      statusAfter: "2",
+    };
+
+    console.log(sendData);
+
+    const result = await Swal.fire({
+      text: "คุณต้องการแยกทรานแซคชั่น!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (result.isConfirmed) {
+      const res = await separateTransaction(sendData);
+      if (!!res && res.data.status === true) {
+        Swal.close();
+        await Swal.fire({
+          title: "Success",
+          text: "แยกทรานแซคชั่นสำเร็จ",
+          icon: "success",
+        });
+        handleCloseOperation();
+        setChecked([]);
+        await props.onFetchData(page);
+      } else {
+        Swal.close();
+        await Swal.fire({
+          title: "Fail",
+          text: "แยกทรานแซคชั่นไม่สำเร็จ",
+          icon: "error",
+        });
+      }
+    }
+  };
+
   const fetchData = async (ts, index1, index2) => {
     Swal.fire({
       title: "Loading",
@@ -415,6 +463,9 @@ export default function TableAuditDisplay2(props) {
   };
   const handleCloseOperation = () => {
     setOpenOperation(false);
+  };
+  const handleCloseModalReverse = () => {
+    setOpenModelReverse(false);
   };
 
   const ChangeEyeStatus = (index) => {
@@ -491,6 +542,17 @@ export default function TableAuditDisplay2(props) {
                 }}
               >
                 <CallSplitIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="reverse Transaction">
+              <IconButton
+                style={{ margin: "0px 0.3rem" }}
+                // disabled={checked.length < 1 || checked.length === 2}
+                onClick={() => {
+                  setOpenModelReverse(!openModelReverse);
+                }}
+              >
+                <SettingsBackupRestoreRoundedIcon color="secondary" />
               </IconButton>
             </Tooltip>
           </Box>
@@ -719,6 +781,15 @@ export default function TableAuditDisplay2(props) {
         checkDate={checkDate}
         page={page}
         onFetchData={props.onFetchData}
+      />
+
+      <ModalReverseTransaction
+        open={openModelReverse}
+        close={handleCloseModalReverse}
+        checkDate={checkDate}
+        page={page}
+        onFetchData={props.onFetchData}
+        dropdown={dropdown}
       />
     </div>
   );
