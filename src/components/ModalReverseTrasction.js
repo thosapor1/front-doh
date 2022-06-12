@@ -21,8 +21,10 @@ import {
   removeMatch,
   separateTransaction,
   mergeTransaction,
+  reverseStatusTransaction,
 } from "../service/allService";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const apiURL = axios.create({
   baseURL:
@@ -174,8 +176,8 @@ export default function ModalReverseTransaction(props) {
 
   const handleChangeSubmit = async () => {
     const sendData = {
-      date: format(checkDate, "yyyyMMdd"),
-      user_id: "1",
+      date: format(checkDate, "yyyy-MM-dd"),
+      user_id: Cookies.get("userId"),
       transactionId: ts1,
       stateAfter: state,
       statusAfter: tsType,
@@ -192,7 +194,7 @@ export default function ModalReverseTransaction(props) {
     });
 
     if (result.isConfirmed) {
-      const res = await removeMatch(sendData);
+      const res = await reverseStatusTransaction(sendData);
       if (!!res && res.data.status === true) {
         Swal.close();
         await Swal.fire({
@@ -200,9 +202,11 @@ export default function ModalReverseTransaction(props) {
           text: "ข้อมูลของท่านถูกบันทึกแล้ว",
           icon: "success",
         });
+        setTs1("");
         await props.close();
         await props.onFetchData(page);
       } else {
+        setTs1("");
         Swal.close();
         await Swal.fire({
           title: "Fail",
@@ -297,7 +301,10 @@ export default function ModalReverseTransaction(props) {
           variant="outlined"
           color="secondary"
           style={{ margin: "10px 5px 0px 5px" }}
-          onClick={close}
+          onClick={() => {
+            close();
+            setTs1("");
+          }}
         >
           ยกเลิก
         </Button>
