@@ -113,6 +113,15 @@ export const searchByPlate = (sendData) => {
   return response;
 };
 
+export const reverseStatusTransaction = (sendData) => {
+  const response = apiURLv1
+    .post("/revers-state-transaction", sendData)
+    .catch((error) => {
+      Swal.fire(cannotConnectNetWork);
+    });
+  return response;
+};
+
 //ExpertIncomeV2 page
 export const getDataExpectIncomeV2 = (sendData) => {
   const response = apiURLv10.post("/expect-income", sendData).catch((error) => {
@@ -463,15 +472,11 @@ export const getGuaranteeData = (sendData) => {
 };
 
 export const getDataSLa = (sendData) => {
-  const response = apiURLv1
-    .post("/report-sla", sendData)
-    .catch((error) => {
-      Swal.fire(cannotConnectNetWork);
-    });
+  const response = apiURLv1.post("/report-sla", sendData).catch((error) => {
+    Swal.fire(cannotConnectNetWork);
+  });
   return response;
 };
-
-
 
 //ExportData page
 export const exportData = (sendData) => {
