@@ -179,8 +179,8 @@ export default function ModalReverseTransaction(props) {
       date: format(checkDate, "yyyy-MM-dd"),
       user_id: Cookies.get("userId"),
       transactionId: ts1,
-      stateAfter: state,
-      statusAfter: tsType,
+      stateAfter: state.toString(),
+      statusAfter: tsType.toString(),
     };
 
     const result = await Swal.fire({

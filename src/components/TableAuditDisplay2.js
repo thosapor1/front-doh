@@ -41,6 +41,7 @@ import {
   mergeTransaction,
 } from "../service/allService";
 import ModalReverseTransaction from "./ModalReverseTrasction";
+import Cookies from "js-cookie";
 
 const detailStatus = [
   {
@@ -544,17 +545,19 @@ export default function TableAuditDisplay2(props) {
                 <CallSplitIcon color="primary" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="reverse Transaction">
-              <IconButton
-                style={{ margin: "0px 0.3rem" }}
-                // disabled={checked.length < 1 || checked.length === 2}
-                onClick={() => {
-                  setOpenModelReverse(!openModelReverse);
-                }}
-              >
-                <SettingsBackupRestoreRoundedIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
+            {Cookies.get("position_id") == 1 ||
+            Cookies.get("position_id") == 2 ? (
+              <Tooltip title="reverse Transaction">
+                <IconButton
+                  style={{ margin: "0px 0.3rem" }}
+                  onClick={() => {
+                    setOpenModelReverse(!openModelReverse);
+                  }}
+                >
+                  <SettingsBackupRestoreRoundedIcon color="secondary" />
+                </IconButton>
+              </Tooltip>
+            ) : null}
           </Box>
           {/* <StyledButtonOperation onClick={() => setOpenOperation(true)}>
             ดำเนินการ
