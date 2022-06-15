@@ -140,7 +140,7 @@ export const menuItemsForAdmin = [
   {
     text: "รายได้พึงได้รายวัน",
     icon: "task",
-    path: "/expectIncome",
+    path: "/expectIncomeV2",
   },
   {
     text: "รายได้รายวัน",
